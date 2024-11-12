@@ -5,7 +5,8 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@vueuse/motion/nuxt'
   ],
-  devtools: { enabled: true },
+  ssr: false,
+  devtools: { enabled: false },
   runtimeConfig: {
     vapiApiKey: process.env.VAPI_API_KEY,
     public: {
