@@ -10,7 +10,16 @@ export default defineEventHandler(async (event) => {
 
   try {
     const calls = await client.calls.list()
-    return calls
+    const filteredCalls = calls.map(call => ({
+      id: call.id,
+      status: call.status,
+      startedAt: call.startedAt,
+      endedAt: call.endedAt,
+      transcript: call.transcript,
+      summary: call.summary,
+      recordingUrl: call.recordingUrl
+    }))
+    return filteredCalls
   } catch (error) {
     throw createError({
       statusCode: 500,
