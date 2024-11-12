@@ -13,19 +13,19 @@
       <USelect 
         v-model="callStatus"
         :items="[
-          { label: 'All', value: 'all' },
           { label: 'Queued', value: 'queued' },
           { label: 'Ended', value: 'ended' }
         ]"
       />
     </div>
-
+<!-- 
+    :columns="columns"
+      :sort="{ column: sortBy, direction: sortDirection }"
+      @sort="handleSort" -->
     <!-- Table -->
     <UTable 
-      :rows="filteredCalls" 
+      :data="filteredCalls" 
       :columns="columns"
-      :sort="{ column: sortBy, direction: sortDirection }"
-      @sort="handleSort"
     >
       <template #status-data="{ row }">
         <UBadge :color="row.status === 'ended' ? 'green' : 'blue'">
@@ -33,63 +33,105 @@
         </UBadge>
       </template>
     </UTable>
+
+    <!-- Modal -->
+    <UModal v-model:open="isModalOpen" title="Call Summary" :description="selectedCall?.summary">
+      <template #body>
+        <div>
+          <h4 class="font-medium mb-2">Transcript</h4>
+          <p class="text-sm text-gray-600">{{ selectedCall?.transcript }}</p>
+        </div>
+      </template>
+    </UModal>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, resolveComponent, h } from 'vue';
+import { formatTimeAgo } from '@vueuse/core'
+
+const UBadge = resolveComponent('UBadge')
+const UButton = resolveComponent('UButton')
+
+const isModalOpen = ref(false)
+const selectedCall = ref(null)
 
 // Define columns for the call data
 const columns = [
   {
-    id:1,
-    key: 'createdAt',
-    label: 'Date',
-    sortable: true,
-    render: (date) => new Date(date).toLocaleString()
+    accessorKey: "id",
+    header: "#",
+    cell: (row) => row.getValue("id").slice(0, 6)
   },
   {
-    id:2,
-    key: 'type',
-    label: 'Type',
-    sortable: true
-  },
-  {
-    id:3,
-    key: 'status',
-    label: 'Status',
-    sortable: true
-  },
-  {
-    id:4,
-    key: 'cost',
-    label: 'Cost',
-    sortable: true,
-    render: (cost) => `$${cost.toFixed(2)}`
-  },
-  {
-    id:5,
-    key: 'duration',
-    label: 'Duration',
-    sortable: true,
-    render: (row) => {
-      if (row.startedAt && row.endedAt) {
-        const duration = new Date(row.endedAt) - new Date(row.startedAt)
-        return `${Math.round(duration / 1000)}s`
-      }
-      return '-'
+    accessorKey: "status",
+    header: "Status",
+    cell: (row) => {
+      return h(UBadge, { class: 'capitalize', variant: 'subtle' }, () =>
+        row.getValue('status')
+      )
     }
   },
   {
-    id:6,
-    key: 'summary',
-    label: 'Summary',
-    render: (row) => row.analysis?.summary || '-'
+    accessorKey: "recordingUrl",
+    header: "Playback",
+    cell: (row) => {
+      return h('audio', { controls: true, preload: "none", src: row.getValue('recordingUrl') });
+    }
+  },
+  {
+    accessorKey: 'startedAt',
+    header: 'Started on',
+    sortable: true,
+    cell: (row) => {
+      const time = new Date(row.getValue('startedAt'));
+      const timeAgo = formatTimeAgo(time) // string
+
+      return time.toLocaleString('en-US', {
+        day: 'numeric',
+        month: 'short',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      }) + ` (${timeAgo})`
+    }
+  },
+  {
+    accessorKey: 'endedAt',
+    header: 'Ended on',
+    sortable: true,
+    cell: (row) =>  {
+      const time = new Date(row.getValue('startedAt'));
+      const timeAgo = formatTimeAgo(time) // string
+
+      return time.toLocaleString('en-US', {
+        day: 'numeric',
+        month: 'short',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      }) + ` (${timeAgo})`}
+  },
+  {
+    accessorKey: 'id',
+    header: 'Actions',
+    cell: (row) => {
+      return h('div', { class: 'flex gap-2' }, [
+        h(UButton, { 
+          label: 'View Transcript',
+          onClick: () => {
+            const call = calls.value.find(c => c.id === row.getValue("id"))
+            selectedCall.value = call
+            isModalOpen.value = true
+          }
+        })
+      ])
+    }
   }
 ]
 
-const startDate = ref('')
-const endDate = ref('')
+const startDate = ref(new Date().toISOString().split('T')[0])
+const endDate = ref(new Date(Date.now() + 86400000).toISOString().split('T')[0])
 const callStatus = ref('')
 const sortBy = ref('date')
 const sortDirection = ref('desc')

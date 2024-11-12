@@ -12,12 +12,18 @@
   "dependencies": {
     "@nuxt/ui": "^3.0.0-alpha.8",
     "@vapi-ai/server-sdk": "^0.1.0",
+    "@vueuse/core": "^11.2.0",
+    "@vueuse/motion": "^2.2.6",
     "nuxt": "^3.14.159",
     "vue": "latest",
     "vue-chartjs": "^5.3.2",
     "vue-router": "latest"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.12"
+    "@iconify-json/lucide": "^1.2.12",
+    "@inspira-ui/plugins": "^0.0.1",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^2.5.4"
   }
 }

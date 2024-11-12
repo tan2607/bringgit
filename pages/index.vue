@@ -9,6 +9,10 @@
             <UButton color="primary" icon="i-lucide-phone-call">
               New Call
             </UButton>
+
+            <div class="flex min-h-64 items-center justify-center">
+              <RainbowButton> New AI Call </RainbowButton>
+            </div>
           </div>
         </template>
         
