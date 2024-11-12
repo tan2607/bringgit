@@ -7,6 +7,9 @@ export default defineNuxtConfig({
   ],
   ssr: false,
   devtools: { enabled: false },
+  nitro: {
+    preset: 'cloudflare_pages'
+  },
   runtimeConfig: {
     vapiApiKey: process.env.VAPI_API_KEY,
     public: {
@@ -27,5 +30,8 @@ export default defineNuxtConfig({
         }
       }
     }
+  },
+  alias: {
+    "process/": "process"
   }
 })
