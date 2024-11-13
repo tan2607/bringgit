@@ -3,7 +3,7 @@ import type { AuthConfig } from "@auth/core/types"
 import { NuxtAuthHandler } from '#auth'
 
 const runtimeConfig = useRuntimeConfig()
-const authConfig:AuthConfig = {
+const authConfig: AuthConfig = {
   secret: runtimeConfig.authJs.secret,
   jwt: {
     encode: ({ secret, token }) => {
@@ -23,7 +23,17 @@ const authConfig:AuthConfig = {
       token: process.env.AUTH_MICROSOFT_ENTRA_ID_TOKEN,
       userinfo: process.env.AUTH_MICROSOFT_ENTRA_ID_USERINFO,
     }),
-  ]
+  ],
+  callbacks: {
+    async signIn({ user }) {
+      const emailDomain = user.email?.split('@')[1]
+      if (emailDomain === 'keyreply.com') {
+        return true
+      } else {
+        return false
+      }
+    }
+  }
 }
 
 export default NuxtAuthHandler(authConfig, runtimeConfig)
