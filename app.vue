@@ -96,6 +96,10 @@ const items = ref([
 ])
 
 const colorMode = useColorMode()
+
+useHead({
+  title: 'KeyReply Voice AI'
+})
 </script>
 
 <template>

@@ -1,5 +1,6 @@
 {
-  "name": "nuxt-app",
+  "name": "keyreply-next",
+  "title": "KeyReply Voice AI",
   "private": true,
   "type": "module",
   "scripts": {
