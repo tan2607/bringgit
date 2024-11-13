@@ -5,13 +5,15 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@vueuse/motion/nuxt',
     '@pinia/nuxt',
-    '@hebilicious/authjs-nuxt'
+    '@hebilicious/authjs-nuxt',
+    '@nuxthub/core'
   ],
   ssr: false,
   // debug: true,
   devtools: { enabled: true },
   nitro: {
-    preset: 'cloudflare_pages'
+    preset: 'cloudflare_pages',
+    compatibilityDate: '2024-09-02',
   },
   runtimeConfig: {
     vapiApiKey: process.env.VAPI_API_KEY,

@@ -19,9 +19,9 @@ const authConfig:AuthConfig = {
       clientId: process.env.AUTH_MICROSOFT_ENTRA_ID_ID,
       clientSecret: process.env.AUTH_MICROSOFT_ENTRA_ID_SECRET,
       issuer: process.env.AUTH_MICROSOFT_ENTRA_ID_ISSUER,
-      authorization: "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
-      token: "https://login.microsoftonline.com/common/oauth2/v2.0/token",
-      userinfo: "https://graph.microsoft.com/oidc/userinfo"
+      authorization: process.env.AUTH_MICROSOFT_ENTRA_ID_AUTHORIZATION,
+      token: process.env.AUTH_MICROSOFT_ENTRA_ID_TOKEN,
+      userinfo: process.env.AUTH_MICROSOFT_ENTRA_ID_USERINFO,
     }),
   ]
 }
