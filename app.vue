@@ -101,7 +101,7 @@ const colorMode = useColorMode()
 <template>
   <UApp :class="{ 'dark': colorMode.value === 'dark' }">
     <!-- Navigation -->
-    <UNavigationMenu :items="items" class="w-full sticky top-0 z-50 border-b bg-white dark:bg-gray-900" />
+    <UNavigationMenu highlight :items="items" class="w-full sticky top-0 z-50 border-b bg-white dark:bg-gray-900" />
 
     <!-- Main Content -->
     <NuxtLayout>

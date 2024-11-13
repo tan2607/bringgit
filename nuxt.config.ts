@@ -8,13 +8,23 @@ export default defineNuxtConfig({
     '@hebilicious/authjs-nuxt'
   ],
   ssr: false,
+  // debug: true,
   devtools: { enabled: true },
   nitro: {
     preset: 'cloudflare_pages'
   },
   runtimeConfig: {
     vapiApiKey: process.env.VAPI_API_KEY,
+    authJs: {
+      secret: process.env.NEXTAUTH_SECRET,
+    },
     public: {
+      authJs: {
+        baseUrl: "/api/auth",
+        guestRedirectTo: "/auth/login",
+        authenticatedRedirectTo: "/analytics",
+        verifyClientOnEveryRequest: true,
+      },
       motion: {
         directives: {
           'pop-bottom': {
@@ -35,6 +45,6 @@ export default defineNuxtConfig({
   },
   alias: {
     "process/": "process",
-    cookie: "cookie"
+    cookie: "cookie",
   }
 })

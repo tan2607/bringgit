@@ -99,7 +99,9 @@
   </UContainer>
 </template>
 
-<script setup>
+<script setup lang="ts">
+definePageMeta({ middleware: "auth" })
+
 const loading = ref({
   profile: false,
   notifications: false,

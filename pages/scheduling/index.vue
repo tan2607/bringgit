@@ -86,6 +86,8 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({ middleware: "auth" })
+
 import { ref, reactive } from 'vue'
 import { z } from 'zod'
 import type { FormSubmitEvent } from '#ui/types'

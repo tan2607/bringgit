@@ -80,6 +80,8 @@
 </template>
 
 <script setup>
+definePageMeta({ middleware: "auth" })
+
 import { ref, onMounted } from 'vue'
 import { useAnalyticsStore } from '@/stores/analytics'
 import { formatTimeRange } from '@/utils/dateFormat'
