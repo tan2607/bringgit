@@ -1,306 +1,246 @@
-### **1. Project Overview**
+### **1. Overview**
 
-#### **Objective**
+The project aims to develop a comprehensive **Call Tracking and Management Dashboard** tailored for businesses that require detailed monitoring and management of phone calls. The application focuses on providing a user-friendly interface with advanced features like call analytics, transcript access, recording downloads, and outbound call scheduling. Utilizing modern technologies such as **Nuxt 3**, **NuxtUI v3** components, **Tailwind CSS**, **Lucide Icons**, and **Supabase** as a BaaS, the project intends to deliver a scalable, secure, and efficient solution.
 
-To develop a comprehensive dashboard for tracking phone calls, downloading call recordings, accessing call transcripts, and configuring outbound call schedules. The application will utilize modern technologies such as Nuxt 3 on Deno 2, **NuxtUI v3** components, Tailwind CSS, and Lucide Icons to deliver a seamless user experience. Supabase will serve as the backend-as-a-service (BaaS), providing a scalable and robust database solution with additional features like real-time subscriptions and authentication.
+### **2. Enhanced Requirement Definition**
+
+#### **Objectives**
+
+- **Comprehensive Call Management**: Enable users to track, analyze, and manage both inbound and outbound calls effectively.
+- **Analytics and Reporting**: Provide insightful analytics to help businesses understand call performance and make data-driven decisions.
+- **Scheduling and Automation**: Offer robust scheduling capabilities for outbound calls with customizable settings and automation features.
+- **Scalability and Security**: Ensure the application can scale with business growth while maintaining high security standards.
 
 #### **Target Audience**
 
-Businesses and organizations that need detailed tracking and management of outbound and inbound phone calls, including analytics and scheduling capabilities.
-
-#### **Key Outcomes**
-
-1. A user-friendly dashboard to effectively monitor and manage phone call data.
-2. Enhanced analytics features to gain insights into call performance and trends.
-3. An efficient scheduling system for outbound calls with customizable settings.
+- Companies and organizations that handle a high volume of phone calls and require detailed analytics and management tools.
+- Call centers, customer support departments, and sales teams looking to optimize their telecommunication processes.
 
 ---
 
-### **2. Project Scope**
+### **3. Detailed Feature Scope**
 
-#### **2.1 Features**
+#### **3.1 Authentication and User Management**
 
-1. **Call Tracking Dashboard**
-   - View a list of all calls made, retrieved via REST API from Vapi.ai.
-   - Filter calls by date, time, and other relevant parameters.
+- **Secure Authentication System**
+  - Implement user registration, login, and password reset functionalities using **Supabase Auth**.
+  - Support for multi-factor authentication (MFA) to enhance security.
 
-2. **Call Details View**
-   - Access detailed information for each call, including:
-     - Call transcript
-     - Call summary
-     - Tags (e.g., Already Called, Busy, No Response)
-     - Voice recording playback and download options
+- **Role-Based Access Control (RBAC)**
+  - Define user roles such as Admin, Manager, and Agent.
+  - Control access to features and data based on user roles.
+  - Admins can manage user accounts, roles, and permissions.
 
-3. **Analytics and Reporting**
-   - Interactive charts displaying calls over time.
-   - Breakdown of call statuses:
-     - Successful connected calls
-     - Dropped calls
-     - Successfully completed calls
-   - Tag-based analytics to categorize call outcomes, including:
-     - **Already Called**
-     - **Auto Debit**
-     - **Busy/Call Back Later**
-     - **Data Report**
-     - **Failed Verification**
-     - **Insurance Claim**
-     - **No Response/Technical**
-     - **Other Language**
-     - **Repossessed Vehicle/Already Sell**
-     - **Request Full Payment**
-     - **Stop Calling**
-     - **Tag Value**
-     - **Wrong Number**
-     - **Wrong Person**
+#### **3.2 Dashboard Overview**
 
-4. **Outbound Call Scheduling**
-   - Configuration interface to schedule outbound calls.
-   - Upload lists of phone numbers.
-   - Set calling hours and manage call queues.
+- **Real-Time Metrics**
+  - Display key performance indicators (KPIs) such as total calls, connected calls, dropped calls, and average call duration.
+  - Present real-time updates using **Supabase Realtime** capabilities.
 
-5. **User Authentication and Authorization**
-   - Secure login and account management using Supabase Auth.
-   - Role-based access control for different user levels.
+- **Activity Feed**
+  - Show recent call activities and system notifications.
+  - Provide quick access to recent calls and actions.
 
-6. **Responsive UI Design**
-   - Utilize **NuxtUI v3 components** and Tailwind CSS for a consistent and responsive interface.
-   - Ensure compatibility across various devices and screen sizes.
+#### **3.3 Call Management**
 
-7. **Localization and Accessibility**
-   - Support for multiple languages if needed.
-   - Compliance with accessibility standards (WCAG 2.1 AA).
+- **Call List View**
+  - **Sortable and Filterable Table**: Allow users to sort and filter calls by date, time, status, tags, and other parameters.
+  - **Search Functionality**: Enable keyword search across call records.
 
-#### **2.2 Technical Specifications**
+- **Call Detail View**
+  - **Caller and Recipient Information**: Display detailed information about the participants.
+  - **Call Metadata**: Show date, time, duration, and call outcome.
+  - **Transcript Access**
+    - Present the call transcript with options to search within the transcript.
+    - Highlight keywords or phrases.
+  - **Recording Playback and Download**
+    - Stream the call recording within the app.
+    - Provide options to download the recording in standard audio formats.
+  - **Tag Management**
+    - Allow users to add, remove, or edit tags associated with the call.
+    - Suggest tags based on call content using machine learning (future enhancement).
 
-- **Frontend Framework**: Nuxt 3 (Vue 3)
-  - Utilizes Composition API and setup functions.
-  - Implements Vue Router for dynamic routing.
+- **Bulk Actions**
+  - Select multiple calls for batch operations such as tagging, exporting, or deleting.
+  - Confirm actions to prevent accidental changes.
 
-- **Backend-as-a-Service (BaaS)**: Supabase
-  - **Database**: PostgreSQL with support for pgvector for embedding indexing and search functionalities.
-  - **Authentication**: Supabase Auth for secure user management.
-  - **Real-time Capabilities**: Leverage Supabase Realtime for instant updates.
-  - **Storage**: Supabase Storage for managing call recordings and transcripts.
+#### **3.4 Analytics and Reporting**
 
-- **Backend Runtime**: Deno 2
-  - Secure and fast with native TypeScript support.
-  - Employ Deno's capabilities for server-side rendering and API handling.
+- **Interactive Dashboards**
+  - **Time-Series Charts**: Visualize call volumes and trends over selectable time periods (daily, weekly, monthly).
+  - **Call Outcome Breakdown**: Pie charts or bar graphs showing percentages of call statuses (e.g., connected, dropped, busy).
 
-- **UI Component Library**: **NuxtUI v3**
-  - Provides pre-built, customizable components optimized for Nuxt 3.
-  - Integrated with Tailwind CSS for additional styling flexibility.
+- **Tag-Based Analytics**
+  - Analyze call data based on tags to identify common call outcomes.
+  - Filter analytics by tags to focus on specific areas.
 
+- **Custom Reports**
+  - Create custom report templates with selectable metrics and filters.
+  - Schedule automated report generation and delivery via email.
+  - Export reports in formats like PDF, Excel, or CSV.
+
+#### **3.5 Outbound Call Scheduling**
+
+- **Campaign Management**
+  - Create and manage outbound call campaigns.
+  - Assign campaigns to specific user groups or agents.
+
+- **Contact List Upload**
+  - Upload contact lists via CSV or Excel files.
+  - Validate and clean data upon import to ensure accuracy.
+
+- **Scheduling Configuration**
+  - Set calling hours, time zones, and specify dates for call campaigns.
+  - Configure retry logic for unanswered calls, including the number of retries and intervals between attempts.
+
+- **Queue Management**
+  - View and adjust the queue of scheduled calls.
+  - Prioritize or pause specific calls or campaigns.
+
+- **Automated Notifications**
+  - Notify agents of upcoming scheduled calls.
+  - Alert administrators to any issues with call delivery.
+
+#### **3.6 User Interface and Experience**
+
+- **Responsive Design**
+  - Ensure the application is fully responsive across desktops, tablets, and mobile devices.
+  - Utilize **NuxtUI v3 components**, **shadcn-vue**, and **Tailwind CSS** for a modern and consistent UI.
+
+- **Accessibility**
+  - Comply with **WCAG 2.1 AA** standards to make the application accessible to users with disabilities.
+  - Implement features like keyboard navigation and screen reader support.
+
+- **Localization**
+  - Build infrastructure to support multiple languages.
+  - Allow users to select their preferred language (future enhancement).
+
+#### **3.7 Notifications and Alerts**
+
+- **In-App Notifications**
+  - Provide real-time alerts for important events such as missed calls, completed campaigns, or system updates.
+
+- **Email Notifications**
+  - Configure email alerts for specific events or summaries.
+  - Allow users to customize notification preferences.
+
+#### **3.8 Integrations**
+
+- **Vapi.ai API Integration**
+  - Securely connect to Vapi.ai to retrieve call data.
+  - Handle API authentication and error management gracefully.
+
+- **Third-Party CRM Integration**
+  - Provide options to integrate with popular CRM systems (future enhancement).
+  - Allow export/import of data between systems.
+
+#### **3.9 Security and Compliance**
+
+- **Data Encryption**
+  - Encrypt data at rest and in transit using industry-standard protocols.
+
+- **Audit Logs**
+  - Maintain logs of user activities for auditing purposes.
+  - Provide admin access to view and export audit logs.
+
+- **Compliance**
+  - Ensure the application complies with relevant regulations like GDPR and CCPA.
+  - Include features for data anonymization and deletion requests.
+
+#### **3.10 Performance and Scalability**
+
+- **Optimized Data Handling**
+  - Implement efficient data fetching strategies to reduce load times.
+  - Use pagination and lazy loading where appropriate.
+
+- **Scalable Architecture**
+  - Design the application to handle increasing user loads without performance degradation.
+  - Utilize **Supabase** scalability features and **Deno** performance benefits.
+
+#### **3.11 Documentation and Help**
+
+- **User Guides**
+  - Provide comprehensive guides and FAQs within the application.
+  - Include tutorials for onboarding new users.
+
+- **Tooltips and Contextual Help**
+  - Offer tooltips on hover for icons and complex features.
+  - Provide contextual help links to relevant documentation.
+
+#### **3.12 Settings and Configurations**
+
+- **Profile Management**
+  - Allow users to update personal information and preferences.
+  - Enable users to change passwords and manage connected devices.
+
+- **Application Settings**
+  - Admins can configure global settings, such as default time zones, themes, and data retention policies.
+
+- **Notification Preferences**
+  - Users can customize which notifications they receive and how.
+
+---
+
+### **4. Technical Architecture Overview**
+
+#### **Frontend**
+
+- **Framework**: Nuxt 3 with Vue 3 Composition API
+- **UI Libraries**: NuxtUI v3 Components, shadcn-vue, Tailwind CSS
 - **Icons**: Lucide Icons
-  - A consistent and clean icon set for UI elements.
+- **State Management**: Utilize Vuex or Pinia for state management
+- **Routing**: Vue Router for dynamic and nested routes
+- **Testing**: Implement unit and integration tests using Jest and Vue Test Utils
 
-- **APIs**:
-  - Integration with Vapi.ai for call data retrieval.
-  - RESTful API design for data interactions.
+#### **Backend**
 
-#### **2.3 Non-Functional Requirements**
+- **Runtime Environment**: Deno 2 for secure and performant server-side operations
+- **BaaS**: Supabase
+  - **Database**: PostgreSQL with pgvector extensions
+  - **Authentication**: Supabase Auth with JWT tokens
+  - **Storage**: For handling media files like call recordings
+  - **Realtime Database**: For live updates and notifications
 
-- **Performance**: Fast load times with optimized assets and efficient data handling.
-- **Security**: Implement best practices, including encrypted connections and secure authentication mechanisms provided by Supabase.
-- **Scalability**: Supabase offers scalable backend services to handle increasing amounts of data and concurrent users.
-- **Maintainability**: Clean codebase with proper documentation for ease of updates and collaboration.
+- **API Layer**
+  - **Integration Services**: Connect to Vapi.ai and other third-party services
+  - **Serverless Functions**: Use Supabase Edge Functions for custom logic and webhooks
 
----
+#### **DevOps and Deployment**
 
-### **3. User Stories**
+- **Version Control**: Git with a structured branching strategy (e.g., GitFlow)
+- **Continuous Integration/Continuous Deployment (CI/CD)**
+  - Automate testing, building, and deployment processes
+  - Use tools like GitHub Actions or GitLab CI/CD
+- **Monitoring and Logging**
+  - Implement application monitoring using tools like Sentry or LogRocket
+  - Set up performance monitoring and error tracking
 
-1. **Call Tracking**
-   - *As a user*, I want to view and filter a list of calls so that I can monitor call activity effectively.
+#### **Security Measures**
 
-2. **Call Details Access**
-   - *As a user*, I want to access detailed information about each call to understand the conversation and outcomes.
-
-3. **Analytics Overview**
-   - *As a user*, I want to see analytics and charts to gain insights into call performance over time.
-
-4. **Outbound Call Scheduling**
-   - *As a user*, I want to configure outbound call schedules to manage when calls are made.
-
-5. **Data Download**
-   - *As a user*, I want to download call recordings and transcripts for record-keeping and analysis.
-
-6. **User Management**
-   - *As an admin*, I want to manage user access levels to control who can view and modify certain data.
-
----
-
-Certainly! Based on the project's requirements and functionalities outlined in the PRD, here's a suggested page structure for the **Call Tracking and Management Dashboard**:
+- **Input Validation and Sanitization**
+  - Prevent SQL injection, XSS, and other common vulnerabilities
+- **Rate Limiting**
+  - Protect against brute-force attacks and API misuse
+- **Data Backup and Recovery**
+  - Regular backups of databases and storage assets
+  - Disaster recovery plan in place
 
 ---
 
-### **Page Structure**
+### **5. Next Steps**
 
-1. **Authentication**
-   - **Login Page**
-     - User login form
-     - "Forgot Password" link
-   - **Signup Page** *(if applicable)*
-     - User registration form
-   - **Password Reset Page**
-     - Form to reset password via email link
+- **Wireframing and Prototyping**
+  - Create detailed wireframes for each feature and page
+  - Develop interactive prototypes to test user flows
 
-2. **Main Dashboard**
-   - **Overview Page**
-     - Summary of recent call activities
-     - Key metrics (e.g., total calls, successful calls, dropped calls)
-     - Quick links to common actions
-   - **Notifications Panel**
-     - Recent alerts and notifications
+- **User Testing and Feedback**
+  - Conduct usability testing sessions with target users
+  - Gather feedback to refine features and interface designs
 
-3. **Call Management**
-   - **Call List Page**
-     - Table of all calls with sortable columns
-     - Filters:
-       - Date/Time range
-       - Call status (connected, dropped, completed)
-       - Tags (e.g., Busy, Wrong Number)
-     - Search functionality
-   - **Call Details Page**
-     - Call information:
-       - Caller and recipient details
-       - Date and time of call
-       - Duration
-     - **Call Transcript**
-       - Text transcript of the call
-     - **Call Summary**
-       - Automated or manual summary notes
-     - **Tags**
-       - List of tags associated with the call
-       - Option to add or remove tags
-     - **Voice Recording**
-       - Playback controls
-       - Download option
-   - **Bulk Actions**
-     - Select multiple calls for bulk tagging or exporting
+- **Sprint Planning**
+  - Break down features into user stories and tasks
+  - Prioritize development milestones based on business impact
 
-4. **Analytics and Reporting**
-   - **Analytics Dashboard**
-     - Interactive charts and graphs
-     - Metrics over time (daily, weekly, monthly views)
-     - Breakdown of call outcomes
-   - **Tag Analytics**
-     - Visualization of calls by tags
-     - Identify trends based on call reasons
-   - **Custom Reports**
-     - Generate and export custom reports
-     - Schedule automated report generation
-
-5. **Outbound Call Scheduling**
-   - **Scheduling Overview**
-     - Calendar view of scheduled calls
-     - List of upcoming scheduled calls
-   - **Create New Schedule**
-     - Upload phone number list (CSV or Excel)
-     - Set calling hours and time zones
-     - Configure call retry logic
-     - Assign specific tags or notes to the call batch
-   - **Manage Schedules**
-     - Edit or delete existing schedules
-     - Pause or resume call campaigns
-   - **Call Queue Management**
-     - Real-time view of calls in the queue
-     - Adjust priority of specific calls
-
-6. **User Management** *(Admin Only)*
-   - **User List Page**
-     - List of all users with roles and statuses
-     - Invite new users
-   - **User Roles and Permissions**
-     - Define roles (Admin, Manager, User)
-     - Assign or modify user permissions
-   - **User Profile Page**
-     - Edit user information
-     - Reset passwords
-     - Activate or deactivate accounts
-
-7. **Settings**
-   - **Profile Settings**
-     - Update personal information
-     - Change password
-     - Set language and time zone preferences
-   - **Notification Settings**
-     - Configure email and in-app notifications
-     - Set preferences for alert types
-   - **Integration Settings**
-     - API keys management
-     - Configure Vapi.ai integration details
-     - Set up webhooks and callbacks
-   - **Application Settings**
-     - Customize dashboard themes (if applicable)
-     - Manage data retention policies
-
-8. **Help and Support**
-   - **Help Center**
-     - Access to tutorials and guides
-     - FAQs
-   - **Contact Support**
-     - Submit support tickets
-     - Live chat option (if available)
-   - **Feedback**
-     - Provide feedback or feature requests
-
-9. **Legal and Compliance**
-   - **Privacy Policy**
-   - **Terms of Service**
-   - **Compliance Documents**
-     - Data protection and compliance certificates
-
-10. **Miscellaneous**
-    - **Notifications Center**
-      - View all system notifications
-    - **Search Page**
-      - Global search across calls, contacts, and tags
-    - **Error Pages**
-      - 404 Page Not Found
-      - 500 Internal Server Error
-    - **Logout Page**
-      - Confirmation and redirect to login
-
----
-
-This structure ensures that users can intuitively navigate through the application, accessing all the necessary features for call tracking, management, analytics, and scheduling. Each primary function has dedicated pages, and related functionalities are grouped together for ease of use.
-
-**Notes:**
-
-- **Responsive Design:** Ensure all pages are optimized for various screen sizes, including desktops, tablets, and mobile devices.
-- **Accessibility:** Incorporate accessibility features to comply with WCAG 2.1 AA standards.
-- **Future Expansion:** The structure allows for additional features like machine learning analytics or expanded user roles without significant redesign.
-
-**Next Steps:**
-
-- **Wireframing:** Create wireframes for each page to visualize the layout and user flow.
-- **User Flow Diagrams:** Map out how users will navigate between pages for common tasks.
-- **Component Library Mapping:** Identify reusable components using NuxtUI v3 + Shadcn and Tailwind CSS for consistency across pages.
-
-
-### **4. Technical Architecture**
-
-- **Frontend**
-  - **Nuxt 3**: For server-side rendering and a seamless SPA experience.
-  - **NuxtUI v3 Components & shadcn-vue &  Tailwind CSS**: For building a responsive and consistent UI.
-  - **Lucide Icons**: To enhance UI elements with clean and scalable icons.
-
-- **Backend-as-a-Service**
-  - **Supabase**:
-    - **Database**: PostgreSQL with pgvector for advanced search capabilities.
-    - **Authentication**: Secure user authentication and management.
-    - **Storage**: Hosting and serving of call recordings and transcripts.
-    - **Real-time**: Instant updates for call data and analytics.
-
-- **Backend Runtime**
-  - **Deno 2**: As the runtime environment for server-side operations.
-  - **API Integration**: Connect with Vapi.ai for retrieving call data.
-  - **Serverless Functions**: Use Supabase Edge Functions or Deno Deploy for custom backend logic.
-
-- **Data Flow**
-  - Call data fetched from Vapi.ai via REST API and stored in Supabase.
-  - Supabase handles authentication, real-time data updates, and storage.
-  - Frontend fetches data from Supabase APIs, displaying it in the dashboard.
-
-- **Deployment**
-  - Utilize platforms compatible with Deno and Supabase for deployment.
-  - Implement CI/CD pipelines for automated testing and deployment.
+- **Documentation**
+  - Maintain up-to-date technical and user documentation
+  - Document APIs and integration points clearly

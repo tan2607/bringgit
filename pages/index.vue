@@ -1,11 +1,18 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen">
     <!-- Hero Section -->
     <UContainer class="py-8">
       <UCard class="mb-8">
         <template #header>
+           <!-- Stats Header -->
+          <div v-if="analytics.timeRangeInfo">
+            <span class="font-medium">Statistics for: </span>
+            <span class="text-lg font-semibold">{{ formatTimeRange(analytics.timeRangeInfo) }}</span>
+          </div>
+        </template>
+
+        <!-- <template #header>
           <div class="flex items-center justify-between">
-            <h1 class="text-2xl font-bold">Welcome Back!</h1>
             <UButton color="primary" icon="i-lucide-phone-call">
               New Call
             </UButton>
@@ -14,39 +21,37 @@
               <RainbowButton> New AI Call </RainbowButton>
             </div>
           </div>
-        </template>
-        
+        </template> -->
+
         <!-- Stats Grid -->
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <UCard v-for="stat in stats" :key="stat.id">
-            <div class="text-center">
-              <div class="text-sm text-gray-600">{{ stat.label }}</div>
-              <div class="text-2xl font-bold text-primary">{{ stat.value }}</div>
+          <UCard v-for="stat in analytics.stats" :key="stat.label">
+            <div class="p-4">
+              <div class="text-sm text-gray-500">{{ stat.label }}</div>
+              <div v-if="analytics.isLoading" class="animate-pulse">
+                <div class="h-8 w-24 bg-gray-200 rounded my-1"></div>
+                <div class="h-4 w-16 bg-gray-200 rounded"></div>
+              </div>
+              <template v-else>
+                <div class="text-2xl font-bold">{{ stat.value }}</div>
+                <div :class="['text-sm', stat.change > 0 ? 'text-green-500' : 'text-red-500']">
+                  {{ stat.change > 0 ? '+' : '' }}{{ stat.change }}% vs last period
+                </div>
+              </template>
             </div>
           </UCard>
         </div>
       </UCard>
 
-      <!-- Recent Calls Section -->
-      <UCard class="mb-8">
-        <template #header>
-          <div class="flex items-center justify-between">
-            <h2 class="text-xl font-semibold">Recent Calls</h2>
-            <UButton variant="ghost" to="/calls">View All</UButton>
-          </div>
-        </template>
-        <UTable :rows="recentCalls" :columns="columns" />
-      </UCard>
-
       <!-- Quick Actions -->
-      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 mb-8">
         <UCard>
           <template #header>
             <h3 class="font-medium">Schedule Calls</h3>
           </template>
           <p class="text-sm text-gray-600">Create and manage outbound call schedules</p>
           <template #footer>
-            <UButton block variant="soft" to="/schedule">
+            <UButton block variant="soft" to="/scheduling">
               Schedule Now
             </UButton>
           </template>
@@ -70,72 +75,53 @@
           </template>
           <p class="text-sm text-gray-600">Access and download call recordings</p>
           <template #footer>
-            <UButton block variant="soft" to="/recordings">
+            <UButton block variant="soft" to="/calls">
               Browse Recordings
             </UButton>
           </template>
         </UCard>
       </div>
+
+      <!-- Recent Calls Section -->
+
+      <UCard class="mb-8">
+        <template #header>
+          <div class="flex items-center justify-between">
+            <h2 class="text-xl font-semibold">Recent Calls</h2>
+            <UButton variant="ghost" to="/calls">View All</UButton>
+          </div>
+        </template>
+        <CallTable :data="recentCalls" compact />
+      </UCard>
+
     </UContainer>
   </div>
 </template>
 
 <script setup>
-const columns = [
-  {
-    id:1,
-    key: 'date',
-    label: 'Date & Time'
-  },
-  {
-    id:2,
-    key: 'phoneNumber',
-    label: 'Phone Number'
-  },
-  {
-    id:3,
-    key: 'duration',
-    label: 'Duration'
-  },
-  {
-    id:4,
-    key: 'status',
-    label: 'Status'
-  }
-]
+import { ref, onMounted, computed } from 'vue'
+import { useAnalyticsStore } from '@/stores/analytics'
+import { useCallsStore } from '@/stores/calls'
+import { formatTimeRange } from '@/utils/dateFormat'
+import CallTable from '@/components/CallTable.vue'
 
-const recentCalls = [
-  {
-    id:1,
-    date: '2024-03-20 14:30',
-    phoneNumber: '+1 (555) 123-4567',
-    duration: '5:23',
-    status: 'Completed'
-  },
-  {
-    id:2,
-    date: '2024-03-20 14:15',
-    phoneNumber: '+1 (555) 987-6543',
-    duration: '3:45',
-    status: 'Completed'
-  },
-  {
-    id:3,
-    date: '2024-03-20 14:00',
-    phoneNumber: '+1 (555) 456-7890',
-    duration: '0:00',
-    status: 'Failed'
-  }
-]
+const analytics = useAnalyticsStore()
+const callsStore = useCallsStore()
 
-const stats = [
-  { id: 1, label: 'Total Calls Today', value: 124 },
-  { id: 2, label: 'Active Calls', value: 8 },
-  { id: 3, label: 'Avg. Call Duration', value: '5:23' },
-  { id: 4, label: 'Success Rate', value: '94%' }
-]
+const recentCalls = computed(() =>
+  callsStore.calls.slice(0, 5)  // Only show last 5 calls
+)
+
+// Fetch both analytics and calls data when component mounts
+onMounted(async () => {
+  await Promise.all([
+    analytics.fetchAnalytics(),
+    callsStore.fetchCalls()
+  ])
+})
+
 </script>
 
 <style scoped>
-  /* Add your styles here */
+/* Add your styles here */
 </style>

@@ -3,10 +3,12 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   modules: [
     '@nuxt/ui',
-    '@vueuse/motion/nuxt'
+    '@vueuse/motion/nuxt',
+    '@pinia/nuxt',
+    '@hebilicious/authjs-nuxt'
   ],
   ssr: false,
-  devtools: { enabled: false },
+  devtools: { enabled: true },
   nitro: {
     preset: 'cloudflare_pages'
   },
@@ -32,6 +34,7 @@ export default defineNuxtConfig({
     }
   },
   alias: {
-    "process/": "process"
+    "process/": "process",
+    cookie: "cookie"
   }
 })

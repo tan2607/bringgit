@@ -7,6 +7,7 @@
 .page-leave-active {
   transition: all 0.2s;
 }
+
 .page-enter-from,
 .page-leave-to {
   opacity: 0;
@@ -27,12 +28,49 @@
 <script setup lang="ts">
 const items = ref([
   {
-    label: 'Main',
+    label: 'Home',
     icon: 'i-lucide-home',
     to: '/',
   },
+  
   {
-    label: 'Authentication',
+    label: 'Calls',
+    icon: 'i-lucide-phone',
+    description: 'Manage your calls and meetings',
+    to: '/calls'
+  },
+  {
+    label: 'Analytics',
+    icon: 'i-lucide-line-chart',
+    description: 'Review detailed statistics',
+    to: '/analytics'
+  },
+  {
+    label: 'Scheduling',
+    icon: 'i-lucide-calendar',
+    description: 'Manage your call schedule',
+    to: '/scheduling'
+  },
+  {
+    label: 'Support',
+    icon: 'i-lucide-help-circle',
+    children: [
+      {
+        label: 'Settings',
+        icon: 'i-lucide-settings',
+        description: 'Configure your preferences',
+        to: '/settings'
+      },
+      {
+        label: 'Help Center',
+        icon: 'i-lucide-life-buoy',
+        description: 'Get help and support',
+        to: '/help'
+      }
+    ]
+  },
+  {
+    label: 'Profile',
     icon: 'i-lucide-key',
     children: [
       {
@@ -55,48 +93,6 @@ const items = ref([
       }
     ]
   },
-  {
-    label: 'Features',
-    icon: 'i-lucide-layout-grid',
-    children: [
-      {
-        label: 'Calls',
-        icon: 'i-lucide-phone',
-        description: 'Manage your calls and meetings',
-        to: '/calls'
-      },
-      {
-        label: 'Analytics',
-        icon: 'i-lucide-line-chart',
-        description: 'Review detailed statistics',
-        to: '/analytics'
-      },
-      {
-        label: 'Scheduling',
-        icon: 'i-lucide-calendar',
-        description: 'Manage your appointments',
-        to: '/scheduling'
-      }
-    ]
-  },
-  {
-    label: 'Support',
-    icon: 'i-lucide-help-circle',
-    children: [
-      {
-        label: 'Settings',
-        icon: 'i-lucide-settings',
-        description: 'Configure your preferences',
-        to: '/settings'
-      },
-      {
-        label: 'Help Center',
-        icon: 'i-lucide-life-buoy',
-        description: 'Get help and support',
-        to: '/help'
-      }
-    ]
-  }
 ])
 
 const colorMode = useColorMode()
@@ -106,7 +102,7 @@ const colorMode = useColorMode()
   <UApp :class="{ 'dark': colorMode.value === 'dark' }">
     <!-- Navigation -->
     <UNavigationMenu :items="items" class="w-full sticky top-0 z-50 border-b bg-white dark:bg-gray-900" />
-    
+
     <!-- Main Content -->
     <NuxtLayout>
       <NuxtPage :transition="{

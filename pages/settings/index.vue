@@ -1,7 +1,5 @@
 <template>
-  <div class="content-container">
-    <h1 class="text-2xl font-bold">Settings</h1>
-    
+  <UContainer class="my-8">
     <div class="space-y-6">
       <!-- Profile Settings -->
       <UCard>
@@ -76,13 +74,12 @@
         </template>
         <UForm :state="appForm" class="space-y-4" @submit="saveAppSettings">
           <UFormField label="Theme">
-            <USelect
+            <URadioGroup
               v-model="appForm.theme"
+              orientation="horizontal"
               :items="themeOptions"
-              placeholder="Select theme"
-              class="w-full"
-              option-attribute="label"
-              value-attribute="value"
+              class="flex gap-4"
+              size="lg"
             />
           </UFormField>
           <UFormField label="Data Retention">
@@ -99,7 +96,7 @@
         </UForm>
       </UCard>
     </div>
-  </div>
+  </UContainer>
 </template>
 
 <script setup>
@@ -131,11 +128,7 @@ const integrationForm = ref({
 
 const colorMode = useColorMode()
 
-const themeOptions = ref([
-  { label: 'Light', value: 'light' },
-  { label: 'Dark', value: 'dark' },
-  { label: 'System', value: 'system' }
-])
+const themeOptions = ref(['system', 'light', 'dark'])
 
 const retentionOptions = ref([
   { label: '30 days', value: 30 },

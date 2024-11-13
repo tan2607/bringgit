@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <Line :chart-data="chartData" :options="options" />
-  </div>
+  <Line :data="chartData" :options="options" />
 </template>
 
 <script setup>

@@ -49,46 +49,62 @@
       </div>
 
       <!-- Schedule Call Modal -->
-      <UModal v-model="openScheduleModal">
-        <UCard>
-          <template #header>
-            <h3 class="text-lg font-semibold">Schedule New Call</h3>
-          </template>
-          <UForm @submit.prevent="scheduleCall">
-            <UFormField label="Recipient">
-              <UInput v-model="newCall.recipient" placeholder="Enter recipient" />
+      <UModal 
+        :open="openScheduleModal" 
+        title="Schedule New Call"
+        description="Fill in the details below to schedule your call."
+        :close="false"
+      >
+        <template #body>
+          <UForm 
+            :schema="scheduleFormSchema" 
+            :state="newCall" 
+            class="space-y-4" 
+            @submit="scheduleCall"
+          >
+            <UFormField label="Recipient" name="recipient">
+              <UInput v-model="newCall.recipient" class="w-full" />
             </UFormField>
-            <UFormField label="Date & Time">
-              <UDatePicker v-model="newCall.datetime" />
+            
+            <UFormField label="Date & Time" name="datetime">
+              <UInput type="datetime-local" v-model="newCall.datetime" class="w-full" />
             </UFormField>
-            <UFormField label="Notes">
-              <UTextarea v-model="newCall.notes" placeholder="Add notes..." />
+            
+            <UFormField label="Notes" name="notes">
+              <UTextarea v-model="newCall.notes" placeholder="Add notes..." class="w-full" />
             </UFormField>
-            <div class="flex justify-end gap-2">
-              <UButton color="gray" @click="openScheduleModal = false">
-                Cancel
-              </UButton>
-              <UButton type="submit" color="primary">
-                Schedule Call
-              </UButton>
+
+            <div class="flex justify-end gap-2 mt-4">
+              <UButton label="Cancel" color="gray" variant="outline" @click="openScheduleModal = false" />
+              <UButton type="submit" label="Schedule" color="primary" />
             </div>
           </UForm>
-        </UCard>
+        </template>
       </UModal>
     </UContainer>
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
+<script setup lang="ts">
+import { ref, reactive } from 'vue'
+import { z } from 'zod'
+import type { FormSubmitEvent } from '#ui/types'
 
 const selectedDate = ref(new Date())
 const openScheduleModal = ref(false)
 
-const newCall = ref({
-  recipient: '',
+const scheduleFormSchema = z.object({
+  recipient: z.string().min(1, 'Recipient is required'),
+  datetime: z.date(),
+  notes: z.string().optional()
+})
+
+type ScheduleFormSchema = z.output<typeof scheduleFormSchema>
+
+const newCall = reactive<Partial<ScheduleFormSchema>>({
+  recipient: undefined,
   datetime: new Date(),
-  notes: ''
+  notes: undefined
 })
 
 const columns = [
@@ -142,11 +158,25 @@ const showCallDetails = (call) => {
   console.log('Show details for call:', call)
 }
 
-const scheduleCall = () => {
-  console.log('Scheduling call:', {
-    ...newCall.value,
-    date: startDate.value
+const toast = useToast()
+
+const scheduleCall = async (event: FormSubmitEvent<ScheduleFormSchema>) => {
+  const result = await scheduleFormSchema.safeParseAsync(newCall)
+
+  if (!result.success) {
+    return
+  }
+
+  toast.add({
+    title: 'Success',
+    description: 'Call has been scheduled successfully.',
+    color: 'success'
   })
+
+  // Reset form
+  newCall.recipient = undefined
+  newCall.datetime = new Date()
+  newCall.notes = undefined
   openScheduleModal.value = false
 }
 </script>
