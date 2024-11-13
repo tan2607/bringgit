@@ -22,7 +22,7 @@ export default defineNuxtConfig({
     },
     public: {
       authJs: {
-        baseUrl: "https://next.keyreply.com", // + "/api/auth"
+        baseUrl: "https://next.keyreply.com",
         guestRedirectTo: "/auth/login",
         authenticatedRedirectTo: "/analytics",
         verifyClientOnEveryRequest: true,

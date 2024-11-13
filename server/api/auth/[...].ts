@@ -13,7 +13,7 @@ const authConfig:AuthConfig = {
       return JSON.parse(token!)
     }
   },
-  basePath: runtimeConfig.public.authJs.baseUrl,
+  basePath: "/api/auth",
   providers: [
     MicrosoftEntraID({
       clientId: process.env.AUTH_MICROSOFT_ENTRA_ID_ID,
