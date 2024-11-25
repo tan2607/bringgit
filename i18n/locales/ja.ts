@@ -153,37 +153,36 @@ export default {
     id: '番号'
   },
 
-    // Translation page specific keys
-    'translation-demo': '音声翻訳',
-    'source-text': '原文',
-    'translated-text': '翻訳文',
-    'enter-text-to-translate': '翻訳するテキストを入力または録音してください',
-    'translated-text-placeholder': '翻訳結果がここに表示されます',
-    
-    // Audio recording keys
-    'start-recording': '録音開始',
-    'stop-recording': '録音停止',
-    'translate-voice': '音声翻訳',
-    'translating': '翻訳中...',
-    
-    // Error messages
-    'no-audio': '音声がありません',
-    'please-record-audio': '先に音声を録音してください',
-    'translation-error': '翻訳エラー',
-    'recording-error': '録音エラー',
-    'unknown-error': '不明なエラーが発生しました',
-    'copy-error': 'コピーエラー',
-    
-    // Playback
-    'audio-playing': '翻訳を再生中',
-    'copied-to-clipboard': 'クリップボードにコピーしました',
-    
-    // Navigation keys
-    'demos': 'デモ',
-    'explore-demos': 'AIデモを探索',
-    'voice-translation': '音声翻訳',
-    'multilingual-voice-translation': '多言語音声翻訳',
-    
-    // General UI keys
-    'explore': '探索',
+  // Translation page specific keys
+  'translation-demo': '音声翻訳',
+  'source-text': '原文',
+  'translated-text': '翻訳文',
+  'translated-text-placeholder': 'ここに翻訳が表示されます',
+  'enter-text-to-translate': '翻訳するテキストを入力',
+  'translating': '翻訳中...',
+  'audio-playing': '音声再生中...',
+  'play-translated-audio': '翻訳音声を再生',
+  'copied-to-clipboard': 'クリップボードにコピーしました',
+  'copy-error': 'クリップボードへのコピーに失敗しました',
+  'translation-error': '翻訳中にエラーが発生しました',
+  'unknown-error': '不明なエラーが発生しました',
+  
+  // Audio recording keys
+  'start-recording': '録音開始',
+  'stop-recording': '録音停止',
+  'translate-voice': '音声翻訳',
+  
+  // Error messages
+  'no-audio': '音声がありません',
+  'please-record-audio': '先に音声を録音してください',
+  'recording-error': '録音エラー',
+  
+  // Navigation keys
+  'demos': 'デモ',
+  'explore-demos': 'AIデモを探索',
+  'voice-translation': '音声翻訳',
+  'multilingual-voice-translation': '多言語音声翻訳',
+  
+  // General UI keys
+  'explore': '探索',
 }

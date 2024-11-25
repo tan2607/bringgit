@@ -150,5 +150,19 @@ export default {
   // Validation
   'subject-required': 'الموضوع مطلوب',
   'message-min-length': 'يجب أن تكون الرسالة 10 أحرف على الأقل',
-  'required': 'هذا الحقل مطلوب'
+  'required': 'هذا الحقل مطلوب',
+
+  // Translation page specific keys
+  'translation-demo': 'الترجمة الصوتية',
+  'source-text': 'النص المصدر',
+  'translated-text': 'النص المترجم',
+  'translated-text-placeholder': 'ستظهر الترجمة هنا',
+  'enter-text-to-translate': 'أدخل النص المراد ترجمته',
+  'translating': 'جاري الترجمة...',
+  'audio-playing': 'جاري تشغيل الصوت...',
+  'play-translated-audio': 'تشغيل الصوت المترجم',
+  'copied-to-clipboard': 'تم النسخ إلى الحافظة',
+  'copy-error': 'خطأ في النسخ إلى الحافظة',
+  'translation-error': 'خطأ في الترجمة',
+  'unknown-error': 'حدث خطأ غير معروف',
 }

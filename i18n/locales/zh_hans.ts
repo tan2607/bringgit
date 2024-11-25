@@ -152,39 +152,29 @@ export default {
       id: '编号'
     },
 
-      // Translation page specific keys
-  'translation-demo': '语音翻译',
-  'source-text': '源文本',
-  'translated-text': '翻译文本',
-  'enter-text-to-translate': '输入或录音以翻译',
-  'translated-text-placeholder': '翻译结果将在此处显示',
-  
-  // Audio recording keys
-  'start-recording': '开始录音',
-  'stop-recording': '停止录音',
-  'recording': '录音中...',
-  'translate-voice': '语音翻译',
-  'translating': '翻译中...',
-  
-  // Error messages
-  'no-audio': '无音频',
-  'please-record-audio': '请先录制音频片段',
-  'translation-error': '翻译错误',
-  'recording-error': '录音错误',
-  'unknown-error': '发生未知错误',
-  'copy-error': '复制错误',
-  
-  // Playback
-  'audio-playing': '正在播放翻译',
-  'copied-to-clipboard': '已复制到剪贴板',
-  
-  // General UI keys
-  'explore': '探索',
-  
-  // Navigation keys
-  'home': '首页',
-  'demos': '演示',
-  'explore-demos': '探索我们的AI演示',
-  'voice-translation': '语音翻译',
-  'multilingual-voice-translation': '多语言语音翻译',
-  }
+    // Translation page specific keys
+    'translation-demo': '语音翻译',
+    'source-text': '源文本',
+    'translated-text': '翻译文本',
+    'translated-text-placeholder': '翻译将显示在这里',
+    'enter-text-to-translate': '输入要翻译的文本',
+    'translating': '翻译中...',
+    'audio-playing': '播放音频中...',
+    'play-translated-audio': '播放翻译音频',
+    'copied-to-clipboard': '已复制到剪贴板',
+    'copy-error': '复制到剪贴板时出错',
+    'translation-error': '翻译过程中出错',
+    'unknown-error': '发生未知错误',
+    'start-recording': '开始录音',
+    'stop-recording': '停止录音',
+    'recording': '录音中...',
+    'translate-voice': '语音翻译',
+    'no-audio': '无音频',
+    'please-record-audio': '请先录制音频片段',
+    'explore': '探索',
+    'home': '首页',
+    'demos': '演示',
+    'explore-demos': '探索我们的AI演示',
+    'voice-translation': '语音翻译',
+    'multilingual-voice-translation': '多语言语音翻译',
+}

@@ -142,5 +142,19 @@ export default {
     actions: '操作',
     assistant: '助理',
     id: '編號'
-  }
+  },
+
+  // Translation page specific keys
+  'translation-demo': '語音翻譯',
+  'source-text': '原文',
+  'translated-text': '翻譯文本',
+  'translated-text-placeholder': '翻譯將顯示在這裡',
+  'enter-text-to-translate': '輸入要翻譯的文本',
+  'translating': '翻譯中...',
+  'audio-playing': '播放音頻中...',
+  'play-translated-audio': '播放翻譯音頻',
+  'copied-to-clipboard': '已複製到剪貼板',
+  'copy-error': '複製到剪貼板時出錯',
+  'translation-error': '翻譯過程中出錯',
+  'unknown-error': '發生未知錯誤',
 }

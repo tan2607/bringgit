@@ -151,5 +151,19 @@ export default {
     actions: 'การดำเนินการ',
     assistant: 'ผู้ช่วย',
     id: 'เลขที่'
-  }
+  },
+
+  // Translation page specific keys
+  'translation-demo': 'การแปลเสียง',
+  'source-text': 'ข้อความต้นฉบับ',
+  'translated-text': 'ข้อความที่แปลแล้ว',
+  'translated-text-placeholder': 'คำแปลจะปรากฏที่นี่',
+  'enter-text-to-translate': 'ป้อนข้อความที่ต้องการแปล',
+  'translating': 'กำลังแปล...',
+  'audio-playing': 'กำลังเล่นเสียง...',
+  'play-translated-audio': 'เล่นเสียงที่แปลแล้ว',
+  'copied-to-clipboard': 'คัดลอกไปยังคลิปบอร์ดแล้ว',
+  'copy-error': 'เกิดข้อผิดพลาดในการคัดลอกไปยังคลิปบอร์ด',
+  'translation-error': 'เกิดข้อผิดพลาดในการแปล',
+  'unknown-error': 'เกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ',
 }

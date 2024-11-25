@@ -151,5 +151,19 @@ export default {
   // Validation
   'subject-required': 'Subjek wajib diisi',
   'message-min-length': 'Pesan harus minimal 10 karakter',
-  'required': 'Bidang ini wajib diisi'
+  'required': 'Bidang ini wajib diisi',
+
+  // Translation page specific keys
+  'translation-demo': 'Terjemahan Suara',
+  'source-text': 'Teks Sumber',
+  'translated-text': 'Teks Terjemahan',
+  'translated-text-placeholder': 'Terjemahan akan muncul di sini',
+  'enter-text-to-translate': 'Masukkan teks untuk diterjemahkan',
+  'translating': 'Menerjemahkan...',
+  'audio-playing': 'Memutar audio...',
+  'play-translated-audio': 'Putar audio terjemahan',
+  'copied-to-clipboard': 'Disalin ke clipboard',
+  'copy-error': 'Gagal menyalin ke clipboard',
+  'translation-error': 'Terjadi kesalahan saat menerjemahkan',
+  'unknown-error': 'Terjadi kesalahan yang tidak diketahui',
 }

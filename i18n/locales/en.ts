@@ -159,29 +159,20 @@ export default {
     'translation-demo': 'Voice Translation',
     'source-text': 'Source Text',
     'translated-text': 'Translated Text',
-    'enter-text-to-translate': 'Enter or record text to translate',
     'translated-text-placeholder': 'Translation will appear here',
+    'enter-text-to-translate': 'Enter text to translate',
+    'translating': 'Translating...',
+    'audio-playing': 'Playing audio...',
+    'play-translated-audio': 'Play translated audio',
+    'copied-to-clipboard': 'Copied to clipboard',
+    'copy-error': 'Error copying to clipboard',
+    'translation-error': 'Error during translation',
+    'unknown-error': 'An unknown error occurred',
     
     // Audio recording keys
     'start-recording': 'Start Recording',
     'stop-recording': 'Stop Recording',
     'translate-voice': 'Translate Voice',
-    'translating': 'Translating...',
-    
-    // Error messages
-    'no-audio': 'No Audio',
-    'please-record-audio': 'Please record an audio clip first',
-    'translation-error': 'Translation Error',
-    'recording-error': 'Recording Error',
-    'unknown-error': 'An unknown error occurred',
-    'copy-error': 'Copy Error',
-    
-    // Playback
-    'audio-playing': 'Playing Translation',
-    'copied-to-clipboard': 'Copied to Clipboard',
-    
-    // General UI keys
-    'explore': 'Explore',
     
     // Navigation keys
     'demos': 'Demos',

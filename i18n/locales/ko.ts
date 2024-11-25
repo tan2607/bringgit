@@ -151,5 +151,19 @@ export default {
       actions: '작업',
       assistant: '어시스턴트',
       id: '번호'
-    }
+    },
+
+    // Translation page specific keys
+    'translation-demo': '음성 번역',
+    'source-text': '원문',
+    'translated-text': '번역문',
+    'translated-text-placeholder': '번역이 여기에 표시됩니다',
+    'enter-text-to-translate': '번역할 텍스트를 입력하세요',
+    'translating': '번역 중...',
+    'audio-playing': '오디오 재생 중...',
+    'play-translated-audio': '번역된 오디오 재생',
+    'copied-to-clipboard': '클립보드에 복사됨',
+    'copy-error': '클립보드 복사 중 오류 발생',
+    'translation-error': '번역 중 오류 발생',
+    'unknown-error': '알 수 없는 오류가 발생했습니다',
   }
