@@ -1,8 +1,11 @@
 import MicrosoftEntraID from '@auth/core/providers/microsoft-entra-id'
 import type { AuthConfig } from "@auth/core/types"
 import { NuxtAuthHandler } from '#auth'
+import Credentials from '@auth/core/providers/credentials'
 
 const runtimeConfig = useRuntimeConfig()
+const isDevelopment = process.env.NODE_ENV === 'development'
+
 const authConfig: AuthConfig = {
   secret: runtimeConfig.authJs.secret,
   jwt: {
@@ -15,6 +18,23 @@ const authConfig: AuthConfig = {
   },
   basePath: "/api/auth",
   providers: [
+    ...(isDevelopment ? [
+      Credentials({
+        name: 'Development Login',
+        credentials: {
+          email: { label: "Email", type: "email", placeholder: "dev@keyreply.com", value: "dev@keyreply.com" },
+          password: { label: "Password", type: "password" }
+        },
+        async authorize(credentials) {
+          return {
+              id: 'dev-user-id',
+              email: "dev@keyreply.com",
+              name: 'Development User',
+              emailVerified: new Date(),
+          }
+        }
+      })
+    ] : []),
     MicrosoftEntraID({
       clientId: process.env.AUTH_MICROSOFT_ENTRA_ID_ID,
       clientSecret: process.env.AUTH_MICROSOFT_ENTRA_ID_SECRET,
@@ -32,7 +52,7 @@ const authConfig: AuthConfig = {
       } else {
         return false
       }
-    }
+    },
   }
 }
 

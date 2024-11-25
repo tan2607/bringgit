@@ -6,25 +6,25 @@
         <!-- Stats Header -->
         <!-- Header with date range picker -->
     
-        Analytics Dashboard
-        <div v-if="analytics.timeRangeInfo">
-          <span class="font-medium">Statistics for: </span>
-          <span class="text-lg font-semibold">{{ formatTimeRange(analytics.timeRangeInfo) }}</span>
+        {{ t('analytics-dashboard') }}
+        <div v-if="timeRangeInfo">
+          <span class="font-medium">{{ t('statistics-for') }}: </span>
+          <span class="text-lg font-semibold">{{ formatTimeRange(timeRangeInfo) }}</span>
         </div>
       </template>
 
       <!-- Stats cards -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <UCard v-for="stat in analytics.stats" :key="stat.label">
+        <UCard v-for="stat in stats" :key="stat.label">
           <div class="text-sm text-gray-500">{{ stat.label }}</div>
-          <div v-if="analytics.isLoading" class="animate-pulse">
+          <div v-if="analyticsLoading" class="animate-pulse">
             <div class="h-8 w-24 bg-gray-200 rounded my-1"></div>
             <div class="h-4 w-16 bg-gray-200 rounded"></div>
           </div>
           <template v-else>
             <div class="text-2xl font-bold">{{ stat.value }}</div>
             <div :class="['text-sm', stat.change > 0 ? 'text-green-500' : 'text-red-500']">
-              {{ stat.change }}% vs last period
+              {{ stat.change }}% {{ t('vs-last-period') }}
             </div>
           </template>
         </UCard>
@@ -34,12 +34,12 @@
       <UCard class="w-full mb-8">
         <template #header>
           <div class="flex justify-between items-center">
-            <h3 class="text-lg font-medium">Calls Over Time</h3>
-            <UButtonGroup v-model="analytics.timeGrouping" :options="analytics.timeGroupingOptions"
-              @update:model-value="analytics.updateTimeGrouping" />
+            <h3 class="text-lg font-medium">{{ t('calls-over-time') }}</h3>
+            <UButtonGroup v-model="timeGrouping" :options="timeGroupingOptions"
+              @update:model-value="updateTimeGrouping" />
           </div>
         </template>
-        <LineChart :data="analytics.callsOverTimeData" :options="analytics.chartOptions" />
+        <LineChart :data="callsOverTimeData" :options="chartOptions" />
       </UCard>
       
       <!-- Charts section -->
@@ -50,12 +50,12 @@
         <UCard class="lg:col-span-1">
           <template #header>
             <div class="flex justify-between items-center pb-4">
-              <h3 class="text-lg font-medium">Call Outcomes</h3>
-              <UButton icon="i-lucide-download" variant="ghost" />
+              <h3 class="text-lg font-medium">{{ t('call-outcomes') }}</h3>
+              <UButton icon="i-lucide-download" variant="ghost" :aria-label="t('download')" />
             </div>
           </template>
           <div class="h-[400px]">
-            <PieChart :data="analytics.callOutcomesData" :options="analytics.chartOptions" />
+            <PieChart :data="callOutcomesData" :options="chartOptions" />
           </div>
         </UCard>
 
@@ -64,12 +64,12 @@
         <UCard class="lg:col-span-1">
           <template #header>
             <div class="flex justify-between items-center pb-4">
-              <h3 class="text-lg font-medium">Call Tags Distribution</h3>
-              <UButton icon="i-lucide-download" variant="ghost" />
+              <h3 class="text-lg font-medium">{{ t('call-tags-distribution') }}</h3>
+              <UButton icon="i-lucide-download" variant="ghost" :aria-label="t('download')" />
             </div>
           </template>
           <div class="h-[400px]">
-            <PieChart :data="analytics.tagChartData" :options="analytics.tagChartOptions" />
+            <PieChart :data="tagChartData" :options="chartOptions" />
           </div>
         </UCard>
       </div>
@@ -79,25 +79,33 @@
   </UContainer>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 definePageMeta({ middleware: "auth" })
 
-import { ref, onMounted } from 'vue'
-import { useAnalyticsStore } from '@/stores/analytics'
+import { useAnalytics } from '@/composables/useAnalytics'
 import { formatTimeRange } from '@/utils/dateFormat'
+import LineChart from '@/components/LineChart.vue'
+import PieChart from '@/components/PieChart.vue'
 
-const dateRange = ref([new Date(), new Date()])
-const analytics = useAnalyticsStore()
+const { t } = useI18n()
 
-const dateRanges = [
-  { label: 'Last 7 days', value: 'last7days' },
-  { label: 'Last 30 days', value: 'last30days' },
-  { label: 'This month', value: 'thismonth' },
-  { label: 'Custom range', value: 'custom' }
-]
+const { 
+  timeRangeInfo, 
+  stats, 
+  callsOverTimeData,
+  callOutcomesData,
+  tagChartData,
+  timeGrouping,
+  timeGroupingOptions,
+  chartOptions,
+  isLoading: analyticsLoading,
+  fetchAnalytics,
+  updateTimeGrouping
+} = useAnalytics()
 
 onMounted(async () => {
-  await analytics.fetchAnalytics()
+  await fetchAnalytics()
 })
 </script>
 

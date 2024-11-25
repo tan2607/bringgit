@@ -5,9 +5,9 @@
       <UCard class="mb-8">
         <template #header>
            <!-- Stats Header -->
-          <div v-if="analytics.timeRangeInfo">
-            <span class="font-medium">Statistics for: </span>
-            <span class="text-lg font-semibold">{{ formatTimeRange(analytics.timeRangeInfo) }}</span>
+          <div v-if="timeRangeInfo">
+            <span class="font-medium">{{ t('statistics-for') }}: </span>
+            <span class="text-lg font-semibold">{{ formatTimeRange(timeRangeInfo) }}</span>
           </div>
         </template>
 
@@ -25,17 +25,17 @@
 
         <!-- Stats Grid -->
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <UCard v-for="stat in analytics.stats" :key="stat.label">
+          <UCard v-for="stat in stats" :key="stat.label">
             <div class="p-4">
               <div class="text-sm text-gray-500">{{ stat.label }}</div>
-              <div v-if="analytics.isLoading" class="animate-pulse">
+              <div v-if="analyticsLoading" class="animate-pulse">
                 <div class="h-8 w-24 bg-gray-200 rounded my-1"></div>
                 <div class="h-4 w-16 bg-gray-200 rounded"></div>
               </div>
               <template v-else>
                 <div class="text-2xl font-bold">{{ stat.value }}</div>
                 <div :class="['text-sm', stat.change > 0 ? 'text-green-500' : 'text-red-500']">
-                  {{ stat.change > 0 ? '+' : '' }}{{ stat.change }}% vs last period
+                  {{ stat.change > 0 ? '+' : '' }}{{ stat.change }}% {{ t('vs-last-period') }}
                 </div>
               </template>
             </div>
@@ -47,36 +47,36 @@
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 mb-8">
         <UCard>
           <template #header>
-            <h3 class="font-medium">Schedule Calls</h3>
+            <h3 class="font-medium">{{ t('call-scheduling') }}</h3>
           </template>
-          <p class="text-sm text-gray-600">Create and manage outbound call schedules</p>
+          <p class="text-sm text-gray-600">{{ t('manage-outbound') }}</p>
           <template #footer>
             <UButton block variant="soft" to="/scheduling">
-              Schedule Now
+              {{ t('schedule-now') }}
             </UButton>
           </template>
         </UCard>
 
         <UCard>
           <template #header>
-            <h3 class="font-medium">Analytics</h3>
+            <h3 class="font-medium">{{ t('analytics') }}</h3>
           </template>
-          <p class="text-sm text-gray-600">View detailed call analytics and reports</p>
+          <p class="text-sm text-gray-600">{{ t('review-statistics') }}</p>
           <template #footer>
             <UButton block variant="soft" to="/analytics">
-              View Analytics
+              {{ t('view-analytics') }}
             </UButton>
           </template>
         </UCard>
 
         <UCard>
           <template #header>
-            <h3 class="font-medium">Call Recordings</h3>
+            <h3 class="font-medium">{{ t('call-recordings') }}</h3>
           </template>
-          <p class="text-sm text-gray-600">Access and download call recordings</p>
+          <p class="text-sm text-gray-600">{{ t('access-recordings') }}</p>
           <template #footer>
             <UButton block variant="soft" to="/calls">
-              Browse Recordings
+              {{ t('browse-recordings') }}
             </UButton>
           </template>
         </UCard>
@@ -87,11 +87,11 @@
       <UCard class="mb-8">
         <template #header>
           <div class="flex items-center justify-between">
-            <h2 class="text-xl font-semibold">Recent Calls</h2>
-            <UButton variant="ghost" to="/calls">View All</UButton>
+            <h2 class="text-xl font-semibold">{{ t('recent-calls') }}</h2>
+            <UButton variant="ghost" to="/calls">{{ t('view-all') }}</UButton>
           </div>
         </template>
-        <CallTable :data="recentCalls" compact />
+        <CallTable :data="calls.slice(0, 5)" compact />
       </UCard>
 
     </UContainer>
@@ -99,29 +99,27 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 definePageMeta({ middleware: "auth" })
-
-import { ref, onMounted, computed } from 'vue'
-import { useAnalyticsStore } from '@/stores/analytics'
-import { useCallsStore } from '@/stores/calls'
+import { useAnalytics } from '@/composables/useAnalytics'
+import { useCalls } from '@/composables/useCalls'
 import { formatTimeRange } from '@/utils/dateFormat'
 import CallTable from '@/components/CallTable.vue'
 
-const analytics = useAnalyticsStore()
-const callsStore = useCallsStore()
+const { t } = useI18n()
 
-const recentCalls = computed(() =>
-  callsStore.calls.slice(0, 5)  // Only show last 5 calls
-)
+const { calls, isLoading: callsLoading, fetchCalls } = useCalls()
+const { 
+  timeRangeInfo, 
+  stats, 
+  isLoading: analyticsLoading, 
+  fetchAnalytics 
+} = useAnalytics()
 
-// Fetch both analytics and calls data when component mounts
 onMounted(async () => {
-  await Promise.all([
-    analytics.fetchAnalytics(),
-    callsStore.fetchCalls()
-  ])
+  await fetchCalls()
+  await fetchAnalytics()
 })
-
 </script>
 
 <style scoped>

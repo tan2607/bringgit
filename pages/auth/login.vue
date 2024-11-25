@@ -33,7 +33,7 @@
             v-model="form.email"
             type="email"
             placeholder="Enter your email"
-            icon="i-lucide-envelope"
+            icon="i-lucide-mail"
             required
           />
         </UFormField>
@@ -43,7 +43,7 @@
             v-model="form.password"
             type="password"
             placeholder="Enter your password"
-            icon="i-lucide-lock-closed"
+            icon="i-lucide-lock"
             required
           />
         </UFormField>
@@ -61,8 +61,7 @@
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue';
+<script setup type="ts">
 const { signIn } = useAuth()
 definePageMeta({ middleware: "guest-only", auth: { authenticatedRedirectTo: "/" } })
 
