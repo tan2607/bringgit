@@ -174,7 +174,9 @@ export default {
   'temperature': 'Temperature',
   // Audio recording keys
   'start-recording': 'Start Recording',
+  'recording': 'Start Recording',
   'stop-recording': 'Stop Recording',
+  'history': 'Message History',
   'translate-voice': 'Translate Voice',
   
   // Navigation keys

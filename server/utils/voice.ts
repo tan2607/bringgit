@@ -1,4 +1,4 @@
-import { VoiceConfig, TTSOptions, ASROptions, TranslationOptions, VoiceProvider } from './types';
+import { VoiceConfig, TTSOptions, ASROptions, TranslationOptions, VoiceProvider, CartesiaAudioData } from './types';
 import { OpenAIVoiceProvider } from './providers/openai';
 import { PlayAIProvider } from './providers/playai';
 import { CartesiaProvider } from './providers/cartesia';
@@ -8,9 +8,9 @@ export class VoiceService {
   private ttsProviders: Map<string, VoiceProvider> = new Map();
   private asrProviders: Map<string, VoiceProvider> = new Map();
   private translationProviders: Map<string, VoiceProvider> = new Map();
-  private defaultTTSProvider: string;
-  private defaultASRProvider: string;
-  private defaultTranslationProvider: string;
+  private defaultTTSProvider: string = 'cartesia';
+  private defaultASRProvider: string = 'whisper';
+  private defaultTranslationProvider: string = 'whisper';
 
   constructor(configs: VoiceConfig[]) {
     for (const config of configs) {
@@ -54,7 +54,11 @@ export class VoiceService {
     }
   }
 
-  async textToSpeech(text: string, options: Omit<TTSOptions, 'text'> = {}, provider?: string): Promise<ArrayBuffer | ReadableStream<Uint8Array>> {
+  async textToSpeech(
+    text: string, 
+    options: Omit<TTSOptions, 'text'> = {}, 
+    provider?: string
+  ): Promise<ArrayBuffer | ReadableStream<Uint8Array> | CartesiaAudioData> {
     const selectedProvider = provider || this.defaultTTSProvider;
     const voiceProvider = this.ttsProviders.get(selectedProvider);
 
@@ -62,7 +66,11 @@ export class VoiceService {
       throw new Error(`Provider ${selectedProvider} does not support TTS`);
     }
 
-    return await voiceProvider.tts({ ...options, text });
+    console.log('[Voice Service] Using TTS provider:', selectedProvider);
+    return await voiceProvider.tts({
+      ...options,
+      text
+    });
   }
 
   async speechToText(options: ASROptions, provider?: string): Promise<string | ReadableStream<string>> {

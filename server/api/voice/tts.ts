@@ -32,20 +32,26 @@ export default defineEventHandler(async (event) => {
       },
     ]);
 
-    const audioData = await voiceService.textToSpeech(text, options, provider);
+    const response = await voiceService.textToSpeech(text, options, provider);
 
-    // If streaming is requested, return a streaming response
-    if (options.stream && audioData instanceof ReadableStream) {
-      setHeader(event, 'Content-Type', 'audio/opus');
-      setHeader(event, 'Transfer-Encoding', 'chunked');
-      return audioData;
+    // For Cartesia, return raw buffer directly
+    if (provider === 'cartesia') {
+      setHeader(event, 'Content-Type', 'application/octet-stream');
+      setHeader(event, 'Accept-Ranges', 'bytes');
+      
+      // Convert ArrayBuffer to Buffer for proper transmission
+      const buffer = Buffer.from(response);
+      setHeader(event, 'Content-Length', buffer.length.toString());
+      
+      return buffer;
     }
 
-    // Otherwise return the full audio buffer
-    setHeader(event, 'Content-Type', 'audio/mpeg');
-    setHeader(event, 'Content-Disposition', 'attachment; filename="audio.mp3"');
-    return audioData;
-  } catch (error) {
+    throw createError({
+      statusCode: 400,
+      message: 'Unsupported provider',
+    });
+  } catch (error: any) {
+    console.error('[TTS API] Error:', error);
     throw createError({
       statusCode: error.statusCode || 500,
       message: error.message || 'Internal server error',

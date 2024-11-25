@@ -9,6 +9,7 @@ export class CartesiaProvider implements VoiceProvider {
     if (!config.apiKey) {
       throw new Error('Cartesia requires an API key');
     }
+    console.log('[Cartesia] Initializing with API key:', config.apiKey.substring(0, 5) + '...');
     this.client = new Cartesia({
       apiKey: config.apiKey,
     });
@@ -26,9 +27,43 @@ export class CartesiaProvider implements VoiceProvider {
     return this.websocket;
   }
 
-  async tts(options: TTSOptions): Promise<ArrayBuffer | ReadableStream<Uint8Array>> {
-    const websocket = await this.ensureWebSocket();
+  async tts(options: TTSOptions): Promise<any> {
+    options.voice = options.voice || "cd954dcd-b2c1-4990-aaaa-4602ed6723df";
+    const modelId = this.determineModelId(options.language);
+    const sanitizedText = this.sanitizeText(options.text);
 
+    const requestOptions = {
+      model_id: modelId,
+      voice: {
+        mode: "id" as const,
+        id: options.voice,
+      },
+      output_format: {
+        container: "raw",
+        encoding: "pcm_f32le",
+        sample_rate: 24000
+      },
+      transcript: sanitizedText,
+      language: options.language || "en",
+    };
+
+    console.log('[Cartesia TTS] Request:', JSON.stringify(requestOptions, null, 2));
+
+    try {
+      const response = this.client.tts.bytes(requestOptions);
+      console.log('[Cartesia TTS] Response received');
+
+      
+      return response;
+    } catch (error) {
+      console.error('[Cartesia TTS] Error:', error);
+      throw error;
+    }
+  }
+
+  async ttsWebsocket(options: TTSOptions): Promise<ArrayBuffer | ReadableStream<Uint8Array>> {
+    const websocket = await this.ensureWebSocket();
+    options.voice = options.voice || "cd954dcd-b2c1-4990-aaaa-4602ed6723df";
     // Validate language and model compatibility
     const modelId = this.determineModelId(options.language);
     
@@ -117,7 +152,7 @@ export class CartesiaProvider implements VoiceProvider {
       // Keep the word if it's different from the previous word
       return index === 0 || word !== words[index - 1];
     });
-    return sanitizedWords.join(' ');
+    return sanitizedWords.join(' ').trim();
   }
 
   private mapSpeed(speed: number | undefined): "slowest" | "slow" | "normal" | "fast" | "fastest" {

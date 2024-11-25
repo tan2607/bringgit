@@ -13,14 +13,25 @@ interface TranslationHistoryItem {
 
 const sourceText = ref('')
 const translatedText = ref('')
-const sourceLanguage = ref(languages[0])
+const sourceLanguage = ref(languages[1])
 const isTranslating = ref(false)
 const history = ref<TranslationHistoryItem[]>([])
 const quality = ref<'fast' | 'standard' | 'high'>('fast')
 const formality = ref<'formal' | 'informal'>('formal')
 const temperature = ref(0.2)
 const showAdvancedOptions = ref(false)
-const isPlaying = ref(false)
+const isPlayingTranslation = ref(false)
+const isPlayingSource = ref(false)
+const autoPlayTranslation = ref(true)
+
+const supportedTTSLanguages = ['en', 'fr', 'de', 'es', 'pt', 'zh', 'ja', 'hi', 'it', 'ko', 'nl', 'pl', 'ru', 'sv', 'tr']
+
+const cartesiaPlayer = useCartesiaPlayer()
+
+// Computed property to check if source language is supported for TTS
+const isSourceLanguageSupported = computed(() => {
+  return supportedTTSLanguages.includes(sourceLanguage.value.code)
+})
 
 // Handle voice recording submission
 const handleSubmit = async (audioBlob: Blob) => {
@@ -62,6 +73,11 @@ const translateVoice = async (blob: Blob) => {
     sourceText.value = response.sourceText
     translatedText.value = response.translatedText
 
+    // Auto-play translation if enabled
+    if (autoPlayTranslation.value) {
+      await playTranslation(response.translatedText)
+    }
+
     // Add to history
     history.value.unshift({
       sourceText: sourceText.value,
@@ -81,30 +97,87 @@ const translateVoice = async (blob: Blob) => {
 // Add TTS functionality
 const playTranslation = async (text: string) => {
   try {
-    isPlaying.value = true
-    const response = await $fetch('/api/voice/tts', {
+    isPlayingTranslation.value = true
+    console.log('[Translation Demo] Requesting TTS for text:', text);
+    
+    const response = await fetch('/api/voice/tts', {
       method: 'POST',
-      body: {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/octet-stream'
+      },
+      body: JSON.stringify({
         text,
         provider: 'cartesia',
         options: {
-          voice: 'en-US-Neural2-F'
+          voice: 'cd954dcd-b2c1-4990-aaaa-4602ed6723df'
         }
-      }
-    })
+      })
+    });
 
-    // Create audio element and play
-    const audioBlob = new Blob([response], { type: 'audio/mpeg' })
-    const audioUrl = URL.createObjectURL(audioBlob)
-    const audio = new Audio(audioUrl)
-    await audio.play()
-    audio.onended = () => {
-      isPlaying.value = false
-      URL.revokeObjectURL(audioUrl)
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
+
+    const arrayBuffer = await response.arrayBuffer();
+    
+    if (arrayBuffer.byteLength === 0) {
+      throw new Error('Received empty audio data');
+    }
+
+    console.log('[Translation Demo] Playing with Cartesia WebPlayer');
+    await cartesiaPlayer.play(arrayBuffer);
+
+    // player.play(await response.arrayBuffer());
+    isPlayingTranslation.value = false;
   } catch (error) {
-    console.error('TTS error:', error)
-    isPlaying.value = false
+    console.error('[Translation Demo] TTS error:', error)
+    isPlayingTranslation.value = false
+    toast.error('Failed to play audio')
+  }
+}
+
+// Add TTS functionality
+const playSource = async (text: string) => {
+  try {
+    isPlayingSource.value = true
+    console.log('[Translation Demo] Requesting TTS for text:', text);
+    
+    const response = await fetch('/api/voice/tts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/octet-stream'
+      },
+      body: JSON.stringify({
+        text,
+        provider: 'cartesia',
+        options: {
+          voice: '3d3550a7-2b11-4ac9-8363-e8fb6ec4ec8d',
+          language: sourceLanguage.value.code || 'zh'
+        }
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const arrayBuffer = await response.arrayBuffer();
+    
+    if (arrayBuffer.byteLength === 0) {
+      throw new Error('Received empty audio data');
+    }
+
+    console.log('[Translation Demo] Playing with Cartesia WebPlayer');
+    await cartesiaPlayer.play(arrayBuffer);
+
+    // player.play(await response.arrayBuffer());
+    isPlayingSource.value = false;
+  } catch (error) {
+    console.error('[Translation Demo] TTS error:', error)
+    isPlayingSource.value = false
+    toast.error('Failed to play audio')
   }
 }
 
@@ -146,6 +219,7 @@ const copyTranslation = async (text: string) => {
       <div v-if="translatedText" class="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
         <div class="flex justify-between items-center mb-2">
           <span class="text-sm text-gray-500">Original Text</span>
+          <div class="flex gap-2">
           <UButton
             icon="i-lucide-clipboard"
             color="neutral"
@@ -153,6 +227,16 @@ const copyTranslation = async (text: string) => {
             size="xs"
             @click="copyTranslation(sourceText)"
           />
+          <UButton
+            v-if="isSourceLanguageSupported"
+            :icon="isPlayingSource ? 'i-lucide-stop-circle' : 'i-lucide-play-circle'"
+            color="neutral"
+            variant="ghost"
+            size="xs"
+            :loading="isPlayingSource"
+            @click="playSource(sourceText)"
+          />
+            </div>
         </div>
         <p class="text-lg">{{ sourceText }}</p>
 
@@ -167,11 +251,11 @@ const copyTranslation = async (text: string) => {
               @click="copyTranslation(translatedText)"
             />
             <UButton
-              :icon="isPlaying ? 'i-lucide-stop-circle' : 'i-lucide-play-circle'"
+              :icon="isPlayingTranslation ? 'i-lucide-stop-circle' : 'i-lucide-play-circle'"
               color="neutral"
               variant="ghost"
               size="xs"
-              :loading="isPlaying"
+              :loading="isPlayingTranslation"
               @click="playTranslation(translatedText)"
             />
           </div>
@@ -220,6 +304,17 @@ const copyTranslation = async (text: string) => {
               </USelectMenu>
             </div>
 
+            <!-- Auto-play Translation Toggle -->
+            <div class="flex items-center space-x-2">
+              <UCheckbox 
+                id="autoPlayTranslation"
+                v-model="autoPlayTranslation"
+              />
+              <label for="autoPlayTranslation" class="text-sm font-medium">
+                Auto-play English translation
+              </label>
+            </div>
+
             <!-- Quality and Formality Options -->
             <div class="grid grid-cols-2 gap-4">
               <URadioGroup
@@ -251,6 +346,7 @@ const copyTranslation = async (text: string) => {
               <label class="font-medium block mb-2">{{ t('temperature') }}</label>
               <USlider v-model="temperature" :min="0" :max="1" :step="0.1" />
             </div>
+
           </div>
         </template>
       </UCollapsible>

@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { formatTimeAgo } from '@vueuse/core'
+import { formatTimeAgo, useClipboard } from '@vueuse/core'
 import { useAssistants } from '@/composables/useAssistants'
 import { useI18n } from 'vue-i18n'
 import AssistantModal from './AssistantModal.vue'
@@ -33,6 +33,7 @@ import { ref, computed, resolveComponent } from 'vue'
 const UButton = resolveComponent('UButton')
 const UTooltip = resolveComponent('UTooltip')
 const UIcon = resolveComponent('UIcon')
+const { copy } = useClipboard()
 
 interface TableData {
   id: string
@@ -132,18 +133,31 @@ const columns = computed(() => [
     header: () => t('voice'),
     cell: (row) => {
       const voice = row.getValue("voice")
+      const voiceId = voice.voiceId
+      const toast = useToast()
+
       return h('div', { class: 'flex justify-center' }, [
         h(UTooltip, {
           delayDuration: 0,
           content: {
             side: 'top'
           },
-          text: `${voice.provider} / ${voice.voiceId}`,
+          text: `${voice.provider} / ${voiceId}`,
           arrow: true
         }, {
           default: () => h(UIcon, { 
             name: 'i-lucide-mic',
-            class: 'text-primary-500'
+            class: 'text-primary-500 cursor-pointer',
+            onClick: () => {
+              copy(voiceId)
+              toast.add({
+                title: 'Voice ID Copied',
+                duration: 1500,
+                description: 'Voice ID copied to clipboard!',
+                color: 'success', // or another appropriate color
+                icon: 'i-lucide-check' // optional icon
+              })
+            }
           })
         })
       ])

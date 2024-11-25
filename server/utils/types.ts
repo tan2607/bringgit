@@ -56,11 +56,24 @@ export interface TranslationOptions extends ASROptions {
   formality?: 'formal' | 'informal';
 }
 
+export interface CartesiaAudioData {
+  audio: {
+    buffer: Float32Array;
+    sampleRate: number;
+    bufferDuration: number;
+  };
+  metadata: {
+    container: string;
+    encoding: string;
+    sampleRate: number;
+  };
+}
+
 // Base provider interface
 export interface VoiceProvider {
-  tts?(options: TTSOptions): Promise<ArrayBuffer | ReadableStream<Uint8Array>>;
-  asr?(options: ASROptions): Promise<string | ReadableStream<string>>;
-  translate?(options: TranslationOptions): Promise<string | ReadableStream<string>>;
-  getSupportedLanguages(): string[];
-  getSupportedVoices(language?: string): Promise<string[]>;
+  tts?: (options: TTSOptions) => Promise<ArrayBuffer | ReadableStream<Uint8Array> | CartesiaAudioData>;
+  asr?: (options: ASROptions) => Promise<string | ReadableStream<string>>;
+  translate?: (options: TranslationOptions) => Promise<string | ReadableStream<string>>;
+  getSupportedLanguages?: () => string[];
+  getSupportedVoices?: (language?: string) => Promise<string[]>;
 }
