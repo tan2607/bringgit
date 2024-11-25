@@ -43,12 +43,21 @@ const audioChunksRef = ref<Float32Array[]>([])
 
 const startRecording = async () => {
   try {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+    const stream = await navigator.mediaDevices.getUserMedia({ 
+      audio: {
+        channelCount: 1,
+        sampleRate: 16000, // Lower sample rate, still good for speech
+        echoCancellation: true,
+        noiseSuppression: true,
+      } 
+    })
     
-    // Create audio context for advanced audio processing
-    audioContextRef.value = new AudioContext()
+    // Create audio context with lower sample rate
+    audioContextRef.value = new AudioContext({ sampleRate: 16000 })
     const source = audioContextRef.value.createMediaStreamSource(stream)
-    const processor = audioContextRef.value.createScriptProcessor(4096, 1, 1)
+    
+    // Smaller buffer size for processing
+    const processor = audioContextRef.value.createScriptProcessor(2048, 1, 1)
 
     source.connect(processor)
     processor.connect(audioContextRef.value.destination)
@@ -64,11 +73,11 @@ const startRecording = async () => {
     isRecording.value = true
   } catch (error) {
     console.error('Error accessing microphone:', error)
-    // Optionally, show a toast or error message
   }
 }
 
 const stopRecording = async () => {
+  console.log('Stopping recording...')
   if (mediaRecorderRef.value && isRecording.value) {
     mediaRecorderRef.value.stop()
     isRecording.value = false
@@ -80,6 +89,18 @@ const stopRecording = async () => {
       audioContextRef.value!.sampleRate
     )
 
+    // Log audio file size
+    console.log('Audio file size:', {
+      bytes: wavBlob.size,
+      kilobytes: (wavBlob.size / 1024).toFixed(2) + ' KB',
+      megabytes: (wavBlob.size / (1024 * 1024)).toFixed(2) + ' MB'
+    })
+
+    // Clean up resources
+    mediaRecorderRef.value.stream.getTracks().forEach(track => track.stop())
+    audioContextRef.value?.close()
+    audioChunksRef.value = []
+
     // Submit audio if callback provided
     if (props.onSubmit) {
       try {
@@ -88,36 +109,34 @@ const stopRecording = async () => {
         console.error('Error submitting audio:', error)
       }
     }
-
-    // Clean up resources
-    mediaRecorderRef.value.stream.getTracks().forEach(track => track.stop())
-    audioContextRef.value?.close()
-    audioChunksRef.value = []
   }
 }
 
 // Utility functions for audio encoding
 const encodeWavFile = (samples: Float32Array, sampleRate: number): Blob => {
-  const buffer = new ArrayBuffer(44 + samples.length * 2)
+  // Downsample if needed
+  const downsampledData = downsampleAudio(samples, sampleRate, 16000)
+  
+  const buffer = new ArrayBuffer(44 + downsampledData.length * 2)
   const view = new DataView(buffer)
 
   // Write WAV header
   writeString(view, 0, 'RIFF')
-  view.setUint32(4, 36 + samples.length * 2, true)
+  view.setUint32(4, 36 + downsampledData.length * 2, true)
   writeString(view, 8, 'WAVE')
   writeString(view, 12, 'fmt ')
   view.setUint32(16, 16, true)
-  view.setUint16(20, 1, true)
+  view.setUint16(20, 1, true) // Mono channel
   view.setUint16(22, 1, true)
-  view.setUint32(24, sampleRate, true)
-  view.setUint32(28, sampleRate * 2, true)
+  view.setUint32(24, 16000, true) // Fixed sample rate
+  view.setUint32(28, 16000 * 2, true)
   view.setUint16(32, 2, true)
   view.setUint16(34, 16, true)
   writeString(view, 36, 'data')
-  view.setUint32(40, samples.length * 2, true)
+  view.setUint32(40, downsampledData.length * 2, true)
 
   // Write audio data
-  floatTo16BitPCM(view, 44, samples)
+  floatTo16BitPCM(view, 44, downsampledData)
 
   return new Blob([buffer], { type: 'audio/wav' })
 }
@@ -143,6 +162,24 @@ const concatenateAudioBuffers = (buffers: Float32Array[]): Float32Array => {
     result.set(buffer, offset)
     offset += buffer.length
   }
+  return result
+}
+
+// Add downsampling function
+const downsampleAudio = (audioData: Float32Array, originalSampleRate: number, targetSampleRate: number): Float32Array => {
+  if (originalSampleRate === targetSampleRate) {
+    return audioData
+  }
+
+  const ratio = originalSampleRate / targetSampleRate
+  const newLength = Math.round(audioData.length / ratio)
+  const result = new Float32Array(newLength)
+
+  for (let i = 0; i < newLength; i++) {
+    const position = Math.round(i * ratio)
+    result[i] = audioData[position]
+  }
+
   return result
 }
 </script>

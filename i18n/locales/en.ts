@@ -155,29 +155,31 @@ export default {
   'message-min-length': 'Message must be at least 10 characters',
   required: 'This field is required',
 
-    // Translation page specific keys
-    'translation-demo': 'Voice Translation',
-    'source-text': 'Source Text',
-    'translated-text': 'Translated Text',
-    'translated-text-placeholder': 'Translation will appear here',
-    'enter-text-to-translate': 'Enter text to translate',
-    'translating': 'Translating...',
-    'audio-playing': 'Playing audio...',
-    'play-translated-audio': 'Play translated audio',
-    'copied-to-clipboard': 'Copied to clipboard',
-    'copy-error': 'Error copying to clipboard',
-    'translation-error': 'Error during translation',
-    'unknown-error': 'An unknown error occurred',
-    
-    // Audio recording keys
-    'start-recording': 'Start Recording',
-    'stop-recording': 'Stop Recording',
-    'translate-voice': 'Translate Voice',
-    
-    // Navigation keys
-    'demos': 'Demos',
-    'explore-demos': 'Explore our AI demos',
-    'voice-translation': 'Voice Translation',
-    'multilingual-voice-translation': 'Multilingual speech-to-speech translation',
+  // Translation page specific keys
+  'advanced-options': 'Advanced Options',
+  'universal-patient-translator': 'Universal Patient Translator',
+  'source-language': 'Source Language',
+  'source-text': 'Source Text',
+  'translated-text': 'Translated Text',
+  'translated-text-placeholder': 'Translation will appear here',
+  'enter-text-to-translate': 'Enter text to translate',
+  'translating': 'Translating...',
+  'audio-playing': 'Playing audio...',
+  'play-translated-audio': 'Play translated audio',
+  'copied-to-clipboard': 'Copied to clipboard',
+  'copy-error': 'Error copying to clipboard',
+  'translation-error': 'Error during translation',
+  'unknown-error': 'An unknown error occurred',
+  'press-to-speak': 'Press to speak',
+  'temperature': 'Temperature',
+  // Audio recording keys
+  'start-recording': 'Start Recording',
+  'stop-recording': 'Stop Recording',
+  'translate-voice': 'Translate Voice',
   
+  // Navigation keys
+  'demos': 'Demos',
+  'explore-demos': 'Explore our AI demos',
+  'voice-translation': 'Voice Translation',
+  'multilingual-voice-translation': 'Multilingual speech-to-speech translation',
 }

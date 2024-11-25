@@ -1,4 +1,8 @@
-import { VoiceProvider, VoiceConfig, ASROptions } from '../types';
+/**
+ * WhisperProvider class for speech-to-text and translation services.
+ * Note: Translation is only supported FROM any language TO English.
+ */
+import { VoiceProvider, VoiceConfig, ASROptions, TranslationOptions } from '../types';
 import Groq from 'groq-sdk';
 
 export class WhisperProvider implements VoiceProvider {
@@ -16,90 +20,68 @@ export class WhisperProvider implements VoiceProvider {
   }
 
   async asr(options: ASROptions): Promise<string | ReadableStream<string>> {
-    if (options.stream) {
-      return this.handleStreamingTranscription(options);
-    } else {
-      return this.handleBatchTranscription(options);
+    try {
+      let fileToUpload: File;
+      if (options.audio instanceof Blob && !(options.audio instanceof File)) {
+        fileToUpload = new File([options.audio], 'audio.wav', {
+          type: options.audio.type || 'audio/wav'
+        });
+      } else {
+        fileToUpload = options.audio as File;
+      }
+
+      const transcriptions = await this.client.audio.transcriptions.create({
+        file: fileToUpload,
+        model: "whisper-large-v3-turbo",
+        // prompt: options.prompt || undefined,
+        response_format: "text",
+        temperature: options.temperature || 0.0
+      });
+
+      console.log('[Groq] transcriptions:', transcriptions);
+      return transcriptions;
+    } catch (error) {
+      console.error('Error in Groq translation:', error);
+      throw error;
     }
   }
 
-  private async handleStreamingTranscription(options: ASROptions): Promise<ReadableStream<string>> {
-    return new ReadableStream({
-      async start(controller) {
-        try {
-          if (options.audio instanceof ReadableStream) {
-            const reader = options.audio.getReader();
-            const chunks: Uint8Array[] = [];
-            const chunkSize = 30 * 1024; // 30KB chunks
-            let currentChunk: Uint8Array[] = [];
-            let currentSize = 0;
 
-            while (true) {
-              const { done, value } = await reader.read();
-              if (done) break;
-
-              currentChunk.push(value);
-              currentSize += value.length;
-
-              if (currentSize >= chunkSize || done) {
-                const audioBlob = new Blob(currentChunk, { type: 'audio/wav' });
-                const text = await this.transcribeChunk(audioBlob, options);
-                controller.enqueue(text);
-
-                currentChunk = [];
-                currentSize = 0;
-              }
-            }
-
-            if (currentChunk.length > 0) {
-              const audioBlob = new Blob(currentChunk, { type: 'audio/wav' });
-              const text = await this.transcribeChunk(audioBlob, options);
-              controller.enqueue(text);
-            }
-          }
-          controller.close();
-        } catch (error) {
-          controller.error(error);
-        }
-      }
-    });
-  }
-
-  private async handleBatchTranscription(options: ASROptions): Promise<string> {
-    const audioData = options.audio instanceof Blob ? options.audio : 
-                     new Blob([options.audio], { type: 'audio/wav' });
-    
-    return await this.transcribeChunk(audioData, options);
-  }
-
-  private async transcribeChunk(chunk: Blob, options: ASROptions): Promise<string> {
+  /**
+   * Translates audio content from any language to English.
+   * Note: This method only supports translation TO English. For other target languages,
+   * use ASR + text translation instead.
+   * @param options Translation options
+   * @returns Translated text in English
+   */
+  async translate(options: TranslationOptions): Promise<string> {
     try {
-      const arrayBuffer = await chunk.arrayBuffer();
-      const buffer = Buffer.from(arrayBuffer);
-
+      // Note: translations.create only translates to English
       const translation = await this.client.audio.translations.create({
-        file: buffer,
+        file: options.audio,
         model: "whisper-large-v3",
         prompt: options.prompt || undefined,
         response_format: "text",
         temperature: options.temperature || 0.0
       });
 
-      return translation.text;
+      return translation;
     } catch (error) {
-      console.error('Error in Groq transcription:', error);
+      console.error('Error in Groq translation:', error);
       throw error;
     }
   }
 
+  /**
+   * Returns list of supported source languages for translation.
+   * Note: Target language is always English for translations.
+   */
   getSupportedLanguages(): string[] {
     return [
-      "en", "zh", "de", "es", "ru", "ko", "fr", "ja", "pt", "tr",
-      "pl", "ca", "nl", "ar", "sv", "it", "id", "hi", "fi", "vi",
-      "iw", "uk", "el", "ms", "cs", "ro", "da", "hu", "ta", "no",
-      "th", "ur", "hr", "bg", "lt", "la", "mi", "ml", "cy", "sk",
-      "te", "fa", "lv", "bn", "sr", "az", "sl", "kn", "et", "mk",
-      "br", "eu", "is", "hy", "ne", "mn", "bs", "kk", "sq", "sw"
+      'ar', 'bg', 'ca', 'cs', 'da', 'de', 'el', 'en', 'es', 'et', 'fa', 'fi', 
+      'fr', 'he', 'hi', 'hr', 'hu', 'id', 'it', 'ja', 'ko', 'lt', 'lv', 'ms', 
+      'nl', 'no', 'pl', 'pt', 'ro', 'ru', 'sk', 'sl', 'sr', 'sv', 'sw', 'th', 
+      'tr', 'uk', 'ur', 'vi', 'zh'
     ];
   }
 

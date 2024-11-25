@@ -8,38 +8,44 @@ interface TranslationHistoryItem {
   sourceText: string
   translatedText: string
   sourceLanguage: typeof languages[0]
-  targetLanguage: typeof languages[0]
   timestamp: Date
 }
 
 const sourceText = ref('')
 const translatedText = ref('')
 const sourceLanguage = ref(languages[0])
-const targetLanguage = ref(languages[1])
 const isTranslating = ref(false)
 const history = ref<TranslationHistoryItem[]>([])
-const quality = ref<'draft' | 'standard' | 'high'>('standard')
+const quality = ref<'fast' | 'standard' | 'high'>('fast')
 const formality = ref<'formal' | 'informal'>('formal')
-const temperature = ref(0.0)
+const temperature = ref(0.2)
+const showAdvancedOptions = ref(false)
+const isPlaying = ref(false)
 
 // Handle voice recording submission
-const handleVoiceRecording = async (blob: Blob) => {
-  if (!blob) return
-  await translateVoice(blob)
+const handleSubmit = async (audioBlob: Blob) => {
+  try {
+    isTranslating.value = true
+    await translateVoice(audioBlob)
+  } catch (error) {
+    console.error('Error handling voice recording submission:', error)
+  } finally {
+    isTranslating.value = false
+  }
 }
 
-// Translate voice recording
+// Translate voice recording to English
 const translateVoice = async (blob: Blob) => {
-  isTranslating.value = true
+  console.log('Translating voice recording to English...')
   try {
     const formData = new FormData()
-    formData.append('audio', blob, 'recording.wav')
+    formData.append('audio', blob, 'audio.wav')
     formData.append('options', JSON.stringify({
-      targetLanguage: targetLanguage.value.code,
+      targetLanguage: 'en',
       sourceLanguage: sourceLanguage.value.code,
       quality: quality.value,
       temperature: temperature.value,
-      prompt: 'Translate medical terminology accurately',
+      prompt: 'Translate medical terminology accurately and maintain formal tone',
       formality: formality.value
     }))
     formData.append('provider', 'whisper')
@@ -53,15 +59,14 @@ const translateVoice = async (blob: Blob) => {
       throw new Error(response.error)
     }
 
-    sourceText.value = response.text
-    translatedText.value = response.text
+    sourceText.value = response.sourceText
+    translatedText.value = response.translatedText
 
     // Add to history
     history.value.unshift({
       sourceText: sourceText.value,
       translatedText: translatedText.value,
       sourceLanguage: sourceLanguage.value,
-      targetLanguage: targetLanguage.value,
       timestamp: new Date()
     })
   } catch (error) {
@@ -70,18 +75,37 @@ const translateVoice = async (blob: Blob) => {
       description: error instanceof Error ? error.message : t('unknown-error'),
       color: 'error'
     })
-  } finally {
-    isTranslating.value = false
   }
 }
 
-// Play translated text using speech synthesis
-const playTranslatedText = () => {
-  if (!translatedText.value) return
-  
-  const utterance = new SpeechSynthesisUtterance(translatedText.value)
-  utterance.lang = targetLanguage.value.code
-  window.speechSynthesis.speak(utterance)
+// Add TTS functionality
+const playTranslation = async (text: string) => {
+  try {
+    isPlaying.value = true
+    const response = await $fetch('/api/voice/tts', {
+      method: 'POST',
+      body: {
+        text,
+        provider: 'cartesia',
+        options: {
+          voice: 'en-US-Neural2-F'
+        }
+      }
+    })
+
+    // Create audio element and play
+    const audioBlob = new Blob([response], { type: 'audio/mpeg' })
+    const audioUrl = URL.createObjectURL(audioBlob)
+    const audio = new Audio(audioUrl)
+    await audio.play()
+    audio.onended = () => {
+      isPlaying.value = false
+      URL.revokeObjectURL(audioUrl)
+    }
+  } catch (error) {
+    console.error('TTS error:', error)
+    isPlaying.value = false
+  }
 }
 
 // Copy translation to clipboard
@@ -105,129 +129,162 @@ const copyTranslation = async (text: string) => {
 <template>
   <div class="container mx-auto p-4">
     <div class="max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-      <h1 class="text-2xl font-bold mb-4 text-center">{{ t('translation-demo') }}</h1>
-      
-      <!-- Language Selection -->
-      <div class="grid grid-cols-2 gap-4 mb-4">
-        <div class="space-y-2">
-          <label class="font-medium">{{ t('source-text') }}</label>
-          <USelectMenu
-            v-model="sourceLanguage"
-            placeholder="Select source language"
-            labelKey="name"
-            :items="languages"
-            :ui="{
-              trailingIcon: 'group-data-[state=open]:rotate-180 transition-transform duration-200'
-            }"
-            :icon="getLanguageIcon(sourceLanguage.code)"
-            class="w-full"
-          >
-            <template #item="{ item }">
-              <div class="flex items-center gap-2">
-                <UIcon :name="getLanguageIcon(item.code)" />
-                {{ item.name }}
-              </div>
-            </template>
-          </USelectMenu>
-        </div>
-        
-        <div class="space-y-2">
-          <label class="font-medium">{{ t('translated-text') }}</label>
-          <USelectMenu
-            v-model="targetLanguage"
-            :items="languages"
-            labelKey="name"
-            placeholder="Select target language"
-            :icon="getLanguageIcon(targetLanguage.code)"
-            :ui="{
-              trailingIcon: 'group-data-[state=open]:rotate-180 transition-transform duration-200'
-            }"
-            class="w-full"
-          >
-            <template #item="{ item }">
-              <div class="flex items-center gap-2">
-                <UIcon :name="getLanguageIcon(item.code)" />
-                {{ item.name }}
-              </div>
-            </template>
-          </USelectMenu>
-        </div>
-      </div>
-
-      <!-- Translation Quality -->
-      <div class="mb-4">
-        <label class="font-medium block mb-2">{{ t('translation-quality') }}</label>
-        <URadio v-model="quality" name="quality" value="draft" label="Draft" class="mr-4" />
-        <URadio v-model="quality" name="quality" value="standard" label="Standard" class="mr-4" />
-        <URadio v-model="quality" name="quality" value="high" label="High" />
-      </div>
-
-      <!-- Translation Options -->
-      <div class="grid grid-cols-2 gap-4 mb-4">
-        <div>
-          <label class="font-medium block mb-2">{{ t('formality') }}</label>
-          <URadio v-model="formality" name="formality" value="formal" label="Formal" class="mr-4" />
-          <URadio v-model="formality" name="formality" value="informal" label="Informal" />
-        </div>
-        <div>
-          <label class="font-medium block mb-2">{{ t('temperature') }}</label>
-          <URange v-model="temperature" :min="0" :max="1" :step="0.1" />
-        </div>
-      </div>
+      <h1 class="text-2xl font-bold mb-4 text-center">{{ t('universal-patient-translator') }}</h1>
+      <p class="text-center text-gray-600 dark:text-gray-400 mb-6">
+        Speak in any language and get instant English translation
+      </p>
 
       <!-- Voice Recording -->
-      <div class="mb-4">
-        <AudioRecorder @recording-complete="handleVoiceRecording" />
+      <div class="flex justify-center mb-8">
+        <AudioRecorder
+          :disabled="isTranslating"
+          @submit="handleSubmit"
+        />
       </div>
 
-      <!-- Translation Results -->
-      <div v-if="sourceText || translatedText" class="space-y-4">
-        <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-          <div class="flex justify-between items-center mb-2">
-            <h3 class="font-medium">{{ sourceLanguage.name }}</h3>
+      <!-- Translation Result -->
+      <div v-if="translatedText" class="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-sm text-gray-500">Original Text</span>
+          <UButton
+            icon="i-lucide-clipboard"
+            color="neutral"
+            variant="ghost"
+            size="xs"
+            @click="copyTranslation(sourceText)"
+          />
+        </div>
+        <p class="text-lg">{{ sourceText }}</p>
+
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-sm text-gray-500">English Translation</span>
+          <div class="flex gap-2">
             <UButton
-              icon="i-heroicons-clipboard"
+              icon="i-lucide-clipboard"
+              color="neutral"
               variant="ghost"
-              :title="t('copy')"
-              @click="copyTranslation(sourceText)"
+              size="xs"
+              @click="copyTranslation(translatedText)"
+            />
+            <UButton
+              :icon="isPlaying ? 'i-lucide-stop-circle' : 'i-lucide-play-circle'"
+              color="neutral"
+              variant="ghost"
+              size="xs"
+              :loading="isPlaying"
+              @click="playTranslation(translatedText)"
             />
           </div>
-          <p>{{ sourceText }}</p>
         </div>
+        <p class="text-lg">{{ translatedText }}</p>
+      </div>
 
-        <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-          <div class="flex justify-between items-center mb-2">
-            <h3 class="font-medium">{{ targetLanguage.name }}</h3>
-            <div class="flex gap-2">
-              <UButton
-                icon="i-heroicons-speaker-wave"
-                variant="ghost"
-                :title="t('play')"
-                @click="playTranslatedText"
+      <!-- Advanced Options -->
+      <UCollapsible class="mb-4">
+        <template #default="{ open }">
+          <UButton
+            :label="t('advanced-options')"
+            color="gray"
+            variant="soft"
+            block
+            class="mb-2"
+            @click="showAdvancedOptions = !showAdvancedOptions"
+          >
+            <template #trailing>
+              <UIcon
+                :name="open ? 'i-lucide-chevron-up' : 'i-lucide-chevron-down'"
+                class="w-4 h-4 transition-transform"
               />
-              <UButton
-                icon="i-heroicons-clipboard"
-                variant="ghost"
-                :title="t('copy')"
-                @click="copyTranslation(translatedText)"
+            </template>
+          </UButton>
+        </template>
+        <template #content>
+          <div class="space-y-4 p-4">
+            <!-- Source Language Selection -->
+            <div class="space-y-2">
+              <label class="font-medium">{{ t('source-language') }}</label>
+              <USelectMenu
+                v-model="sourceLanguage"
+                :items="languages"
+                labelKey="name"
+                placeholder="Auto-detect language"
+                :icon="getLanguageIcon(sourceLanguage.code)"
+                class="w-full"
+              >
+                <template #item="{ item }">
+                  <div class="flex items-center gap-2">
+                    <UIcon :name="getLanguageIcon(item.code)" />
+                    {{ item.name }}
+                  </div>
+                </template>
+              </USelectMenu>
+            </div>
+
+            <!-- Quality and Formality Options -->
+            <div class="grid grid-cols-2 gap-4">
+              <URadioGroup
+                v-model="quality"
+                legend="Translation Quality"
+                :items="[
+                  { label: 'Fast', value: 'fast' },
+                  { label: 'Standard', value: 'standard' },
+                  { label: 'High', value: 'high' }
+                ]"
+                orientation="horizontal"
+                class="w-full"
+              />
+
+              <URadioGroup
+                v-model="formality"
+                legend="Formality"
+                :items="[
+                  { label: 'Formal', value: 'formal' },
+                  { label: 'Informal', value: 'informal' }
+                ]"
+                orientation="horizontal"
+                class="w-full"
               />
             </div>
+
+            <!-- Temperature Slider -->
+            <div>
+              <label class="font-medium block mb-2">{{ t('temperature') }}</label>
+              <USlider v-model="temperature" :min="0" :max="1" :step="0.1" />
+            </div>
           </div>
-          <p>{{ translatedText }}</p>
-        </div>
-      </div>
+        </template>
+      </UCollapsible>
 
       <!-- Translation History -->
       <div v-if="history.length" class="mt-8">
         <h2 class="text-xl font-bold mb-4">{{ t('history') }}</h2>
         <div class="space-y-4">
-          <div v-for="item in history" :key="item.timestamp.toISOString()" class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+          <div
+            v-for="item in history"
+            :key="item.timestamp.toISOString()"
+            class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg"
+          >
             <div class="flex justify-between items-center mb-2">
-              <span class="text-sm text-gray-500">{{ item.timestamp.toLocaleTimeString() }}</span>
-              <span class="text-sm">{{ item.sourceLanguage.name }} → {{ item.targetLanguage.name }}</span>
+              <div class="flex items-center gap-2">
+                <UIcon :name="getLanguageIcon(item.sourceLanguage.code)" class="w-4 h-4" />
+                <span class="text-sm text-gray-500">
+                  {{ item.sourceLanguage.name }} → English
+                </span>
+              </div>
+              <span class="text-sm text-gray-500">
+                {{ new Date(item.timestamp).toLocaleTimeString() }}
+              </span>
             </div>
-            <p class="mb-2">{{ item.sourceText }}</p>
-            <p class="font-medium">{{ item.translatedText }}</p>
+            <p class="text-lg mb-2">{{ item.translatedText }}</p>
+            <div class="flex justify-end">
+              <UButton
+                icon="i-lucide-clipboard"
+                color="gray"
+                variant="ghost"
+                size="xs"
+                @click="copyTranslation(item.translatedText)"
+              />
+            </div>
           </div>
         </div>
       </div>

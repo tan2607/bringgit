@@ -65,7 +65,7 @@ export class VoiceService {
     return await voiceProvider.tts({ ...options, text });
   }
 
-  async speechToText(audio: Blob | ArrayBuffer | ReadableStream<Uint8Array>, options: Omit<ASROptions, 'audio'> = {}, provider?: string): Promise<string | ReadableStream<string>> {
+  async speechToText(options: ASROptions, provider?: string): Promise<string | ReadableStream<string>> {
     const selectedProvider = provider || this.defaultASRProvider;
     const voiceProvider = this.asrProviders.get(selectedProvider);
 
@@ -73,7 +73,15 @@ export class VoiceService {
       throw new Error(`Provider ${selectedProvider} does not support ASR`);
     }
 
-    return await voiceProvider.asr({ ...options, audio });
+    if (options.audio instanceof Blob && !(options.audio instanceof File)) {
+      options.file = new File([options.audio], 'audio.wav', {
+        type: options.audio.type || 'audio/wav'
+      });
+    } else {
+      options.file = options.audio as File;
+    }
+
+    return await voiceProvider.asr(options);
   }
 
   async translate(options: TranslationOptions, provider?: string): Promise<string | ReadableStream<string>> {
@@ -82,6 +90,14 @@ export class VoiceService {
 
     if (!voiceProvider?.translate) {
       throw new Error(`Provider ${selectedProvider} does not support translation`);
+    }
+
+    if (options.audio instanceof Blob && !(options.audio instanceof File)) {
+      options.file = new File([options.audio], 'audio.wav', {
+        type: options.audio.type || 'audio/wav'
+      });
+    } else {
+      options.file = options.audio as File;
     }
 
     return await voiceProvider.translate(options);

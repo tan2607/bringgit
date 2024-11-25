@@ -42,41 +42,45 @@ Each service supports multiple providers, allowing you to choose the best option
    - Highly accurate transcription
    - Supports 100+ languages
    - Automatic language detection
-   - Supports Speech Translation
+   - Supports Speech Translation (any language → English only)
    - Streaming support
    - Slower processing speeds (Non Realtime)
    - Languages: Afrikaans, Arabic, Armenian, Azerbaijani, Belarusian, Bosnian, Bulgarian, Catalan, Chinese, Croatian, Czech, Danish, Dutch, English, Estonian, Finnish, French, Galician, German, Greek, Hebrew, Hindi, Hungarian, Icelandic, Indonesian, Italian, Japanese, Kannada, Kazakh, Korean, Latvian, Lithuanian, Macedonian, Malay, Marathi, Maori, Nepali, Norwegian, Persian, Polish, Portuguese, Romanian, Russian, Serbian, Slovak, Slovenian, Spanish, Swahili, Swedish, Tagalog, Tamil, Thai, Turkish, Ukrainian, Urdu, Vietnamese, and Welsh.
 
 2. **Whisper via Groq**
    - Faster processing speeds (Realtime)
-   - Same accuracy as OpenAI
-   - Speaker diarization
-   - Punctuation support
-   - Preferred model: 
-     - Multilingual: whisper-large-v3-turbo
-     - English: 
-   - [Documentation](https://console.groq.com/docs/speech-text)
+   - Same capabilities as OpenAI Whisper
+   - Speech Translation only supports translation TO English
+
+### Translation
+
+The voice translation service currently has the following limitations:
+
+1. **Direction**: Translation is only supported FROM any language TO English
+2. **Workflow**:
+   - For translation TO English: Direct audio translation is supported
+   - For translation FROM English to other languages: Use a combination of STT + text translation
 
 ## Environment Setup
 
 Add the following environment variables to your `.env` file:
 
-\`\`\`bash
+```bash
 OPENAI_API_KEY=your_openai_api_key
 PLAYAI_API_KEY=your_playai_api_key
 PLAYAI_USER_ID=your_playai_user_id
 CARTESIA_API_KEY=your_cartesia_api_key
 GROQ_API_KEY=your_groq_api_key
-\`\`\`
+```
 
 ## API Endpoints
 
 ### Text-to-Speech (TTS)
 
-**Endpoint:** \`POST /api/voice/tts\`
+**Endpoint:** `POST /api/voice/tts`
 
 **Request Body:**
-\`\`\`typescript
+```typescript
 {
   "text": string,          // Required: Text to convert to speech
   "options": {
@@ -92,14 +96,14 @@ GROQ_API_KEY=your_groq_api_key
   },
   "provider": string      // Optional: Provider to use
 }
-\`\`\`
+```
 
 **Response:**
-- Content-Type: \`audio/mpeg\` or \`audio/opus\` for streaming
+- Content-Type: `audio/mpeg` or `audio/opus` for streaming
 - Binary audio data or streaming response
 
 **Example:**
-\`\`\`typescript
+```typescript
 // Basic usage
 const response = await fetch('/api/voice/tts', {
   method: 'POST',
@@ -143,21 +147,21 @@ while (true) {
   // Process audio chunks
   streamProcessor.process(value);
 }
-\`\`\`
+```
 
 ### Speech-to-Text (STT)
 
-**Endpoint:** \`POST /api/voice/stt\`
+**Endpoint:** `POST /api/voice/stt`
 
 **Request:**
-- Content-Type: \`multipart/form-data\`
+- Content-Type: `multipart/form-data`
 - Form Fields:
-  - \`audio\`: Audio file (WAV, MP3, etc.)
-  - \`options\`: JSON string with configuration
-  - \`provider\`: Provider name (optional)
+  - `audio`: Audio file (WAV, MP3, etc.)
+  - `options`: JSON string with configuration
+  - `provider`: Provider name (optional)
 
 **Options:**
-\`\`\`typescript
+```typescript
 {
   "language": string | string[],  // Language code(s)
   "modelId": string,             // Specific model to use
@@ -166,17 +170,17 @@ while (true) {
   "punctuation": boolean,        // Include punctuation
   "diarization": boolean        // Identify speakers
 }
-\`\`\`
+```
 
 **Response:**
-\`\`\`typescript
+```typescript
 {
   "text": string  // Transcribed text
 }
-\`\`\`
+```
 
 **Example:**
-\`\`\`typescript
+```typescript
 // Basic usage
 const formData = new FormData();
 formData.append('audio', audioFile);
@@ -214,31 +218,31 @@ while (true) {
   if (done) break;
   console.log('Transcription chunk:', new TextDecoder().decode(value));
 }
-\`\`\`
+```
 
 ### Translation
 
-**Endpoint:** \`POST /api/voice/translation\`
+**Endpoint:** `POST /api/voice/translation`
 
 **Request Body:**
-\`\`\`typescript
+```typescript
 {
   "text": string,           // Required: Text to translate
   "sourceLanguage": string, // Optional: Source language
   "targetLanguage": string, // Required: Target language
   "provider": string       // Optional: Provider to use
 }
-\`\`\`
+```
 
 **Response:**
-\`\`\`typescript
+```typescript
 {
   "translatedText": string
 }
-\`\`\`
+```
 
 **Example:**
-\`\`\`typescript
+```typescript
 const response = await fetch('/api/voice/translation', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
@@ -251,7 +255,7 @@ const response = await fetch('/api/voice/translation', {
 
 const { translatedText } = await response.json();
 console.log('Translation:', translatedText);
-\`\`\`
+```
 
 ## Provider-Specific Features
 
