@@ -39,6 +39,10 @@
     "clsx": "latest",
     "drizzle-kit": "latest",
     "tailwind-merge": "latest",
-    "wrangler": "3.88.0"
+    "unenv": "^1.10.0",
+    "wrangler": "^3.90.0"
+  },
+  "resolutions": {
+    "unenv": "1.10.0"
   }
 }
