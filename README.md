@@ -33,3 +33,30 @@ bun run preview
 ```
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+
+## Voice Translation Feature
+
+### Prerequisites
+- Obtain API keys for the following services:
+  1. [Groq API Key](https://console.groq.com/keys) - For speech transcription and translation
+  2. [Cartesia API Key](https://www.cartesia.ai/) - For text-to-speech (optional)
+
+### Configuration
+1. Copy `.env.example` to `.env`
+2. Replace the placeholders with your actual API keys:
+   ```
+   GROQ_API_KEY=your_groq_api_key_here
+   CARTESIA_API_KEY=your_cartesia_api_key_here
+   ```
+
+### Feature Overview
+The voice translation feature allows users to:
+- Record audio in the source language
+- Transcribe the audio to text
+- Translate the transcribed text to the target language
+- Optionally generate speech in the target language
+
+### Supported Languages
+- Transcription: Multiple languages supported via Groq's Whisper model
+- Translation: Powered by Groq's language models
+- Text-to-Speech: Supports multiple languages via Cartesia
