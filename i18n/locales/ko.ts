@@ -1,0 +1,155 @@
+export default {
+    // Navigation & Common
+    home: '홈',
+    calls: '통화',
+    assistants: 'AI 어시스턴트',
+    language: '언어',
+    welcome: '환영합니다',
+    analytics: '분석',
+    scheduling: '일정',
+    settings: '설정',
+    'dev-tools': '개발자 도구',
+    profile: '프로필',
+    support: '지원',
+
+    // Descriptions
+    'manage-calls': '통화 및 회의 관리',
+    'manage-assistants': 'AI 어시스턴트 관리',
+    'review-statistics': '상세 통계 보기',
+    'manage-schedule': '통화 일정 관리',
+    'configure-preferences': '환경설정 구성',
+    'get-help': '도움말 및 지원',
+    'view-api': 'API 사양 보기',
+
+    // Auth
+    login: '로그인',
+    'sign-up': '회원가입',
+    'create-account': '새 계정 만들기',
+    'sign-in': '계정에 로그인',
+    'forgot-password': '비밀번호 찾기',
+    'reset-password': '비밀번호 재설정',
+    'microsoft-login': 'Microsoft 계정으로 로그인',
+    'or-continue-with': '또는 다음으로 계속',
+    'already-have-account': '이미 계정이 있으신가요?',
+    'back-to-login': '로그인으로 돌아가기',
+    'enter-email': '이메일 입력',
+    'enter-password': '비밀번호 입력',
+    'confirm-password': '비밀번호 확인',
+    'passwords-not-match': '비밀번호가 일치하지 않습니다',
+    'account-created': '계정이 생성되었습니다',
+    'reset-password-description': '이메일 주소를 입력하시면 비밀번호 재설정 링크를 보내드립니다.',
+
+    // Settings
+    'profile-settings': '프로필 설정',
+    'notification-settings': '알림 설정',
+    'integration-settings': '연동 설정',
+    'application-settings': '애플리케이션 설정',
+    'email-notifications': '이메일 알림',
+    'call-notifications': '통화 업데이트',
+    'analytics-reports': '분석 보고서',
+    'system-alerts': '시스템 알림',
+    'save-changes': '변경사항 저장',
+    'save-preferences': '설정 저장',
+    'save-integration': '연동 저장',
+    'save-settings': '설정 저장',
+    'api-key': 'API 키',
+    'webhook-url': 'Webhook URL',
+    'theme': '테마',
+    'data-retention': '데이터 보관',
+    'theme-updated': '테마가 업데이트되었습니다',
+    'switched-to': '{mode} 모드로 전환되었습니다',
+
+    // Calls
+    'call-list': '통화 목록',
+    'call-details': '통화 상세',
+    'caller': '발신자',
+    'recipient': '수신자',
+    'date': '날짜',
+    'duration': '시간',
+    'transcript': '통화 기록',
+    'summary': '요약',
+    'tags': '태그',
+    'recording': '녹음',
+    'download-recording': '녹음 다운로드',
+    'queued': '대기 중',
+    'ended': '종료',
+
+    // Scheduling
+    'call-scheduling': '통화 일정',
+    'manage-outbound': '아웃바운드 통화 관리',
+    'calendar-view': '달력 보기',
+    'schedule-call': '통화 예약',
+    'upcoming-calls': '예정 통화',
+    'schedule-new-call': '새 통화 예약',
+    'schedule-description': '아래의 세부 정보를 입력하여 통화를 예약하세요.',
+    'add-notes': '노트 추가...',
+    'cancel': '취소',
+
+    // Help Center
+    'help-center': '고객센터',
+    'how-can-we-help': '어떻게 도와드릴까요?',
+    'search-help': '도움말 검색...',
+    'quick-links': '빠른 링크',
+    'getting-started': '시작하기',
+    'call-management': '통화 관리',
+    'analytics-guide': '분석 가이드',
+    'learn-more': '자세히 알아보기',
+    'tutorials-guides': '튜토리얼 및 가이드',
+    'frequently-asked': '자주 묻는 질문',
+    'still-need-help': '도움이 더 필요하신가요?',
+    'support-available': '지원팀이 24시간 도와드립니다',
+    'contact-support': '고객지원 문의',
+    'support-description': '문의사항을 보내주시면 최대한 빨리 답변드리겠습니다.',
+
+    // Analytics
+    'analytics-dashboard': '분석 대시보드',
+    'calls-over-time': '시간별 통화량',
+    'vs-last-period': '전기 대비',
+    'statistics-for': '통계 기간',
+    'view-analytics': '분석 보기',
+    'recent-calls': '최근 통화',
+    'view-all': '전체 보기',
+    'call-outcomes': '통화 결과',
+    'call-tags-distribution': '통화 태그 분포',
+    'download': '다운로드',
+
+    // Call Management
+    'call-recordings': '통화 녹음',
+    'access-recordings': '통화 녹음 접근 및 다운로드',
+    'browse-recordings': '녹음 찾아보기',
+    'schedule-now': '지금 예약하기',
+
+    // Assistant List
+    'assistant-list': 'AI 어시스턴트 목록',
+    'first-message': '첫 메시지',
+    'model': '모델',
+    'voice': '음성',
+    'created-at': '생성일',
+
+    // Form Fields
+    'subject': '제목',
+    'message': '메시지',
+    'full-name': '성명',
+    'current-password': '현재 비밀번호',
+    'new-password': '새 비밀번호',
+    'email': '이메일',
+    'password': '비밀번호',
+    'submit': '제출',
+
+    // Validation
+    'subject-required': '제목을 입력해주세요',
+    'message-min-length': '메시지는 10자 이상이어야 합니다',
+    'required': '이 필드는 필수입니다',
+
+    // Table
+    table: {
+      callReceived: '통화 수신',
+      recording: '녹음',
+      duration: '통화 시간',
+      summary: '요약',
+      status: '상태',
+      actions: '작업',
+      assistant: '어시스턴트',
+      id: '번호'
+    }
+  }

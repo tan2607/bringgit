@@ -1,0 +1,155 @@
+export default {
+  // Navigation & Common
+  home: 'หน้าแรก',
+  calls: 'การโทร',
+  assistants: 'ผู้ช่วย AI',
+  language: 'ภาษา',
+  welcome: 'ยินดีต้อนรับ',
+  analytics: 'การวิเคราะห์',
+  scheduling: 'การจัดตารางเวลา',
+  settings: 'การตั้งค่า',
+  'dev-tools': 'เครื่องมือนักพัฒนา',
+  profile: 'โปรไฟล์',
+  support: 'การสนับสนุน',
+
+  // Descriptions
+  'manage-calls': 'จัดการการโทรและการประชุม',
+  'manage-assistants': 'จัดการผู้ช่วย AI',
+  'review-statistics': 'ดูสถิติโดยละเอียด',
+  'manage-schedule': 'จัดการตารางการโทร',
+  'configure-preferences': 'กำหนดค่าการตั้งค่า',
+  'get-help': 'รับความช่วยเหลือและการสนับสนุน',
+  'view-api': 'ดูข้อกำหนด API',
+
+  // Auth
+  login: 'เข้าสู่ระบบ',
+  'sign-up': 'ลงทะเบียน',
+  'create-account': 'สร้างบัญชีใหม่',
+  'sign-in': 'เข้าสู่บัญชีของคุณ',
+  'forgot-password': 'ลืมรหัสผ่าน',
+  'reset-password': 'รีเซ็ตรหัสผ่าน',
+  'microsoft-login': 'เข้าสู่ระบบด้วยบัญชี Microsoft',
+  'or-continue-with': 'หรือดำเนินการต่อด้วย',
+  'already-have-account': 'มีบัญชีอยู่แล้ว?',
+  'back-to-login': 'กลับไปยังหน้าเข้าสู่ระบบ',
+  'enter-email': 'ป้อนอีเมล',
+  'enter-password': 'ป้อนรหัสผ่าน',
+  'confirm-password': 'ยืนยันรหัสผ่าน',
+  'passwords-not-match': 'รหัสผ่านไม่ตรงกัน',
+  'account-created': 'สร้างบัญชีสำเร็จ',
+  'reset-password-description': 'ป้อนที่อยู่อีเมลของคุณ และเราจะส่งลิงก์สำหรับรีเซ็ตรหัสผ่านให้คุณ',
+
+  // Settings
+  'profile-settings': 'การตั้งค่าโปรไฟล์',
+  'notification-settings': 'การตั้งค่าการแจ้งเตือน',
+  'integration-settings': 'การตั้งค่าการผสานรวม',
+  'application-settings': 'การตั้งค่าแอปพลิเคชัน',
+  'email-notifications': 'การแจ้งเตือนทางอีเมล',
+  'call-notifications': 'การอัปเดตการโทร',
+  'analytics-reports': 'รายงานการวิเคราะห์',
+  'system-alerts': 'การแจ้งเตือนระบบ',
+  'save-changes': 'บันทึกการเปลี่ยนแปลง',
+  'save-preferences': 'บันทึกการตั้งค่า',
+  'save-integration': 'บันทึกการผสานรวม',
+  'save-settings': 'บันทึกการตั้งค่า',
+  'api-key': 'คีย์ API',
+  'webhook-url': 'URL เว็บฮุค',
+  'theme': 'ธีม',
+  'data-retention': 'การเก็บรักษาข้อมูล',
+  'theme-updated': 'อัปเดตธีมแล้ว',
+  'switched-to': 'เปลี่ยนเป็นโหมด {mode} แล้ว',
+
+  // Calls
+  'call-list': 'รายการการโทร',
+  'call-details': 'รายละเอียดการโทร',
+  'caller': 'ผู้โทร',
+  'recipient': 'ผู้รับ',
+  'date': 'วันที่',
+  'duration': 'ระยะเวลา',
+  'transcript': 'บันทึกการสนทนา',
+  'summary': 'สรุป',
+  'tags': 'แท็ก',
+  'recording': 'การบันทึก',
+  'download-recording': 'ดาวน์โหลดการบันทึก',
+  'queued': 'อยู่ในคิว',
+  'ended': 'สิ้นสุดแล้ว',
+
+  // Scheduling
+  'call-scheduling': 'การจัดตารางการโทร',
+  'manage-outbound': 'จัดการและกำหนดการโทรออก',
+  'calendar-view': 'มุมมองปฏิทิน',
+  'schedule-call': 'กำหนดการโทร',
+  'upcoming-calls': 'การโทรที่กำลังจะมาถึง',
+  'schedule-new-call': 'กำหนดการโทรใหม่',
+  'schedule-description': 'กรอกรายละเอียดด้านล่างเพื่อกำหนดการโทร',
+  'add-notes': 'เพิ่มบันทึก...',
+  'cancel': 'ยกเลิก',
+
+  // Help Center
+  'help-center': 'ศูนย์ช่วยเหลือ',
+  'how-can-we-help': 'เราจะช่วยคุณได้อย่างไร?',
+  'search-help': 'ค้นหาบทความช่วยเหลือ...',
+  'quick-links': 'ลิงก์ด่วน',
+  'getting-started': 'เริ่มต้นใช้งาน',
+  'call-management': 'การจัดการการโทร',
+  'analytics-guide': 'คู่มือการวิเคราะห์',
+  'learn-more': 'เรียนรู้เพิ่มเติม',
+  'tutorials-guides': 'บทช่วยสอนและคู่มือ',
+  'frequently-asked': 'คำถามที่พบบ่อย',
+  'still-need-help': 'ยังต้องการความช่วยเหลือ?',
+  'support-available': 'ทีมสนับสนุนของเราพร้อมให้บริการตลอด 24 ชั่วโมง',
+  'contact-support': 'ติดต่อฝ่ายสนับสนุน',
+  'support-description': 'ส่งคำถามของคุณ และเราจะตอบกลับโดยเร็วที่สุด',
+
+  // Analytics
+  'analytics-dashboard': 'แดชบอร์ดการวิเคราะห์',
+  'calls-over-time': 'แนวโน้มการโทรตามเวลา',
+  'vs-last-period': 'เทียบกับช่วงที่แล้ว',
+  'statistics-for': 'สถิติสำหรับ',
+  'view-analytics': 'ดูการวิเคราะห์',
+  'recent-calls': 'การโทรล่าสุด',
+  'view-all': 'ดูทั้งหมด',
+  'call-outcomes': 'ผลลัพธ์การโทร',
+  'call-tags-distribution': 'การกระจายแท็กการโทร',
+  'download': 'ดาวน์โหลด',
+
+  // Call Management
+  'call-recordings': 'บันทึกการโทร',
+  'access-recordings': 'เข้าถึงและดาวน์โหลดบันทึกการโทร',
+  'browse-recordings': 'เรียกดูบันทึก',
+  'schedule-now': 'กำหนดเวลาเดี๋ยวนี้',
+
+  // Assistant List
+  'assistant-list': 'รายการผู้ช่วย AI',
+  'first-message': 'ข้อความแรก',
+  'model': 'โมเดล',
+  'voice': 'เสียง',
+  'created-at': 'สร้างเมื่อ',
+
+  // Form Fields
+  'subject': 'หัวข้อ',
+  'message': 'ข้อความ',
+  'full-name': 'ชื่อ-นามสกุล',
+  'current-password': 'รหัสผ่านปัจจุบัน',
+  'new-password': 'รหัสผ่านใหม่',
+  'email': 'อีเมล',
+  'password': 'รหัสผ่าน',
+  'submit': 'ส่ง',
+
+  // Validation
+  'subject-required': 'จำเป็นต้องระบุหัวข้อ',
+  'message-min-length': 'ข้อความต้องมีอย่างน้อย 10 ตัวอักษร',
+  'required': 'จำเป็นต้องกรอกช่องนี้',
+
+  // Table
+  table: {
+    callReceived: 'รับสาย',
+    recording: 'การบันทึก',
+    duration: 'ระยะเวลา',
+    summary: 'สรุป',
+    status: 'สถานะ',
+    actions: 'การดำเนินการ',
+    assistant: 'ผู้ช่วย',
+    id: 'เลขที่'
+  }
+}

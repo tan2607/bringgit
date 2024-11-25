@@ -1,0 +1,146 @@
+export default {
+  // Navigation & Common
+  home: '首頁',
+  calls: '通話',
+  language: '語言',
+  welcome: '歡迎',
+  analytics: '分析',
+  scheduling: '日程安排',
+  settings: '設定',
+  'dev-tools': '開發者工具',
+  profile: '個人資料',
+  support: '支援',
+
+  // Descriptions
+  'manage-calls': '管理通話和會議',
+  'review-statistics': '查看詳細統計數據',
+  'manage-schedule': '管理通話日程',
+  'configure-preferences': '配置偏好設定',
+  'get-help': '獲取幫助和支援',
+  'view-api': '查看API規範',
+
+  // Auth
+  login: '登入',
+  'sign-up': '註冊',
+  'create-account': '建立新帳戶',
+  'sign-in': '登入您的帳戶',
+  'forgot-password': '忘記密碼',
+  'reset-password': '重設密碼',
+  'microsoft-login': '使用Microsoft帳戶登入',
+  'or-continue-with': '或繼續使用',
+  'already-have-account': '已有帳戶？',
+  'back-to-login': '返回登入',
+  'enter-email': '輸入電子郵件',
+  'enter-password': '輸入密碼',
+  'confirm-password': '確認密碼',
+  'passwords-not-match': '密碼不符',
+  'account-created': '帳戶建立成功',
+  'reset-password-description': '輸入您的電子郵件地址，我們將向您發送重設密碼的連結。',
+
+  // Settings
+  'profile-settings': '個人資料設定',
+  'notification-settings': '通知設定',
+  'integration-settings': '整合設定',
+  'application-settings': '應用程式設定',
+  'email-notifications': '電子郵件通知',
+  'call-notifications': '通話更新',
+  'analytics-reports': '分析報告',
+  'system-alerts': '系統提醒',
+  'save-changes': '儲存變更',
+  'save-preferences': '儲存偏好',
+  'save-integration': '儲存整合',
+  'save-settings': '儲存設定',
+  'api-key': 'API金鑰',
+  'webhook-url': 'Webhook網址',
+  'theme': '主題',
+  'data-retention': '資料保留',
+  'theme-updated': '主題已更新',
+  'switched-to': '已切換至{mode}模式',
+
+  // Calls
+  'call-list': '通話清單',
+  'call-details': '通話詳情',
+  'caller': '來電者',
+  'recipient': '接收者',
+  'date': '日期',
+  'duration': '時長',
+  'transcript': '通話記錄',
+  'summary': '摘要',
+  'tags': '標籤',
+  'recording': '錄音',
+  'download-recording': '下載錄音',
+  'queued': '排隊中',
+  'ended': '已結束',
+
+  // Scheduling
+  'call-scheduling': '通話日程',
+  'manage-outbound': '管理和安排外撥通話',
+  'calendar-view': '日曆檢視',
+  'schedule-call': '安排通話',
+  'upcoming-calls': '即將進行的通話',
+  'schedule-new-call': '安排新通話',
+  'schedule-description': '填寫以下詳細資訊以安排通話。',
+  'add-notes': '新增備註...',
+  'cancel': '取消',
+
+  // Help Center
+  'help-center': '幫助中心',
+  'how-can-we-help': '我們如何幫助您？',
+  'search-help': '搜尋幫助文章...',
+  'quick-links': '快速連結',
+  'getting-started': '入門指南',
+  'call-management': '通話管理',
+  'analytics-guide': '分析指南',
+  'learn-more': '了解更多',
+  'tutorials-guides': '教程和指南',
+  'frequently-asked': '常見問題',
+  'still-need-help': '仍需幫助？',
+  'support-available': '我們的支援團隊全天候為您服務',
+  'contact-support': '聯絡支援',
+  'support-description': '提交您的問題，我們將盡快回覆您。',
+
+  // Analytics
+  'analytics-dashboard': '分析儀表板',
+  'calls-over-time': '通話時間趨勢',
+  'vs-last-period': '與上期相比',
+  'statistics-for': '統計時間',
+  'view-analytics': '查看分析',
+  'recent-calls': '最近通話',
+  'view-all': '查看全部',
+  'call-outcomes': '通話結果',
+  'call-tags-distribution': '通話標籤分佈',
+  'download': '下載',
+
+  // Call Management
+  'call-recordings': '通話錄音',
+  'access-recordings': '存取和下載通話錄音',
+  'browse-recordings': '瀏覽錄音',
+  'schedule-now': '立即安排',
+
+  // Form Fields
+  'subject': '主旨',
+  'message': '訊息',
+  'full-name': '全名',
+  'current-password': '目前密碼',
+  'new-password': '新密碼',
+  'email': '電子郵件',
+  'password': '密碼',
+  'submit': '提交',
+
+  // Validation
+  'subject-required': '主旨為必填項',
+  'message-min-length': '訊息至少需要10個字元',
+  'required': '此欄位為必填項',
+
+  // Table
+  table: {
+    callReceived: '通話接收時間',
+    recording: '錄音',
+    duration: '時長',
+    summary: '摘要',
+    status: '狀態',
+    actions: '操作',
+    assistant: '助理',
+    id: '編號'
+  }
+}

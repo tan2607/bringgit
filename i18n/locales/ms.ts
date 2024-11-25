@@ -1,0 +1,155 @@
+export default {
+  // Navigation & Common
+  home: 'Laman Utama',
+  calls: 'Panggilan',
+  assistants: 'Pembantu AI',
+  language: 'Bahasa',
+  welcome: 'Selamat Datang',
+  analytics: 'Analitik',
+  scheduling: 'Penjadualan',
+  settings: 'Tetapan',
+  'dev-tools': 'Alat Pembangun',
+  profile: 'Profil',
+  support: 'Sokongan',
+
+  // Descriptions
+  'manage-calls': 'Urus panggilan dan mesyuarat',
+  'manage-assistants': 'Urus pembantu AI',
+  'review-statistics': 'Lihat statistik terperinci',
+  'manage-schedule': 'Urus jadual panggilan',
+  'configure-preferences': 'Konfigurasi keutamaan',
+  'get-help': 'Dapatkan bantuan dan sokongan',
+  'view-api': 'Lihat spesifikasi API',
+
+  // Auth
+  login: 'Log Masuk',
+  'sign-up': 'Daftar',
+  'create-account': 'Cipta akaun baharu',
+  'sign-in': 'Log masuk ke akaun anda',
+  'forgot-password': 'Lupa Kata Laluan',
+  'reset-password': 'Tetapkan semula kata laluan',
+  'microsoft-login': 'Log masuk dengan Microsoft',
+  'or-continue-with': 'Atau teruskan dengan',
+  'already-have-account': 'Sudah mempunyai akaun?',
+  'back-to-login': 'Kembali ke Log Masuk',
+  'enter-email': 'Masukkan emel',
+  'enter-password': 'Masukkan kata laluan',
+  'confirm-password': 'Sahkan kata laluan',
+  'passwords-not-match': 'Kata laluan tidak sepadan',
+  'account-created': 'Akaun berjaya dicipta',
+  'reset-password-description': 'Masukkan alamat emel anda dan kami akan menghantar pautan untuk menetapkan semula kata laluan.',
+
+  // Settings
+  'profile-settings': 'Tetapan Profil',
+  'notification-settings': 'Tetapan Pemberitahuan',
+  'integration-settings': 'Tetapan Integrasi',
+  'application-settings': 'Tetapan Aplikasi',
+  'email-notifications': 'Pemberitahuan Emel',
+  'call-notifications': 'Kemas Kini Panggilan',
+  'analytics-reports': 'Laporan Analitik',
+  'system-alerts': 'Amaran Sistem',
+  'save-changes': 'Simpan Perubahan',
+  'save-preferences': 'Simpan Keutamaan',
+  'save-integration': 'Simpan Integrasi',
+  'save-settings': 'Simpan Tetapan',
+  'api-key': 'Kunci API',
+  'webhook-url': 'URL Webhook',
+  'theme': 'Tema',
+  'data-retention': 'Pengekalan Data',
+  'theme-updated': 'Tema dikemas kini',
+  'switched-to': 'Beralih ke mod {mode}',
+
+  // Table
+  table: {
+    callReceived: 'Panggilan diterima',
+    recording: 'Rakaman',
+    duration: 'Tempoh',
+    summary: 'Ringkasan',
+    status: 'Status',
+    actions: 'Tindakan',
+    assistant: 'Pembantu',
+    id: 'No'
+  },
+
+  // Calls
+  'call-list': 'Senarai Panggilan',
+  'call-details': 'Butiran Panggilan',
+  'caller': 'Pemanggil',
+  'recipient': 'Penerima',
+  'date': 'Tarikh',
+  'duration': 'Tempoh',
+  'transcript': 'Transkrip',
+  'summary': 'Ringkasan',
+  'tags': 'Tag',
+  'recording': 'Rakaman',
+  'download-recording': 'Muat Turun Rakaman',
+  'queued': 'Dalam Giliran',
+  'ended': 'Tamat',
+
+  // Assistant List
+  'assistant-list': 'Senarai Pembantu AI',
+  'first-message': 'Mesej Pertama',
+  'model': 'Model',
+  'voice': 'Suara',
+  'created-at': 'Dibuat Pada',
+
+  // Scheduling
+  'call-scheduling': 'Penjadualan Panggilan',
+  'manage-outbound': 'Urus dan jadualkan panggilan keluar',
+  'calendar-view': 'Paparan Kalendar',
+  'schedule-call': 'Jadualkan Panggilan',
+  'upcoming-calls': 'Panggilan Akan Datang',
+  'schedule-new-call': 'Jadualkan Panggilan Baharu',
+  'schedule-description': 'Isi butiran di bawah untuk menjadualkan panggilan anda.',
+  'add-notes': 'Tambah nota...',
+  'cancel': 'Batal',
+
+  // Help Center
+  'help-center': 'Pusat Bantuan',
+  'how-can-we-help': 'Bagaimana kami boleh bantu?',
+  'search-help': 'Cari artikel bantuan...',
+  'quick-links': 'Pautan Pantas',
+  'getting-started': 'Bermula',
+  'call-management': 'Pengurusan Panggilan',
+  'analytics-guide': 'Panduan Analitik',
+  'learn-more': 'Ketahui Lebih Lanjut',
+  'tutorials-guides': 'Tutorial dan Panduan',
+  'frequently-asked': 'Soalan Lazim',
+  'still-need-help': 'Masih perlukan bantuan?',
+  'support-available': 'Pasukan sokongan kami tersedia 24/7 untuk membantu anda',
+  'contact-support': 'Hubungi Sokongan',
+  'support-description': 'Hantar soalan anda dan kami akan membalas secepat mungkin.',
+
+  // Analytics
+  'analytics-dashboard': 'Papan Pemuka Analitik',
+  'calls-over-time': 'Panggilan Mengikut Masa',
+  'vs-last-period': 'berbanding tempoh sebelumnya',
+  'statistics-for': 'Statistik untuk',
+  'view-analytics': 'Lihat Analitik',
+  'recent-calls': 'Panggilan Terkini',
+  'view-all': 'Lihat Semua',
+  'call-outcomes': 'Hasil Panggilan',
+  'call-tags-distribution': 'Taburan Tag Panggilan',
+  'download': 'Muat Turun',
+
+  // Call Management
+  'call-recordings': 'Rakaman Panggilan',
+  'access-recordings': 'Akses dan muat turun rakaman panggilan',
+  'browse-recordings': 'Semak Imbas Rakaman',
+  'schedule-now': 'Jadualkan Sekarang',
+
+  // Form Fields
+  'subject': 'Subjek',
+  'message': 'Mesej',
+  'full-name': 'Nama Penuh',
+  'current-password': 'Kata Laluan Semasa',
+  'new-password': 'Kata Laluan Baharu',
+  'email': 'Emel',
+  'password': 'Kata Laluan',
+  'submit': 'Hantar',
+
+  // Validation
+  'subject-required': 'Subjek diperlukan',
+  'message-min-length': 'Mesej mestilah sekurang-kurangnya 10 aksara',
+  'required': 'Medan ini diperlukan'
+}

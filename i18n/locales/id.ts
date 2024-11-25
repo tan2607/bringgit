@@ -1,0 +1,155 @@
+export default {
+  // Navigation & Common
+  home: 'Beranda',
+  calls: 'Panggilan',
+  assistants: 'Asisten AI',
+  language: 'Bahasa',
+  welcome: 'Selamat Datang',
+  analytics: 'Analitik',
+  scheduling: 'Penjadwalan',
+  settings: 'Pengaturan',
+  'dev-tools': 'Alat Pengembang',
+  profile: 'Profil',
+  support: 'Dukungan',
+
+  // Descriptions
+  'manage-calls': 'Kelola panggilan dan rapat',
+  'manage-assistants': 'Kelola asisten AI',
+  'review-statistics': 'Lihat statistik detail',
+  'manage-schedule': 'Kelola jadwal panggilan',
+  'configure-preferences': 'Konfigurasi preferensi',
+  'get-help': 'Dapatkan bantuan dan dukungan',
+  'view-api': 'Lihat spesifikasi API',
+
+  // Auth
+  login: 'Masuk',
+  'sign-up': 'Daftar',
+  'create-account': 'Buat akun baru',
+  'sign-in': 'Masuk ke akun Anda',
+  'forgot-password': 'Lupa Kata Sandi',
+  'reset-password': 'Atur ulang kata sandi',
+  'microsoft-login': 'Masuk dengan Microsoft',
+  'or-continue-with': 'Atau lanjutkan dengan',
+  'already-have-account': 'Sudah punya akun?',
+  'back-to-login': 'Kembali ke Masuk',
+  'enter-email': 'Masukkan email',
+  'enter-password': 'Masukkan kata sandi',
+  'confirm-password': 'Konfirmasi kata sandi',
+  'passwords-not-match': 'Kata sandi tidak cocok',
+  'account-created': 'Akun berhasil dibuat',
+  'reset-password-description': 'Masukkan alamat email Anda dan kami akan mengirimkan tautan untuk mengatur ulang kata sandi.',
+
+  // Settings
+  'profile-settings': 'Pengaturan Profil',
+  'notification-settings': 'Pengaturan Notifikasi',
+  'integration-settings': 'Pengaturan Integrasi',
+  'application-settings': 'Pengaturan Aplikasi',
+  'email-notifications': 'Notifikasi Email',
+  'call-notifications': 'Pembaruan Panggilan',
+  'analytics-reports': 'Laporan Analitik',
+  'system-alerts': 'Peringatan Sistem',
+  'save-changes': 'Simpan Perubahan',
+  'save-preferences': 'Simpan Preferensi',
+  'save-integration': 'Simpan Integrasi',
+  'save-settings': 'Simpan Pengaturan',
+  'api-key': 'Kunci API',
+  'webhook-url': 'URL Webhook',
+  'theme': 'Tema',
+  'data-retention': 'Penyimpanan Data',
+  'theme-updated': 'Tema diperbarui',
+  'switched-to': 'Beralih ke mode {mode}',
+
+  // Calls
+  'call-list': 'Daftar Panggilan',
+  'call-details': 'Detail Panggilan',
+  'caller': 'Pemanggil',
+  'recipient': 'Penerima',
+  'date': 'Tanggal',
+  'duration': 'Durasi',
+  'transcript': 'Transkrip',
+  'summary': 'Ringkasan',
+  'tags': 'Tag',
+  'recording': 'Rekaman',
+  'download-recording': 'Unduh Rekaman',
+  'queued': 'Dalam Antrian',
+  'ended': 'Selesai',
+
+  // Scheduling
+  'call-scheduling': 'Penjadwalan Panggilan',
+  'manage-outbound': 'Kelola dan jadwalkan panggilan keluar',
+  'calendar-view': 'Tampilan Kalender',
+  'schedule-call': 'Jadwalkan Panggilan',
+  'upcoming-calls': 'Panggilan Mendatang',
+  'schedule-new-call': 'Jadwalkan Panggilan Baru',
+  'schedule-description': 'Isi detail di bawah untuk menjadwalkan panggilan Anda.',
+  'add-notes': 'Tambah catatan...',
+  'cancel': 'Batal',
+
+  // Help Center
+  'help-center': 'Pusat Bantuan',
+  'how-can-we-help': 'Bagaimana kami dapat membantu?',
+  'search-help': 'Cari artikel bantuan...',
+  'quick-links': 'Tautan Cepat',
+  'getting-started': 'Memulai',
+  'call-management': 'Manajemen Panggilan',
+  'analytics-guide': 'Panduan Analitik',
+  'learn-more': 'Pelajari Lebih Lanjut',
+  'tutorials-guides': 'Tutorial dan Panduan',
+  'frequently-asked': 'Pertanyaan Umum',
+  'still-need-help': 'Masih butuh bantuan?',
+  'support-available': 'Tim dukungan kami tersedia 24/7 untuk membantu Anda',
+  'contact-support': 'Hubungi Dukungan',
+  'support-description': 'Kirimkan pertanyaan Anda dan kami akan segera menghubungi Anda.',
+
+  // Analytics
+  'analytics-dashboard': 'Dasbor Analitik',
+  'calls-over-time': 'Panggilan Seiring Waktu',
+  'vs-last-period': 'vs periode sebelumnya',
+  'statistics-for': 'Statistik untuk',
+  'view-analytics': 'Lihat Analitik',
+  'recent-calls': 'Panggilan Terbaru',
+  'view-all': 'Lihat Semua',
+  'call-outcomes': 'Hasil Panggilan',
+  'call-tags-distribution': 'Distribusi Tag Panggilan',
+  'download': 'Unduh',
+
+  // Call Management
+  'call-recordings': 'Rekaman Panggilan',
+  'access-recordings': 'Akses dan unduh rekaman panggilan',
+  'browse-recordings': 'Jelajahi Rekaman',
+  'schedule-now': 'Jadwalkan Sekarang',
+
+  // Assistant List
+  'assistant-list': 'Daftar Asisten AI',
+  'first-message': 'Pesan Pertama',
+  'model': 'Model',
+  'voice': 'Suara',
+  'created-at': 'Dibuat Pada',
+
+  // Table
+  table: {
+    callReceived: 'Panggilan diterima',
+    recording: 'Rekaman',
+    duration: 'Durasi',
+    summary: 'Ringkasan',
+    status: 'Status',
+    actions: 'Tindakan',
+    assistant: 'Asisten',
+    id: 'No'
+  },
+
+  // Form Fields
+  'subject': 'Subjek',
+  'message': 'Pesan',
+  'full-name': 'Nama Lengkap',
+  'current-password': 'Kata Sandi Saat Ini',
+  'new-password': 'Kata Sandi Baru',
+  'email': 'Email',
+  'password': 'Kata Sandi',
+  'submit': 'Kirim',
+
+  // Validation
+  'subject-required': 'Subjek wajib diisi',
+  'message-min-length': 'Pesan harus minimal 10 karakter',
+  'required': 'Bidang ini wajib diisi'
+}
