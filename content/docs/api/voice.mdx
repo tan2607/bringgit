@@ -1,0 +1,334 @@
+# Voice APIs
+
+Our Voice APIs provide a flexible and powerful way to integrate text-to-speech (TTS), speech-to-text (STT), and translation capabilities into your applications. The system supports multiple providers and offers both streaming and batch processing options.
+
+## Overview
+
+The Voice APIs consist of three main services:
+- Text-to-Speech (TTS)
+- Speech-to-Text (STT)
+- Translation
+
+Each service supports multiple providers, allowing you to choose the best option for your specific needs.
+
+## Available Providers
+
+### Text-to-Speech (TTS)
+
+1. **OpenAI**
+   - High-quality voices
+   - Fast processing
+   - Supports streaming
+   - Available voices: alloy, echo, fable, onyx, nova, shimmer
+
+2. **Play.ai**
+   - Dialog-optimized voices
+   - Voice cloning capabilities
+   - Extensive style controls
+   - Quality options: draft, standard, high
+   - [Documentation](https://docs.play.ai/tts-api-reference/endpoints/v1/tts/stream/post-playdialog)
+
+3. **Cartesia**
+   - Ultra-low latency (650ms per second of audio)
+   - First chunk in 135ms
+   - Two models:
+     - sonic-english: Optimized for English
+     - sonic-multilingual: Supports 15 languages
+   - Advanced emotion and speed controls
+
+### Speech-to-Text (STT)
+
+1. **OpenAI (Whisper)**
+   - Highly accurate transcription
+   - Supports 100+ languages
+   - Automatic language detection
+   - Supports Speech Translation
+   - Streaming support
+   - Slower processing speeds (Non Realtime)
+   - Languages: Afrikaans, Arabic, Armenian, Azerbaijani, Belarusian, Bosnian, Bulgarian, Catalan, Chinese, Croatian, Czech, Danish, Dutch, English, Estonian, Finnish, French, Galician, German, Greek, Hebrew, Hindi, Hungarian, Icelandic, Indonesian, Italian, Japanese, Kannada, Kazakh, Korean, Latvian, Lithuanian, Macedonian, Malay, Marathi, Maori, Nepali, Norwegian, Persian, Polish, Portuguese, Romanian, Russian, Serbian, Slovak, Slovenian, Spanish, Swahili, Swedish, Tagalog, Tamil, Thai, Turkish, Ukrainian, Urdu, Vietnamese, and Welsh.
+
+2. **Whisper via Groq**
+   - Faster processing speeds (Realtime)
+   - Same accuracy as OpenAI
+   - Speaker diarization
+   - Punctuation support
+   - Preferred model: 
+     - Multilingual: whisper-large-v3-turbo
+     - English: 
+   - [Documentation](https://console.groq.com/docs/speech-text)
+
+## Environment Setup
+
+Add the following environment variables to your `.env` file:
+
+\`\`\`bash
+OPENAI_API_KEY=your_openai_api_key
+PLAYAI_API_KEY=your_playai_api_key
+PLAYAI_USER_ID=your_playai_user_id
+CARTESIA_API_KEY=your_cartesia_api_key
+GROQ_API_KEY=your_groq_api_key
+\`\`\`
+
+## API Endpoints
+
+### Text-to-Speech (TTS)
+
+**Endpoint:** \`POST /api/voice/tts\`
+
+**Request Body:**
+\`\`\`typescript
+{
+  "text": string,          // Required: Text to convert to speech
+  "options": {
+    "voice": string,       // Optional: Voice ID to use
+    "language": string,    // Optional: Language code (e.g., "en", "es")
+    "speed": number,       // Optional: Speech speed (0.5 to 2.0)
+    "pitch": number,       // Optional: Voice pitch (0.5 to 2.0)
+    "stream": boolean,     // Optional: Enable streaming
+    "modelId": string,     // Optional: Specific model to use
+    "quality": string,     // Optional: "draft" | "standard" | "high"
+    "styleGuidance": number, // Optional: Style control (0.0 to 1.0)
+    "voiceGuidance": number // Optional: Voice similarity (0.0 to 1.0)
+  },
+  "provider": string      // Optional: Provider to use
+}
+\`\`\`
+
+**Response:**
+- Content-Type: \`audio/mpeg\` or \`audio/opus\` for streaming
+- Binary audio data or streaming response
+
+**Example:**
+\`\`\`typescript
+// Basic usage
+const response = await fetch('/api/voice/tts', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    text: "Hello, world!",
+    options: {
+      voice: "alloy",
+      stream: false
+    },
+    provider: "openai"
+  })
+});
+
+const audioBlob = await response.blob();
+const audioUrl = URL.createObjectURL(audioBlob);
+const audio = new Audio(audioUrl);
+audio.play();
+
+// Streaming example
+const response = await fetch('/api/voice/tts', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    text: "Hello, world!",
+    options: {
+      voice: "sonic-english",
+      stream: true
+    },
+    provider: "cartesia"
+  })
+});
+
+const reader = response.body.getReader();
+const audioContext = new AudioContext();
+const streamProcessor = new MediaStreamAudioSourceNode(audioContext);
+
+while (true) {
+  const { done, value } = await reader.read();
+  if (done) break;
+  // Process audio chunks
+  streamProcessor.process(value);
+}
+\`\`\`
+
+### Speech-to-Text (STT)
+
+**Endpoint:** \`POST /api/voice/stt\`
+
+**Request:**
+- Content-Type: \`multipart/form-data\`
+- Form Fields:
+  - \`audio\`: Audio file (WAV, MP3, etc.)
+  - \`options\`: JSON string with configuration
+  - \`provider\`: Provider name (optional)
+
+**Options:**
+\`\`\`typescript
+{
+  "language": string | string[],  // Language code(s)
+  "modelId": string,             // Specific model to use
+  "stream": boolean,             // Enable streaming
+  "interim": boolean,            // Return interim results
+  "punctuation": boolean,        // Include punctuation
+  "diarization": boolean        // Identify speakers
+}
+\`\`\`
+
+**Response:**
+\`\`\`typescript
+{
+  "text": string  // Transcribed text
+}
+\`\`\`
+
+**Example:**
+\`\`\`typescript
+// Basic usage
+const formData = new FormData();
+formData.append('audio', audioFile);
+formData.append('options', JSON.stringify({
+  language: "en",
+  punctuation: true
+}));
+formData.append('provider', 'whisper');
+
+const response = await fetch('/api/voice/stt', {
+  method: 'POST',
+  body: formData
+});
+
+const { text } = await response.json();
+console.log('Transcription:', text);
+
+// Streaming example
+const formData = new FormData();
+formData.append('audio', audioStream);
+formData.append('options', JSON.stringify({
+  language: "en",
+  stream: true,
+  interim: true
+}));
+
+const response = await fetch('/api/voice/stt', {
+  method: 'POST',
+  body: formData
+});
+
+const reader = response.body.getReader();
+while (true) {
+  const { done, value } = await reader.read();
+  if (done) break;
+  console.log('Transcription chunk:', new TextDecoder().decode(value));
+}
+\`\`\`
+
+### Translation
+
+**Endpoint:** \`POST /api/voice/translation\`
+
+**Request Body:**
+\`\`\`typescript
+{
+  "text": string,           // Required: Text to translate
+  "sourceLanguage": string, // Optional: Source language
+  "targetLanguage": string, // Required: Target language
+  "provider": string       // Optional: Provider to use
+}
+\`\`\`
+
+**Response:**
+\`\`\`typescript
+{
+  "translatedText": string
+}
+\`\`\`
+
+**Example:**
+\`\`\`typescript
+const response = await fetch('/api/voice/translation', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    text: "Hello, world!",
+    targetLanguage: "es",
+    provider: "openai"
+  })
+});
+
+const { translatedText } = await response.json();
+console.log('Translation:', translatedText);
+\`\`\`
+
+## Provider-Specific Features
+
+### Cartesia
+
+- **Speed Controls:**
+  - "slowest": ≤ 0.5x
+  - "slow": 0.5x - 0.8x
+  - "normal": 0.8x - 1.1x
+  - "fast": 1.1x - 1.3x
+  - "fastest": > 1.3x
+
+- **Emotion Controls:**
+  - Based on styleGuidance parameter:
+    - > 0.8: "happiness:high"
+    - > 0.5: "happiness:medium"
+    - ≤ 0.5: "neutral"
+
+### Play.ai
+
+- **Voice Cloning:**
+  - Supports custom voice creation
+  - Dialog-optimized models
+  - Voice conditioning options
+
+### OpenAI
+
+- **Voice Selection:**
+  - alloy: Neutral voice
+  - echo: Warm, natural voice
+  - fable: Expressive, dynamic voice
+  - onyx: Deep, resonant voice
+  - nova: Energetic, upbeat voice
+  - shimmer: Clear, precise voice
+
+### Whisper (Groq)
+
+- **Advanced Features:**
+  - Speaker diarization
+  - Punctuation
+  - Multiple language detection
+  - Streaming transcription
+
+## Best Practices
+
+1. **Provider Selection:**
+   - Use Cartesia for low-latency TTS
+   - Use OpenAI for high-quality voices
+   - Use Whisper (Groq) for fast transcription
+   - Use Play.ai for custom voices
+
+2. **Streaming:**
+   - Enable streaming for real-time applications
+   - Use smaller chunks for faster initial response
+   - Handle connection errors gracefully
+
+3. **Language Support:**
+   - Match voice language with text language
+   - Use appropriate models for multilingual content
+   - Consider regional variations
+
+4. **Error Handling:**
+   - Implement proper error handling
+   - Provide fallback options
+   - Monitor API usage and limits
+
+## Rate Limits
+
+- OpenAI: Varies by subscription
+- Play.ai: Varies by plan
+- Cartesia: Contact support for limits
+- Groq: Varies by subscription
+
+## Support
+
+For additional support or questions:
+- OpenAI: [OpenAI Support](https://help.openai.com)
+- Play.ai: [Play.ai Support](https://play.ai/support)
+- Cartesia: [Cartesia Discord](https://discord.gg/cartesia)
+- Groq: [Groq Support](https://groq.com/support)
