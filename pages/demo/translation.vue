@@ -202,9 +202,9 @@ const copyTranslation = async (text: string) => {
 <template>
   <div class="container mx-auto p-4">
     <div class="max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-      <h1 class="text-2xl font-bold mb-4 text-center">{{ t('universal-patient-translator') }}</h1>
+      <h1 class="text-2xl font-bold mb-4 text-center">{{ t('translation.title') }}</h1>
       <p class="text-center text-gray-600 dark:text-gray-400 mb-6">
-        Speak in any language and get instant English translation
+        {{ t('multilingual-voice-translation') }}
       </p>
 
       <!-- Voice Recording -->
@@ -267,7 +267,7 @@ const copyTranslation = async (text: string) => {
       <UCollapsible class="mb-4">
         <template #default="{ open }">
           <UButton
-            :label="t('advanced-options')"
+            :label="t('translation.advancedOptions')"
             color="gray"
             variant="soft"
             block
@@ -286,7 +286,7 @@ const copyTranslation = async (text: string) => {
           <div class="space-y-4 p-4">
             <!-- Source Language Selection -->
             <div class="space-y-2">
-              <label class="font-medium">{{ t('source-language') }}</label>
+              <label class="font-medium">{{ t('translation.sourceLanguage') }}</label>
               <USelectMenu
                 v-model="sourceLanguage"
                 :items="languages"
@@ -311,7 +311,7 @@ const copyTranslation = async (text: string) => {
                 v-model="autoPlayTranslation"
               />
               <label for="autoPlayTranslation" class="text-sm font-medium">
-                Auto-play English translation
+                {{ t('translation.autoPlayTranslation') }}
               </label>
             </div>
 
@@ -319,11 +319,11 @@ const copyTranslation = async (text: string) => {
             <div class="grid grid-cols-2 gap-4">
               <URadioGroup
                 v-model="quality"
-                legend="Translation Quality"
+                :legend="t('translation.translationQuality')"
                 :items="[
-                  { label: 'Fast', value: 'fast' },
-                  { label: 'Standard', value: 'standard' },
-                  { label: 'High', value: 'high' }
+                  { label: t('translation.fast'), value: 'fast' },
+                  { label: t('translation.standard'), value: 'standard' },
+                  { label: t('translation.high'), value: 'high' }
                 ]"
                 orientation="horizontal"
                 class="w-full"
@@ -331,10 +331,10 @@ const copyTranslation = async (text: string) => {
 
               <URadioGroup
                 v-model="formality"
-                legend="Formality"
+                :legend="t('translation.formality')"
                 :items="[
-                  { label: 'Formal', value: 'formal' },
-                  { label: 'Informal', value: 'informal' }
+                  { label: t('translation.formal'), value: 'formal' },
+                  { label: t('translation.informal'), value: 'informal' }
                 ]"
                 orientation="horizontal"
                 class="w-full"
@@ -343,7 +343,7 @@ const copyTranslation = async (text: string) => {
 
             <!-- Temperature Slider -->
             <div>
-              <label class="font-medium block mb-2">{{ t('temperature') }}</label>
+              <label class="font-medium block mb-2">{{ t('translation.temperature') }}</label>
               <USlider v-model="temperature" :min="0" :max="1" :step="0.1" />
             </div>
 
@@ -353,7 +353,7 @@ const copyTranslation = async (text: string) => {
 
       <!-- Translation History -->
       <div v-if="history.length" class="mt-8">
-        <h2 class="text-xl font-bold mb-4">{{ t('history') }}</h2>
+        <h2 class="text-xl font-bold mb-4">{{ t('translation.translationHistory') }}</h2>
         <div class="space-y-4">
           <div
             v-for="item in history"

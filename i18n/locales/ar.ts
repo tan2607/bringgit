@@ -165,4 +165,30 @@ export default {
   'copy-error': 'خطأ في النسخ إلى الحافظة',
   'translation-error': 'خطأ في الترجمة',
   'unknown-error': 'حدث خطأ غير معروف',
+
+  translation: {
+    title: 'الترجمة الصوتية',
+    sourceLanguage: 'اللغة المصدر',
+    targetLanguage: 'اللغة الهدف',
+    advancedOptions: 'خيارات متقدمة',
+    translationQuality: 'جودة الترجمة',
+    fast: 'سريع',
+    standard: 'قياسي',
+    high: 'جودة عالية',
+    formality: 'الرسمية',
+    formal: 'رسمي',
+    informal: 'غير رسمي',
+    temperature: 'العشوائية',
+    autoPlayTranslation: 'تشغيل الترجمة الإنجليزية تلقائياً',
+    originalText: 'النص الأصلي',
+    englishTranslation: 'الترجمة الإنجليزية',
+    translationHistory: 'سجل الترجمة',
+    clearHistory: 'مسح السجل',
+    noHistory: 'لا يوجد سجل للترجمة',
+    recordingInstructions: 'اضغط للتسجيل، حرر للإرسال',
+    recording: 'جاري التسجيل...',
+    translating: 'جاري الترجمة...',
+    failedToTranslate: 'فشلت الترجمة',
+    failedToPlayAudio: 'فشل تشغيل الصوت'
+  }
 }

@@ -184,4 +184,31 @@ export default {
   'explore-demos': 'Explore our AI demos',
   'voice-translation': 'Voice Translation',
   'multilingual-voice-translation': 'Multilingual speech-to-speech translation',
+
+  // Translation demo page
+  translation: {
+    title: 'Voice Translation',
+    sourceLanguage: 'Source Language',
+    targetLanguage: 'Target Language',
+    advancedOptions: 'Advanced Options',
+    translationQuality: 'Translation Quality',
+    fast: 'Fast',
+    standard: 'Standard',
+    high: 'High Quality',
+    formality: 'Formality',
+    formal: 'Formal',
+    informal: 'Informal',
+    temperature: 'Temperature',
+    autoPlayTranslation: 'Auto-play English translation',
+    originalText: 'Original Text',
+    englishTranslation: 'English Translation',
+    translationHistory: 'Translation History',
+    clearHistory: 'Clear History',
+    noHistory: 'No translation history',
+    recordingInstructions: 'Hold to record, release to send',
+    recording: 'Recording...',
+    translating: 'Translating...',
+    failedToTranslate: 'Failed to translate',
+    failedToPlayAudio: 'Failed to play audio'
+  }
 }

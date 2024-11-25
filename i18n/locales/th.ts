@@ -140,7 +140,7 @@ export default {
   'subject-required': 'จำเป็นต้องระบุหัวข้อ',
   'message-min-length': 'ข้อความต้องมีอย่างน้อย 10 ตัวอักษร',
   'required': 'จำเป็นต้องกรอกช่องนี้',
-
+  'press-to-speak': 'กดเพื่อพูด',
   // Table
   table: {
     callReceived: 'รับสาย',
@@ -166,4 +166,30 @@ export default {
   'copy-error': 'เกิดข้อผิดพลาดในการคัดลอกไปยังคลิปบอร์ด',
   'translation-error': 'เกิดข้อผิดพลาดในการแปล',
   'unknown-error': 'เกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ',
+
+  translation: {
+    title: 'การแปลเสียง',
+    sourceLanguage: 'ภาษาต้นฉบับ',
+    targetLanguage: 'ภาษาเป้าหมาย',
+    advancedOptions: 'ตัวเลือกขั้นสูง',
+    translationQuality: 'คุณภาพการแปล',
+    fast: 'เร็ว',
+    standard: 'มาตรฐาน',
+    high: 'คุณภาพสูง',
+    formality: 'ระดับภาษา',
+    formal: 'ทางการ',
+    informal: 'ไม่เป็นทางการ',
+    temperature: 'ความสุ่ม',
+    autoPlayTranslation: 'เล่นเสียงแปลภาษาอังกฤษอัตโนมัติ',
+    originalText: 'ข้อความต้นฉบับ',
+    englishTranslation: 'คำแปลภาษาอังกฤษ',
+    translationHistory: 'ประวัติการแปล',
+    clearHistory: 'ล้างประวัติ',
+    noHistory: 'ไม่มีประวัติการแปล',
+    recordingInstructions: 'กดค้างเพื่อบันทึก ปล่อยเพื่อส่ง',
+    recording: 'กำลังบันทึก...',
+    translating: 'กำลังแปล...',
+    failedToTranslate: 'การแปลล้มเหลว',
+    failedToPlayAudio: 'การเล่นเสียงล้มเหลว'
+  }
 }

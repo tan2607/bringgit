@@ -166,4 +166,30 @@ export default {
     'copy-error': '클립보드 복사 중 오류 발생',
     'translation-error': '번역 중 오류 발생',
     'unknown-error': '알 수 없는 오류가 발생했습니다',
+
+    translation: {
+      title: '음성 번역',
+      sourceLanguage: '원본 언어',
+      targetLanguage: '대상 언어',
+      advancedOptions: '고급 설정',
+      translationQuality: '번역 품질',
+      fast: '빠름',
+      standard: '표준',
+      high: '고품질',
+      formality: '말투',
+      formal: '격식체',
+      informal: '비격식체',
+      temperature: '무작위성',
+      autoPlayTranslation: '영어 번역 자동 재생',
+      originalText: '원문',
+      englishTranslation: '영어 번역',
+      translationHistory: '번역 기록',
+      clearHistory: '기록 지우기',
+      noHistory: '번역 기록이 없습니다',
+      recordingInstructions: '길게 눌러 녹음, 놓아서 전송',
+      recording: '녹음 중...',
+      translating: '번역 중...',
+      failedToTranslate: '번역 실패',
+      failedToPlayAudio: '오디오 재생 실패'
+    }
   }

@@ -185,4 +185,30 @@ export default {
   
   // General UI keys
   'explore': '探索',
+  'press-to-speak': '音声を押して話す',
+  translation: {
+    title: '音声翻訳',
+    sourceLanguage: '原語',
+    targetLanguage: '対象言語',
+    advancedOptions: '詳細設定',
+    translationQuality: '翻訳品質',
+    fast: '高速',
+    standard: '標準',
+    high: '高品質',
+    formality: '文体',
+    formal: '丁寧',
+    informal: 'カジュアル',
+    temperature: 'ランダム性',
+    autoPlayTranslation: '英語翻訳を自動再生',
+    originalText: '原文',
+    englishTranslation: '英語翻訳',
+    translationHistory: '翻訳履歴',
+    clearHistory: '履歴をクリア',
+    noHistory: '翻訳履歴がありません',
+    recordingInstructions: '長押しで録音、離すと送信',
+    recording: '録音中...',
+    translating: '翻訳中...',
+    failedToTranslate: '翻訳に失敗しました',
+    failedToPlayAudio: '音声の再生に失敗しました'
+  }
 }
