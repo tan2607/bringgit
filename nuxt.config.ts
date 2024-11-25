@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  debug: false,
   compatibilityDate: '2024-04-03',
   modules: [
     '@nuxt/ui',
@@ -9,13 +10,18 @@ export default defineNuxtConfig({
     '@vueuse/motion/nuxt',
     '@hebilicious/authjs-nuxt',
     '@nuxtjs/i18n',
-    '@nuxtjs/mdc'
+    '@nuxtjs/mdc',
+    '@nuxt/icon'
   ],
   hub: {
     database: true
   },
   content: {
     // Content module configuration
+    database: {
+      type: 'd1',
+      binding: 'DB'
+    },
     documentDriven: true,
     highlight: {
       theme: 'github-dark'

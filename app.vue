@@ -88,16 +88,39 @@ const items = computed(() => [
     icon: 'i-lucide-help-circle',
     children: [
       {
-        label: t('settings'),
-        icon: 'i-lucide-settings',
-        description: t('configure-preferences'),
-        to: '/settings'
-      },
-      {
         label: t('help-center'),
         icon: 'i-lucide-life-buoy',
         description: t('get-help'),
         to: '/help'
+      },
+      {
+        label: t('settings'),
+        icon: 'i-lucide-settings',
+        description: t('configure-preferences'),
+        to: '/settings'
+      }
+    ]
+  },
+  {
+    label: t('demos'),
+    icon: 'i-lucide-sparkles',
+    description: t('explore-demos'),
+    children: [
+      {
+        label: t('voice-translation'),
+        description: t('multilingual-voice-translation'),
+        to: '/demo/translation'
+      }
+    ]
+  },
+  {
+    label: t('dev-tools'),
+    icon: 'i-lucide-wrench',
+    children: [
+      {
+        label: t('view-api'),
+        icon: 'i-lucide-file-json',
+        to: '/dev'
       }
     ]
   },
@@ -122,29 +145,6 @@ const items = computed(() => [
         icon: 'i-lucide-key',
         description: t('reset-password'),
         to: '/auth/forgot-password'
-      }
-    ]
-  },
-  {
-    label: t('dev-tools'),
-    icon: 'i-lucide-wrench',
-    children: [
-      {
-        label: t('view-api'),
-        icon: 'i-lucide-file-json',
-        to: '/dev'
-      }
-    ]
-  },
-  {
-    label: t('demos'),
-    icon: 'i-lucide-flask',
-    description: t('explore-demos'),
-    children: [
-      {
-        label: t('voice-translation'),
-        description: t('multilingual-voice-translation'),
-        to: '/demo/translation'
       }
     ]
   },

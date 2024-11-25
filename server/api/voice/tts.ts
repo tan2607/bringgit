@@ -1,5 +1,4 @@
-import { defineEventHandler, readBody, createError, setHeader } from 'h3';
-import { VoiceService } from '../../../utils/voice';
+import { VoiceService } from '../../utils/voice';
 
 export default defineEventHandler(async (event) => {
   try {

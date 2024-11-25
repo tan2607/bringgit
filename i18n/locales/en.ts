@@ -10,7 +10,7 @@ export default {
   analytics: 'Analytics',
   scheduling: 'Scheduling',
   settings: 'Settings',
-  'dev-tools': 'Developer Tools',
+  'dev-tools': 'Developer',
   profile: 'Profile',
   support: 'Support',
 

@@ -172,7 +172,6 @@ export default {
     'no-audio': '无音频',
     'please-record-audio': '请先录制音频片段',
     'explore': '探索',
-    'home': '首页',
     'demos': '演示',
     'explore-demos': '探索我们的AI演示',
     'voice-translation': '语音翻译',
