@@ -2,8 +2,7 @@
   <Line :data="chartData" :options="options" />
 </template>
 
-<script setup>
-import { computed } from 'vue'
+<script setup lang="ts">
 import { Line } from 'vue-chartjs'
 import { Chart as ChartJS, LineElement, PointElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js'
 

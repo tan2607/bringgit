@@ -26,84 +26,172 @@
 </style>
 
 <script setup lang="ts">
-const items = ref([
+const { locale, locales, t } = useI18n()
+const switchLocalePath = useSwitchLocalePath()
+const lang = computed(() => locale.value)
+const dir = computed(() => locales[locale.value]?.dir || 'ltr')
+
+// Available locales for the dropdown
+const availableLocales = computed(() => 
+  (locales.value || []).map(l => ({
+    label: l.name,
+    icon: getLocaleIcon(l.code),
+    to: switchLocalePath(l.code)
+  }))
+)
+
+// Get flag icon for locale
+function getLocaleIcon(code: string): string {
+  const iconMap: Record<string, string> = {
+    'ar': 'i-circle-flags-sa',
+    'en': 'i-circle-flags-us',
+    'id': 'i-circle-flags-id',
+    'ja': 'i-circle-flags-jp',
+    'ko': 'i-circle-flags-kr',
+    'ms': 'i-circle-flags-my',
+    'th': 'i-circle-flags-th',
+    'zh_hans': 'i-circle-flags-cn',
+    'zh_hant': 'i-circle-flags-tw'
+  }
+  return iconMap[code] || ''
+}
+
+// Locale dropdown
+const localeDropdown = computed(() => ({
+  label: t('language'),
+  icon: 'i-lucide-languages',
+  children: availableLocales.value
+}))
+
+// Navigation items
+const items = computed(() => [
   {
-    label: 'Home',
+    label: t('home'),
     icon: 'i-lucide-home',
-    to: '/',
+    to: '/'
   },
-  
   {
-    label: 'Calls',
+    label: t('calls'),
     icon: 'i-lucide-phone',
-    description: 'Manage your calls and meetings',
+    description: t('manage-calls'),
     to: '/calls'
   },
   {
-    label: 'Analytics',
+    label: t('assistants'),
+    icon: 'i-lucide-bot',
+    description: t('manage-assistants'),
+    to: '/assistants'
+  },
+  {
+    label: t('analytics'),
     icon: 'i-lucide-line-chart',
-    description: 'Review detailed statistics',
+    description: t('review-statistics'),
     to: '/analytics'
   },
   {
-    label: 'Scheduling',
+    label: t('scheduling'),
     icon: 'i-lucide-calendar',
-    description: 'Manage your call schedule',
+    description: t('manage-schedule'),
     to: '/scheduling'
   },
   {
-    label: 'Support',
+    label: t('support'),
     icon: 'i-lucide-help-circle',
     children: [
       {
-        label: 'Settings',
+        label: t('settings'),
         icon: 'i-lucide-settings',
-        description: 'Configure your preferences',
+        description: t('configure-preferences'),
         to: '/settings'
       },
       {
-        label: 'Help Center',
+        label: t('help-center'),
         icon: 'i-lucide-life-buoy',
-        description: 'Get help and support',
+        description: t('get-help'),
         to: '/help'
       }
     ]
   },
   {
-    label: 'Profile',
+    label: t('profile'),
     icon: 'i-lucide-key',
     children: [
       {
-        label: 'Login',
+        label: t('login'),
         icon: 'i-lucide-log-in',
-        description: 'Sign in to your account',
+        description: t('sign-in'),
         to: '/auth/login'
       },
       {
-        label: 'Sign Up',
+        label: t('sign-up'),
         icon: 'i-lucide-user-plus',
-        description: 'Create a new account',
+        description: t('create-account'),
         to: '/auth/signup'
       },
       {
-        label: 'Forgot Password',
+        label: t('forgot-password'),
         icon: 'i-lucide-key',
-        description: 'Reset your password',
+        description: t('reset-password'),
         to: '/auth/forgot-password'
       }
     ]
   },
+  {
+    label: t('dev-tools'),
+    icon: 'i-lucide-wrench',
+    children: [
+      {
+        label: t('view-api'),
+        icon: 'i-lucide-file-json',
+        to: '/dev'
+      }
+    ]
+  },
+  {
+    label: t('demos'),
+    icon: 'i-lucide-flask',
+    description: t('explore-demos'),
+    children: [
+      {
+        label: t('voice-translation'),
+        description: t('multilingual-voice-translation'),
+        to: '/demo/translation'
+      }
+    ]
+  },
+  localeDropdown.value
 ])
 
 const colorMode = useColorMode()
 
+onMounted(() => {
+  const browserLocale = locale.value;
+  const supportedLocales = ['ar', 'en', 'id', 'ja', 'ko', 'ms', 'th', 'zh_hans', 'zh_hant']
+  
+  // Special case for Chinese
+  if (browserLocale.startsWith('zh')) {
+    locale.value = browserLocale.includes('hant') ? 'zh_hant' : 'zh_hans'
+    return
+  }
+
+  // For other languages, use the base language code
+  const baseLocale = browserLocale.split('-')[0]
+  if (supportedLocales.includes(baseLocale)) {
+    locale.value = baseLocale
+  }
+})
+
 useHead({
-  title: 'KeyReply Voice AI'
+  title: 'KeyReply Voice AI',
+  htmlAttrs: {
+    lang,
+    dir
+  }
 })
 </script>
 
 <template>
-  <UApp :class="{ 'dark': colorMode.value === 'dark' }">
+  <UApp :locale="locales[locale as string]" :class="{ 'dark': colorMode.value === 'dark' }">
     <!-- Navigation -->
     <UNavigationMenu highlight :items="items" class="w-full sticky top-0 z-50 border-b bg-white dark:bg-gray-900" />
 

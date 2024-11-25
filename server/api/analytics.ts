@@ -33,7 +33,7 @@ export default defineEventHandler(async (event) => {
         let calls = analytics.find((a) => a.name === "calls");
         return {
             calls,
-            timeRange: calls?.timeRange
+            timeRange: calls?.timeRange!
         };
     } catch (error) {
         console.error("Error fetching analytics:", error);

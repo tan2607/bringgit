@@ -2,8 +2,7 @@
   <Pie :data="chartData" :options="options" />
 </template>
 
-<script setup>
-import { computed } from 'vue'
+<script setup lang="ts">
 import { Pie } from 'vue-chartjs'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
 
