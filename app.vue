@@ -28,8 +28,9 @@
 <script setup lang="ts">
 import { availableLocales, getLocaleIcon } from '~/i18n/config'
 
-const { locale, locales, t } = useI18n()
+const { locale, locales, setLocale, t } = useI18n()
 const switchLocalePath = useSwitchLocalePath()
+const localeRoute = useLocaleRoute()
 const lang = computed(() => locale.value)
 const dir = computed(() => locales[locale.value]?.dir || 'ltr')
 
@@ -38,7 +39,8 @@ const availableLocaleItems = computed(() =>
   (locales.value || []).map(l => ({
     label: l.name,
     icon: getLocaleIcon(l.code),
-    to: switchLocalePath(l.code)
+    onSelect: () => setLocale(l.code),
+    selected: l.code === locale.value
   }))
 )
 
@@ -57,31 +59,31 @@ const items = computed(() => [
   {
     label: t('home'),
     icon: 'i-lucide-home',
-    to: '/'
+    to: localeRoute('/')?.path
   },
   {
     label: t('calls'),
     icon: 'i-lucide-phone',
     description: t('manage-calls'),
-    to: '/calls'
+    to: localeRoute('/calls')?.path
   },
   {
     label: t('assistants'),
     icon: 'i-lucide-bot',
     description: t('manage-assistants'),
-    to: '/assistants'
+    to: localeRoute('/assistants')?.path
   },
   {
     label: t('analytics'),
     icon: 'i-lucide-line-chart',
     description: t('review-statistics'),
-    to: '/analytics'
+    to: localeRoute('/analytics')?.path
   },
   {
     label: t('scheduling'),
     icon: 'i-lucide-calendar',
     description: t('manage-schedule'),
-    to: '/scheduling'
+    to: localeRoute('/scheduling')?.path
   },
   {
     label: t('support'),
@@ -91,13 +93,13 @@ const items = computed(() => [
         label: t('help-center'),
         icon: 'i-lucide-life-buoy',
         description: t('get-help'),
-        to: '/help'
+        to: localeRoute('/help')?.path
       },
       {
         label: t('settings'),
         icon: 'i-lucide-settings',
         description: t('configure-preferences'),
-        to: '/settings'
+        to: localeRoute('/settings')?.path
       }
     ]
   },
@@ -109,7 +111,7 @@ const items = computed(() => [
       {
         label: t('voice-translation'),
         description: t('multilingual-voice-translation'),
-        to: '/demo/translation'
+        to: localeRoute('/demo/translation')?.path
       }
     ]
   },
@@ -120,7 +122,7 @@ const items = computed(() => [
       {
         label: t('view-api'),
         icon: 'i-lucide-file-json',
-        to: '/dev'
+        to: localeRoute('/dev')?.path
       }
     ]
   },
@@ -132,19 +134,19 @@ const items = computed(() => [
         label: t('login'),
         icon: 'i-lucide-log-in',
         description: t('sign-in'),
-        to: '/auth/login'
+        to: localeRoute('/auth/login')?.path
       },
       {
         label: t('sign-up'),
         icon: 'i-lucide-user-plus',
         description: t('create-account'),
-        to: '/auth/signup'
+        to: localeRoute('/auth/signup')?.path
       },
       {
         label: t('forgot-password'),
         icon: 'i-lucide-key',
         description: t('reset-password'),
-        to: '/auth/forgot-password'
+        to: localeRoute('/auth/forgot-password')?.path
       }
     ]
   },

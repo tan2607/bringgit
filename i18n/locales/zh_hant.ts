@@ -2,6 +2,7 @@ export default {
   // Navigation & Common
   home: '首頁',
   calls: '通話',
+  assistants: '助理',
   language: '語言',
   welcome: '歡迎',
   analytics: '分析',
@@ -10,14 +11,17 @@ export default {
   'dev-tools': '開發者工具',
   profile: '個人資料',
   support: '支援',
+  demos: '示範',
 
   // Descriptions
   'manage-calls': '管理通話和會議',
+  'manage-assistants': '管理AI助理',
   'review-statistics': '查看詳細統計數據',
   'manage-schedule': '管理通話日程',
   'configure-preferences': '配置偏好設定',
   'get-help': '獲取幫助和支援',
   'view-api': '查看API規範',
+  'explore-demos': '探索我們的AI示範',
 
   // Auth
   login: '登入',
@@ -157,4 +161,6 @@ export default {
   'copy-error': '複製到剪貼板時出錯',
   'translation-error': '翻譯過程中出錯',
   'unknown-error': '發生未知錯誤',
+  'voice-translation': '語音翻譯',
+  'multilingual-voice-translation': '多語言語音翻譯',
 }

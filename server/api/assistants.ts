@@ -10,9 +10,6 @@ export default defineEventHandler(async (event) => {
 
   try {
     const assistants = await client.assistants.list();
-
-    console.log(assistants[2].model.messages[0].content)
-
     return assistants.map((assistant) => ({
       id: assistant.id,
       orgId: assistant.orgId,
