@@ -41,19 +41,16 @@ export class WhisperProvider implements VoiceProvider {
               currentChunk.push(value);
               currentSize += value.length;
 
-              // Process when we have enough data or it's the last chunk
               if (currentSize >= chunkSize || done) {
                 const audioBlob = new Blob(currentChunk, { type: 'audio/wav' });
                 const text = await this.transcribeChunk(audioBlob, options);
                 controller.enqueue(text);
 
-                // Reset for next chunk
                 currentChunk = [];
                 currentSize = 0;
               }
             }
 
-            // Process any remaining data
             if (currentChunk.length > 0) {
               const audioBlob = new Blob(currentChunk, { type: 'audio/wav' });
               const text = await this.transcribeChunk(audioBlob, options);
@@ -76,42 +73,23 @@ export class WhisperProvider implements VoiceProvider {
   }
 
   private async transcribeChunk(chunk: Blob, options: ASROptions): Promise<string> {
-    // Convert audio chunk to base64
-    const arrayBuffer = await chunk.arrayBuffer();
-    const base64Audio = Buffer.from(arrayBuffer).toString('base64');
+    try {
+      const arrayBuffer = await chunk.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
 
-    const completion = await this.client.chat.completions.create({
-      messages: [
-        {
-          role: "system",
-          content: `You are a speech recognition system. Transcribe the following audio accurately. ${
-            options.language ? `The audio is in ${Array.isArray(options.language) ? options.language[0] : options.language}.` : ''
-          }${
-            options.punctuation ? ' Include proper punctuation.' : ''
-          }${
-            options.diarization ? ' Identify different speakers.' : ''
-          }`
-        },
-        {
-          role: "user",
-          content: [
-            {
-              type: "text",
-              text: "Please transcribe this audio"
-            },
-            {
-              type: "audio",
-              audio: base64Audio
-            }
-          ]
-        }
-      ],
-      model: "whisper-large-v3",
-      temperature: 0.1,
-      stream: false,
-    });
+      const translation = await this.client.audio.translations.create({
+        file: buffer,
+        model: "whisper-large-v3",
+        prompt: options.prompt || undefined,
+        response_format: "text",
+        temperature: options.temperature || 0.0
+      });
 
-    return completion.choices[0]?.message?.content || '';
+      return translation.text;
+    } catch (error) {
+      console.error('Error in Groq transcription:', error);
+      throw error;
+    }
   }
 
   getSupportedLanguages(): string[] {

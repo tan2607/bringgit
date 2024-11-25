@@ -66,7 +66,18 @@ export default defineNuxtConfig({
       },
       ui: {
         scalar: {
-          route: "/dev"
+          route: "/dev",
+          "guides": [
+            {
+              "name": "Voice AI",
+              "sidebar": [
+                {
+                  "path": "content/docs/api/voice.md",
+                  "type": "page"
+                }
+              ]
+            }
+          ],
         },
       }
     }

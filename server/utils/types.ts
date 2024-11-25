@@ -11,6 +11,7 @@ export interface VoiceConfig {
   codeSwitching?: boolean;
   ttsProvider?: boolean;  // Indicates if provider supports TTS
   asrProvider?: boolean;  // Indicates if provider supports ASR
+  translationProvider?: boolean;  // Indicates if provider supports translation
 }
 
 export interface TTSOptions {
@@ -34,20 +35,32 @@ export interface TTSOptions {
 }
 
 export interface ASROptions {
-  audio: Blob | ArrayBuffer | ReadableStream;  // Support streaming input
+  audio: Blob | ArrayBuffer | ReadableStream<Uint8Array>;  // Support streaming input
   modelId?: string;
   language?: string | string[];
   codeSwitching?: boolean;
   interim?: boolean;
   punctuation?: boolean;
   diarization?: boolean;
-  stream?: boolean;  // Add streaming option
+  stream?: boolean;
+  prompt?: string;
+  temperature?: number;
+  response_format?: 'text' | 'verbose_json';
+}
+
+export interface TranslationOptions extends ASROptions {
+  targetLanguage?: string;
+  sourceLanguage?: string;
+  quality?: 'draft' | 'standard' | 'high';
+  preserveFormatting?: boolean;
+  formality?: 'formal' | 'informal';
 }
 
 // Base provider interface
 export interface VoiceProvider {
   tts?(options: TTSOptions): Promise<ArrayBuffer | ReadableStream<Uint8Array>>;
   asr?(options: ASROptions): Promise<string | ReadableStream<string>>;
+  translate?(options: TranslationOptions): Promise<string | ReadableStream<string>>;
   getSupportedLanguages(): string[];
   getSupportedVoices(language?: string): Promise<string[]>;
 }

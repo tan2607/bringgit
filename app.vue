@@ -26,13 +26,15 @@
 </style>
 
 <script setup lang="ts">
+import { availableLocales, getLocaleIcon } from '~/i18n/config'
+
 const { locale, locales, t } = useI18n()
 const switchLocalePath = useSwitchLocalePath()
 const lang = computed(() => locale.value)
 const dir = computed(() => locales[locale.value]?.dir || 'ltr')
 
 // Available locales for the dropdown
-const availableLocales = computed(() => 
+const availableLocaleItems = computed(() => 
   (locales.value || []).map(l => ({
     label: l.name,
     icon: getLocaleIcon(l.code),
@@ -40,28 +42,15 @@ const availableLocales = computed(() =>
   }))
 )
 
-// Get flag icon for locale
-function getLocaleIcon(code: string): string {
-  const iconMap: Record<string, string> = {
-    'ar': 'i-circle-flags-sa',
-    'en': 'i-circle-flags-us',
-    'id': 'i-circle-flags-id',
-    'ja': 'i-circle-flags-jp',
-    'ko': 'i-circle-flags-kr',
-    'ms': 'i-circle-flags-my',
-    'th': 'i-circle-flags-th',
-    'zh_hans': 'i-circle-flags-cn',
-    'zh_hant': 'i-circle-flags-tw'
-  }
-  return iconMap[code] || ''
-}
-
 // Locale dropdown
-const localeDropdown = computed(() => ({
-  label: t('language'),
-  icon: 'i-lucide-languages',
-  children: availableLocales.value
-}))
+const localeDropdown = computed(() => {
+  const currentLocale = locales.value?.find(l => l.code === locale.value)
+  return {
+    label: currentLocale?.name || t('language'),
+    icon: getLocaleIcon(currentLocale?.code || 'en'),
+    children: availableLocaleItems.value
+  }
+})
 
 // Navigation items
 const items = computed(() => [

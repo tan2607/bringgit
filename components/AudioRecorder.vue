@@ -1,28 +1,27 @@
 <template>
-  <div class="flex items-center space-x-2">
+  <div class="flex flex-col items-center justify-center gap-4">
     <UButton 
       v-if="!isRecording" 
       @click="startRecording" 
       :disabled="disabled"
-      variant="outline"
+      class="w-20 h-20 !rounded-full !p-0 flex items-center justify-center"
+      color="primary"
     >
-      <UIcon name="i-lucide-mic" class="mr-2" />
-      {{ t('start-recording') }}
+      <UIcon name="i-lucide-mic" class="w-8 h-8" />
     </UButton>
     
     <UButton 
       v-else 
       @click="stopRecording" 
-      color="red"
-      variant="outline"
+      class="w-20 h-20 !rounded-full !p-0 flex items-center justify-center"
+      color="error"
     >
-      <UIcon name="i-lucide-stop-circle" class="mr-2" />
-      {{ t('stop-recording') }}
+      <UIcon name="i-lucide-stop-circle" class="w-8 h-8" />
     </UButton>
     
-    <div v-if="isRecording" class="text-sm text-red-500">
-      {{ t('recording') }}
-    </div>
+    <span class="text-sm text-gray-600">
+      {{ isRecording ? t('recording') : t('press-to-speak') }}
+    </span>
   </div>
 </template>
 
