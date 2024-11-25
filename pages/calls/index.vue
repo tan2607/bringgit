@@ -1,6 +1,6 @@
 <template>
   <UContainer class="my-8">
-    <h1 class="text-2xl font-bold mb-4">Call List</h1>
+    <h1 class="text-2xl font-bold mb-4">{{ t('call-list') }}</h1>
 
     <!-- Filters -->
     <div class="filters flex gap-4 mb-4">
@@ -10,62 +10,56 @@
       </div>
 
       <USelect v-model="callStatus" :items="[
-        { label: 'Queued', value: 'queued' },
-        { label: 'Ended', value: 'ended' }
+        { label: t('queued'), value: 'queued' },
+        { label: t('ended'), value: 'ended' }
       ]" />
     </div>
 
     <CallTable :data="filteredCalls" />
 
-    <!-- Modal -->
-    <UModal :open="callsStore.isModalOpen" title="Call Summary" :description="callsStore.selectedCall?.summary"
-      :close="false">
-      <template #body>
-        <div>
-          <h4 class="font-medium mb-2">Transcript</h4>
-          <UTextarea v-model="callsStore.selectedCall.transcript" autoresize :maxrows="10" disabled highlight
-            class="w-full"></UTextarea>
-        </div>
-      </template>
-
-      <template #footer>
-        <UButton color="neutral" @click="closeModal()">Close</UButton>
-      </template>
-    </UModal>
+    <TranscriptModal />
   </UContainer>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 definePageMeta({ middleware: "auth" })
-
-import { ref, computed, onBeforeUnmount } from 'vue'
-import { useCallsStore } from '@/stores/calls'
+import { useCalls } from '@/composables/useCalls'
 import CallTable from '@/components/CallTable.vue'
+import TranscriptModal from '@/components/TranscriptModal.vue'
 
-const callsStore = useCallsStore()
+const { t } = useI18n()
+
 const startDate = ref(new Date(Date.now() - (7 * 86400000)).toISOString().split('T')[0])
 const endDate = ref(new Date(Date.now() + 86400000).toISOString().split('T')[0])
 const callStatus = ref('ended')
 
-const closeModal = () => callsStore.isModalOpen = false;
+const { calls, stopCurrentAudio, fetchCalls } = useCalls()
 
-const filteredCalls = computed(() =>
-  callsStore.filteredCalls(startDate.value, endDate.value, callStatus.value)
-)
+const filteredCalls = computed(() => {
+  const start = new Date(startDate.value)
+  const end = new Date(endDate.value)
+  
+  return calls.value.filter(call => {
+    const callDate = new Date(call.startedAt)
+    return (
+      callDate >= start &&
+      callDate <= end &&
+      call.status === callStatus.value
+    )
+  })
+})
 
-// Fetch calls when component mounts
-await callsStore.fetchCalls()
+onMounted(async () => {
+  await fetchCalls()
+})
 
 onBeforeUnmount(() => {
-  callsStore.stopCurrentAudio()
+  stopCurrentAudio()
 })
 </script>
 
 <style scoped>
-.call-list-page {
-  padding: 1rem;
-}
-
 .filters {
   display: flex;
   align-items: end;
