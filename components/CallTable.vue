@@ -21,13 +21,13 @@
 </template>
 
 <script setup lang="ts">
-import { formatTimeAgo } from '@vueuse/core'
+import { formatTimeAgo, useClipboard } from '@vueuse/core'
 import { useCalls } from '@/composables/useCalls'
 import TranscriptModal from '@/components/TranscriptModal.vue'
-import { useI18n } from 'vue-i18n'
 
 const UButton = resolveComponent('UButton')
 const UBadge = resolveComponent('UBadge')
+const toast = useToast();
 
 interface TableData {
   id: string
@@ -53,6 +53,16 @@ const props = defineProps({
 const { isLoading, currentPlayingId, togglePlayAudio, selectedCall } = useCalls()
 
 const { t } = useI18n()
+
+const { copy } = useClipboard()
+
+const transformRecordingUrl = (originalUrl: string) => {
+  if (!originalUrl) return ''
+  const host = window.location.host
+  const protocol = window.location.protocol
+  const path = originalUrl.replace('https://storage.vapi.ai/', '')
+  return `${protocol}//${host}/api/recording/${path}`
+}
 
 const columns = computed(() => {
   const baseColumns = [
@@ -82,6 +92,7 @@ const columns = computed(() => {
       header: () => t('table.recording'),
       cell: (row) => {
         const isPlaying = computed(() => currentPlayingId.value === row.getValue('id'))
+        const proxyUrl = transformRecordingUrl(row.getValue('recordingUrl'))
         return h('div', { class: 'flex gap-2' }, [
           h(UButton, {
             icon: isPlaying.value ? 'i-lucide-pause-circle' : 'i-lucide-play-circle',
@@ -89,7 +100,24 @@ const columns = computed(() => {
             color: isPlaying.value ? 'error' : 'primary',
             variant: isPlaying.value ? 'solid' : 'ghost',
             class: 'hover:scale-110 transition-transform',
-            onClick: () => togglePlayAudio(row.getValue('recordingUrl'), row.getValue('id'))
+            onClick: () => togglePlayAudio(proxyUrl, row.getValue('id'))
+          }),
+          h(UButton, {
+            icon: 'i-lucide-share-2',
+            size: 'sm',
+            color: 'primary',
+            variant: 'ghost',
+            class: 'hover:scale-110 transition-transform',
+            onClick: () => {
+              copy(proxyUrl)
+              toast.add({
+                title: 'URL Copied',
+                duration: 1500,
+                description: 'File URL copied to clipboard!',
+                color: 'success', // or another appropriate color
+                icon: 'i-lucide-check' // optional icon
+              })
+            }
           }),
           h(UButton, {
             icon: 'i-lucide-download',
@@ -99,7 +127,7 @@ const columns = computed(() => {
             class: 'hover:scale-110 transition-transform',
             onClick: () => {
               const link = document.createElement('a')
-              link.href = row.getValue('recordingUrl')
+              link.href = proxyUrl
               link.download = `recording-${row.getValue('id')}.mp3`
               link.click()
             }

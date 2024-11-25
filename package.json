@@ -38,6 +38,7 @@
     "class-variance-authority": "latest",
     "clsx": "latest",
     "drizzle-kit": "latest",
-    "tailwind-merge": "latest"
+    "tailwind-merge": "latest",
+    "wrangler": "3.88.0"
   }
 }
