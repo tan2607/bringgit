@@ -191,5 +191,30 @@ export default {
     translating: 'กำลังแปล...',
     failedToTranslate: 'การแปลล้มเหลว',
     failedToPlayAudio: 'การเล่นเสียงล้มเหลว'
+  },
+
+  // Common
+  success: 'สำเร็จ',
+  'patient-intake.form-submitted': 'ส่งแบบฟอร์มรับผู้ป่วยเรียบร้อยแล้ว',
+
+  // Patient Intake Form
+  'patient-intake': {
+    title: 'แบบฟอร์มรับผู้ป่วยฉุกเฉิน',
+    instruction: 'คุณสามารถพิมพ์คำตอบหรือคลิกที่ไอคอนไมโครโฟนเพื่อพูด คำตอบของคุณจะถูกบันทึกทั้งในภาษาที่คุณเลือกและภาษาอังกฤษ',
+    'reason-for-visit': 'เหตุผลในการมา',
+    symptoms: 'อาการ',
+    'symptoms-placeholder': 'อธิบายอาการของคุณ...',
+    'start-time': 'เวลาที่เริ่มมีอาการ',
+    'start-time-placeholder': 'อาการของคุณเริ่มเมื่อไหร่?',
+    'medical-history': 'ประวัติการรักษา',
+    conditions: 'โรคประจำตัว',
+    'conditions-placeholder': 'ระบุโรคเรื้อรังหรือการผ่าตัดที่ผ่านมา...',
+    medications: 'ยาที่ใช้ในปัจจุบัน',
+    'medications-placeholder': 'ระบุยาที่คุณกำลังใช้อยู่...',
+    lifestyle: 'ข้อมูลการใช้ชีวิต',
+    smoking: 'การสูบบุหรี่',
+    alcohol: 'การดื่มแอลกอฮอล์',
+    activity: 'กิจกรรมทางกาย',
+    submit: 'ส่งแบบฟอร์ม'
   }
 }

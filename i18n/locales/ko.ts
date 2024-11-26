@@ -191,5 +191,30 @@ export default {
       translating: '번역 중...',
       failedToTranslate: '번역 실패',
       failedToPlayAudio: '오디오 재생 실패'
-    }
+    },
+
+    // Common
+    success: '성공',
+    'patient-intake.form-submitted': '환자 접수 양식이 성공적으로 제출되었습니다',
+
+    // Patient Intake Form
+    'patient-intake': {
+      title: '응급실 환자 접수',
+      instruction: '답변을 입력하거나 마이크 아이콘을 클릭하여 음성으로 입력할 수 있습니다. 귀하의 응답은 선택한 언어와 영어로 기록됩니다.',
+      'reason-for-visit': '방문 이유',
+      symptoms: '증상',
+      'symptoms-placeholder': '증상을 설명해 주세요...',
+      'start-time': '증상 시작 시간',
+      'start-time-placeholder': '증상이 언제 시작되었나요?',
+      'medical-history': '병력',
+      conditions: '기존 질환',
+      'conditions-placeholder': '만성 질환이나 이전 수술 내역을 나열해 주세요...',
+      medications: '현재 복용 중인 약물',
+      'medications-placeholder': '현재 복용 중인 모든 약물을 나열해 주세요...',
+      lifestyle: '생활 습관 정보',
+      smoking: '흡연 여부',
+      alcohol: '음주 여부',
+      activity: '신체 활동',
+      submit: '양식 제출'
+    },
   }

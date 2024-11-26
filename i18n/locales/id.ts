@@ -166,4 +166,29 @@ export default {
   'copy-error': 'Gagal menyalin ke clipboard',
   'translation-error': 'Terjadi kesalahan saat menerjemahkan',
   'unknown-error': 'Terjadi kesalahan yang tidak diketahui',
+
+  // Common
+  success: 'Berhasil',
+  'patient-intake.form-submitted': 'Formulir penerimaan pasien berhasil dikirim',
+
+  // Patient Intake Form
+  'patient-intake': {
+    title: 'Formulir Penerimaan Pasien Gawat Darurat',
+    instruction: 'Anda dapat mengetik jawaban atau klik ikon mikrofon untuk berbicara. Jawaban Anda akan dicatat dalam bahasa pilihan Anda dan bahasa Inggris.',
+    'reason-for-visit': 'Alasan Kunjungan',
+    symptoms: 'Gejala',
+    'symptoms-placeholder': 'Jelaskan gejala Anda...',
+    'start-time': 'Waktu Mulai Gejala',
+    'start-time-placeholder': 'Kapan gejala Anda mulai?',
+    'medical-history': 'Riwayat Medis',
+    conditions: 'Kondisi yang Ada',
+    'conditions-placeholder': 'Sebutkan penyakit kronis atau operasi sebelumnya...',
+    medications: 'Obat Saat Ini',
+    'medications-placeholder': 'Sebutkan obat yang sedang Anda konsumsi...',
+    lifestyle: 'Informasi Gaya Hidup',
+    smoking: 'Kebiasaan Merokok',
+    alcohol: 'Konsumsi Alkohol',
+    activity: 'Aktivitas Fisik',
+    submit: 'Kirim Formulir'
+  },
 }

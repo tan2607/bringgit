@@ -166,4 +166,29 @@ export default {
   'copy-error': 'Gagal menyalin ke papan klip',
   'translation-error': 'Ralat semasa menterjemah',
   'unknown-error': 'Ralat yang tidak diketahui telah berlaku',
+
+  // Common
+  success: 'Berjaya',
+  'patient-intake.form-submitted': 'Borang kemasukan pesakit berjaya dihantar',
+
+  // Patient Intake Form
+  'patient-intake': {
+    title: 'Borang Kemasukan Pesakit Kecemasan',
+    instruction: 'Anda boleh menaip jawapan atau klik ikon mikrofon untuk bercakap. Jawapan anda akan direkodkan dalam bahasa pilihan anda dan bahasa Inggeris.',
+    'reason-for-visit': 'Sebab Lawatan',
+    symptoms: 'Simptom',
+    'symptoms-placeholder': 'Terangkan simptom anda...',
+    'start-time': 'Masa Simptom Bermula',
+    'start-time-placeholder': 'Bila simptom anda bermula?',
+    'medical-history': 'Sejarah Perubatan',
+    conditions: 'Penyakit Sedia Ada',
+    'conditions-placeholder': 'Senaraikan sebarang penyakit kronik atau pembedahan terdahulu...',
+    medications: 'Ubat Semasa',
+    'medications-placeholder': 'Senaraikan ubat yang anda sedang ambil...',
+    lifestyle: 'Maklumat Gaya Hidup',
+    smoking: 'Tabiat Merokok',
+    alcohol: 'Pengambilan Alkohol',
+    activity: 'Aktiviti Fizikal',
+    submit: 'Hantar Borang'
+  },
 }

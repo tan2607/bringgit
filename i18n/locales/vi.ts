@@ -1,0 +1,242 @@
+export default {
+  // Common
+  success: 'Thành công',
+  'patient-intake.form-submitted': 'Biểu mẫu tiếp nhận bệnh nhân đã được gửi thành công',
+
+  // Patient Intake Form
+  'patient-intake': {
+    title: 'Tiếp nhận Bệnh nhân Khoa Cấp cứu',
+    instruction: 'Bạn có thể nhập câu trả lời hoặc nhấp vào biểu tượng micrô để nói. Câu trả lời của bạn sẽ được ghi lại bằng ngôn ngữ bạn chọn và tiếng Anh.',
+    'reason-for-visit': 'Lý do khám',
+    symptoms: 'Triệu chứng',
+    'symptoms-placeholder': 'Mô tả các triệu chứng chính của bạn...',
+    'start-time': 'Thời gian bắt đầu',
+    'start-time-placeholder': 'Khi nào những triệu chứng này bắt đầu?',
+    'medical-history': 'Tiền sử bệnh',
+    conditions: 'Bệnh mãn tính',
+    'conditions-placeholder': 'Liệt kê bất kỳ bệnh mãn tính hoặc phẫu thuật trước đây...',
+    medications: 'Thuốc hiện tại',
+    'medications-placeholder': 'Liệt kê các loại thuốc bạn đang dùng...',
+    lifestyle: 'Thông tin lối sống',
+    smoking: 'Thói quen hút thuốc',
+    alcohol: 'Thói quen uống rượu',
+    activity: 'Hoạt động thể chất',
+    submit: 'Gửi biểu mẫu'
+  },
+
+  // Navigation & Common
+  home: 'Trang chủ',
+  calls: 'Cuộc gọi',
+  assistants: 'Trợ lý',
+  language: 'Ngôn ngữ',
+  welcome: 'Chào mừng',
+  analytics: 'Phân tích',
+  scheduling: 'Lịch trình',
+  settings: 'Cài đặt',
+  'dev-tools': 'Nhà phát triển',
+  profile: 'Hồ sơ',
+  support: 'Hỗ trợ',
+
+  // Descriptions
+  'manage-calls': 'Quản lý cuộc gọi và họp',
+  'manage-assistants': 'Quản lý trợ lý AI',
+  'review-statistics': 'Xem thống kê chi tiết',
+  'manage-schedule': 'Quản lý lịch gọi',
+  'configure-preferences': 'Cấu hình tùy chọn',
+  'get-help': 'Nhận trợ giúp và hỗ trợ',
+  'view-api': 'Xem thông số kỹ thuật API',
+
+  // Auth
+  login: 'Đăng nhập',
+  'sign-up': 'Đăng ký',
+  'create-account': 'Tạo tài khoản mới',
+  'sign-in': 'Đăng nhập vào tài khoản của bạn',
+  'forgot-password': 'Quên mật khẩu',
+  'reset-password': 'Đặt lại mật khẩu',
+  'microsoft-login': 'Đăng nhập bằng Microsoft',
+  'or-continue-with': 'Hoặc tiếp tục với',
+  'already-have-account': 'Đã có tài khoản?',
+  'back-to-login': 'Quay lại đăng nhập',
+  'enter-email': 'Nhập email',
+  'enter-password': 'Nhập mật khẩu',
+  'confirm-password': 'Xác nhận mật khẩu',
+  'passwords-not-match': 'Mật khẩu không khớp',
+  'account-created': 'Tạo tài khoản thành công',
+  'reset-password-description': 'Nhập email của bạn và chúng tôi sẽ gửi cho bạn liên kết đặt lại mật khẩu.',
+
+  // Settings
+  'profile-settings': 'Cài đặt hồ sơ',
+  'notification-settings': 'Cài đặt thông báo',
+  'integration-settings': 'Cài đặt tích hợp',
+  'application-settings': 'Cài đặt ứng dụng',
+  'email-notifications': 'Thông báo email',
+  'call-notifications': 'Cập nhật cuộc gọi',
+  'analytics-reports': 'Báo cáo phân tích',
+  'system-alerts': 'Cảnh báo hệ thống',
+  'save-changes': 'Lưu thay đổi',
+  'save-preferences': 'Lưu tùy chọn',
+  'save-integration': 'Lưu tích hợp',
+  'save-settings': 'Lưu cài đặt',
+  'api-key': 'Khóa API',
+  'webhook-url': 'URL webhook',
+  theme: 'Giao diện',
+  'data-retention': 'Lưu trữ dữ liệu',
+  'theme-updated': 'Cập nhật giao diện thành công',
+  'switched-to': 'Đã chuyển sang chế độ {mode}',
+
+  // Table
+  table: {
+    callReceived: 'Cuộc gọi đến',
+    recording: 'Ghi âm',
+    duration: 'Thời lượng',
+    summary: 'Tóm tắt',
+    status: 'Trạng thái',
+    actions: 'Thao tác',
+    assistant: 'Trợ lý',
+    id: 'Số'
+  },
+
+  // Calls
+  'call-list': 'Danh sách cuộc gọi',
+  'call-details': 'Chi tiết cuộc gọi',
+  caller: 'Người gọi',
+  recipient: 'Người nhận',
+  date: 'Ngày',
+  duration: 'Thời lượng',
+  transcript: 'Bản ghi',
+  summary: 'Tóm tắt',
+  tags: 'Thẻ',
+  'download-recording': 'Tải bản ghi âm',
+  queued: 'Đang chờ',
+  ended: 'Đã kết thúc',
+
+  // Assistant List
+  'assistant-list': 'Trợ lý AI',
+  'first-message': 'Tin nhắn đầu tiên',
+  'model': 'Mô hình',
+  'voice': 'Giọng nói',
+  'created-at': 'Tạo lúc',
+  'call-assistant': 'Gọi',
+
+  // Scheduling
+  'call-scheduling': 'Lịch gọi',
+  'manage-outbound': 'Quản lý cuộc gọi đi',
+  'calendar-view': 'Xem lịch',
+  'schedule-call': 'Đặt lịch gọi',
+  'upcoming-calls': 'Cuộc gọi sắp tới',
+  'schedule-new-call': 'Đặt lịch gọi mới',
+  'schedule-description': 'Nhập thông tin bên dưới để đặt lịch gọi.',
+  'add-notes': 'Thêm ghi chú...',
+  cancel: 'Hủy',
+
+  // Help Center
+  'help-center': 'Trung tâm trợ giúp',
+  'how-can-we-help': 'Chúng tôi có thể giúp gì?',
+  'search-help': 'Tìm kiếm bài viết trợ giúp...',
+  'quick-links': 'Liên kết nhanh',
+  'getting-started': 'Bắt đầu',
+  'call-management': 'Quản lý cuộc gọi',
+  'analytics-guide': 'Hướng dẫn phân tích',
+  'learn-more': 'Tìm hiểu thêm',
+  'tutorials-guides': 'Hướng dẫn & Thủ thuật',
+  'frequently-asked': 'Câu hỏi thường gặp',
+  'still-need-help': 'Vẫn cần trợ giúp?',
+  'support-available': 'Đội ngũ hỗ trợ của chúng tôi luôn sẵn sàng 24/7',
+  'contact-support': 'Liên hệ hỗ trợ',
+  'support-description': 'Gửi câu hỏi của bạn và chúng tôi sẽ phản hồi trong thời gian sớm nhất.',
+
+  // Analytics
+  'analytics-dashboard': 'Bảng điều khiển phân tích',
+  'calls-over-time': 'Cuộc gọi theo thời gian',
+  'vs-last-period': 'so với kỳ trước',
+  'statistics-for': 'Thống kê cho',
+  'view-analytics': 'Xem phân tích',
+  'recent-calls': 'Cuộc gọi gần đây',
+  'view-all': 'Xem tất cả',
+  'call-outcomes': 'Kết quả cuộc gọi',
+  'call-tags-distribution': 'Phân bố thẻ cuộc gọi',
+  download: 'Tải xuống',
+
+  // Call Management
+  'call-recordings': 'Bản ghi âm cuộc gọi',
+  'access-recordings': 'Truy cập và tải xuống bản ghi âm',
+  'browse-recordings': 'Duyệt bản ghi âm',
+  'schedule-now': 'Đặt lịch ngay',
+
+  // Form Fields
+  subject: 'Chủ đề',
+  message: 'Tin nhắn',
+  'full-name': 'Họ và tên',
+  'current-password': 'Mật khẩu hiện tại',
+  'new-password': 'Mật khẩu mới',
+  email: 'Email',
+  password: 'Mật khẩu',
+  submit: 'Gửi',
+
+  // Validation
+  'subject-required': 'Yêu cầu nhập chủ đề',
+  'message-min-length': 'Tin nhắn phải có ít nhất 10 ký tự',
+  required: 'Trường này là bắt buộc',
+
+  // Common
+  success: 'Thành công',
+  'patient-intake.form-submitted': 'Gửi biểu mẫu tiếp nhận bệnh nhân thành công',
+
+  // Translation page specific keys
+  'advanced-options': 'Tùy chọn nâng cao',
+  'universal-patient-translator': 'Phiên dịch đa ngôn ngữ cho bệnh nhân',
+  'source-language': 'Ngôn ngữ nguồn',
+  'source-text': 'Văn bản nguồn',
+  'translated-text': 'Văn bản đã dịch',
+  'translated-text-placeholder': 'Bản dịch sẽ xuất hiện ở đây',
+  'enter-text-to-translate': 'Nhập văn bản cần dịch',
+  'translating': 'Đang dịch...',
+  'audio-playing': 'Đang phát âm thanh...',
+  'play-translated-audio': 'Phát âm thanh đã dịch',
+  'copied-to-clipboard': 'Đã sao chép vào bộ nhớ tạm',
+  'copy-error': 'Lỗi khi sao chép vào bộ nhớ tạm',
+  'translation-error': 'Lỗi trong quá trình dịch',
+  'unknown-error': 'Đã xảy ra lỗi không xác định',
+  'press-to-speak': 'Nhấn để nói',
+  'temperature': 'Nhiệt độ',
+
+  // Audio recording keys
+  'start-recording': 'Bắt đầu ghi âm',
+  'recording': 'Bắt đầu ghi âm',
+  'stop-recording': 'Dừng ghi âm',
+  'history': 'Lịch sử tin nhắn',
+  'translate-voice': 'Dịch giọng nói',
+
+  // Navigation keys
+  'demos': 'Bản demo',
+  'explore-demos': 'Khám phá các demo AI của chúng tôi',
+  'voice-translation': 'Dịch giọng nói',
+  'multilingual-voice-translation': 'Dịch giọng nói đa ngôn ngữ',
+
+  // Translation demo page
+  translation: {
+    title: 'Dịch giọng nói',
+    sourceLanguage: 'Ngôn ngữ nguồn',
+    targetLanguage: 'Ngôn ngữ đích',
+    advancedOptions: 'Tùy chọn nâng cao',
+    translationQuality: 'Chất lượng dịch',
+    fast: 'Nhanh',
+    standard: 'Tiêu chuẩn',
+    high: 'Chất lượng cao',
+    formality: 'Mức độ trang trọng',
+    formal: 'Trang trọng',
+    informal: 'Thân mật',
+    temperature: 'Nhiệt độ',
+    autoPlayTranslation: 'Tự động phát bản dịch tiếng Anh',
+    originalText: 'Văn bản gốc',
+    englishTranslation: 'Bản dịch tiếng Anh',
+    translationHistory: 'Lịch sử dịch',
+    clearHistory: 'Xóa lịch sử',
+    noHistory: 'Không có lịch sử dịch',
+    recordingInstructions: 'Giữ để ghi âm, thả ra để gửi',
+    recording: 'Đang ghi âm...',
+    translating: 'Đang dịch...',
+    failedToTranslate: 'Không thể dịch',
+    failedToPlayAudio: 'Không thể phát âm thanh'
+  }
+}

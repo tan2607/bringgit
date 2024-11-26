@@ -11,6 +11,8 @@ export default {
   'dev-tools': '开发者工具',
   profile: '个人资料',
   support: '支持',
+  success: '成功',
+  'patient-intake.form-submitted': '患者登记表提交成功',
 
   // Descriptions
   'manage-calls': '管理通话和会议',
@@ -150,6 +152,27 @@ export default {
     actions: '操作',
     assistant: '助手',
     id: '编号'
+  },
+
+  // Patient Intake Form
+  'patient-intake': {
+    title: '急诊部门患者登记',
+    instruction: '您可以输入答案或点击麦克风图标进行语音输入。您的回答将以您选择的语言和英语记录。',
+    'reason-for-visit': '就诊原因',
+    symptoms: '症状',
+    'symptoms-placeholder': '请描述您的症状...',
+    'start-time': '症状开始时间',
+    'start-time-placeholder': '您的症状是什么时候开始的？',
+    'medical-history': '病史',
+    conditions: '既往病史',
+    'conditions-placeholder': '列出任何慢性病或既往手术...',
+    medications: '当前用药',
+    'medications-placeholder': '列出您目前正在服用的任何药物...',
+    lifestyle: '生活方式信息',
+    smoking: '吸烟习惯',
+    alcohol: '饮酒情况',
+    activity: '体育活动',
+    submit: '提交表格'
   },
 
   // Translation page specific keys

@@ -1,39 +1,29 @@
 <template>
-  <div class="container mx-auto p-4 m-4">
-    <div>
-      <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold">{{ t.title }}</h1>
-        <div class="flex items-center gap-4">
-          <select 
-            class="p-2 border rounded-lg flex items-center gap-2"
-            :value="selectedLanguage"
-            @change="handleLanguageChange"
-          >
-            <option v-for="lang in languages" :key="lang.code" :value="lang.code">
-              {{ lang.name }}
-            </option>
-          </select>
-        </div>
+  <UContainer>
+    <div class="flex justify-between items-center mb-6 mt-8">
+        <h1 class="text-2xl font-bold">{{ t('patient-intake.title') }}</h1>
       </div>
+    <div>
+      
 
       <div class="border rounded-lg p-4 mb-6 flex items-start gap-3 bg-primary-50 dark:bg-primary-950">
         <UIcon name="i-lucide-alert-circle" class="size-5 flex-shrink-0 mt-0.5" />
-        <p class="text-sm">{{ t.instruction }}</p>
+        <p class="text-sm">{{ t('patient-intake.instruction') }}</p>
       </div>
 
       <form class="max-w-4xl mx-auto space-y-6" @submit.prevent="handleSubmit">
         <!-- Reason for Visit Section -->
         <div class="rounded-lg shadow-lg p-6">
-          <h2 class="text-xl font-semibold mb-4">{{ t.reasonForVisit }}</h2>
+          <h2 class="text-xl font-semibold mb-4">{{ t('patient-intake.reason-for-visit') }}</h2>
           <div class="space-y-4">
             <div class="space-y-2">
-              <label class="block text-sm font-medium">{{ t.symptoms }}</label>
+              <label class="block text-sm font-medium">{{ t('patient-intake.symptoms') }}</label>
               <div class="flex gap-2">
                 <textarea
                   v-model="formData.symptoms"
                   rows="3"
                   class="w-full p-3 border rounded-lg"
-                  :placeholder="t.symptomsPlaceholder"
+                  :placeholder="t('patient-intake.symptoms-placeholder')"
                 ></textarea>
                 <UButton
                   icon="i-lucide-mic"
@@ -45,13 +35,13 @@
             </div>
 
             <div class="space-y-2">
-              <label class="block text-sm font-medium">{{ t.startTime }}</label>
+              <label class="block text-sm font-medium">{{ t('patient-intake.start-time') }}</label>
               <div class="flex gap-2">
                 <input
                   v-model="formData.startTime"
                   type="text"
                   class="w-full p-3 border rounded-lg"
-                  :placeholder="t.startTimePlaceholder"
+                  :placeholder="t('patient-intake.start-time-placeholder')"
                 >
                 <UButton
                   icon="i-lucide-mic"
@@ -66,16 +56,16 @@
 
         <!-- Medical History Section -->
         <div class="rounded-lg shadow-lg p-6">
-          <h2 class="text-xl font-semibold mb-4">{{ t.medicalHistory }}</h2>
+          <h2 class="text-xl font-semibold mb-4">{{ t('patient-intake.medical-history') }}</h2>
           <div class="space-y-4">
             <div class="space-y-2">
-              <label class="block text-sm font-medium">{{ t.conditions }}</label>
+              <label class="block text-sm font-medium">{{ t('patient-intake.conditions') }}</label>
               <div class="flex gap-2">
                 <textarea
                   v-model="formData.conditions"
                   rows="3"
                   class="w-full p-3 border rounded-lg"
-                  :placeholder="t.conditionsPlaceholder"
+                  :placeholder="t('patient-intake.conditions-placeholder')"
                 ></textarea>
                 <UButton
                   icon="i-lucide-mic"
@@ -87,13 +77,13 @@
             </div>
 
             <div class="space-y-2">
-              <label class="block text-sm font-medium">{{ t.medications }}</label>
+              <label class="block text-sm font-medium">{{ t('patient-intake.medications') }}</label>
               <div class="flex gap-2">
                 <textarea
                   v-model="formData.medications"
                   rows="3"
                   class="w-full p-3 border rounded-lg"
-                  :placeholder="t.medicationsPlaceholder"
+                  :placeholder="t('patient-intake.medications-placeholder')"
                 ></textarea>
                 <UButton
                   icon="i-lucide-mic"
@@ -108,11 +98,11 @@
 
         <!-- Lifestyle Section -->
         <div class="rounded-lg shadow-lg p-6">
-          <h2 class="text-xl font-semibold mb-4">{{ t.lifestyle }}</h2>
+          <h2 class="text-xl font-semibold mb-4">{{ t('patient-intake.lifestyle') }}</h2>
           <div class="space-y-4">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div class="space-y-2">
-                <label class="block text-sm font-medium">{{ t.smoking }}</label>
+                <label class="block text-sm font-medium">{{ t('patient-intake.smoking') }}</label>
                 <div class="flex gap-2">
                   <input
                     v-model="formData.smoking"
@@ -129,7 +119,7 @@
               </div>
 
               <div class="space-y-2">
-                <label class="block text-sm font-medium">{{ t.alcohol }}</label>
+                <label class="block text-sm font-medium">{{ t('patient-intake.alcohol') }}</label>
                 <div class="flex gap-2">
                   <input
                     v-model="formData.alcohol"
@@ -146,7 +136,7 @@
               </div>
             </div>
             <div class="space-y-2">
-              <label class="block text-sm font-medium">{{ t.activity }}</label>
+              <label class="block text-sm font-medium">{{ t('patient-intake.activity') }}</label>
               <div class="flex gap-2">
                 <input
                   v-model="formData.activity"
@@ -170,20 +160,20 @@
           size="lg"
           block
         >
-          {{ t.submit }}
+          {{ t('patient-intake.submit') }}
         </UButton>
       </form>
     </div>
-  </div>
+</UContainer>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { getLanguageIcon, languages } from '@/i18n/languages'
-import { useCartesiaPlayer } from '@/composables/useCartesiaPlayer'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const toast = useToast()
-const cartesiaPlayer = useCartesiaPlayer()
 
 // Language selection
 const selectedLanguage = ref('en')
@@ -224,72 +214,6 @@ const recordingStates = reactive<RecordingStates>({
   alcohol: false,
   activity: false
 })
-
-const translations = {
-  en: {
-    title: "Emergency Department Patient Intake",
-    instruction: "You can either type your answers or click the microphone icon to speak. Your responses will be recorded in both your chosen language and English.",
-    reasonForVisit: "Reason for Visit",
-    symptoms: "What brings you to the Emergency Department today?",
-    symptomsPlaceholder: "Describe your main symptoms or concerns...",
-    startTime: "When did these symptoms start?",
-    startTimePlaceholder: "e.g., 2 hours ago, yesterday morning...",
-    medicalHistory: "Medical History",
-    conditions: "Do you have any chronic medical conditions?",
-    conditionsPlaceholder: "e.g., diabetes, high blood pressure, heart disease...",
-    medications: "List any medications you are currently taking:",
-    medicationsPlaceholder: "Include prescriptions, over-the-counter medications, supplements...",
-    lifestyle: "Lifestyle & Habits",
-    smoking: "Do you smoke?",
-    alcohol: "Do you drink alcohol?",
-    activity: "How would you describe your physical activity level?",
-    submit: "Submit Form",
-    holdToSpeak: "Hold to speak",
-    translateLabel: "Translation"
-  },
-  zh: {
-    title: "急诊部门患者登记",
-    instruction: "您可以输入答案或点击麦克风图标说话。您的回答将以您选择的语言和英语记录。",
-    reasonForVisit: "就医原因",
-    symptoms: "您今天为什么来急诊？",
-    symptomsPlaceholder: "请描述您的主要症状或担忧...",
-    startTime: "这些症状什么时候开始的？",
-    startTimePlaceholder: "例如：2小时前，昨天早上...",
-    medicalHistory: "病史",
-    conditions: "您有慢性病吗？",
-    conditionsPlaceholder: "例如：糖尿病，高血压，心脏病...",
-    medications: "请列出您目前正在服用的药物：",
-    medicationsPlaceholder: "包括处方药，非处方药，补充剂...",
-    lifestyle: "生活方式和习惯",
-    smoking: "您吸烟吗？",
-    alcohol: "您喝酒吗？",
-    activity: "您如何描述您的体育活动水平？",
-    submit: "提交表格",
-    holdToSpeak: "按住说话",
-    translateLabel: "翻译"
-  },
-  vi: {
-    title: "Tiếp nhận Bệnh nhân Khoa Cấp cứu",
-    instruction: "Bạn có thể nhập câu trả lời hoặc nhấp vào biểu tượng micrô để nói. Câu trả lời của bạn sẽ được ghi lại bằng ngôn ngữ bạn chọn và tiếng Anh.",
-    reasonForVisit: "Lý do khám",
-    symptoms: "Điều gì đưa bạn đến Khoa Cấp cứu hôm nay?",
-    symptomsPlaceholder: "Mô tả các triệu chứng chính hoặc lo ngại của bạn...",
-    startTime: "Khi nào những triệu chứng này bắt đầu?",
-    startTimePlaceholder: "Ví dụ: 2 giờ trước, sáng hôm qua...",
-    medicalHistory: "Tiền sử bệnh",
-    conditions: "Bạn có bệnh mãn tính nào không?",
-    conditionsPlaceholder: "Ví dụ: tiểu đường, huyết áp cao, bệnh tim...",
-    medications: "Liệt kê các loại thuốc bạn đang dùng:",
-    medicationsPlaceholder: "Bao gồm thuốc kê đơn, thuốc không kê đơn, thực phẩm chức năng...",
-    lifestyle: "Lối sống và Thói quen",
-    smoking: "Bạn có hút thuốc không?",
-    alcohol: "Bạn có uống rượu không?",
-    activity: "Bạn mô tả mức độ hoạt động thể chất của mình như thế nào?",
-    submit: "Gửi biểu mẫu",
-    holdToSpeak: "Giữ để nói",
-    translateLabel: "Bản dịch"
-  }
-}
 
 const handleLanguageChange = (e: Event) => {
   selectedLanguage.value = (e.target as HTMLSelectElement).value
@@ -411,12 +335,10 @@ const handleSubmit = () => {
   console.log('Form submitted:', formData)
 
   toast.add({
-    title: 'Success',
-    description: 'Patient intake form submitted successfully',
+    title: t('success'),
+    description: t('patient-intake.form-submitted'),
     color: 'success',
     duration: 1500
   })
 }
-
-const t = computed(() => translations[selectedLanguage.value])
 </script>

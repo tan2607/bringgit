@@ -39,15 +39,16 @@ export default defineNuxtConfig({
     defaultLocale: 'en',
     strategy: 'prefix_except_default',
     locales: [
-      { code: 'ar', file: 'ar.ts', name: 'العربية', dir: 'rtl' },
       { code: 'en', file: 'en.ts', name: 'English' },
-      { code: 'id', file: 'id.ts', name: 'Bahasa Indonesia' },
+      { code: 'zh_hans', file: 'zh_hans.ts', name: '简体中文' },
+      { code: 'zh_hant', file: 'zh_hant.ts', name: '繁體中文' },
       { code: 'ja', file: 'ja.ts', name: '日本語' },
       { code: 'ko', file: 'ko.ts', name: '한국어' },
+      { code: 'ar', file: 'ar.ts', name: 'العربية', dir: 'rtl' },
+      { code: 'id', file: 'id.ts', name: 'Bahasa Indonesia' },
+      { code: 'vi', file: 'vi.ts', name: 'Tiếng Việt' },
       { code: 'ms', file: 'ms.ts', name: 'Bahasa Melayu' },
-      { code: 'th', file: 'th.ts', name: 'ไทย' },
-      { code: 'zh_hans', file: 'zh_hans.ts', name: '简体中文' },
-      { code: 'zh_hant', file: 'zh_hant.ts', name: '繁體中文' }
+      { code: 'th', file: 'th.ts', name: 'ไทย' }
     ],
     detectBrowserLanguage: {
       useCookie: true,

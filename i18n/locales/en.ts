@@ -1,5 +1,3 @@
-// import type { Translation } from '../types'
-
 export default {
   // Navigation & Common
   home: 'Home',
@@ -155,6 +153,10 @@ export default {
   'message-min-length': 'Message must be at least 10 characters',
   required: 'This field is required',
 
+  // Common
+  success: 'Success',
+  'patient-intake.form-submitted': 'Patient intake form submitted successfully',
+
   // Translation page specific keys
   'advanced-options': 'Advanced Options',
   'universal-patient-translator': 'Universal Patient Translator',
@@ -210,5 +212,26 @@ export default {
     translating: 'Translating...',
     failedToTranslate: 'Failed to translate',
     failedToPlayAudio: 'Failed to play audio'
-  }
+  },
+
+  // Patient Intake Form
+  'patient-intake': {
+    title: 'Emergency Department Patient Intake',
+    instruction: 'You can either type your answers or click the microphone icon to speak. Your responses will be recorded in both your chosen language and English.',
+    'reason-for-visit': 'Reason for Visit',
+    symptoms: 'Symptoms',
+    'symptoms-placeholder': 'Describe your symptoms...',
+    'start-time': 'When did it start?',
+    'start-time-placeholder': 'When did your symptoms begin?',
+    'medical-history': 'Medical History',
+    conditions: 'Pre-existing Conditions',
+    'conditions-placeholder': 'List any chronic conditions or previous surgeries...',
+    medications: 'Current Medications',
+    'medications-placeholder': 'List any medications you are currently taking...',
+    lifestyle: 'Lifestyle Information',
+    smoking: 'Smoking Habits',
+    alcohol: 'Alcohol Consumption',
+    activity: 'Physical Activity',
+    submit: 'Submit Form'
+  },
 }

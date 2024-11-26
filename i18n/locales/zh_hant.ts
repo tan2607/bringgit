@@ -187,5 +187,30 @@ export default {
     translating: '翻譯中...',
     failedToTranslate: '翻譯失敗',
     failedToPlayAudio: '音頻播放失敗'
-  }
+  },
+
+  // Common
+  success: '成功',
+  'patient-intake.form-submitted': '患者登記表提交成功',
+
+  // Patient Intake Form
+  'patient-intake': {
+    title: '急診部門患者登記',
+    instruction: '您可以輸入答案或點擊麥克風圖標進行語音輸入。您的回答將以您選擇的語言和英語記錄。',
+    'reason-for-visit': '就診原因',
+    symptoms: '症狀',
+    'symptoms-placeholder': '請描述您的症狀...',
+    'start-time': '症狀開始時間',
+    'start-time-placeholder': '您的症狀是什麼時候開始的？',
+    'medical-history': '病史',
+    conditions: '既往病史',
+    'conditions-placeholder': '列出任何慢性病或既往手術...',
+    medications: '當前用藥',
+    'medications-placeholder': '列出您目前正在服用的任何藥物...',
+    lifestyle: '生活方式信息',
+    smoking: '吸煙習慣',
+    alcohol: '飲酒情況',
+    activity: '體育活動',
+    submit: '提交表格'
+  },
 }

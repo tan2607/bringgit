@@ -190,5 +190,30 @@ export default {
     translating: 'جاري الترجمة...',
     failedToTranslate: 'فشلت الترجمة',
     failedToPlayAudio: 'فشل تشغيل الصوت'
-  }
+  },
+
+  // Common
+  success: 'نجاح',
+  'patient-intake.form-submitted': 'تم إرسال نموذج استقبال المريض بنجاح',
+
+  // Patient Intake Form
+  'patient-intake': {
+    title: 'نموذج استقبال المريض في قسم الطوارئ',
+    instruction: 'يمكنك كتابة الإجابات أو النقر على أيقونة الميكروفون للتحدث. سيتم تسجيل إجاباتك باللغة التي تختارها واللغة الإنجليزية.',
+    'reason-for-visit': 'سبب الزيارة',
+    symptoms: 'الأعراض',
+    'symptoms-placeholder': 'صف أعراضك...',
+    'start-time': 'وقت بدء الأعراض',
+    'start-time-placeholder': 'متى بدأت الأعراض؟',
+    'medical-history': 'التاريخ الطبي',
+    conditions: 'الحالات المرضية',
+    'conditions-placeholder': 'اذكر أي أمراض مزمنة أو عمليات جراحية سابقة...',
+    medications: 'الأدوية الحالية',
+    'medications-placeholder': 'اذكر الأدوية التي تتناولها حالياً...',
+    lifestyle: 'معلومات نمط الحياة',
+    smoking: 'عادات التدخين',
+    alcohol: 'تناول الكحول',
+    activity: 'النشاط البدني',
+    submit: 'إرسال النموذج'
+  },
 }

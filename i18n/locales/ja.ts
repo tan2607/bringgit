@@ -210,5 +210,30 @@ export default {
     translating: '翻訳中...',
     failedToTranslate: '翻訳に失敗しました',
     failedToPlayAudio: '音声の再生に失敗しました'
-  }
+  },
+
+  // Common
+  success: '成功',
+  'patient-intake.form-submitted': '患者受付フォームが正常に送信されました',
+
+  // Patient Intake Form
+  'patient-intake': {
+    title: '救急外来患者受付',
+    instruction: '回答を入力するか、マイクアイコンをクリックして音声入力できます。回答は選択した言語と英語で記録されます。',
+    'reason-for-visit': '来院理由',
+    symptoms: '症状',
+    'symptoms-placeholder': '症状を説明してください...',
+    'start-time': '症状の発現時期',
+    'start-time-placeholder': '症状はいつから始まりましたか？',
+    'medical-history': '病歴',
+    conditions: '既往歴',
+    'conditions-placeholder': '慢性疾患や過去の手術歴を記入してください...',
+    medications: '現在の服薬',
+    'medications-placeholder': '現在服用中の薬をすべて記入してください...',
+    lifestyle: '生活習慣情報',
+    smoking: '喫煙習慣',
+    alcohol: '飲酒習慣',
+    activity: '身体活動',
+    submit: 'フォームを送信'
+  },
 }

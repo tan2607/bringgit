@@ -164,7 +164,7 @@ const colorMode = useColorMode()
 
 onMounted(() => {
   const browserLocale = locale.value;
-  const supportedLocales = ['ar', 'en', 'id', 'ja', 'ko', 'ms', 'th', 'zh_hans', 'zh_hant']
+  const supportedLocales = ['ar', 'en', 'id', 'vi', 'ja', 'ko', 'ms', 'th', 'zh_hans', 'zh_hant']
   
   // Special case for Chinese
   if (browserLocale.startsWith('zh')) {
