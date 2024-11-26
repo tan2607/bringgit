@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { getLanguageIcon, languages } from '@/i18n/languages'
+import { hasClinicalContent, getClinicalWarningMessage } from '~/utils/clinicalDetection';
 
 const { t } = useI18n()
 const toast = useToast()
@@ -72,6 +73,16 @@ const translateVoice = async (blob: Blob) => {
 
     sourceText.value = response.sourceText
     translatedText.value = response.translatedText
+
+    // Check for clinical content and show warning if detected
+    if (hasClinicalContent(translatedText.value)) {
+      toast.add({
+        title: 'Medical Content Warning',
+        description: getClinicalWarningMessage(),
+        icon: 'i-lucide-alert-triangle',
+        color: 'warning'
+      });
+    }
 
     // Auto-play translation if enabled
     if (autoPlayTranslation.value) {
