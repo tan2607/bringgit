@@ -123,18 +123,6 @@ const items = computed(() => [
     ]
   },
   {
-    label: t('demos'),
-    icon: 'i-lucide-sparkles',
-    description: t('explore-demos'),
-    children: [
-      {
-        label: t('voice-translation'),
-        description: t('multilingual-voice-translation'),
-        to: localeRoute('/demo/translation')?.path
-      }
-    ]
-  },
-  {
     label: t('dev-tools'),
     icon: 'i-lucide-wrench',
     children: [
