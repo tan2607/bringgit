@@ -1,6 +1,37 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   debug: false,
+  runtimeConfig: {
+    apiToken: process.env.API_TOKEN,
+    vapiApiKey: process.env.VAPI_API_KEY,
+    authJs: {
+      secret: process.env.NEXTAUTH_SECRET,
+    },
+    public: {
+      authJs: {
+        baseUrl: "https://next.keyreply.com",
+        guestRedirectTo: "/auth/login",
+        authenticatedRedirectTo: "/analytics",
+        verifyClientOnEveryRequest: true,
+      },
+      motion: {
+        directives: {
+          'pop-bottom': {
+            initial: {
+              scale: 0,
+              opacity: 0,
+              y: 100,
+            },
+            visible: {
+              scale: 1,
+              opacity: 1,
+              y: 0,
+            }
+          }
+        }
+      }
+    }
+  },
   compatibilityDate: '2024-04-03',
   modules: [
     '@nuxt/ui',
@@ -57,7 +88,6 @@ export default defineNuxtConfig({
     }
   },
   ssr: false,
-  // debug: true,
   devtools: { enabled: true },
   nitro: {
     preset: 'cloudflare_pages',
@@ -86,36 +116,6 @@ export default defineNuxtConfig({
             }
           ],
         },
-      }
-    }
-  },
-  runtimeConfig: {
-    vapiApiKey: process.env.VAPI_API_KEY,
-    authJs: {
-      secret: process.env.NEXTAUTH_SECRET,
-    },
-    public: {
-      authJs: {
-        baseUrl: "https://next.keyreply.com",
-        guestRedirectTo: "/auth/login",
-        authenticatedRedirectTo: "/analytics",
-        verifyClientOnEveryRequest: true,
-      },
-      motion: {
-        directives: {
-          'pop-bottom': {
-            initial: {
-              scale: 0,
-              opacity: 0,
-              y: 100,
-            },
-            visible: {
-              scale: 1,
-              opacity: 1,
-              y: 0,
-            }
-          }
-        }
       }
     }
   },

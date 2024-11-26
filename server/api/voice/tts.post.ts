@@ -3,7 +3,7 @@ import { VoiceService } from '../../utils/voice';
 export default defineEventHandler(async (event) => {
   try {
     const body = await readBody(event);
-    const { text, options = {}, provider } = body;
+    const { text, options = {}, provider = 'cartesia' } = body;
 
     if (!text) {
       throw createError({
