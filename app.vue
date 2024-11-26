@@ -86,6 +86,25 @@ const items = computed(() => [
     to: localeRoute('/scheduling')?.path
   },
   {
+    label: 'Demo',
+    icon: 'i-lucide-layout-template',
+    description: 'View demo pages',
+    children: [
+      {
+        label: 'Translation',
+        icon: 'i-lucide-languages',
+        description: 'Translation demo',
+        to: localeRoute('/demo/translation')?.path
+      },
+      {
+        label: 'Patient Intake',
+        icon: 'i-lucide-clipboard-list',
+        description: 'Patient intake form demo',
+        to: localeRoute('/demo/patient-intake-form')?.path
+      }
+    ]
+  },
+  {
     label: t('support'),
     icon: 'i-lucide-help-circle',
     children: [
