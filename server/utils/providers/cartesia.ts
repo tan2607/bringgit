@@ -32,17 +32,32 @@ export class CartesiaProvider implements VoiceProvider {
     const modelId = this.determineModelId(options.language);
     const sanitizedText = this.sanitizeText(options.text);
 
+    const outputFormat = options.format || "raw";
+    const outputFormats = {
+      mp3: {
+        container: "mp3",
+        bit_rate: 128000,
+        sample_rate: 44100
+      },
+      raw: {
+        container: "raw",
+        encoding: "pcm_f32le",
+        sample_rate: 24000
+      },
+      wav: {
+        container: "wav",
+        encoding: "pcm_f32le",
+        sample_rate: 44100
+      }
+    }
+
     const requestOptions = {
       model_id: modelId,
       voice: {
         mode: "id" as const,
         id: options.voice,
       },
-      output_format: {
-        container: "raw",
-        encoding: "pcm_f32le",
-        sample_rate: 24000
-      },
+      output_format: outputFormats[outputFormat],
       transcript: sanitizedText,
       language: options.language || "en",
     };

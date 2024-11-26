@@ -15,6 +15,7 @@ export interface VoiceConfig {
 }
 
 export interface TTSOptions {
+  format: 'raw' | 'mp3' | 'wav';
   text: string;
   modelId?: string;
   language?: string;
