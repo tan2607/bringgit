@@ -40,7 +40,7 @@
     "drizzle-kit": "latest",
     "tailwind-merge": "latest",
     "unenv": "^1.10.0",
-    "wrangler": "^3.90.0"
+    "wrangler": "3.91.0"
   },
   "resolutions": {
     "unenv": "1.10.0"

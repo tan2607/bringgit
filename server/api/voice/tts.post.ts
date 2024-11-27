@@ -35,10 +35,12 @@ export default defineEventHandler(async (event) => {
       setHeader(event, 'Content-Type', 'application/octet-stream');
       setHeader(event, 'Accept-Ranges', 'bytes');
       
-      // Convert ArrayBuffer to Buffer for proper transmission
-      const buffer = Buffer.from(response);
-      setHeader(event, 'Content-Length', buffer.length);
+      // Convert response to Buffer based on type
+      const buffer = response instanceof ArrayBuffer 
+        ? Buffer.from(response)
+        : Buffer.from((response as any).audio?.buffer || response);
       
+      setHeader(event, 'Content-Length', buffer.length);
       return buffer;
     }
 
