@@ -11,14 +11,6 @@
         </div>
       </template>
     </UTable>
-    <AssistantModal
-      v-if="modal.isOpen"
-      :assistant="selectedAssistant"
-    />
-    <PromptModal
-      v-if="modal.isOpen"
-      :assistant="selectedAssistant"
-    />
   </div>
 </template>
 
@@ -26,9 +18,8 @@
 import { formatTimeAgo, useClipboard } from '@vueuse/core'
 import { useAssistants } from '@/composables/useAssistants'
 import { useI18n } from 'vue-i18n'
-import AssistantModal from './AssistantModal.vue'
-import PromptModal from './PromptModal.vue'
-import { ref, computed, resolveComponent } from 'vue'
+import AssistantSlideover from './AssistantSlideover.vue'
+import PromptSlideover from './PromptSlideover.vue'
 
 const UButton = resolveComponent('UButton')
 const UTooltip = resolveComponent('UTooltip')
@@ -62,18 +53,26 @@ const props = defineProps({
 const { isLoading } = useAssistants()
 const { t } = useI18n()
 
-const modal = useModal()
+const slideover = useSlideover()
 
 const openAssistantModal = (name: string) => {
-  modal.open(AssistantModal, { 
+  slideover.open(AssistantSlideover, {
     assistantName: name
   })
 }
 
-const openPromptModal = (prompt: string) => {
-  modal.open(PromptModal, {
-    prompt
+const openPromptModal = (id: string) => {
+  slideover.open(PromptSlideover, {
+    assistant: props.data.find((a: any) => a.id === id)
   })
+}
+
+function handleAssistantUpdated(updatedAssistant: any) {
+  // Update the assistant in the table data
+  const index = props.data.findIndex((a: any) => a.id === updatedAssistant.id)
+  if (index !== -1) {
+    props.data[index] = updatedAssistant
+  }
 }
 
 const columns = computed(() => [
@@ -91,9 +90,8 @@ const columns = computed(() => [
       }, () => t('call-assistant') + ' ' + row.getValue('name'))
     ])
   },
-
   {
-    accessorKey: "prompt",
+    accessorKey: "id",
     header: () => t('instructions'),
     cell: (row) => h('div', { class: 'flex justify-center' }, [
       h(UButton, {
@@ -102,7 +100,7 @@ const columns = computed(() => [
         color: 'primary',
         variant: 'ghost',
         class: 'hover:scale-110 transition-transform',
-        onClick: () => openPromptModal(row.getValue('prompt'))
+        onClick: () => openPromptModal(row.getValue())
       })
     ])
   },
@@ -131,7 +129,7 @@ const columns = computed(() => [
   {
     accessorKey: "voice",
     header: () => t('voice'),
-    cell: (row) => {
+    cell: (row: any) => {
       const voice = row.getValue("voice")
       const voiceId = voice.voiceId
       const toast = useToast()
@@ -167,7 +165,7 @@ const columns = computed(() => [
     accessorKey: 'createdAt',
     header: () => t('created-at'),
     sortable: true,
-    cell: (row) => {
+    cell: (row: any) => {
       const time = new Date(row.getValue('createdAt'))
       const timeAgo = formatTimeAgo(time)
       return time.toLocaleString('en-US', {

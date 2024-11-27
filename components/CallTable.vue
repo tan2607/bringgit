@@ -16,14 +16,14 @@
         </div>
       </template>
     </UTable>
-    <TranscriptModal />
+    <TranscriptSlideover />
   </div>
 </template>
 
 <script setup lang="ts">
 import { formatTimeAgo, useClipboard } from '@vueuse/core'
 import { useCalls } from '@/composables/useCalls'
-import TranscriptModal from '@/components/TranscriptModal.vue'
+import TranscriptSlideover from '@/components/TranscriptSlideover.vue'
 
 const UButton = resolveComponent('UButton')
 const UBadge = resolveComponent('UBadge')
@@ -174,8 +174,8 @@ const columns = computed(() => {
             onClick: () => {
               const call = props.data.find(c => c.id === row.getValue("id"))
               selectedCall.value = call
-              const modal = useModal()
-              modal.open(TranscriptModal, { 
+              const slideover = useSlideover()
+              slideover.open(TranscriptSlideover, { 
                 call 
               })
             }

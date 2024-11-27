@@ -1,12 +1,11 @@
 <template>
-  <UModal 
-    v-model="modal.isOpen" 
-    :ui="{ width: 'max-w-4xl' }" 
-    :overlay="true" 
+  <USlideover 
+    v-model="slideover.isOpen" 
+    :ui="{ content: 'sm:max-w-7xl', footer: 'justify-end' }" 
     title="Call Transcript"
   >
     <template #body v-if="call">
-      <div class="space-y-4 overflow-y-auto flex-grow">
+      <div class="h-full space-y-4 overflow-y-auto">
         <!-- Summary Section -->
         <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
           <h4 class="font-medium mb-2">Summary</h4>
@@ -26,25 +25,26 @@
     </template>
 
     <template #footer>
-      <div class="flex justify-end items-center">
+      <div class="flex justify-end items-center space-x-4">
         <UButton
-          color="primary"
+          color="neutral"
+          variant="soft"
           @click="close"
         >
           Close
         </UButton>
       </div>
     </template>
-  </UModal>
+  </USlideover>
 </template>
 
 <script setup lang="ts">
 import { useCalls } from '@/composables/useCalls'
 
 const { selectedCall: call } = useCalls()
-const modal = useModal()
+const slideover = useSlideover()
 
 const close = () => {
-  modal.close()
+  slideover.close()
 }
 </script>

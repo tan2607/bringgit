@@ -16,8 +16,6 @@
     </div>
 
     <CallTable :data="filteredCalls" />
-
-    <TranscriptModal />
   </UContainer>
 </template>
 
@@ -26,7 +24,6 @@ import { useI18n } from 'vue-i18n'
 definePageMeta({ middleware: "auth" })
 import { useCalls } from '@/composables/useCalls'
 import CallTable from '@/components/CallTable.vue'
-import TranscriptModal from '@/components/TranscriptModal.vue'
 
 const { t } = useI18n()
 

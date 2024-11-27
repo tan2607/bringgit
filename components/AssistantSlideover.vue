@@ -1,27 +1,20 @@
 <template>
-  <UModal 
-    v-model="modal.isOpen"
-    :ui="{ width: 'max-w-6xl' }"
-    :overlay="true"
+  <USlideover 
+    v-model="slideover.isOpen"
     :title="assistantName"
+    :ui="{ footer: 'justify-end' }"
   >
     <template #header>
       <div class="flex justify-between items-center w-full">
         <h3 class="text-xl font-semibold">{{ t('call-assistant') }}</h3>
-        <UButton
-          icon="i-lucide-x"
-          color="neutral"
-          variant="ghost"
-          @click="close"
-        />
       </div>
     </template>
 
     <template #body>
-      <div class="h-[80vh]">
+      <div class="h-full">
         <iframe 
           :src="`https://vai.keyreply.com/${assistantName}`"
-          class="w-full border-0 rounded-lg"
+          class="w-full h-full border-0 rounded-lg"
           allow="microphone"
         />
       </div>
@@ -37,18 +30,18 @@
         </UButton>
       </div>
     </template>
-  </UModal>
+  </USlideover>
 </template>
 
 <script setup lang="ts">
 const { t } = useI18n()
-const modal = useModal()
+const slideover = useSlideover()
 
 defineProps<{
   assistantName: string
 }>()
 
 const close = () => {
-  modal.close()
+  slideover.close()
 }
 </script>
