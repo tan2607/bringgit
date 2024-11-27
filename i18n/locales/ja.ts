@@ -153,6 +153,25 @@ export default {
     id: '番号'
   },
 
+  // Prompt Editor
+  prompt: {
+    instructions: '説明',
+    'assistant-prompt': 'アシスタントプロンプト',
+    edit: '編集',
+    'enhancement-instructions-placeholder': 'プロンプトの変更方法を入力してください',
+    'clear-input': '入力をクリア',
+    'apply-changes': '変更を適用',
+    cancel: 'キャンセル',
+    close: '閉じる',
+    save: '保存',
+    success: '成功',
+    error: 'エラー',
+    'prompt-enhanced': 'プロンプトが正常に強化されました',
+    'enhancement-failed': 'プロンプトの強化に失敗しました',
+    'assistant-updated': 'アシスタントが正常に更新されました',
+    'error-saving-changes': '変更の保存中にエラーが発生しました'
+  },
+
   // Translation page specific keys
   'translation-demo': '音声翻訳',
   'source-text': '原文',

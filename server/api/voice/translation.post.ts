@@ -43,21 +43,7 @@ export default defineEventHandler(async (event) => {
 
     const options = optionsStr ? JSON.parse(optionsStr) : {}
 
-    const voiceService = new VoiceService([
-      {
-        provider: 'whisper',
-        apiKey: process.env.GROQ_API_KEY || '',
-        asrProvider: true,
-        translationProvider: true,
-      },
-      // {
-      //   provider: 'openai',
-      //   apiKey: process.env.OPENAI_API_KEY || '',
-      //   ttsProvider: true,
-      //   asrProvider: true,
-      //   translationProvider: false,
-      // }
-    ])
+    const voiceService = new VoiceService()
 
     console.log('Voice translation options:', options)
     const transcriptionPromise = voiceService.speechToText({

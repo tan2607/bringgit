@@ -178,9 +178,24 @@ export default {
   'message-min-length': 'Tin nhắn phải có ít nhất 10 ký tự',
   required: 'Trường này là bắt buộc',
 
-  // Common
-  success: 'Thành công',
-  'patient-intake.form-submitted': 'Gửi biểu mẫu tiếp nhận bệnh nhân thành công',
+  // Prompt Editor
+  prompt: {
+    instructions: 'Hướng dẫn',
+    'assistant-prompt': 'Lời nhắc trợ lý',
+    edit: 'Chỉnh sửa',
+    'enhancement-instructions-placeholder': 'Nhập hướng dẫn cách thay đổi lời nhắc',
+    'clear-input': 'Xóa nhập liệu',
+    'apply-changes': 'Áp dụng thay đổi',
+    cancel: 'Hủy',
+    close: 'Đóng',
+    save: 'Lưu',
+    success: 'Thành công',
+    error: 'Lỗi',
+    'prompt-enhanced': 'Đã cải thiện lời nhắc thành công',
+    'enhancement-failed': 'Cải thiện lời nhắc thất bại',
+    'assistant-updated': 'Đã cập nhật trợ lý thành công',
+    'error-saving-changes': 'Lỗi khi lưu thay đổi'
+  },
 
   // Translation page specific keys
   'advanced-options': 'Tùy chọn nâng cao',

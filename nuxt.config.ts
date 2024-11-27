@@ -3,7 +3,14 @@ export default defineNuxtConfig({
   debug: false,
   runtimeConfig: {
     apiToken: process.env.API_TOKEN,
+    // Provider API Keys
+    openaiApiKey: process.env.OPENAI_API_KEY,
     vapiApiKey: process.env.VAPI_API_KEY,
+    cartesiaApiKey: process.env.CARTESIA_API_KEY,
+    copilotApiKey: process.env.OPENAI_API_KEY,
+    playaiApiKey: process.env.PLAYAI_API_KEY,
+    playaiUserId: process.env.PLAYAI_USER_ID,
+    whisperApiKey: process.env.GROQ_API_KEY,
     authJs: {
       secret: process.env.NEXTAUTH_SECRET,
     },
@@ -116,8 +123,8 @@ export default defineNuxtConfig({
             }
           ],
         },
-      }
-    }
+      },
+    },
   },
   alias: {
     "process/": "process",

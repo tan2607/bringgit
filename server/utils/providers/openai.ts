@@ -2,14 +2,29 @@ import OpenAI from "openai";
 import { VoiceProvider, VoiceConfig, TTSOptions, ASROptions } from "../types";
 
 export class OpenAIVoiceProvider implements VoiceProvider {
+  private static instance: OpenAIVoiceProvider;
   private client: OpenAI;
   private config: VoiceConfig;
 
-  constructor(config: VoiceConfig) {
+  private constructor(config: VoiceConfig) {
     this.config = config;
     this.client = new OpenAI({
       apiKey: config.apiKey,
     });
+  }
+
+  public static initialize(config: VoiceConfig): OpenAIVoiceProvider {
+    if (!OpenAIVoiceProvider.instance) {
+      OpenAIVoiceProvider.instance = new OpenAIVoiceProvider(config);
+    }
+    return OpenAIVoiceProvider.instance;
+  }
+
+  public static getInstance(): OpenAIVoiceProvider {
+    if (!OpenAIVoiceProvider.instance) {
+      throw new Error('OpenAIVoiceProvider must be initialized first');
+    }
+    return OpenAIVoiceProvider.instance;
   }
 
   async tts(options: TTSOptions): Promise<ArrayBuffer | ReadableStream<Uint8Array>> {

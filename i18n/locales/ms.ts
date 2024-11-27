@@ -138,6 +138,25 @@ export default {
   'browse-recordings': 'Semak Imbas Rakaman',
   'schedule-now': 'Jadualkan Sekarang',
 
+  // Prompt Editor
+  prompt: {
+    instructions: 'Arahan',
+    'assistant-prompt': 'Arahan Pembantu',
+    edit: 'Sunting',
+    'enhancement-instructions-placeholder': 'Masukkan arahan bagaimana untuk membuat perubahan pada arahan',
+    'clear-input': 'Kosongkan input',
+    'apply-changes': 'Terapkan Perubahan',
+    cancel: 'Batal',
+    close: 'Tutup',
+    save: 'Simpan',
+    success: 'Berjaya',
+    error: 'Ralat',
+    'prompt-enhanced': 'Arahan berjaya dipertingkatkan',
+    'enhancement-failed': 'Gagal meningkatkan arahan',
+    'assistant-updated': 'Pembantu berjaya dikemas kini',
+    'error-saving-changes': 'Ralat semasa menyimpan perubahan'
+  },
+
   // Form Fields
   'subject': 'Subjek',
   'message': 'Mesej',

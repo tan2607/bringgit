@@ -1,16 +1,31 @@
 import { VoiceProvider, VoiceConfig, TTSOptions, ASROptions } from "../types";
 
 export class PlayAIProvider implements VoiceProvider {
+  private static instance: PlayAIProvider;
   private apiKey: string;
   private userId: string;
   private baseUrl = 'https://api.play.ai/api/v1';
 
-  constructor(config: VoiceConfig) {
-    if (!config.apiKey || !config.userId) {
+  private constructor(apiKey: string, userId: string) {
+    if (!apiKey || !userId) {
       throw new Error('Play.ai requires both apiKey and userId');
     }
-    this.apiKey = config.apiKey;
-    this.userId = config.userId;
+    this.apiKey = apiKey;
+    this.userId = userId;
+  }
+
+  public static initialize(apiKey: string, userId: string): PlayAIProvider {
+    if (!PlayAIProvider.instance) {
+      PlayAIProvider.instance = new PlayAIProvider(apiKey, userId);
+    }
+    return PlayAIProvider.instance;
+  }
+
+  public static getInstance(): PlayAIProvider {
+    if (!PlayAIProvider.instance) {
+      throw new Error('PlayAIProvider must be initialized first');
+    }
+    return PlayAIProvider.instance;
   }
 
   async tts(options: TTSOptions): Promise<ArrayBuffer | ReadableStream<Uint8Array>> {

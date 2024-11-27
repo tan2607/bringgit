@@ -175,6 +175,25 @@ export default {
     submit: '提交表格'
   },
 
+  // Prompt Editor
+  prompt: {
+    instructions: '说明',
+    'assistant-prompt': '助手提示',
+    edit: '编辑',
+    'enhancement-instructions-placeholder': '输入如何修改提示的说明',
+    'clear-input': '清除输入',
+    'apply-changes': '应用更改',
+    cancel: '取消',
+    close: '关闭',
+    save: '保存',
+    success: '成功',
+    error: '错误',
+    'prompt-enhanced': '提示已成功增强',
+    'enhancement-failed': '增强提示失败',
+    'assistant-updated': '助手已成功更新',
+    'error-saving-changes': '保存更改时出错'
+  },
+
   // Translation page specific keys
   'translation-demo': '语音翻译',
   'source-text': '源文本',

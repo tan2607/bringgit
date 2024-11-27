@@ -15,19 +15,15 @@ export default defineEventHandler(async (event) => {
     const voiceService = new VoiceService([
       {
         provider: "openai",
-        apiKey: process.env.OPENAI_API_KEY || "",
         ttsProvider: true,
         asrProvider: true,
       },
       {
         provider: "play.ai",
-        apiKey: process.env.PLAYAI_API_KEY || "",
-        userId: process.env.PLAYAI_USER_ID || "",
         ttsProvider: true,
       },
       {
         provider: "cartesia",
-        apiKey: process.env.CARTESIA_API_KEY || "",
         ttsProvider: true,
       },
     ]);
@@ -51,10 +47,9 @@ export default defineEventHandler(async (event) => {
       message: 'Unsupported provider',
     });
   } catch (error: any) {
-    console.error('[TTS API] Error:', error);
     throw createError({
       statusCode: error.statusCode || 500,
-      message: error.message || 'Internal server error',
+      message: error.message || 'Failed to convert text to speech',
     });
   }
 });

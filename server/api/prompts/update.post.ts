@@ -1,29 +1,36 @@
-import { PromptEnhancer } from '~/server/utils/providers/copilot';
+import { PromptEnhancer } from '@/server/utils/providers/copilot';
 
 export default defineEventHandler(async (event) => {
   try {
-    const config = useRuntimeConfig()
-    const body = await readBody(event)
-    
-    const { originalPrompt, instructions } = body
-    
-    if (!originalPrompt || !instructions) {
+    const body = await readBody(event);
+    const { originalPrompt, instructions } = body;
+
+    if (!originalPrompt) {
       throw createError({
         statusCode: 400,
-        message: 'Missing required fields'
-      })
+        message: 'Original prompt is required'
+      });
     }
 
-    const enhancer = new PromptEnhancer(config.openaiApiKey)
-    const updatedPrompt = await enhancer.updatePrompt(originalPrompt, instructions)
+    if (!instructions) {
+      throw createError({
+        statusCode: 400,
+        message: 'Enhancement instructions are required'
+      });
+    }
+
+    const promptEnhancer = new PromptEnhancer(process.env.OPENAI_API_KEY || '');
+    
+    // Get the enhanced prompt suggestion
+    const enhancedPrompt = await promptEnhancer.updatePrompt(originalPrompt, instructions);
 
     return {
-      prompt: updatedPrompt
-    }
+      prompt: enhancedPrompt
+    };
   } catch (error: any) {
     throw createError({
-      statusCode: error.statusCode || 500,
-      message: error.message || 'Failed to update prompt'
-    })
+      statusCode: error.status || 500,
+      message: error.message || 'Failed to enhance prompt'
+    });
   }
-})
+});

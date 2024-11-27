@@ -153,6 +153,25 @@ export default {
       id: '번호'
     },
 
+    // Prompt Editor
+    prompt: {
+      instructions: '설명',
+      'assistant-prompt': '어시스턴트 프롬프트',
+      edit: '편집',
+      'enhancement-instructions-placeholder': '프롬프트 변경 방법을 입력하세요',
+      'clear-input': '입력 지우기',
+      'apply-changes': '변경 적용',
+      cancel: '취소',
+      close: '닫기',
+      save: '저장',
+      success: '성공',
+      error: '오류',
+      'prompt-enhanced': '프롬프트가 성공적으로 향상되었습니다',
+      'enhancement-failed': '프롬프트 향상 실패',
+      'assistant-updated': '어시스턴트가 성공적으로 업데이트되었습니다',
+      'error-saving-changes': '변경 사항 저장 중 오류 발생'
+    },
+
     // Translation page specific keys
     'translation-demo': '음성 번역',
     'source-text': '원문',

@@ -1,12 +1,12 @@
 <template>
   <USlideover 
     v-model="slideover.isOpen"
-    :title="t('instructions')"
+    :title="t('prompt.instructions')"
     :ui="{ footer: 'justify-end', content: 'md:max-w-7xl' }"
   >
     <template #header>
       <div class="flex justify-between items-center w-full">
-        <h3 class="text-xl font-semibold">{{ t('assistant-prompt') }}</h3>
+        <h3 class="text-xl font-semibold">{{ t('prompt.assistant-prompt') }}</h3>
       </div>
     </template>
 
@@ -21,7 +21,7 @@
             icon="i-lucide-edit"
             @click="startEditing"
           >
-            {{ t('edit') }}
+            {{ t('prompt.edit') }}
           </UButton>
         </div>
         <div v-else>
@@ -37,7 +37,7 @@
             icon="i-lucide-sparkles"
             v-model="changeInstructions"
             class="w-full mt-4"
-            placeholder="Enter instructions for how to make changes to the prompt"
+            :placeholder="t('prompt.enhancement-instructions-placeholder')"
             :disabled="loading"
             :ui="{ trailing: 'pe-1' }"
           >
@@ -47,7 +47,7 @@
                 variant="link"
                 size="sm"
                 icon="i-lucide-circle-x"
-                aria-label="Clear input"
+                :aria-label="t('prompt.clear-input')"
                 @click="changeInstructions = ''"
               />
             </template>
@@ -61,7 +61,7 @@
             :loading="loading"
             @click="applyChanges"
           >
-            {{ t('apply-changes') }}
+            {{ t('prompt.apply-changes') }}
           </UButton>
         </div>
       </div>
@@ -75,7 +75,7 @@
           variant="soft"
           @click="cancelEditing"
         >
-          {{ t('cancel') }}
+          {{ t('prompt.cancel') }}
         </UButton>
         <UButton
           v-if="!isEditing"
@@ -83,7 +83,7 @@
           variant="soft"
           @click="close"
         >
-          {{ t('close') }}
+          {{ t('prompt.close') }}
         </UButton>
         <UButton
           v-if="isEditing"
@@ -92,7 +92,7 @@
           :disabled="!hasChanges"
           @click="saveChanges"
         >
-          {{ t('save') }}
+          {{ t('prompt.save') }}
         </UButton>
       </div>
     </template>
@@ -139,14 +139,14 @@ async function applyChanges() {
     editedPrompt.value = prompt
     changeInstructions.value = ''
     toast.add({
-      title: t('success'),
-      description: t('prompt-enhanced'),
+      title: t('prompt.success'),
+      description: t('prompt.prompt-enhanced'),
       color: 'success'
     })
   } catch (error: any) {
     toast.add({
-      title: t('error'),
-      description: error.message || t('enhancement-failed'),
+      title: t('prompt.error'),
+      description: error.message || t('prompt.enhancement-failed'),
       color: 'error'
     })
   } finally {
@@ -189,14 +189,14 @@ async function saveChanges() {
     slideover.close()
     
     toast.add({
-      title: t('success'),
-      description: t('assistant-updated'),
+      title: t('prompt.success'),
+      description: t('prompt.assistant-updated'),
       color: 'success'
     })
   } catch (error: any) {
     toast.add({
-      title: t('error'),
-      description: error.message || t('error-saving-changes'),
+      title: t('prompt.error'),
+      description: error.message || t('prompt.error-saving-changes'),
       color: 'error'
     })
   } finally {

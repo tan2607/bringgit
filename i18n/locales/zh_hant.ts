@@ -148,6 +148,25 @@ export default {
     id: '編號'
   },
 
+  // Prompt Editor
+  prompt: {
+    instructions: '說明',
+    'assistant-prompt': '助手提示',
+    edit: '編輯',
+    'enhancement-instructions-placeholder': '輸入如何修改提示的說明',
+    'clear-input': '清除輸入',
+    'apply-changes': '應用更改',
+    cancel: '取消',
+    close: '關閉',
+    save: '保存',
+    success: '成功',
+    error: '錯誤',
+    'prompt-enhanced': '提示已成功增強',
+    'enhancement-failed': '增強提示失敗',
+    'assistant-updated': '助手已成功更新',
+    'error-saving-changes': '保存更改時出錯'
+  },
+
   // Translation page specific keys
   'translation-demo': '語音翻譯',
   'source-text': '原文',

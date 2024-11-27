@@ -126,6 +126,25 @@ export default {
   'voice': 'เสียง',
   'created-at': 'สร้างเมื่อ',
 
+  // Prompt Editor
+  prompt: {
+    instructions: 'คำแนะนำ',
+    'assistant-prompt': 'พรอมต์ผู้ช่วย',
+    edit: 'แก้ไข',
+    'enhancement-instructions-placeholder': 'ป้อนคำแนะนำวิธีการเปลี่ยนแปลงพรอมต์',
+    'clear-input': 'ล้างข้อมูล',
+    'apply-changes': 'ใช้การเปลี่ยนแปลง',
+    cancel: 'ยกเลิก',
+    close: 'ปิด',
+    save: 'บันทึก',
+    success: 'สำเร็จ',
+    error: 'ข้อผิดพลาด',
+    'prompt-enhanced': 'เพิ่มประสิทธิภาพพรอมต์สำเร็จ',
+    'enhancement-failed': 'การเพิ่มประสิทธิภาพพรอมต์ล้มเหลว',
+    'assistant-updated': 'อัปเดตผู้ช่วยสำเร็จ',
+    'error-saving-changes': 'เกิดข้อผิดพลาดในการบันทึกการเปลี่ยนแปลง'
+  },
+
   // Form Fields
   'subject': 'หัวข้อ',
   'message': 'ข้อความ',

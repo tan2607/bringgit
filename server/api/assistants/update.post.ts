@@ -1,4 +1,4 @@
-import { VapiClient } from "@vapi-ai/server-sdk";
+import { VapiProvider } from '@/server/utils/providers/vapi';
 
 export default defineEventHandler(async (event) => {
   try {
@@ -19,25 +19,10 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-    const client = new VapiClient(process.env.VAPI_API_KEY);
-    
-    // Get current assistant to preserve other message properties
-    const currentAssistant = await client.assistants.get(id);
-    const messages = currentAssistant.model.messages.map((msg: any, index: number) => 
-      index === 0 ? { ...msg, content: prompt } : msg
-    );
+    const vapiProvider = VapiProvider.getInstance();
+    const updatedAssistant = await vapiProvider.updateAssistantPrompt(id, prompt);
 
-    const updatedAssistant = await client.assistants.update(id, {
-      model: {
-        messages
-      }
-    });
-
-    // Return the simplified assistant object with prompt extracted
-    return {
-      ...updatedAssistant,
-      prompt: updatedAssistant.model.messages[0].content
-    };
+    return updatedAssistant;
   } catch (error: any) {
     throw createError({
       statusCode: error.status || 500,

@@ -6,17 +6,30 @@ import { VoiceProvider, VoiceConfig, ASROptions, TranslationOptions } from '../t
 import Groq from 'groq-sdk';
 
 export class WhisperProvider implements VoiceProvider {
+  private static instance: WhisperProvider;
   private client: Groq;
-  private config: VoiceConfig;
 
-  constructor(config: VoiceConfig) {
-    if (!config.apiKey) {
+  private constructor(apiKey: string) {
+    if (!apiKey) {
       throw new Error('Groq API key is required for Whisper provider');
     }
-    this.config = config;
     this.client = new Groq({
-      apiKey: config.apiKey,
+      apiKey,
     });
+  }
+
+  public static initialize(apiKey: string): WhisperProvider {
+    if (!WhisperProvider.instance) {
+      WhisperProvider.instance = new WhisperProvider(apiKey);
+    }
+    return WhisperProvider.instance;
+  }
+
+  public static getInstance(): WhisperProvider {
+    if (!WhisperProvider.instance) {
+      throw new Error('WhisperProvider must be initialized first');
+    }
+    return WhisperProvider.instance;
   }
 
   async asr(options: ASROptions): Promise<string | ReadableStream<string>> {

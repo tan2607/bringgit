@@ -157,6 +157,25 @@ export default {
   success: 'Success',
   'patient-intake.form-submitted': 'Patient intake form submitted successfully',
 
+  // Prompt Editor
+  prompt: {
+    instructions: 'Instructions',
+    'assistant-prompt': 'Assistant Prompt',
+    edit: 'Edit',
+    'enhancement-instructions-placeholder': 'Enter instructions for how to make changes to the prompt',
+    'clear-input': 'Clear input',
+    'apply-changes': 'Apply Changes',
+    cancel: 'Cancel',
+    close: 'Close',
+    save: 'Save',
+    success: 'Success',
+    error: 'Error',
+    'prompt-enhanced': 'Prompt enhanced successfully',
+    'enhancement-failed': 'Failed to enhance prompt',
+    'assistant-updated': 'Assistant updated successfully',
+    'error-saving-changes': 'Error saving changes'
+  },
+
   // Translation page specific keys
   'advanced-options': 'Advanced Options',
   'universal-patient-translator': 'Universal Patient Translator',

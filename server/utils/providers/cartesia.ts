@@ -2,17 +2,32 @@ import { VoiceProvider, VoiceConfig, TTSOptions } from '../types';
 import Cartesia from "@cartesia/cartesia-js";
 
 export class CartesiaProvider implements VoiceProvider {
+  private static instance: CartesiaProvider;
   private client: Cartesia;
   private websocket: any;
 
-  constructor(config: VoiceConfig) {
-    if (!config.apiKey) {
+  private constructor(apiKey: string) {
+    if (!apiKey) {
       throw new Error('Cartesia requires an API key');
     }
-    console.log('[Cartesia] Initializing with API key:', config.apiKey.substring(0, 5) + '...');
+    console.log('[Cartesia] Initializing with API key:', apiKey.substring(0, 5) + '...');
     this.client = new Cartesia({
-      apiKey: config.apiKey,
+      apiKey,
     });
+  }
+
+  public static initialize(apiKey: string): CartesiaProvider {
+    if (!CartesiaProvider.instance) {
+      CartesiaProvider.instance = new CartesiaProvider(apiKey);
+    }
+    return CartesiaProvider.instance;
+  }
+
+  public static getInstance(): CartesiaProvider {
+    if (!CartesiaProvider.instance) {
+      throw new Error('CartesiaProvider must be initialized first');
+    }
+    return CartesiaProvider.instance;
   }
 
   private async ensureWebSocket() {
