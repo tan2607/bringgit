@@ -17,8 +17,7 @@ export default defineEventHandler(async (event) => {
         console.log(`${key}:`, {
           type: 'File',
           name: value.name,
-          size: value.size,
-          type: value.type
+          size: value.size
         });
       } else {
         console.log(`${key}:`, value);
@@ -68,7 +67,7 @@ export default defineEventHandler(async (event) => {
 
     const [sourceText, translatedText] = await Promise.all([transcriptionPromise, translationPromise])
     return { sourceText, translatedText }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Voice translation error:', error)
     throw createError({
       statusCode: error.statusCode || 500,

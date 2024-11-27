@@ -6,16 +6,19 @@ export class OpenAIVoiceProvider implements VoiceProvider {
   private client: OpenAI;
   private config: VoiceConfig;
 
-  private constructor(config: VoiceConfig) {
-    this.config = config;
+  private constructor(apiKey: string) {
+    this.config = {
+      provider: 'openai',
+      apiKey
+    };
     this.client = new OpenAI({
-      apiKey: config.apiKey,
+      apiKey,
     });
   }
 
-  public static initialize(config: VoiceConfig): OpenAIVoiceProvider {
+  public static initialize(apiKey: string): OpenAIVoiceProvider {
     if (!OpenAIVoiceProvider.instance) {
-      OpenAIVoiceProvider.instance = new OpenAIVoiceProvider(config);
+      OpenAIVoiceProvider.instance = new OpenAIVoiceProvider(apiKey);
     }
     return OpenAIVoiceProvider.instance;
   }

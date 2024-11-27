@@ -36,7 +36,7 @@ export class VapiProvider {
       firstMessage: assistant.firstMessage,
       transcriber: assistant.transcriber,
       model: assistant.model,
-      prompt: assistant.model.messages[0].content,
+      prompt: assistant.model?.messages?[0].content,
       voice: assistant.voice,
       firstMessageMode: assistant.firstMessageMode,
       hipaaEnabled: assistant.hipaaEnabled,
@@ -58,8 +58,7 @@ export class VapiProvider {
       startSpeakingPlan: assistant.startSpeakingPlan,
       stopSpeakingPlan: assistant.stopSpeakingPlan,
       monitorPlan: assistant.monitorPlan,
-      credentialIds: assistant.credentialIds,
-      server: assistant.server
+      credentialIds: assistant.credentialIds
     }));
   }
 
@@ -78,7 +77,7 @@ export class VapiProvider {
     // Update the assistant with the new prompt
     return await this.client.assistants.update(id, {
       model: {
-        ...assistant.model,
+        ...assistant.model!,
         messages: [
           {
             role: 'system',
@@ -98,8 +97,8 @@ export class VapiProvider {
 
     return calls.map((call) => {
       const duration = (() => {
-        const start = new Date(call.startedAt);
-        const end = new Date(call.endedAt);
+        const start = new Date(call.startedAt ?? new Date());
+        const end = new Date(call.endedAt ?? new Date());
         const diff = (end.getTime() - start.getTime()) / 1000;
         const minutes = Math.floor(diff / 60);
         const seconds = Math.floor(diff % 60);

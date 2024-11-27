@@ -3,17 +3,17 @@ import { VoiceService } from '../../utils/voice';
 export default defineEventHandler(async (event) => {
   try {
     const body = await readBody(event);
-    const { audio, options = {}, provider = 'whisper' } = body;
-
-    if (!audio) {
+    const { options = {}, provider = 'whisper' } = body;
+    // options.audio needs to be a File object
+    if (!options) {
       throw createError({
         statusCode: 400,
-        message: 'Audio data is required',
+        message: 'Options are required',
       });
     }
 
     const voiceService = new VoiceService();
-    return await voiceService.speechToText(audio, options, provider);
+    return await voiceService.speechToText(options, provider);
   } catch (error: any) {
     throw createError({
       statusCode: error.statusCode || 500,

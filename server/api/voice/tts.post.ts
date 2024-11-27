@@ -37,7 +37,7 @@ export default defineEventHandler(async (event) => {
       
       // Convert ArrayBuffer to Buffer for proper transmission
       const buffer = Buffer.from(response);
-      setHeader(event, 'Content-Length', buffer.length.toString());
+      setHeader(event, 'Content-Length', buffer.length);
       
       return buffer;
     }
