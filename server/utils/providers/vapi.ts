@@ -36,7 +36,7 @@ export class VapiProvider {
       firstMessage: assistant.firstMessage,
       transcriber: assistant.transcriber,
       model: assistant.model,
-      prompt: assistant.model?.messages?[0].content,
+      prompt: assistant.model?.messages?.[0]?.content ?? '',
       voice: assistant.voice,
       firstMessageMode: assistant.firstMessageMode,
       hipaaEnabled: assistant.hipaaEnabled,
@@ -114,9 +114,9 @@ export class VapiProvider {
         startedAt: call.startedAt,
         endedAt: call.endedAt,
         duration: duration,
-        transcript: call.transcript,
-        summary: call.summary,
-        recordingUrl: call.recordingUrl,
+        transcript: (call as any).transcript ?? '',
+        summary: (call as any).summary ?? '',
+        recordingUrl: (call as any).recordingUrl ?? '',
       };
     });
   }

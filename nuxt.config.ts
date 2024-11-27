@@ -60,14 +60,12 @@ export default defineNuxtConfig({
       type: 'd1',
       binding: 'DB'
     },
-    documentDriven: true,
-    highlight: {
-      theme: 'github-dark'
-    },
-    markdown: {
-      toc: {
-        depth: 3,
-        searchDepth: 3
+    build: {
+      markdown: {
+        toc: {
+          depth: 3,
+          searchDepth: 3
+        }
       }
     }
   },
