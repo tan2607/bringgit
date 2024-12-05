@@ -24,6 +24,8 @@ import PromptSlideover from './PromptSlideover.vue'
 const UButton = resolveComponent('UButton')
 const UTooltip = resolveComponent('UTooltip')
 const UIcon = resolveComponent('UIcon')
+const UPopover = resolveComponent('UPopover')
+const UInput = resolveComponent('UInput')
 const { copy } = useClipboard()
 
 interface TableData {
@@ -52,6 +54,7 @@ const props = defineProps({
 
 const { isLoading } = useAssistants()
 const { t } = useI18n()
+const toast = useToast()
 
 const slideover = useSlideover()
 
@@ -67,12 +70,102 @@ const openPromptModal = (id: string) => {
   })
 }
 
-function handleAssistantUpdated(updatedAssistant: any) {
-  // Update the assistant in the table data
-  const index = props.data.findIndex((a: any) => a.id === updatedAssistant.id)
-  if (index !== -1) {
-    props.data[index] = updatedAssistant
+const newAssistantName = ref('')
+const selectedAssistant = ref<any>(null)
+
+const deleteAssistant = async (id: string) => {
+  try {
+    await useFetch(`/api/assistants/${id}`, {
+      method: 'DELETE'
+    })
+    
+    // Remove the assistant from the data array
+    const index = props.data.findIndex((a: any) => a.id === id)
+    if (index !== -1) {
+      props.data.splice(index, 1)
+    }
+
+    // Show success toast
+    toast.add({
+      title: t('success'),
+      description: t('assistant-deleted'),
+      color: 'green'
+    })
+  } catch (error: any) {
+    console.error('Failed to delete assistant:', error)
+    // Show error toast
+    toast.add({
+      title: t('error'),
+      description: error.message || t('failed-to-delete-assistant'),
+      color: 'red'
+    })
   }
+}
+
+const duplicateAssistant = async (assistant: any) => {
+  try {
+    if (!newAssistantName.value) return
+    
+    const { data: newAssistant } = await useFetch('/api/assistants/create', {
+      method: 'POST',
+      body: {
+        name: newAssistantName.value,
+        firstMessage: assistant.firstMessage,
+        model: assistant.model,
+        prompt: assistant.prompt,
+        voice: assistant.voice,
+        firstMessageMode: assistant.firstMessageMode,
+        hipaaEnabled: assistant.hipaaEnabled,
+        clientMessages: assistant.clientMessages,
+        serverMessages: assistant.serverMessages,
+        silenceTimeoutSeconds: assistant.silenceTimeoutSeconds,
+        maxDurationSeconds: assistant.maxDurationSeconds,
+        backgroundSound: assistant.backgroundSound,
+        backgroundDenoisingEnabled: assistant.backgroundDenoisingEnabled,
+        modelOutputInMessagesEnabled: assistant.modelOutputInMessagesEnabled,
+        transportConfigurations: assistant.transportConfigurations,
+        voicemailDetection: assistant.voicemailDetection,
+        voicemailMessage: assistant.voicemailMessage,
+        endCallMessage: assistant.endCallMessage,
+        endCallPhrases: assistant.endCallPhrases,
+        metadata: assistant.metadata,
+        artifactPlan: assistant.artifactPlan,
+        messagePlan: assistant.messagePlan,
+        startSpeakingPlan: assistant.startSpeakingPlan,
+        stopSpeakingPlan: assistant.stopSpeakingPlan,
+        monitorPlan: assistant.monitorPlan,
+        credentialIds: assistant.credentialIds
+      }
+    })
+    
+    if (newAssistant) {
+      // Add the new assistant to the data array
+      props.data.push(newAssistant)
+      // Reset the form
+      newAssistantName.value = ''
+      selectedAssistant.value = null
+
+      // Show success toast
+      toast.add({
+        title: t('success'),
+        description: t('assistant-duplicated'),
+        color: 'green'
+      })
+    }
+  } catch (error: any) {
+    console.error('Failed to duplicate assistant:', error)
+    // Show error toast
+    toast.add({
+      title: t('error'),
+      description: error.message || t('failed-to-duplicate-assistant'),
+      color: 'red'
+    })
+  }
+}
+
+const handleDuplicateClick = (assistant: any) => {
+  selectedAssistant.value = assistant
+  newAssistantName.value = `${assistant.name} (Copy)`
 }
 
 const columns = computed(() => [
@@ -92,15 +185,82 @@ const columns = computed(() => [
   },
   {
     accessorKey: "id",
-    header: () => t('instructions'),
-    cell: (row) => h('div', { class: 'flex justify-center' }, [
-      h(UButton, {
+    header: () => t('actions'),
+    cell: (row) => h('div', { class: 'flex justify-center gap-2' }, [
+      // Edit Prompt Button
+      h(UTooltip, {
+        text: t('edit-prompt')
+      }, () => h(UButton, {
         icon: 'i-lucide-book-open',
         size: 'sm',
         color: 'primary',
         variant: 'ghost',
-        class: 'hover:scale-110 transition-transform',
-        onClick: () => openPromptModal(row.getValue())
+        onClick: () => openPromptModal(row.getValue('id'))
+      })),
+      
+      // Duplicate Button
+      h(UPopover, {
+        mode: 'click',
+        openDelay: 0,
+        closeDelay: 0,
+        class: 'w-80'
+      }, {
+        default: () => h(UTooltip, {
+          text: t('duplicate')
+        }, () => h(UButton, {
+          icon: 'i-lucide-copy',
+          size: 'sm',
+          color: 'primary',
+          variant: 'ghost',
+          onClick: () => handleDuplicateClick(props.data.find((a: any) => a.id === row.getValue('id')))
+        })),
+        content: () => h('div', { class: 'p-4 space-y-4' }, [
+          h('h3', { class: 'text-base font-medium' }, t('duplicate-assistant')),
+          h(UInput, {
+            modelValue: newAssistantName.value,
+            'onUpdate:modelValue': (val: string) => newAssistantName.value = val,
+            placeholder: t('enter-assistant-name'),
+            class: 'w-full'
+          }),
+          h('div', { class: 'flex justify-end gap-2' }, [
+            h(UButton, {
+              size: 'sm',
+              color: 'primary',
+              onClick: () => {
+                if (selectedAssistant.value) {
+                  duplicateAssistant(selectedAssistant.value)
+                }
+              }
+            }, () => t('create'))
+          ])
+        ])
+      }),
+
+      // Delete Button
+      h(UPopover, {
+        mode: 'click',
+        openDelay: 0,
+        closeDelay: 0
+      }, {
+        default: () => h(UTooltip, {
+          text: t('delete')
+        }, () => h(UButton, {
+          icon: 'i-lucide-trash-2',
+          size: 'sm',
+          color: 'red',
+          variant: 'ghost',
+        })),
+        content: () => h('div', { class: 'p-4 space-y-4' }, [
+          h('h3', { class: 'text-base font-medium' }, t('delete-assistant')),
+          h('p', { class: 'text-sm text-gray-500' }, t('delete-assistant-confirm')),
+          h('div', { class: 'flex justify-end gap-2' }, [
+            h(UButton, {
+              size: 'sm',
+              color: 'red',
+              onClick: () => deleteAssistant(row.getValue('id'))
+            }, () => t('delete'))
+          ])
+        ])
       })
     ])
   },

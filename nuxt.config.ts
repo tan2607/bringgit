@@ -11,6 +11,8 @@ export default defineNuxtConfig({
     playaiApiKey: process.env.PLAYAI_API_KEY,
     playaiUserId: process.env.PLAYAI_USER_ID,
     whisperApiKey: process.env.GROQ_API_KEY,
+    sendgridApiKey: process.env.SENDGRID_API_KEY,
+    firecrawlApiKey: process.env.FIRECRAWL_API_KEY,
     authJs: {
       secret: process.env.NEXTAUTH_SECRET,
     },

@@ -20,21 +20,28 @@ const authConfig: AuthConfig = {
   providers: [
     ...(isDevelopment ? [
       Credentials({
-        name: 'Development Login',
+        name: 'credentials',
         credentials: {
-          email: { label: "Email", type: "email", placeholder: "dev@keyreply.com", value: "dev@keyreply.com" },
+          email: { label: "Email", type: "email", placeholder: "dev@keyreply.com" },
           password: { label: "Password", type: "password" }
         },
         async authorize(credentials) {
-          return {
+          if (!credentials?.email || !credentials?.password) return null
+
+          if (credentials.email === 'dev@keyreply.com' && 
+              credentials.password === 'password') {
+            return {
               id: 'dev-user-id',
-              email: "dev@keyreply.com",
+              email: credentials.email,
               name: 'Development User',
-              emailVerified: new Date(),
+              emailVerified: new Date()
+            }
           }
+          return null
         }
       })
     ] : []),
+    // Microsoft Entra ID provider
     MicrosoftEntraID({
       clientId: process.env.AUTH_MICROSOFT_ENTRA_ID_ID,
       clientSecret: process.env.AUTH_MICROSOFT_ENTRA_ID_SECRET,
@@ -53,6 +60,25 @@ const authConfig: AuthConfig = {
         return false
       }
     },
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id
+        token.email = user.email
+        token.name = user.name
+      }
+      return token
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id as string
+        session.user.email = token.email as string
+        session.user.name = token.name as string
+      }
+      return session
+    }
+  },
+  pages: {
+    signIn: '/auth/login'
   }
 }
 

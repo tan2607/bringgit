@@ -124,7 +124,7 @@ export default {
   'analytics-dashboard': 'Analytics Dashboard',
   'calls-over-time': 'Calls Over Time',
   'vs-last-period': 'vs last period',
-  'statistics-for': 'Statistics for',
+  'statistics-for': 'Reports for',
   'view-analytics': 'View Analytics',
   'recent-calls': 'Recent Calls',
   'view-all': 'View All',

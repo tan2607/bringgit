@@ -110,6 +110,7 @@ export class VapiProvider {
         assistant: assistants.find((assistant) =>
           assistant.id === call.assistantId
         )?.name,
+        messages: call.messages,
         status: call.status,
         startedAt: call.startedAt,
         endedAt: call.endedAt,

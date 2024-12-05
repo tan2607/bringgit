@@ -3,6 +3,7 @@ import { CartesiaProvider } from '../utils/providers/cartesia';
 import { PlayAIProvider } from '../utils/providers/playai';
 import { OpenAIVoiceProvider } from '../utils/providers/openai';
 import { WhisperProvider } from '../utils/providers/whisper';
+import { SendGridProvider } from '../utils/providers/sendgrid';
 
 export default defineNitroPlugin((nitroApp) => {
   const config = useRuntimeConfig();
@@ -42,6 +43,12 @@ export default defineNitroPlugin((nitroApp) => {
     WhisperProvider.initialize(config.whisperApiKey);
     timings.push({ provider: 'Whisper', time: performance.now() - whisperStart });
     console.log('✅ WhisperProvider initialized');
+
+    // Initialize SendGrid provider
+    const sendgridStart = performance.now();
+    SendGridProvider.getInstance(config.sendgridApiKey);
+    timings.push({ provider: 'SendGrid', time: performance.now() - sendgridStart });
+    console.log('✅ SendGridProvider initialized');
 
     const totalTime = performance.now() - startTime;
 

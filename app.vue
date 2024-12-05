@@ -29,6 +29,7 @@
 import { availableLocales, getLocaleIcon } from '~/i18n/config'
 
 const { locale, locales, setLocale, t } = useI18n()
+const { status, signOut, session } = useAuth()
 const switchLocalePath = useSwitchLocalePath()
 const localeRoute = useLocaleRoute()
 const lang = computed(() => locale.value)
@@ -133,31 +134,38 @@ const items = computed(() => [
       }
     ]
   },
+  localeDropdown.value
+  ,
+  // Profile/Auth menu
   {
-    label: t('profile'),
-    icon: 'i-lucide-key',
-    children: [
+    label: session.value?.user?.name || t('profile'),
+    icon: session.value?.user ? 'i-lucide-user' : 'i-lucide-key',
+    children: session.value?.user ? [
+      {
+        label: session.value.user.email,
+        icon: 'i-lucide-mail',
+        disabled: true
+      },
+      {
+        label: t('settings'),
+        icon: 'i-lucide-settings',
+        to: localeRoute('/settings')?.path
+      },
+      {
+        label: t('logout'),
+        icon: 'i-lucide-log-out',
+        description: t('sign-out'),
+        onClick: () => signOut({ redirect: true, callbackUrl: '/auth/login' })
+      }
+    ] : [
       {
         label: t('login'),
         icon: 'i-lucide-log-in',
         description: t('sign-in'),
         to: localeRoute('/auth/login')?.path
-      },
-      {
-        label: t('sign-up'),
-        icon: 'i-lucide-user-plus',
-        description: t('create-account'),
-        to: localeRoute('/auth/signup')?.path
-      },
-      {
-        label: t('forgot-password'),
-        icon: 'i-lucide-key',
-        description: t('reset-password'),
-        to: localeRoute('/auth/forgot-password')?.path
       }
     ]
   },
-  localeDropdown.value
 ])
 
 const colorMode = useColorMode()
