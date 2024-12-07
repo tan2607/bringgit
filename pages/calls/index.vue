@@ -1,6 +1,5 @@
 <template>
   <UContainer class="my-8">
-    <UColorModeButton />
     <h1 class="text-2xl font-bold mb-4">{{ t('call-list') }}</h1>
 
     <!-- Filters -->

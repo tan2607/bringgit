@@ -40,7 +40,7 @@
             class="w-full"
             @change="seekTo"
           />
-          <div class="flex justify-between text-xs text-gray-500 mt-1">
+          <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
             <span>{{ formatTime(currentTime) }}</span>
             <span>{{ formatTime(duration) }}</span>
           </div>
@@ -78,7 +78,7 @@
             >
               <div 
                 v-if="showPitchIndicator && playbackSpeed !== 1" 
-                class="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 text-xs bg-gray-800 text-white rounded shadow-lg whitespace-nowrap"
+                class="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 text-xs bg-gray-800 dark:bg-gray-900 text-white rounded shadow-lg whitespace-nowrap"
               >
                 {{ playbackSpeed > 1 ? 'Pitch increased' : 'Pitch decreased' }}
               </div>
@@ -121,7 +121,7 @@
             block
           />
           <template #content>
-            <div class="p-2 bg-gray-50 rounded-lg mt-1">
+            <div class="p-2 bg-gray-50 dark:bg-gray-800 rounded-lg mt-1">
               <MDC :value="call?.summary || 'No summary available'" />
             </div>
           </template>
@@ -133,18 +133,18 @@
             <!-- User Message -->
             <div v-if="message.role === 'user'" class="flex items-start space-x-2 space-x-reverse flex-row-reverse">
               <div class="flex-shrink-0 mt-1 float-end">
-                <UAvatar icon="i-lucide-user" :alt="message.role" class="bg-green-100 shadow-sm" />
+                <UAvatar icon="i-lucide-user" :alt="message.role" class="bg-green-100 dark:bg-green-900 shadow-sm" />
               </div>
               <div class="flex-1 max-w-[80%]">
-                <div class="bg-green-50 rounded-2xl p-3 shadow-sm">
+                <div class="bg-green-50 dark:bg-green-900/50 rounded-2xl p-3 shadow-sm">
                   <div class="flex items-center gap-2 mb-1">
-                    <span class="text-xs text-green-500 font-medium">User</span>
-                    <span class="text-xs text-gray-400">•</span>
-                    <span class="text-xs text-gray-400">{{ formatTime(message.secondsFromStart) }}</span>
+                    <span class="text-xs text-green-500 dark:text-green-400 font-medium">User</span>
+                    <span class="text-xs text-gray-400 dark:text-gray-500">•</span>
+                    <span class="text-xs text-gray-400 dark:text-gray-500">{{ formatTime(message.secondsFromStart) }}</span>
                   </div>
-                  <UButton icon="i-lucide-audio-lines" size="xs" color="primary" variant="ghost"
+                  <UButton icon="i-lucide-audio-lines" size="xs" color="success" variant="ghost"
                        @click="jumpToTime(message.secondsFromStart)" /> 
-                       <span class="text-sm text-gray-700">{{ message.message }}</span>
+                       <span class="text-sm text-gray-700 dark:text-gray-200">{{ message.message }}</span>
                 </div>
               </div>
             </div>
@@ -152,16 +152,16 @@
             <!-- Bot Message -->
             <div v-else class="flex items-start space-x-2">
               <div class="flex-shrink-0 mt-1">
-                <UAvatar icon="i-lucide-bot" :alt="message.role" class="bg-blue-100 shadow-sm" />
+                <UAvatar icon="i-lucide-bot" :alt="message.role" class="bg-blue-100 dark:bg-blue-900 shadow-sm" />
               </div>
               <div class="flex-1 max-w-[80%]">
-                <div class="bg-blue-50 rounded-2xl p-3 shadow-sm">
+                <div class="bg-blue-50 dark:bg-blue-900/50 rounded-2xl p-3 shadow-sm">
                   <div class="flex items-center gap-2 mb-1">
-                    <span class="text-xs text-blue-500 font-medium">Assistant</span>
-                    <span class="text-xs text-gray-400">•</span>
-                    <span class="text-xs text-gray-400">{{ formatTime(message.secondsFromStart) }}</span>
+                    <span class="text-xs text-blue-500 dark:text-blue-400 font-medium">Assistant</span>
+                    <span class="text-xs text-gray-400 dark:text-gray-500">•</span>
+                    <span class="text-xs text-gray-400 dark:text-gray-500">{{ formatTime(message.secondsFromStart) }}</span>
                   </div>
-                  <UButton icon="i-lucide-audio-lines" size="xs" color="info" variant="ghost" @click="jumpToTime(message.secondsFromStart)" /> <span class="text-sm text-gray-700">{{ message.message }}</span>
+                  <UButton icon="i-lucide-audio-lines" size="xs" color="info" variant="ghost" @click="jumpToTime(message.secondsFromStart)" /> <span class="text-sm text-gray-700 dark:text-gray-200">{{ message.message }}</span>
                 </div>
               </div>
             </div>

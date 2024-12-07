@@ -4,157 +4,22 @@
 
 @theme {
   --font-sans: 'Public Sans', sans-serif;
-
   --breakpoint-3xl: 1920px;
-
   --color-primary: #1c57d9;
+
+  --color-primary: var(--ui-color-primary-500);
+  --color-secondary: var(--ui-color-secondary-500);
+  --color-success: var(--ui-color-success-500);
+  --color-info: var(--ui-color-info-500);
+  --color-warning: var(--ui-color-warning-500);
+  --color-error: var(--ui-color-error-500);
 }
 </style>
 
 <script setup lang="ts">
-import { availableLocales, getLocaleIcon } from '~/i18n/config'
-
-const { locale, locales, setLocale, t } = useI18n()
-const { status, signOut, session } = useAuth()
-const switchLocalePath = useSwitchLocalePath()
-const localeRoute = useLocaleRoute()
-const lang = computed(() => locale.value)
-const dir = computed(() => locales[locale.value]?.dir || 'ltr')
-
-// Available locales for the dropdown
-const availableLocaleItems = computed(() => 
-  (locales.value || []).map(l => ({
-    label: l.name,
-    icon: getLocaleIcon(l.code),
-    onSelect: () => setLocale(l.code),
-    selected: l.code === locale.value
-  }))
-)
-
-// Locale dropdown
-const localeDropdown = computed(() => {
-  const currentLocale = locales.value?.find(l => l.code === locale.value)
-  return {
-    label: currentLocale?.name || t('language'),
-    icon: getLocaleIcon(currentLocale?.code || 'en'),
-    children: availableLocaleItems.value
-  }
-})
-
-// Navigation items
-const items = computed(() => [
-  {
-    label: t('home'),
-    icon: 'i-lucide-home',
-    to: localeRoute('/')?.path
-  },
-  {
-    label: t('calls'),
-    icon: 'i-lucide-phone',
-    description: t('manage-calls'),
-    to: localeRoute('/calls')?.path
-  },
-  {
-    label: t('assistants'),
-    icon: 'i-lucide-bot',
-    description: t('manage-assistants'),
-    to: localeRoute('/assistants')?.path
-  },
-  {
-    label: t('analytics'),
-    icon: 'i-lucide-line-chart',
-    description: t('review-statistics'),
-    to: localeRoute('/analytics')?.path
-  },
-  {
-    label: t('scheduling'),
-    icon: 'i-lucide-calendar',
-    description: t('manage-schedule'),
-    to: localeRoute('/scheduling')?.path
-  },
-  {
-    label: 'Demo',
-    icon: 'i-lucide-layout-template',
-    description: 'View demo pages',
-    children: [
-      {
-        label: 'Translation',
-        icon: 'i-lucide-languages',
-        description: 'Translation demo',
-        to: localeRoute('/demo/translation')?.path
-      },
-      {
-        label: 'Patient Intake',
-        icon: 'i-lucide-clipboard-list',
-        description: 'Patient intake form demo',
-        to: localeRoute('/demo/patient-intake-form')?.path
-      }
-    ]
-  },
-  {
-    label: t('support'),
-    icon: 'i-lucide-help-circle',
-    children: [
-      {
-        label: t('help-center'),
-        icon: 'i-lucide-life-buoy',
-        description: t('get-help'),
-        to: localeRoute('/help')?.path
-      },
-      {
-        label: t('settings'),
-        icon: 'i-lucide-settings',
-        description: t('configure-preferences'),
-        to: localeRoute('/settings')?.path
-      }
-    ]
-  },
-  {
-    label: t('dev-tools'),
-    icon: 'i-lucide-wrench',
-    children: [
-      {
-        label: t('view-api'),
-        icon: 'i-lucide-file-json',
-        to: localeRoute('/dev')?.path
-      }
-    ]
-  },
-  localeDropdown.value
-  ,
-  // Profile/Auth menu
-  {
-    label: session.value?.user?.name || t('profile'),
-    icon: session.value?.user ? 'i-lucide-user' : 'i-lucide-key',
-    children: session.value?.user ? [
-      {
-        label: session.value.user.email,
-        icon: 'i-lucide-mail',
-        disabled: true
-      },
-      {
-        label: t('settings'),
-        icon: 'i-lucide-settings',
-        to: localeRoute('/settings')?.path
-      },
-      {
-        label: t('logout'),
-        icon: 'i-lucide-log-out',
-        description: t('sign-out'),
-        onClick: () => signOut({ redirect: true, callbackUrl: '/auth/login' })
-      }
-    ] : [
-      {
-        label: t('login'),
-        icon: 'i-lucide-log-in',
-        description: t('sign-in'),
-        to: localeRoute('/auth/login')?.path
-      }
-    ]
-  },
-])
-
+const { locale, locales } = useI18n()
 const colorMode = useColorMode()
+const color = computed(() => colorMode.value === 'dark' ? '#111827' : 'white')
 
 onMounted(() => {
   const browserLocale = locale.value;
@@ -174,26 +39,28 @@ onMounted(() => {
 })
 
 useHead({
-  title: 'KeyReply Voice AI',
+  meta: [
+    { charset: 'utf-8' },
+    { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+    { key: 'theme-color', name: 'theme-color', content: color }
+  ],
+  link: [
+    { rel: 'icon', href: '/favicon.ico' }
+  ],
   htmlAttrs: {
-    lang,
-    dir
+    lang: 'en'
   }
 })
 </script>
 
 <template>
   <UApp :locale="locales[locale as string]" :class="{ 'dark': colorMode.value === 'dark' }">
-    <!-- Navigation -->
-    <UNavigationMenu highlight :items="items" class="w-full sticky top-0 z-50 border-b bg-white dark:bg-gray-900" />
-
-    <!-- Main Content -->
+    <NuxtLoadingIndicator />
     <NuxtLayout>
       <NuxtPage :transition="{
         name: 'page',
         mode: 'out-in'
       }" />
     </NuxtLayout>
-
   </UApp>
 </template>

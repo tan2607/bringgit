@@ -129,7 +129,6 @@ const integrationForm = ref({
 })
 
 const colorMode = useColorMode()
-
 const themeOptions = ref(['system', 'light', 'dark'])
 
 const retentionOptions = ref([
