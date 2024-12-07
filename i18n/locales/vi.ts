@@ -27,15 +27,22 @@ export default {
   // Navigation & Common
   home: 'Trang chủ',
   calls: 'Cuộc gọi',
-  assistants: 'Trợ lý',
+  assistants: 'Trợ lý AI',
   language: 'Ngôn ngữ',
   welcome: 'Chào mừng',
   analytics: 'Phân tích',
   scheduling: 'Lịch trình',
   settings: 'Cài đặt',
-  'dev-tools': 'Nhà phát triển',
+  'dev-tools': 'Công cụ phát triển',
   profile: 'Hồ sơ',
   support: 'Hỗ trợ',
+  advanced: 'Nâng cao',
+  analysis: 'Phân tích',
+  create: 'Tạo mới',
+  explore: 'Khám phá',
+  security: 'Bảo mật',
+  widget: 'Widget',
+  copied: 'Đã sao chép',
 
   // Descriptions
   'manage-calls': 'Quản lý cuộc gọi và họp',
@@ -130,7 +137,7 @@ export default {
   cancel: 'Hủy',
 
   // Help Center
-  'help-center': 'Trung tâm trợ giúp',
+  'help-center': 'Trung tâm Trợ giúp',
   'how-can-we-help': 'Chúng tôi có thể giúp gì?',
   'search-help': 'Tìm kiếm bài viết trợ giúp...',
   'quick-links': 'Liên kết nhanh',
@@ -142,7 +149,12 @@ export default {
   'frequently-asked': 'Câu hỏi thường gặp',
   'still-need-help': 'Vẫn cần trợ giúp?',
   'support-available': 'Đội ngũ hỗ trợ của chúng tôi luôn sẵn sàng 24/7',
-  'contact-support': 'Liên hệ hỗ trợ',
+  'contact-support': 'Liên hệ Hỗ trợ',
+  'faq': 'Câu hỏi Thường gặp',
+  'documentation': 'Tài liệu',
+  'submit-ticket': 'Gửi Yêu cầu',
+  'ticket-submitted': 'Đã gửi Yêu cầu',
+  'ticket-description': 'Vui lòng nhập chi tiết vấn đề của bạn. Đội ngũ hỗ trợ sẽ xem xét và phản hồi.',
   'support-description': 'Gửi câu hỏi của bạn và chúng tôi sẽ phản hồi trong thời gian sớm nhất.',
 
   // Analytics
@@ -162,6 +174,15 @@ export default {
   'access-recordings': 'Truy cập và tải xuống bản ghi âm',
   'browse-recordings': 'Duyệt bản ghi âm',
   'schedule-now': 'Đặt lịch ngay',
+  'call-summary': 'Tóm tắt Cuộc gọi',
+  'call-duration': 'Thời lượng Cuộc gọi',
+  'call-status': 'Trạng thái Cuộc gọi',
+  'call-type': 'Loại Cuộc gọi',
+  'call-recording': 'Ghi âm Cuộc gọi',
+  'download-recording': 'Tải xuống Bản ghi âm',
+  'play-recording': 'Phát Bản ghi âm',
+  'pause-recording': 'Tạm dừng Bản ghi âm',
+  'no-summary-available': 'Không có tóm tắt',
 
   // Form Fields
   subject: 'Chủ đề',
@@ -223,10 +244,10 @@ export default {
   'translate-voice': 'Dịch giọng nói',
 
   // Navigation keys
-  'demos': 'Bản demo',
-  'explore-demos': 'Khám phá các demo AI của chúng tôi',
-  'voice-translation': 'Dịch giọng nói',
-  'multilingual-voice-translation': 'Dịch giọng nói đa ngôn ngữ',
+  'demos': 'Demo',
+  'explore-demos': 'Khám phá Demo AI',
+  'voice-translation': 'Dịch Giọng nói',
+  'multilingual-voice-translation': 'Dịch Giọng nói Đa ngôn ngữ',
 
   // Translation demo page
   translation: {
@@ -253,5 +274,29 @@ export default {
     translating: 'Đang dịch...',
     failedToTranslate: 'Không thể dịch',
     failedToPlayAudio: 'Không thể phát âm thanh'
+  },
+
+  // Assistant
+  assistant: {
+    delete: 'Xóa',
+    duplicate: 'Nhân bản',
+    'assistant-deleted': 'Đã xóa trợ lý thành công',
+    'failed-to-delete': 'Xóa không thành công',
+    'assistant-duplicated': 'Đã nhân bản trợ lý thành công',
+    'failed-to-duplicate': 'Nhân bản không thành công',
+    'copy-id': 'Sao chép ID',
+    'id-copied': 'Đã sao chép ID',
+    llm: 'Mô hình ngôn ngữ',
+    'llm-help': 'Chọn mô hình ngôn ngữ để sử dụng',
+    temperature: 'Nhiệt độ',
+    'temperature-help': 'Giá trị cao hơn sẽ tạo ra phản hồi sáng tạo hơn. Giá trị thấp hơn sẽ tạo ra phản hồi nhất quán hơn.',
+  },
+
+  // Prompt
+  prompt: {
+    'crawl': 'Quét trang web',
+    'crawled-content': 'Nội dung đã quét',
+    'crawling-failed': 'Quét trang web không thành công',
+    'content-imported': 'Đã nhập nội dung thành công',
   }
 }

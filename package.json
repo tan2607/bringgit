@@ -15,7 +15,7 @@
     "@cartesia/cartesia-js": "latest",
     "@nuxt/content": "next",
     "@nuxt/icon": "latest",
-    "@nuxt/ui": "next",
+    "@nuxt/ui-pro": "next",
     "@nuxthub/core": "latest",
     "@nuxtjs/i18n": "latest",
     "@nuxtjs/mdc": "latest",

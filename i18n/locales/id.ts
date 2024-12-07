@@ -8,9 +8,16 @@ export default {
   analytics: 'Analitik',
   scheduling: 'Penjadwalan',
   settings: 'Pengaturan',
-  'dev-tools': 'Alat Pengembang',
+  'dev-tools': 'Pengembang',
   profile: 'Profil',
   support: 'Dukungan',
+  advanced: 'Lanjutan',
+  analysis: 'Analisis',
+  create: 'Buat',
+  explore: 'Jelajahi',
+  security: 'Keamanan',
+  widget: 'Widget',
+  copied: 'Disalin',
 
   // Descriptions
   'manage-calls': 'Kelola panggilan dan rapat',
@@ -99,6 +106,11 @@ export default {
   'still-need-help': 'Masih butuh bantuan?',
   'support-available': 'Tim dukungan kami tersedia 24/7 untuk membantu Anda',
   'contact-support': 'Hubungi Dukungan',
+  'faq': 'Pertanyaan Umum',
+  'documentation': 'Dokumentasi',
+  'submit-ticket': 'Kirim Tiket',
+  'ticket-submitted': 'Tiket Terkirim',
+  'ticket-description': 'Silakan masukkan detail masalah Anda. Tim dukungan kami akan meninjau dan merespons.',
   'support-description': 'Kirimkan pertanyaan Anda dan kami akan segera menghubungi Anda.',
 
   // Analytics
@@ -118,6 +130,15 @@ export default {
   'access-recordings': 'Akses dan unduh rekaman panggilan',
   'browse-recordings': 'Jelajahi Rekaman',
   'schedule-now': 'Jadwalkan Sekarang',
+  'call-summary': 'Ringkasan Panggilan',
+  'call-duration': 'Durasi Panggilan',
+  'call-status': 'Status Panggilan',
+  'call-type': 'Jenis Panggilan',
+  'call-recording': 'Rekaman Panggilan',
+  'download-recording': 'Unduh Rekaman',
+  'play-recording': 'Putar Rekaman',
+  'pause-recording': 'Jeda Rekaman',
+  'no-summary-available': 'Ringkasan tidak tersedia',
 
   // Assistant List
   'assistant-list': 'Daftar Asisten AI',
@@ -190,5 +211,35 @@ export default {
     alcohol: 'Konsumsi Alkohol',
     activity: 'Aktivitas Fisik',
     submit: 'Kirim Formulir'
+  },
+
+  // Navigation keys
+  'demos': 'Demo',
+  'explore-demos': 'Jelajahi Demo AI',
+  'voice-translation': 'Terjemahan Suara',
+  'multilingual-voice-translation': 'Terjemahan Suara Multi Bahasa',
+
+  // Assistant
+  assistant: {
+    delete: 'Hapus',
+    duplicate: 'Duplikat',
+    'assistant-deleted': 'Asisten berhasil dihapus',
+    'failed-to-delete': 'Gagal menghapus',
+    'assistant-duplicated': 'Asisten berhasil diduplikat',
+    'failed-to-duplicate': 'Gagal menduplikat',
+    'copy-id': 'Salin ID',
+    'id-copied': 'ID telah disalin',
+    llm: 'Model Bahasa',
+    'llm-help': 'Pilih model bahasa yang akan digunakan',
+    temperature: 'Temperatur',
+    'temperature-help': 'Nilai yang lebih tinggi akan menghasilkan respons yang lebih kreatif. Nilai yang lebih rendah akan menghasilkan respons yang lebih konsisten.',
+  },
+
+  // Prompt
+  prompt: {
+    'crawl': 'Jelajahi Situs Web',
+    'crawled-content': 'Konten yang Dijelajahi',
+    'crawling-failed': 'Gagal menjelajahi situs web',
+    'content-imported': 'Konten berhasil diimpor',
   },
 }

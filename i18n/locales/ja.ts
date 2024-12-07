@@ -11,6 +11,13 @@ export default {
   'dev-tools': '開発者ツール',
   profile: 'プロフィール',
   support: 'サポート',
+  advanced: '詳細',
+  analysis: '分析',
+  create: '作成',
+  explore: '探索',
+  security: 'セキュリティ',
+  widget: 'ウィジェット',
+  copied: 'コピーしました',
 
   // Descriptions
   'manage-calls': '通話と会議の管理',
@@ -100,6 +107,11 @@ export default {
   'support-available': 'サポートチームが24時間体制でお手伝いします',
   'contact-support': 'サポートに連絡',
   'support-description': 'お問い合わせ内容を送信してください。できるだけ早く返信いたします。',
+  'faq': 'よくある質問',
+  'documentation': 'ドキュメント',
+  'submit-ticket': 'チケットを送信',
+  'ticket-submitted': 'チケットが送信されました',
+  'ticket-description': '問題の詳細を入力してください。サポートチームが対応いたします。',
 
   // Analytics
   'analytics-dashboard': '分析ダッシュボード',
@@ -118,6 +130,15 @@ export default {
   'access-recordings': '通話録音へのアクセスとダウンロード',
   'browse-recordings': '録音を閲覧',
   'schedule-now': '今すぐスケジュール',
+  'call-summary': '通話サマリー',
+  'call-duration': '通話時間',
+  'call-status': '通話状態',
+  'call-type': '通話種類',
+  'call-recording': '通話録音',
+  'download-recording': '録音をダウンロード',
+  'play-recording': '録音を再生',
+  'pause-recording': '録音を一時停止',
+  'no-summary-available': 'サマリーはありません',
 
   // Assistant List
   'assistant-list': 'AIアシスタント一覧',
@@ -169,7 +190,11 @@ export default {
     'prompt-enhanced': 'プロンプトが正常に強化されました',
     'enhancement-failed': 'プロンプトの強化に失敗しました',
     'assistant-updated': 'アシスタントが正常に更新されました',
-    'error-saving-changes': '変更の保存中にエラーが発生しました'
+    'error-saving-changes': '変更の保存中にエラーが発生しました',
+    'crawl': 'ウェブサイトをクロール',
+    'crawled-content': 'クロールされたコンテンツ',
+    'crawling-failed': 'ウェブサイトのクロールに失敗しました',
+    'content-imported': 'コンテンツが正常にインポートされました',
   },
 
   // Translation page specific keys
@@ -201,7 +226,7 @@ export default {
   'explore-demos': 'AIデモを探索',
   'voice-translation': '音声翻訳',
   'multilingual-voice-translation': '多言語音声翻訳',
-  
+
   // General UI keys
   'explore': '探索',
   'press-to-speak': '音声を押して話す',
@@ -254,5 +279,19 @@ export default {
     alcohol: '飲酒習慣',
     activity: '身体活動',
     submit: 'フォームを送信'
+  },
+  assistant: {
+    delete: '削除',
+    duplicate: '複製',
+    'assistant-deleted': 'アシスタントが削除されました',
+    'failed-to-delete': '削除に失敗しました',
+    'assistant-duplicated': 'アシスタントが複製されました',
+    'failed-to-duplicate': '複製に失敗しました',
+    'copy-id': 'IDをコピー',
+    'id-copied': 'IDがコピーされました',
+    llm: '言語モデル',
+    'llm-help': '使用する言語モデルを選択してください',
+    temperature: '温度',
+    'temperature-help': '値が高いほど、より創造的な応答になります。低い値は一貫性のある応答を生成します。',
   },
 }

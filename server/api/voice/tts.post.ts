@@ -30,8 +30,8 @@ export default defineEventHandler(async (event) => {
 
     const response = await voiceService.textToSpeech(text, options, provider);
 
-    // For Cartesia, return raw buffer directly
-    if (provider === 'cartesia') {
+    // Handle different provider responses
+    if (provider === 'cartesia' || provider === 'play.ai') {
       setHeader(event, 'Content-Type', 'application/octet-stream');
       setHeader(event, 'Accept-Ranges', 'bytes');
       

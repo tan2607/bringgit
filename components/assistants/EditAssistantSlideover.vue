@@ -111,7 +111,7 @@
                     color="black"
                     variant="solid"
                     :label="t('analysis.add-criteria')"
-                    @click="openAddCriteriaForm"
+                    @click="$emit('add-criteria')"
                   />
                 </div>
 
@@ -144,7 +144,7 @@
                     color="black"
                     variant="solid"
                     :label="t('analysis.add-data-item')"
-                    @click="openAddDataItem"
+                    @click="$emit('add-data-item')"
                   />
                 </div>
 
@@ -183,268 +183,70 @@
           color="black"
           variant="outline"
           :label="t('assistant.test')"
-          @click="openTest"
+          @click="$emit('test')"
         />
       </div>
     </template>
-  </USlideover>
-
-  <!-- Test AI Agent Slideover -->
-  <USlideover 
-    v-model="isTestOpen"
-    :title="`${t('assistant.test')} ${assistant?.name}`"
-    :ui="{ content: 'sm:max-w-2xl', body: 'p-0' }"
-  >
-    <template #body>
-      <div class="h-full">
-        <iframe 
-          :src="`https://vai.keyreply.com/${assistant?.id}`"
-          class="w-full h-full border-0"
-          allow="microphone"
-        />
-      </div>
-    </template>
-  </USlideover>
-
-  <!-- Add Criteria Slideover -->
-  <USlideover
-    v-model="isAddCriteriaOpen"
-    side="right"
-    :ui="{ width: 'sm:max-w-lg' }"
-  >
-    <template #header>
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <UIcon name="i-lucide-brain" class="w-5 h-5" />
-          <span class="text-lg font-medium">{{ t('analysis.add-criteria') }}</span>
-        </div>
-      </div>
-    </template>
-
-    <div class="p-4 space-y-4">
-      <p class="text-sm text-gray-500">
-        {{ t('analysis.criteria-description') }}
-        {{ t('analysis.criteria-result') }}
-      </p>
-
-      <UFormField :label="t('analysis.criteria-name')" required>
-        <UInput v-model="newCriterion.name" placeholder="Enter the name to generate an ID" />
-      </UFormField>
-
-      <UFormField :label="t('analysis.criteria-prompt')" required>
-        <UTextarea
-          v-model="newCriterion.prompt"
-          :rows="5"
-          placeholder="Enter the prompt that will be passed to the LLM"
-        />
-      </UFormField>
-
-      <div class="flex justify-end gap-2">
-        <UButton
-          color="neutral"
-          variant="outline"
-          :label="t('assistant.cancel')"
-          @click="isAddCriteriaOpen = false"
-        />
-        <UButton
-          color="black"
-          variant="solid"
-          :label="t('analysis.add-criteria')"
-          :disabled="!newCriterion.name || !newCriterion.prompt"
-          @click="addCriterion"
-        />
-      </div>
-    </div>
-  </USlideover>
-
-  <!-- Add Data Item Slideover -->
-  <USlideover
-    v-model="isAddDataItemOpen"
-    side="right"
-    :ui="{ width: 'sm:max-w-lg' }"
-  >
-    <template #header>
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <UIcon name="i-lucide-table" class="w-5 h-5" />
-          <span class="text-lg font-medium">{{ t('analysis.add-data-item') }}</span>
-        </div>
-      </div>
-    </template>
-
-    <div class="p-4 space-y-4">
-      <div class="grid grid-cols-2 gap-4">
-        <UFormField :label="t('analysis.data-type')" required>
-          <USelect
-            v-model="newDataItem.type"
-            :items="dataTypeOptions"
-            option-attribute="label"
-          />
-        </UFormField>
-
-        <UFormField :label="t('analysis.data-identifier')" required>
-          <UInput v-model="newDataItem.identifier" />
-        </UFormField>
-      </div>
-
-      <UFormField :label="t('analysis.data-description')" required>
-        <UTextarea
-          v-model="newDataItem.description"
-          :rows="5"
-          :placeholder="t('analysis.data-description-help')"
-        />
-      </UFormField>
-
-      <div class="flex justify-end gap-2">
-        <UButton
-          color="neutral"
-          variant="outline"
-          :label="t('assistant.cancel')"
-          @click="isAddDataItemOpen = false"
-        />
-        <UButton
-          color="black"
-          variant="solid"
-          :label="t('analysis.add-data-item')"
-          :disabled="!newDataItem.type || !newDataItem.identifier || !newDataItem.description"
-          @click="addDataItem"
-        />
-      </div>
-    </div>
   </USlideover>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n()
-const slideover = useSlideover()
-
 interface Props {
-  open: boolean
-  assistant?: {
-    id: string
-    name: string
-    language: string
-    firstMessage: string
-    systemPrompt: string
-    llm: string
-    temperature: number
-    tokenLimit: number
-    criteria?: {
-      id: string
-      name: string
-      prompt: string
-    }[]
-    dataItems?: {
-      id: string
-      type: 'String' | 'Number' | 'Boolean' | 'Date'
-      identifier: string
-      description: string
-    }[]
-  }
+  modelValue: boolean
+  assistant: any
 }
 
 const props = defineProps<Props>()
-const emit = defineEmits(['update:open'])
+const emit = defineEmits(['update:modelValue', 'test', 'add-criteria', 'add-data-item'])
+
+const { t } = useI18n()
 
 const open = computed({
-  get: () => props.open,
-  set: (value) => emit('update:open', value)
+  get: () => props.modelValue,
+  set: (value) => emit('update:modelValue', value)
 })
 
 const activeTab = ref('agent')
-const isTestOpen = ref(false)
-const isAddCriteriaOpen = ref(false)
-const isAddDataItemOpen = ref(false)
 
 const tabs = [
-  { label: t('assistant.agent'), value: 'agent' },
-  { label: t('voice'), value: 'voice' },
-  { label: t('analysis'), value: 'analysis' },
-  { label: t('security'), value: 'security' },
-  { label: t('advanced'), value: 'advanced' },
-  { label: t('widget'), value: 'widget' }
+  {
+    label: t('assistant.agent'),
+    value: 'agent',
+    icon: 'i-lucide-bot'
+  },
+  {
+    label: t('assistant.analysis'),
+    value: 'analysis',
+    icon: 'i-lucide-chart-bar'
+  }
 ]
 
 const languageOptions = [
   { label: 'English', value: 'en' },
-  { label: 'Spanish', value: 'es' },
-  { label: 'French', value: 'fr' },
-  { label: 'German', value: 'de' },
-  { label: 'Chinese', value: 'zh' },
-  { label: 'Japanese', value: 'ja' }
+  { label: 'Chinese', value: 'zh' }
 ]
 
 const llmOptions = [
-  { label: 'GPT-4 Turbo', value: 'gpt-4-turbo' },
   { label: 'GPT-4', value: 'gpt-4' },
-  { label: 'GPT-3.5 Turbo', value: 'gpt-3.5-turbo' },
-  { label: 'Claude 3 Opus', value: 'claude-3-opus' },
-  { label: 'Claude 3 Sonnet', value: 'claude-3-sonnet' },
-  { label: 'Gemini 1.5 Pro', value: 'gemini-1.5-pro' },
-  { label: 'Gemini 1.5 Flash', value: 'gemini-1.5-flash' }
-]
-
-const newCriterion = reactive({
-  name: '',
-  prompt: ''
-})
-
-const newDataItem = reactive({
-  type: 'String',
-  identifier: '',
-  description: ''
-})
-
-const dataTypeOptions = [
-  { label: 'String', value: 'String' },
-  { label: 'Number', value: 'Number' },
-  { label: 'Boolean', value: 'Boolean' },
-  { label: 'Date', value: 'Date' }
+  { label: 'GPT-3.5', value: 'gpt-3.5-turbo' }
 ]
 
 function close() {
-  slideover.close()
+  open.value = false
 }
 
 function save() {
-  // TODO: Implement save logic
+  // TODO: Implement save
   close()
 }
 
-function openTest() {
-  isTestOpen.value = true
-}
-
-function openAddCriteriaForm() {
-  isAddCriteriaOpen.value = true
-}
-
-function openAddDataItem() {
-  isAddDataItemOpen.value = true
-}
-
-function addCriterion() {
-  // TODO: Implement add criterion logic
-  isAddCriteriaOpen.value = false
-  newCriterion.name = ''
-  newCriterion.prompt = ''
-}
-
-function addDataItem() {
-  // TODO: Implement add data item logic
-  isAddDataItemOpen.value = false
-  newDataItem.type = 'String'
-  newDataItem.identifier = ''
-  newDataItem.description = ''
-}
-
 function deleteCriterion(id: string) {
-  // TODO: Implement delete criterion logic
+  // TODO: Implement delete criterion
 }
 
 function deleteDataItem(id: string) {
-  // TODO: Implement delete data item logic
+  // TODO: Implement delete data item
 }
 </script>

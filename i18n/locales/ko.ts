@@ -11,6 +11,13 @@ export default {
     'dev-tools': '개발자 도구',
     profile: '프로필',
     support: '지원',
+    advanced: '고급',
+    analysis: '분석',
+    create: '생성',
+    explore: '탐색',
+    security: '보안',
+    widget: '위젯',
+    copied: '복사됨',
 
     // Descriptions
     'manage-calls': '통화 및 회의 관리',
@@ -86,7 +93,7 @@ export default {
     'cancel': '취소',
 
     // Help Center
-    'help-center': '고객센터',
+    'help-center': '고객 지원 센터',
     'how-can-we-help': '어떻게 도와드릴까요?',
     'search-help': '도움말 검색...',
     'quick-links': '빠른 링크',
@@ -98,7 +105,12 @@ export default {
     'frequently-asked': '자주 묻는 질문',
     'still-need-help': '도움이 더 필요하신가요?',
     'support-available': '지원팀이 24시간 도와드립니다',
-    'contact-support': '고객지원 문의',
+    'contact-support': '고객 지원 문의',
+    'faq': '자주 묻는 질문',
+    'documentation': '문서',
+    'submit-ticket': '티켓 제출',
+    'ticket-submitted': '티켓이 제출되었습니다',
+    'ticket-description': '문제에 대한 자세한 내용을 입력해 주세요. 지원팀이 검토 후 답변 드리겠습니다.',
     'support-description': '문의사항을 보내주시면 최대한 빨리 답변드리겠습니다.',
 
     // Analytics
@@ -118,6 +130,15 @@ export default {
     'access-recordings': '통화 녹음 접근 및 다운로드',
     'browse-recordings': '녹음 찾아보기',
     'schedule-now': '지금 예약하기',
+    'call-summary': '통화 요약',
+    'call-duration': '통화 시간',
+    'call-status': '통화 상태',
+    'call-type': '통화 유형',
+    'call-recording': '통화 녹음',
+    'download-recording': '녹음 다운로드',
+    'play-recording': '녹음 재생',
+    'pause-recording': '녹음 일시정지',
+    'no-summary-available': '요약 없음',
 
     // Assistant List
     'assistant-list': 'AI 어시스턴트 목록',
@@ -169,7 +190,11 @@ export default {
       'prompt-enhanced': '프롬프트가 성공적으로 향상되었습니다',
       'enhancement-failed': '프롬프트 향상 실패',
       'assistant-updated': '어시스턴트가 성공적으로 업데이트되었습니다',
-      'error-saving-changes': '변경 사항 저장 중 오류 발생'
+      'error-saving-changes': '변경 사항 저장 중 오류 발생',
+      'crawl': '웹사이트 크롤링',
+      'crawled-content': '크롤링된 콘텐츠',
+      'crawling-failed': '웹사이트 크롤링 실패',
+      'content-imported': '콘텐츠가 성공적으로 가져와졌습니다'
     },
 
     // Translation page specific keys
@@ -236,4 +261,26 @@ export default {
       activity: '신체 활동',
       submit: '양식 제출'
     },
+
+    // Navigation keys
+    'demos': '데모',
+    'explore-demos': 'AI 데모 탐색',
+    'voice-translation': '음성 번역',
+    'multilingual-voice-translation': '다국어 음성 번역',
+
+    // Assistant
+    assistant: {
+      delete: '삭제',
+      duplicate: '복제',
+      'assistant-deleted': '어시스턴트가 삭제되었습니다',
+      'failed-to-delete': '삭제 실패',
+      'assistant-duplicated': '어시스턴트가 복제되었습니다',
+      'failed-to-duplicate': '복제 실패',
+      'copy-id': 'ID 복사',
+      'id-copied': 'ID가 복사되었습니다',
+      llm: '언어 모델',
+      'llm-help': '사용할 언어 모델을 선택하세요',
+      temperature: '온도',
+      'temperature-help': '높은 값은 더 창의적인 응답을 생성합니다. 낮은 값은 일관된 응답을 생성합니다.'
+    }
   }

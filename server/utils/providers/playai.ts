@@ -38,18 +38,18 @@ export class PlayAIProvider implements VoiceProvider {
       voice: options.voice,
       outputFormat: 'mp3',
       speed: options.speed || 1,
-      sampleRate: options.sampleRate || 24000,
-      seed: options.seed,
-      temperature: options.temperature,
+      // sampleRate: options.sampleRate || 24000,
+      // seed: options.seed,
+      temperature: options.temperature || 0.3,
       language: options.language || 'english'
     };
 
     if (isDialog) {
-      Object.assign(requestBody, {
-        turnPrefix: options.turnPrefix,
-        prompt: options.prompt,
-        voiceConditioningSeconds: options.voiceConditioningSeconds || 20,
-      });
+      // Object.assign(requestBody, {
+      //   turnPrefix: options.turnPrefix,
+      //   prompt: options.prompt,
+      //   voiceConditioningSeconds: options.voiceConditioningSeconds || 20,
+      // });
     } else {
       Object.assign(requestBody, {
         quality: options.quality || 'standard',
@@ -66,18 +66,18 @@ export class PlayAIProvider implements VoiceProvider {
         'X-USER-ID': this.userId,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(requestBody),
+      body: JSON.stringify(requestBody)
     });
 
     if (!response.ok) {
-      throw new Error(`Play.ai API error: ${response.statusText}`);
+      throw new Error(`Play.ai API error: ${response.status}: ${response.statusText}`);
     }
 
     if (options.stream) {
       return response.body as ReadableStream<Uint8Array>;
-    } else {
-      return await response.arrayBuffer();
     }
+    
+    return await response.arrayBuffer();
   }
 
   getSupportedLanguages(): string[] {

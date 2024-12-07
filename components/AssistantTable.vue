@@ -1,9 +1,38 @@
 <template>
   <div>
+    <div class="flex justify-end px-4 py-3.5 border-b border-[var(--ui-border-accented)]">
+      <UDropdownMenu
+        :items="table?.tableApi
+          ?.getAllColumns()
+          .filter((column) => ['id', 'voice', 'model'].includes(column.id))
+          .map((column) => ({
+            label: upperFirst(column.id),
+            type: 'checkbox' as const,
+            checked: column.getIsVisible(),
+            onUpdateChecked(checked: boolean) {
+              table?.tableApi?.getColumn(column.id)?.toggleVisibility(!!checked)
+            },
+            onSelect(e?: Event) {
+              e?.preventDefault()
+            }
+          }))"
+        :content="{ align: 'end' }"
+      >
+        <UButton
+          label="Columns"
+          color="neutral"
+          variant="outline"
+          trailing-icon="i-lucide-chevron-down"
+        />
+      </UDropdownMenu>
+    </div>
     <UTable 
+      ref="table"
+      v-model:column-visibility="columnVisibility"
       :data="data" 
       :columns="columns"
       :loading="isLoading"
+      class="flex-1"
     >
       <template #loading-state>
         <div class="flex items-center justify-center h-32">
@@ -15,20 +44,29 @@
 </template>
 
 <script setup lang="ts">
-import { formatTimeAgo, useClipboard } from '@vueuse/core'
+import { h, resolveComponent } from 'vue'
+import type { TableColumn } from '@nuxt/ui'
+import type { Row } from '@tanstack/vue-table'
+import { formatTimeAgo } from '@vueuse/core'
 import { useAssistants } from '@/composables/useAssistants'
 import { useI18n } from 'vue-i18n'
+import { upperFirst } from 'scule'
 import AssistantSlideover from './AssistantSlideover.vue'
 import PromptSlideover from './PromptSlideover.vue'
 
 const UButton = resolveComponent('UButton')
-const UTooltip = resolveComponent('UTooltip')
+const UBadge = resolveComponent('UBadge')
+const UDropdownMenu = resolveComponent('UDropdownMenu')
 const UIcon = resolveComponent('UIcon')
+const UTooltip = resolveComponent('UTooltip')
 const UPopover = resolveComponent('UPopover')
 const UInput = resolveComponent('UInput')
-const { copy } = useClipboard()
 
-interface TableData {
+const toast = useToast()
+const { t } = useI18n()
+const slideover = useSlideover()
+
+interface Assistant {
   id: string
   name: string
   firstMessage: string
@@ -45,297 +83,226 @@ interface TableData {
   instructions: string
 }
 
-const props = defineProps({
-  data: {
-    type: Array as PropType<TableData[]>,
-    required: true
-  }
-})
+const props = defineProps<{
+  data: Assistant[]
+}>()
 
 const { isLoading } = useAssistants()
-const { t } = useI18n()
-const toast = useToast()
 
-const slideover = useSlideover()
+const table = useTemplateRef('table')
 
-const openAssistantModal = (name: string) => {
-  slideover.open(AssistantSlideover, {
-    assistantName: name
-  })
-}
+const columnVisibility = ref({
+  id: false,
+  voice: false,
+  model: false
+})
 
-const openPromptModal = (id: string) => {
-  slideover.open(PromptSlideover, {
-    assistant: props.data.find((a: any) => a.id === id)
-  })
-}
-
-const newAssistantName = ref('')
-const selectedAssistant = ref<any>(null)
-
-const deleteAssistant = async (id: string) => {
-  try {
-    await useFetch(`/api/assistants/${id}`, {
-      method: 'DELETE'
-    })
-    
-    // Remove the assistant from the data array
-    const index = props.data.findIndex((a: any) => a.id === id)
-    if (index !== -1) {
-      props.data.splice(index, 1)
-    }
-
-    // Show success toast
-    toast.add({
-      title: t('success'),
-      description: t('assistant-deleted'),
-      color: 'green'
-    })
-  } catch (error: any) {
-    console.error('Failed to delete assistant:', error)
-    // Show error toast
-    toast.add({
-      title: t('error'),
-      description: error.message || t('failed-to-delete-assistant'),
-      color: 'red'
-    })
-  }
-}
-
-const duplicateAssistant = async (assistant: any) => {
-  try {
-    if (!newAssistantName.value) return
-    
-    const { data: newAssistant } = await useFetch('/api/assistants/create', {
-      method: 'POST',
-      body: {
-        name: newAssistantName.value,
-        firstMessage: assistant.firstMessage,
-        model: assistant.model,
-        prompt: assistant.prompt,
-        voice: assistant.voice,
-        firstMessageMode: assistant.firstMessageMode,
-        hipaaEnabled: assistant.hipaaEnabled,
-        clientMessages: assistant.clientMessages,
-        serverMessages: assistant.serverMessages,
-        silenceTimeoutSeconds: assistant.silenceTimeoutSeconds,
-        maxDurationSeconds: assistant.maxDurationSeconds,
-        backgroundSound: assistant.backgroundSound,
-        backgroundDenoisingEnabled: assistant.backgroundDenoisingEnabled,
-        modelOutputInMessagesEnabled: assistant.modelOutputInMessagesEnabled,
-        transportConfigurations: assistant.transportConfigurations,
-        voicemailDetection: assistant.voicemailDetection,
-        voicemailMessage: assistant.voicemailMessage,
-        endCallMessage: assistant.endCallMessage,
-        endCallPhrases: assistant.endCallPhrases,
-        metadata: assistant.metadata,
-        artifactPlan: assistant.artifactPlan,
-        messagePlan: assistant.messagePlan,
-        startSpeakingPlan: assistant.startSpeakingPlan,
-        stopSpeakingPlan: assistant.stopSpeakingPlan,
-        monitorPlan: assistant.monitorPlan,
-        credentialIds: assistant.credentialIds
-      }
-    })
-    
-    if (newAssistant) {
-      // Add the new assistant to the data array
-      props.data.push(newAssistant)
-      // Reset the form
-      newAssistantName.value = ''
-      selectedAssistant.value = null
-
-      // Show success toast
-      toast.add({
-        title: t('success'),
-        description: t('assistant-duplicated'),
-        color: 'green'
-      })
-    }
-  } catch (error: any) {
-    console.error('Failed to duplicate assistant:', error)
-    // Show error toast
-    toast.add({
-      title: t('error'),
-      description: error.message || t('failed-to-duplicate-assistant'),
-      color: 'red'
-    })
-  }
-}
-
-const handleDuplicateClick = (assistant: any) => {
-  selectedAssistant.value = assistant
-  newAssistantName.value = `${assistant.name} (Copy)`
-}
-
-const columns = computed(() => [
+const columns: TableColumn<Assistant>[] = [
   {
-    accessorKey: "name",
-    header: () => t('name'),
-    cell: (row) => h('div', { class: 'flex justify-center gap-2' }, [
-      h(UButton, {
-        icon: 'i-lucide-phone',
-        size: 'sm',
-        color: 'primary',
-        variant: 'soft',
-        class: 'hover:scale-110 transition-transform',
-        onClick: () => openAssistantModal(row.getValue('name'))
-      }, () => t('call-assistant') + ' ' + row.getValue('name'))
-    ])
-  },
-  {
-    accessorKey: "id",
-    header: () => t('actions'),
-    cell: (row) => h('div', { class: 'flex justify-center gap-2' }, [
-      // Edit Prompt Button
-      h(UTooltip, {
-        text: t('edit-prompt')
-      }, () => h(UButton, {
-        icon: 'i-lucide-book-open',
-        size: 'sm',
-        color: 'primary',
-        variant: 'ghost',
-        onClick: () => openPromptModal(row.getValue('id'))
-      })),
-      
-      // Duplicate Button
-      h(UPopover, {
-        mode: 'click',
-        openDelay: 0,
-        closeDelay: 0,
-        class: 'w-80'
-      }, {
-        default: () => h(UTooltip, {
-          text: t('duplicate')
-        }, () => h(UButton, {
+    accessorKey: 'id',
+    header: () => t('table.id'),
+    cell: ({ row }) => {
+      return h('div', { class: 'flex items-center gap-2' }, [
+        h('span', { class: 'font-mono text-xs text-gray-500' }, row.getValue('id')),
+        h(UTooltip, { text: t('assistant.copy-id') }, () => h(UButton, {
           icon: 'i-lucide-copy',
-          size: 'sm',
-          color: 'primary',
+          color: 'gray',
           variant: 'ghost',
-          onClick: () => handleDuplicateClick(props.data.find((a: any) => a.id === row.getValue('id')))
-        })),
-        content: () => h('div', { class: 'p-4 space-y-4' }, [
-          h('h3', { class: 'text-base font-medium' }, t('duplicate-assistant')),
-          h(UInput, {
-            modelValue: newAssistantName.value,
-            'onUpdate:modelValue': (val: string) => newAssistantName.value = val,
-            placeholder: t('enter-assistant-name'),
-            class: 'w-full'
-          }),
-          h('div', { class: 'flex justify-end gap-2' }, [
-            h(UButton, {
-              size: 'sm',
-              color: 'primary',
-              onClick: () => {
-                if (selectedAssistant.value) {
-                  duplicateAssistant(selectedAssistant.value)
-                }
-              }
-            }, () => t('create'))
-          ])
-        ])
-      }),
-
-      // Delete Button
-      h(UPopover, {
-        mode: 'click',
-        openDelay: 0,
-        closeDelay: 0
-      }, {
-        default: () => h(UTooltip, {
-          text: t('delete')
-        }, () => h(UButton, {
-          icon: 'i-lucide-trash-2',
-          size: 'sm',
-          color: 'red',
-          variant: 'ghost',
-        })),
-        content: () => h('div', { class: 'p-4 space-y-4' }, [
-          h('h3', { class: 'text-base font-medium' }, t('delete-assistant')),
-          h('p', { class: 'text-sm text-gray-500' }, t('delete-assistant-confirm')),
-          h('div', { class: 'flex justify-end gap-2' }, [
-            h(UButton, {
-              size: 'sm',
-              color: 'red',
-              onClick: () => deleteAssistant(row.getValue('id'))
-            }, () => t('delete'))
-          ])
-        ])
-      })
-    ])
-  },
-  {
-    accessorKey: "model",
-    header: () => t('model'),
-    cell: (row) => {
-      const model = row.getValue("model")
-      return h('div', { class: 'flex justify-center' }, [
-        h(UTooltip, {
-          delayDuration: 0,
-          content: {
-            side: 'top'
-          },
-          text: `${model.provider} / ${model.model}`,
-          arrow: true
-        }, {
-          default: () => h(UIcon, { 
-            name: 'i-lucide-cpu',
-            class: 'text-primary-500'
-          })
-        })
+          size: 'xs',
+          onClick: () => {
+            navigator.clipboard.writeText(row.getValue('id'))
+            toast.add({
+              title: t('success'),
+              description: t('assistant.id-copied'),
+              color: 'success',
+              icon: 'i-lucide-check'
+            })
+          }
+        }))
       ])
     }
   },
   {
-    accessorKey: "voice",
-    header: () => t('voice'),
-    cell: (row: any) => {
-      const voice = row.getValue("voice")
-      const voiceId = voice.voiceId
-      const toast = useToast()
+    accessorKey: 'name',
+    header: () => t('assistant.name'),
+    cell: ({ row }) => {
+      return h('div', { class: 'flex items-center gap-2' }, [
+        h(UIcon, { name: 'i-lucide-bot', class: 'w-4 h-4' }),
+        h('span', {}, row.getValue('name'))
+      ])
+    }
+  },
+  {
+    accessorKey: 'model',
+    header: () => t('model'),
+    cell: ({ row }) => {
+      const model = row.getValue('model')
+      return h('div', { class: 'flex items-center gap-2' }, [
+        h(UIcon, {
+          name: model.provider === 'openai' ? 'i-simple-icons-openai' : 'i-lucide-cpu',
+          class: 'w-4 h-4'
+        }),
+        h('span', {}, model.model)
+      ])
+    }
+  },
 
-      return h('div', { class: 'flex justify-center' }, [
-        h(UTooltip, {
-          delayDuration: 0,
-          content: {
-            side: 'top'
-          },
-          text: `${voice.provider} / ${voiceId}`,
-          arrow: true
-        }, {
-          default: () => h(UIcon, { 
-            name: 'i-lucide-mic',
-            class: 'text-primary-500 cursor-pointer',
-            onClick: () => {
-              copy(voiceId)
-              toast.add({
-                title: 'Voice ID Copied',
-                duration: 1500,
-                description: 'Voice ID copied to clipboard!',
-                color: 'success', // or another appropriate color
-                icon: 'i-lucide-check' // optional icon
-              })
-            }
-          })
-        })
+  {
+    accessorKey: 'voice',
+    header: () => t('voice'),
+    cell: ({ row }) => {
+      const voice = row.getValue('voice')
+      return h('div', { class: 'flex items-center gap-2' }, [
+        h(UIcon, {
+          name: voice.provider === 'elevenlabs' ? 'i-simple-icons-elevenlabs' : 'i-lucide-mic',
+          class: 'w-4 h-4'
+        }),
+        h('span', {}, voice.provider + ' / ' + voice.voiceId)
       ])
     }
   },
   {
     accessorKey: 'createdAt',
     header: () => t('created-at'),
-    sortable: true,
-    cell: (row: any) => {
-      const time = new Date(row.getValue('createdAt'))
-      const timeAgo = formatTimeAgo(time)
-      return time.toLocaleString('en-US', {
-        day: 'numeric',
-        month: 'short',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false
-      }) + ` (${timeAgo})`
+    cell: ({ row }) => {
+      const date = new Date(row.getValue('createdAt'))
+      return h('div', { class: 'flex items-center gap-2' }, [
+        h(UIcon, { name: 'i-lucide-clock', class: 'w-4 h-4' }),
+        h('span', {}, formatTimeAgo(date))
+      ])
+    }
+  },
+  {
+    id: 'actions',
+    cell: ({ row }) => {
+      return h(
+        'div',
+        { class: 'text-right' },
+        h(
+          UDropdownMenu,
+          {
+            content: {
+              align: 'end'
+            },
+            items: getRowItems(row)
+          },
+          () =>
+            h(UButton, {
+              icon: 'i-lucide-ellipsis-vertical',
+              color: 'gray',
+              variant: 'ghost',
+              class: 'ml-auto'
+            })
+        )
+      )
     }
   }
-])
+]
+
+function getRowItems(row: Row<Assistant>) {
+  return [
+    {
+      type: 'label',
+      label: t('table.actions')
+    },
+    {
+      label: t('assistant.copy-id'),
+      icon: 'i-lucide-copy',
+      onSelect() {
+        navigator.clipboard.writeText(row.original.id)
+        toast.add({
+          title: t('success'),
+          description: t('assistant.id-copied'),
+          color: 'success',
+          icon: 'i-lucide-check'
+        })
+      }
+    },
+    {
+      type: 'separator'
+    },
+    {
+      label: t('call-assistant'),
+      icon: 'i-lucide-phone',
+      onSelect() {
+        slideover.open(AssistantSlideover, {
+          assistant: row.original
+        })
+      }
+    },
+    {
+      label: t('assistant.edit'),
+      icon: 'i-lucide-pencil',
+      onSelect() {
+        slideover.open(PromptSlideover, {
+          assistant: row.original
+        })
+      }
+    },
+    {
+      label: t('assistant.duplicate'),
+      icon: 'i-lucide-copy-plus',
+      onSelect() {
+        duplicateAssistant(row.original)
+      }
+    },
+    {
+      type: 'separator'
+    },
+    {
+      label: t('assistant.delete'),
+      icon: 'i-lucide-trash-2',
+      color: 'red',
+      onSelect() {
+        deleteAssistant(row.original.id)
+      }
+    }
+  ]
+}
+
+const deleteAssistant = async (id: string) => {
+  try {
+    await useFetch(`/api/assistants/${id}`, { method: 'DELETE' })
+    toast.add({
+      title: t('success'),
+      description: t('assistant.assistant-deleted'),
+      color: 'success'
+    })
+  } catch (error: any) {
+    console.error('Failed to delete assistant:', error)
+    toast.add({
+      title: t('error'),
+      description: error.message || t('assistant.failed-to-delete'),
+      color: 'error'
+    })
+  }
+}
+
+const duplicateAssistant = async (assistant: any) => {
+  try {
+    const { data } = await useFetch('/api/assistants', {
+      method: 'POST',
+      body: {
+        ...assistant,
+        name: `${assistant.name} (${t('assistant.duplicate')})`,
+        id: undefined
+      }
+    })
+    
+    toast.add({
+      title: t('success'),
+      description: t('assistant.assistant-duplicated'),
+      color: 'success'
+    })
+    
+    return data
+  } catch (error: any) {
+    console.error('Failed to duplicate assistant:', error)
+    toast.add({
+      title: t('error'),
+      description: error.message || t('assistant.failed-to-duplicate'),
+      color: 'error'
+    })
+  }
+}
 </script>

@@ -1,27 +1,13 @@
 <style>
 @import "tailwindcss";
-@import "@nuxt/ui";
+@import "@nuxt/ui-pro";
 
-/* Page transition animations */
-.page-enter-active,
-.page-leave-active {
-  transition: all 0.2s;
-}
+@theme {
+  --font-sans: 'Public Sans', sans-serif;
 
-.page-enter-from,
-.page-leave-to {
-  opacity: 0;
-  transform: translateY(10px);
-}
+  --breakpoint-3xl: 1920px;
 
-/* Base styles for content spacing */
-.u-card {
-  @apply mb-6 last:mb-0;
-}
-
-/* Content container spacing */
-.content-container {
-  @apply space-y-6;
+  --color-primary: #1c57d9;
 }
 </style>
 

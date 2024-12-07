@@ -1,6 +1,42 @@
 <template>
   <div>
+    <div class="flex items-center justify-between px-4 py-3.5 border-b border-[var(--ui-border-accented)]">
+      <USelectMenu
+        v-model="selectedAssistant"
+        :items="uniqueAssistants"
+        :placeholder="t('table.filterAssistant')"
+        class="w-64"
+        clearable
+        @update:model-value="table?.tableApi?.getColumn('assistant')?.setFilterValue($event || '')"
+      />
+      <UDropdownMenu
+        :items="table?.tableApi
+          ?.getAllColumns()
+          .filter((column) => ['duration', 'status'].includes(column.id))
+          .map((column) => ({
+            label: upperFirst(column.id),
+            type: 'checkbox' as const,
+            checked: column.getIsVisible(),
+            onUpdateChecked(checked: boolean) {
+              table?.tableApi?.getColumn(column.id)?.toggleVisibility(!!checked)
+            },
+            onSelect(e?: Event) {
+              e?.preventDefault()
+            }
+          }))"
+        :content="{ align: 'end' }"
+      >
+        <UButton
+          label="Columns"
+          color="neutral"
+          variant="outline"
+          trailing-icon="i-lucide-chevron-down"
+        />
+      </UDropdownMenu>
+    </div>
     <UTable 
+      ref="table"
+      v-model:column-visibility="columnVisibility"
       :data="data" 
       :columns="columns"
       :loading="isLoading"
@@ -16,7 +52,6 @@
         </div>
       </template>
     </UTable>
-    <TranscriptSlideover />
   </div>
 </template>
 
@@ -24,9 +59,12 @@
 import { formatTimeAgo, useClipboard } from '@vueuse/core'
 import { useCalls } from '@/composables/useCalls'
 import TranscriptSlideover from '@/components/TranscriptSlideover.vue'
+import { upperFirst } from 'scule'
 
 const UButton = resolveComponent('UButton')
 const UBadge = resolveComponent('UBadge')
+const UDropdownMenu = resolveComponent('UDropdownMenu')
+const USelectMenu = resolveComponent('USelectMenu')
 const toast = useToast();
 
 interface TableData {
@@ -55,6 +93,21 @@ const { isLoading, currentPlayingId, togglePlayAudio, selectedCall } = useCalls(
 const { t } = useI18n()
 
 const { copy } = useClipboard()
+
+const table = useTemplateRef('table')
+
+const columnVisibility = ref({
+  duration: true,
+  status: true,
+  id: true
+})
+
+const uniqueAssistants = computed(() => {
+  const assistants = new Set(props.data?.map(call => call.assistant) || [])
+  return Array.from(assistants).sort()
+})
+
+const selectedAssistant = ref('')
 
 const transformRecordingUrl = (originalUrl: string) => {
   if (!originalUrl) return ''
@@ -161,7 +214,7 @@ const columns = computed(() => {
     })
 
     baseColumns.push({
-      accessorKey: 'id',
+      accessorKey: "id",
       header: () => t('table.actions'),
       cell: (row) => {
         return h('div', { class: 'flex gap-2' }, [
@@ -172,7 +225,8 @@ const columns = computed(() => {
             color: 'primary',
             variant: 'ghost',
             onClick: () => {
-              const call = props.data.find(c => c.id === row.getValue("id"))
+              const id = row.getValue('id');
+              const call = props.data.find(call => call.id === id)
               selectedCall.value = call
               const slideover = useSlideover()
               slideover.open(TranscriptSlideover, { 

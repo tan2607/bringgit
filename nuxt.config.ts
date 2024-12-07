@@ -43,7 +43,7 @@ export default defineNuxtConfig({
   },
   compatibilityDate: '2024-04-03',
   modules: [
-    '@nuxt/ui',
+    '@nuxt/ui-pro',
     '@nuxt/content',
     '@nuxthub/core',
     '@nuxtjs/i18n',

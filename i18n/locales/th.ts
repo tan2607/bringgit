@@ -11,6 +11,13 @@ export default {
   'dev-tools': 'เครื่องมือนักพัฒนา',
   profile: 'โปรไฟล์',
   support: 'การสนับสนุน',
+  advanced: 'ขั้นสูง',
+  analysis: 'การวิเคราะห์',
+  create: 'สร้าง',
+  explore: 'สำรวจ',
+  security: 'ความปลอดภัย',
+  widget: 'วิดเจ็ต',
+  copied: 'คัดลอกแล้ว',
 
   // Descriptions
   'manage-calls': 'จัดการการโทรและการประชุม',
@@ -100,6 +107,22 @@ export default {
   'support-available': 'ทีมสนับสนุนของเราพร้อมให้บริการตลอด 24 ชั่วโมง',
   'contact-support': 'ติดต่อฝ่ายสนับสนุน',
   'support-description': 'ส่งคำถามของคุณ และเราจะตอบกลับโดยเร็วที่สุด',
+  'faq': 'คำถามที่พบบ่อย',
+  'documentation': 'เอกสาร',
+  'submit-ticket': 'ส่งคำร้อง',
+  'ticket-submitted': 'ส่งคำร้องแล้ว',
+  'ticket-description': 'กรุณากรอกรายละเอียดของปัญหา ทีมสนับสนุนจะตรวจสอบและตอบกลับ',
+
+  // Call Management
+  'call-summary': 'สรุปการโทร',
+  'call-duration': 'ระยะเวลาการโทร',
+  'call-status': 'สถานะการโทร',
+  'call-type': 'ประเภทการโทร',
+  'call-recording': 'บันทึกการโทร',
+  'download-recording': 'ดาวน์โหลดการบันทึก',
+  'play-recording': 'เล่นการบันทึก',
+  'pause-recording': 'หยุดการบันทึกชั่วคราว',
+  'no-summary-available': 'ไม่มีข้อมูลสรุป',
 
   // Analytics
   'analytics-dashboard': 'แดชบอร์ดการวิเคราะห์',
@@ -142,7 +165,11 @@ export default {
     'prompt-enhanced': 'เพิ่มประสิทธิภาพพรอมต์สำเร็จ',
     'enhancement-failed': 'การเพิ่มประสิทธิภาพพรอมต์ล้มเหลว',
     'assistant-updated': 'อัปเดตผู้ช่วยสำเร็จ',
-    'error-saving-changes': 'เกิดข้อผิดพลาดในการบันทึกการเปลี่ยนแปลง'
+    'error-saving-changes': 'เกิดข้อผิดพลาดในการบันทึกการเปลี่ยนแปลง',
+    'crawl': 'ดึงข้อมูลเว็บไซต์',
+    'crawled-content': 'เนื้อหาที่ดึงมา',
+    'crawling-failed': 'ดึงข้อมูลเว็บไซต์ไม่สำเร็จ',
+    'content-imported': 'นำเข้าเนื้อหาสำเร็จ',
   },
 
   // Form Fields
@@ -235,5 +262,26 @@ export default {
     alcohol: 'การดื่มแอลกอฮอล์',
     activity: 'กิจกรรมทางกาย',
     submit: 'ส่งแบบฟอร์ม'
+  },
+
+  // Navigation keys
+  'demos': 'การสาธิต',
+  'explore-demos': 'สำรวจการสาธิต AI',
+  'voice-translation': 'การแปลเสียง',
+  'multilingual-voice-translation': 'การแปลเสียงหลายภาษา',
+
+  assistant: {
+    delete: 'ลบ',
+    duplicate: 'ทำซ้ำ',
+    'assistant-deleted': 'ลบผู้ช่วยเรียบร้อยแล้ว',
+    'failed-to-delete': 'ลบไม่สำเร็จ',
+    'assistant-duplicated': 'ทำซ้ำผู้ช่วยเรียบร้อยแล้ว',
+    'failed-to-duplicate': 'ทำซ้ำไม่สำเร็จ',
+    'copy-id': 'คัดลอก ID',
+    'id-copied': 'คัดลอก ID แล้ว',
+    llm: 'โมเดลภาษา',
+    'llm-help': 'เลือกโมเดลภาษาที่ต้องการใช้',
+    temperature: 'อุณหภูมิ',
+    'temperature-help': 'ค่าที่สูงขึ้นจะสร้างการตอบสนองที่สร้างสรรค์มากขึ้น ค่าที่ต่ำลงจะสร้างการตอบสนองที่สอดคล้องกัน',
   }
 }

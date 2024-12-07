@@ -11,6 +11,13 @@ export default {
   'dev-tools': '开发者工具',
   profile: '个人资料',
   support: '支持',
+  advanced: '高级',
+  analysis: '分析',
+  create: '创建',
+  explore: '探索',
+  security: '安全',
+  widget: '小部件',
+  copied: '已复制',
   success: '成功',
   'patient-intake.form-submitted': '患者登记表提交成功',
 
@@ -100,6 +107,11 @@ export default {
   'still-need-help': '仍需帮助？',
   'support-available': '我们的支持团队全天候为您服务',
   'contact-support': '联系支持',
+  'faq': '常见问题',
+  'documentation': '文档',
+  'submit-ticket': '提交工单',
+  'ticket-submitted': '工单已提交',
+  'ticket-description': '请输入问题详情，我们的支持团队将会尽快处理。',
   'support-description': '提交您的问题，我们将尽快回复您。',
 
   // Analytics
@@ -119,6 +131,15 @@ export default {
   'access-recordings': '访问和下载通话录音',
   'browse-recordings': '浏览录音',
   'schedule-now': '立即安排',
+  'call-summary': '通话摘要',
+  'call-duration': '通话时长',
+  'call-status': '通话状态',
+  'call-type': '通话类型',
+  'call-recording': '通话录音',
+  'download-recording': '下载录音',
+  'play-recording': '播放录音',
+  'pause-recording': '暂停录音',
+  'no-summary-available': '暂无摘要',
 
   // Assistant List
   'assistant-list': 'AI助手列表',
@@ -191,7 +212,11 @@ export default {
     'prompt-enhanced': '提示已成功增强',
     'enhancement-failed': '增强提示失败',
     'assistant-updated': '助手已成功更新',
-    'error-saving-changes': '保存更改时出错'
+    'error-saving-changes': '保存更改时出错',
+    'crawl': '爬取网站',
+    'crawled-content': '已爬取的内容',
+    'crawling-failed': '网站爬取失败',
+    'content-imported': '内容已成功导入',
   },
 
   // Translation page specific keys
@@ -243,5 +268,19 @@ export default {
     translating: '翻译中...',
     failedToTranslate: '翻译失败',
     failedToPlayAudio: '音频播放失败'
+  },
+  assistant: {
+    delete: '删除',
+    duplicate: '复制',
+    'assistant-deleted': '助手已成功删除',
+    'failed-to-delete': '删除失败',
+    'assistant-duplicated': '助手已成功复制',
+    'failed-to-duplicate': '复制失败',
+    'copy-id': '复制ID',
+    'id-copied': 'ID已复制',
+    llm: '语言模型',
+    'llm-help': '选择要使用的语言模型',
+    temperature: '温度',
+    'temperature-help': '较高的值会产生更有创意的回应。较低的值会产生更一致的回应。',
   }
 }

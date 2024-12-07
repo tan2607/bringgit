@@ -2,7 +2,7 @@ export default {
   // Navigation & Common
   home: '首頁',
   calls: '通話',
-  assistants: '助理',
+  assistants: 'AI助手',
   language: '語言',
   welcome: '歡迎',
   analytics: '分析',
@@ -11,11 +11,21 @@ export default {
   'dev-tools': '開發者工具',
   profile: '個人資料',
   support: '支援',
+  advanced: '進階',
+  analysis: '分析',
+  create: '建立',
+  explore: '探索',
+  security: '安全',
+  widget: '小工具',
+  copied: '已複製',
   demos: '示範',
+  'explore-demos': '探索AI示範',
+  'voice-translation': '語音翻譯',
+  'multilingual-voice-translation': '多語言語音翻譯',
 
   // Descriptions
   'manage-calls': '管理通話和會議',
-  'manage-assistants': '管理AI助理',
+  'manage-assistants': '管理AI助手',
   'review-statistics': '查看詳細統計數據',
   'manage-schedule': '管理通話日程',
   'configure-preferences': '配置偏好設定',
@@ -102,6 +112,11 @@ export default {
   'support-available': '我們的支援團隊全天候為您服務',
   'contact-support': '聯絡支援',
   'support-description': '提交您的問題，我們將盡快回覆您。',
+  'faq': '常見問題',
+  'documentation': '文件',
+  'submit-ticket': '提交工單',
+  'ticket-submitted': '工單已提交',
+  'ticket-description': '請輸入問題詳情，我們的支援團隊將會儘快處理。',
 
   // Analytics
   'analytics-dashboard': '分析儀表板',
@@ -120,6 +135,15 @@ export default {
   'access-recordings': '存取和下載通話錄音',
   'browse-recordings': '瀏覽錄音',
   'schedule-now': '立即安排',
+  'call-summary': '通話摘要',
+  'call-duration': '通話時長',
+  'call-status': '通話狀態',
+  'call-type': '通話類型',
+  'call-recording': '通話錄音',
+  'download-recording': '下載錄音',
+  'play-recording': '播放錄音',
+  'pause-recording': '暫停錄音',
+  'no-summary-available': '暫無摘要',
 
   // Form Fields
   'subject': '主旨',
@@ -164,7 +188,11 @@ export default {
     'prompt-enhanced': '提示已成功增強',
     'enhancement-failed': '增強提示失敗',
     'assistant-updated': '助手已成功更新',
-    'error-saving-changes': '保存更改時出錯'
+    'error-saving-changes': '保存更改時出錯',
+    'crawl': '爬取網站',
+    'crawled-content': '已爬取的內容',
+    'crawling-failed': '網站爬取失敗',
+    'content-imported': '內容已成功匯入',
   },
 
   // Translation page specific keys
@@ -231,5 +259,24 @@ export default {
     alcohol: '飲酒情況',
     activity: '體育活動',
     submit: '提交表格'
+  },
+  // Navigation keys
+  'demos': '示範',
+  'explore-demos': '探索AI示範',
+  'voice-translation': '語音翻譯',
+  'multilingual-voice-translation': '多語言語音翻譯',
+  assistant: {
+    delete: '刪除',
+    duplicate: '複製',
+    'assistant-deleted': '助手已成功刪除',
+    'failed-to-delete': '刪除失敗',
+    'assistant-duplicated': '助手已成功複製',
+    'failed-to-duplicate': '複製失敗',
+    'copy-id': '複製ID',
+    'id-copied': 'ID已複製',
+    llm: '語言模型',
+    'llm-help': '選擇要使用的語言模型',
+    temperature: '溫度',
+    'temperature-help': '較高的值會產生更有創意的回應。較低的值會產生更一致的回應。',
   },
 }

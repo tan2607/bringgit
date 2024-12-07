@@ -2,7 +2,6 @@
   <USlideover 
     v-model="slideover.isOpen"
     :title="t('prompt.instructions')"
-    :ui="{ footer: 'justify-end', content: 'md:max-w-7xl' }"
   >
     <template #header>
       <div class="flex justify-between items-center w-full">

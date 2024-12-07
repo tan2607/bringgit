@@ -1,4 +1,4 @@
-import OpenAI from "openai";
+import Groq from 'groq-sdk';
 
 interface CalendarInvite {
   subject: string;
@@ -13,17 +13,17 @@ interface CalendarInvite {
 }
 
 export class PromptEnhancer {
-  private client: OpenAI;
+  private client: Groq;
 
   constructor(apiKey: string) {
-    this.client = new OpenAI({
+    this.client = new Groq({
       apiKey,
     });
   }
 
   async updatePrompt(originalPrompt: string, instructions: string): Promise<string> {
     const response = await this.client.chat.completions.create({
-      model: "gpt-4o-2024-11-20",
+      model: "llama-3.3-70b-specdec",
       messages: [
         {
           role: "system",
@@ -54,7 +54,7 @@ export class PromptEnhancer {
 
     // Use GPT to extract appointment details from the summary
     const response = await this.client.chat.completions.create({
-      model: "gpt-4o-2024-11-20",
+      model: "llama-3.3-70b-specdec",
       messages: [
         {
           role: "system",

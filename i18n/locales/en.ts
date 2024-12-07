@@ -11,6 +11,13 @@ export default {
   'dev-tools': 'Developer',
   profile: 'Profile',
   support: 'Support',
+  advanced: 'Advanced',
+  analysis: 'Analysis',
+  create: 'Create',
+  explore: 'Explore',
+  security: 'Security',
+  widget: 'Widget',
+  copied: 'Copied',
 
   // Descriptions
   'manage-calls': 'Manage calls and meetings',
@@ -59,8 +66,96 @@ export default {
   'theme-updated': 'Theme updated successfully',
   'switched-to': 'Switched to {mode} mode',
 
+  // Assistant Settings
+  assistant: {
+    'create': 'Create Assistant',
+    'edit': 'Edit Assistant',
+    'name': 'Assistant Name',
+    'language': 'Agent Language',
+    'agent': 'Agent',
+    'firstMessage': 'First Message',
+    'firstMessage-help': 'The initial message the assistant will send',
+    'language-help': 'The primary language for the assistant',
+    'systemPrompt': 'System Prompt',
+    'systemPrompt-help': 'Instructions that define the assistant\'s behavior',
+    'tokenLimit': 'Token Limit',
+    'tokenLimit-help': 'Maximum number of tokens per response',
+    'delete': 'Delete Assistant',
+    'duplicate': 'Duplicate Assistant',
+    'assistant-deleted': 'Assistant deleted successfully',
+    'failed-to-delete': 'Failed to delete assistant',
+    'assistant-duplicated': 'Assistant duplicated successfully',
+    'failed-to-duplicate': 'Failed to duplicate assistant',
+    'copy-id': 'Copy ID',
+    'id-copied': 'Assistant ID copied to clipboard',
+    'llm': 'LLM',
+    'llm-help': 'The language model to use for this agent',
+    'temperature': 'Temperature',
+    'temperature-help': 'Controls randomness in responses. Lower values are more focused, higher values more creative.',
+    'test': 'Test',
+    'save': 'Save',
+    'cancel': 'Cancel',
+    'blank-template': 'Blank Template',
+    'blank-template-desc': 'Start with a clean slate',
+    'patient-triage': 'Patient Triage',
+    'patient-triage-desc': 'Assess and prioritize patient cases',
+    'appointment-scheduler': 'Appointment Scheduler',
+    'appointment-scheduler-desc': 'Help schedule and manage appointments',
+    'nurse-assistant': 'Nurse Assistant',
+    'nurse-assistant-desc': 'Assist with nursing tasks and patient care',
+    'pharmacy-assistant': 'Pharmacy Assistant',
+    'pharmacy-assistant-desc': 'Help with medication and pharmacy queries',
+    'medical-records': 'Medical Records',
+    'medical-records-desc': 'Manage and access medical records',
+    'description': 'Description',
+    'description-help': 'A brief description of what this agent does',
+    actions: {
+      'label': 'Actions',
+      'edit': 'Edit Assistant',
+      'test': 'Test Assistant',
+      'duplicate': 'Duplicate Assistant',
+      'delete': 'Delete Assistant'
+    }
+  },
+  'assistant:updated': 'Assistant updated successfully',
+
+  // Prompt Management
+  prompt: {
+    'content-imported': 'Content imported successfully',
+    'crawl': 'Crawl Website',
+    'crawled-content': 'Crawled Content',
+    'crawling-failed': 'Failed to crawl website',
+    'enter-website-url': 'Enter website URL',
+    'import': 'Import',
+    'import-website': 'Import Website',
+    'website-crawled': 'Website crawled successfully',
+    instructions: 'Instructions',
+    'assistant-prompt': 'Assistant Prompt',
+    edit: 'Edit',
+    'enhancement-instructions-placeholder': 'Enter instructions for how to make changes to the prompt',
+    'clear-input': 'Clear input',
+    'apply-changes': 'Apply Changes',
+    cancel: 'Cancel',
+    close: 'Close',
+    save: 'Save',
+    success: 'Success',
+    error: 'Error',
+    'prompt-enhanced': 'Prompt enhanced successfully',
+    'enhancement-failed': 'Failed to enhance prompt',
+    'assistant-updated': 'Assistant updated successfully',
+    'error-saving-changes': 'Error saving changes'
+  },
+
+  // Event Handlers
+  'update:open': 'Update Open State',
+
+  // Names (for testing/demo)
+  'John Doe': 'John Doe',
+  'Jane Smith': 'Jane Smith',
+
   // Table
   table: {
+    'columns': 'Show/Hide Columns',
     callReceived: 'Call received',
     recording: 'Recording',
     duration: 'Duration',
@@ -138,6 +233,22 @@ export default {
   'browse-recordings': 'Browse Recordings',
   'schedule-now': 'Schedule Now',
 
+  // Analysis
+  'analysis': {
+    'evaluation-criteria': 'Evaluation Criteria',
+    'data-collection': 'Data Collection',
+    'add-criteria': 'Add Criteria',
+    'add-data-item': 'Add Data Item',
+    'criteria-name': 'Name',
+    'criteria-prompt': 'Prompt',
+    'data-type': 'Data Type',
+    'data-identifier': 'Identifier',
+    'data-description': 'Description',
+    'criteria-description': 'Passes the conversation transcript together with a custom prompt to the LLM that verifies if a goal was met.',
+    'criteria-result': 'The result will be one of three values: success, failure, or unknown, as well as a rationale describing why the given result was chosen.',
+    'data-description-help': 'This field will be passed to the LLM and should describe in detail how to extract the data from the transcript.'
+  },
+
   // Form Fields
   subject: 'Subject',
   message: 'Message',
@@ -155,26 +266,19 @@ export default {
 
   // Common
   success: 'Success',
+  error: 'Error',
+  delete: 'Delete',
+  duplicate: 'Duplicate',
+  'no-assistants': 'No assistants found',
+  'enter-assistant-name': 'Enter assistant name',
+  'duplicate-assistant': 'Duplicate Assistant',
+  'delete-assistant': 'Delete Assistant',
+  'delete-assistant-confirm': 'Are you sure you want to delete this assistant? This action cannot be undone.',
+  'assistant-deleted': 'Assistant deleted successfully',
+  'assistant-duplicated': 'Assistant duplicated successfully',
+  'failed-to-delete-assistant': 'Failed to delete assistant',
+  'failed-to-duplicate-assistant': 'Failed to duplicate assistant',
   'patient-intake.form-submitted': 'Patient intake form submitted successfully',
-
-  // Prompt Editor
-  prompt: {
-    instructions: 'Instructions',
-    'assistant-prompt': 'Assistant Prompt',
-    edit: 'Edit',
-    'enhancement-instructions-placeholder': 'Enter instructions for how to make changes to the prompt',
-    'clear-input': 'Clear input',
-    'apply-changes': 'Apply Changes',
-    cancel: 'Cancel',
-    close: 'Close',
-    save: 'Save',
-    success: 'Success',
-    error: 'Error',
-    'prompt-enhanced': 'Prompt enhanced successfully',
-    'enhancement-failed': 'Failed to enhance prompt',
-    'assistant-updated': 'Assistant updated successfully',
-    'error-saving-changes': 'Error saving changes'
-  },
 
   // Translation page specific keys
   'advanced-options': 'Advanced Options',

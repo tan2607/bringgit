@@ -1,17 +1,34 @@
 <template>
-  <USlideover v-model="slideover.isOpen" :ui="{ content: 'sm:max-w-7xl', footer: 'justify-end' }"
-    title="Call Transcript">
+  <USlideover title="Call Transcript">
 
     <template #header>
       <div class="flex justify-between items-center space-x-4 px-2">
-        <UButton 
-          :icon="isPlaying ? 'i-lucide-pause' : 'i-lucide-play'" 
-          color="info" 
-          variant="soft" 
-          size="lg"
-          class="rounded-full flex-shrink-0" 
-          @click="togglePlayback" 
-        />
+        <div class="flex items-center gap-2">
+          <UButton 
+            icon="i-lucide-skip-back" 
+            color="info" 
+            variant="ghost" 
+            size="sm"
+            class="rounded-full" 
+            @click="skipTime(-10)" 
+          />
+          <UButton 
+            :icon="isPlaying ? 'i-lucide-pause' : 'i-lucide-play'" 
+            color="info" 
+            variant="soft" 
+            size="lg"
+            class="rounded-full flex-shrink-0 shadow-sm" 
+            @click="togglePlayback" 
+          />
+          <UButton 
+            icon="i-lucide-skip-forward" 
+            color="info" 
+            variant="ghost" 
+            size="sm"
+            class="rounded-full" 
+            @click="skipTime(10)" 
+          />
+        </div>
         
         <div class="flex-1 min-w-0 mt-4">
           <USlider
@@ -30,6 +47,43 @@
         </div>
 
         <div class="flex items-center space-x-2 flex-shrink-0">
+          <div class="relative">
+            <UDropdownMenu :items="speedOptions" :popper="{ placement: 'bottom-end' }">
+              <UButton 
+                :label="`${playbackSpeed}x`"
+                color="neutral" 
+                variant="ghost"
+                size="sm"
+                trailing-icon="i-lucide-chevron-down"
+              />
+              <template #item="{ item }">
+                <button 
+                  class="w-full text-left px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-800"
+                  :class="{ 'bg-gray-100 dark:bg-gray-800': playbackSpeed === item.value }"
+                  @click="setPlaybackSpeed(item.value)"
+                >
+                  {{ item.label }}
+                </button>
+              </template>
+            </UDropdownMenu>
+            
+            <!-- Pitch change indicator -->
+            <Transition
+              enter-active-class="transition duration-200 ease-out"
+              enter-from-class="transform -translate-y-1 opacity-0"
+              enter-to-class="transform translate-y-0 opacity-100"
+              leave-active-class="transition duration-150 ease-in"
+              leave-from-class="transform translate-y-0 opacity-100"
+              leave-to-class="transform -translate-y-1 opacity-0"
+            >
+              <div 
+                v-if="showPitchIndicator && playbackSpeed !== 1" 
+                class="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 text-xs bg-gray-800 text-white rounded shadow-lg whitespace-nowrap"
+              >
+                {{ playbackSpeed > 1 ? 'Pitch increased' : 'Pitch decreased' }}
+              </div>
+            </Transition>
+          </div>
           <UButton 
             icon="i-lucide-download" 
             color="neutral" 
@@ -51,22 +105,35 @@
       <div v-if="call" class="h-full space-y-4">
         <!-- Contact Tags -->
         <!-- 
-        <div class="px-4">
-          <div class="flex flex-wrap gap-2">
-            <UBadge color="primary">Interest: {{ call.interest || 'Hang up' }}</UBadge>
-            <UBadge color="primary">Lead Status: {{ call.leadStatus || 'Busy' }}</UBadge>
-            <UBadge color="primary">Action Items: {{ call.actionItems || 'Call Back' }}</UBadge>
-          </div>
+        <div class="flex flex-wrap gap-2">
+          <UBadge color="neutral" variant="soft">Interest: {{ call.interest || 'Hang up' }}</UBadge>
+          <UBadge color="neutral" variant="soft">Lead Status: {{ call.leadStatus || 'Busy' }}</UBadge>
+          <UBadge color="neutral" variant="soft">Action Items: {{ call.actionItems || 'Call Back' }}</UBadge>
         </div> 
         -->
 
+        <UCollapsible class="w-full" :default-open="true">
+          <UButton
+            label="Call Summary"
+            color="neutral"
+            variant="subtle"
+            trailing-icon="i-lucide-chevron-down"
+            block
+          />
+          <template #content>
+            <div class="p-2 bg-gray-50 rounded-lg mt-1">
+              <MDC :value="call?.summary || 'No summary available'" />
+            </div>
+          </template>
+        </UCollapsible>
+
         <!-- Messages -->
-        <div class="flex-1 overflow-y-auto px-4 space-y-6">
+        <div class="flex-1 overflow-y-auto px-4 space-y-4">
           <template v-for="message in messages" :key="message.time">
             <!-- User Message -->
-            <div v-if="message.role === 'user'" class="flex items-start space-x-2 flex-row-reverse">
-              <div class="flex-shrink-0 mt-1">
-                <UAvatar size="sm" icon="i-lucide-user" :alt="message.role" class="bg-green-100" />
+            <div v-if="message.role === 'user'" class="flex items-start space-x-2 space-x-reverse flex-row-reverse">
+              <div class="flex-shrink-0 mt-1 float-end">
+                <UAvatar icon="i-lucide-user" :alt="message.role" class="bg-green-100 shadow-sm" />
               </div>
               <div class="flex-1 max-w-[80%]">
                 <div class="bg-green-50 rounded-2xl p-3 shadow-sm">
@@ -85,7 +152,7 @@
             <!-- Bot Message -->
             <div v-else class="flex items-start space-x-2">
               <div class="flex-shrink-0 mt-1">
-                <UAvatar size="sm" icon="i-lucide-bot" :alt="message.role" class="bg-blue-100" />
+                <UAvatar icon="i-lucide-bot" :alt="message.role" class="bg-blue-100 shadow-sm" />
               </div>
               <div class="flex-1 max-w-[80%]">
                 <div class="bg-blue-50 rounded-2xl p-3 shadow-sm">
@@ -116,17 +183,62 @@
 
 <script setup lang="ts">
 import { useCalls } from '@/composables/useCalls'
-import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 
 const { selectedCall: call } = useCalls()
+const slideover = useSlideover()
 
 const audio = ref<HTMLAudioElement | null>(null)
 const currentTime = ref(0)
 const duration = ref(0)
 const isPlaying = ref(false)
-const slideover = ref({ isOpen: false })
+const isAudioInitialized = ref(false)
+const playbackSpeed = ref(1)
+const showPitchIndicator = ref(false)
 
-// Audio control functions
+const speedOptions = [
+  { label: '0.5x', value: 0.5 },
+  { label: '0.75x', value: 0.75 },
+  { label: '1x', value: 1 },
+  { label: '1.25x', value: 1.25 },
+  { label: '1.5x', value: 1.5 },
+  { label: '2x', value: 2 }
+]
+
+const setPlaybackSpeed = (speed: number) => {
+  if (audio.value) {
+    audio.value.playbackRate = speed
+    playbackSpeed.value = speed
+    
+    // Show pitch indicator briefly
+    showPitchIndicator.value = true
+    setTimeout(() => {
+      showPitchIndicator.value = false
+    }, 2000)
+  }
+}
+
+const adjustSpeed = (increment: boolean) => {
+  const currentIndex = speedOptions.findIndex(option => option.value === playbackSpeed.value)
+  const newIndex = increment 
+    ? Math.min(currentIndex + 1, speedOptions.length - 1)
+    : Math.max(currentIndex - 1, 0)
+  setPlaybackSpeed(speedOptions[newIndex].value)
+}
+
+defineShortcuts({
+  'shift_>': () => adjustSpeed(true),
+  'shift_<': () => adjustSpeed(false),
+  'arrowleft': () => skipTime(-10),
+  'arrowright': () => skipTime(10)
+})
+
+const skipTime = (seconds: number) => {
+  if (!audio.value) return
+  const newTime = Math.max(0, Math.min(audio.value.currentTime + seconds, duration.value))
+  audio.value.currentTime = newTime
+  currentTime.value = newTime
+}
+
 const updateTime = () => {
   if (audio.value) {
     currentTime.value = audio.value.currentTime
@@ -153,7 +265,57 @@ const seekTo = () => {
   }
 }
 
+const initializeAudio = async () => {
+  if (isAudioInitialized.value || !call.value?.recordingUrl) return
+
+  try {
+    console.log('🎵 Creating new audio instance')
+    const newAudio = new Audio()
+    
+    // Set up audio event listeners before setting src
+    newAudio.addEventListener('timeupdate', updateTime)
+    newAudio.addEventListener('loadedmetadata', () => {
+      duration.value = newAudio.duration || 0
+      console.log('📊 Audio metadata loaded - Duration:', duration.value)
+    })
+    newAudio.addEventListener('ended', () => {
+      console.log('🏁 Audio playback ended')
+      isPlaying.value = false
+      currentTime.value = 0
+    })
+    newAudio.addEventListener('error', (e) => {
+      console.error('❌ Audio error:', e, newAudio.error)
+    })
+    newAudio.addEventListener('waiting', () => {
+      console.log('⏳ Audio is buffering...')
+    })
+    newAudio.addEventListener('playing', () => {
+      console.log('▶️ Audio started playing')
+    })
+    newAudio.addEventListener('pause', () => {
+      console.log('⏸️ Audio paused')
+    })
+    newAudio.addEventListener('canplaythrough', () => {
+      console.log('✅ Audio can play through')
+    })
+
+    // Set the source and load
+    newAudio.src = call.value.recordingUrl
+    audio.value = newAudio
+    isAudioInitialized.value = true
+    
+    console.log('🔄 Loading audio...')
+    await newAudio.load()
+  } catch (error) {
+    console.error('❌ Error initializing audio:', error)
+  }
+}
+
 const togglePlayback = async () => {
+  if (!isAudioInitialized.value) {
+    await initializeAudio()
+  }
+  
   if (!audio.value) {
     console.log('❌ No audio instance available')
     return
@@ -175,6 +337,10 @@ const togglePlayback = async () => {
 }
 
 const jumpToTime = async (seconds: number) => {
+  if (!isAudioInitialized.value) {
+    await initializeAudio()
+  }
+
   if (!audio.value) {
     console.log('❌ No audio instance available')
     return
@@ -217,13 +383,38 @@ const downloadRecording = () => {
   }
 }
 
+const emit = defineEmits(['close'])
+
 const close = () => {
+  slideover.close()
+  emit('close')
+}
+
+const cleanupAudio = () => {
   if (audio.value) {
     audio.value.pause()
-    isPlaying.value = false
+    audio.value.currentTime = 0
+    audio.value.src = ''
+    audio.value = null
   }
-  slideover.value.isOpen = false
+  isPlaying.value = false
+  isAudioInitialized.value = false
+  currentTime.value = 0
+  duration.value = 0
+  playbackSpeed.value = 1
 }
+
+// Watch for slideover close from any source (button click or clicking outside)
+watch(() => slideover.isOpen.value, (isOpen) => {
+  if (!isOpen) {
+    cleanupAudio()
+  }
+})
+
+// Clean up when component is unmounted
+onBeforeUnmount(() => {
+  cleanupAudio()
+})
 
 // Debug call object
 watch(() => call.value, (newCall) => {
@@ -231,64 +422,16 @@ watch(() => call.value, (newCall) => {
   console.log('🔗 Recording URL:', newCall?.recordingUrl)
 }, { immediate: true })
 
-// Initialize audio when call changes
-watch(() => call.value?.recordingUrl, (newUrl) => {
-  console.log('🎵 Recording URL changed:', newUrl)
-  
-  if (!newUrl) {
-    console.log('⚠️ No recording URL provided')
-    return
-  }
-
-  try {
-    if (audio.value) {
-      console.log('🔄 Cleaning up previous audio')
-      audio.value.pause()
-      audio.value.removeEventListener('timeupdate', updateTime)
-      audio.value = null
-      isPlaying.value = false
-      currentTime.value = 0
-      duration.value = 0
-    }
-
-    console.log('🎵 Creating new audio instance')
-    const newAudio = new Audio()
-    
-    // Set up audio event listeners before setting src
-    newAudio.addEventListener('timeupdate', updateTime)
-    newAudio.addEventListener('loadedmetadata', () => {
-      duration.value = newAudio.duration || 0
-      console.log('📊 Audio metadata loaded - Duration:', duration.value)
-    })
-    newAudio.addEventListener('ended', () => {
-      console.log('🏁 Audio playback ended')
-      isPlaying.value = false
-      currentTime.value = 0
-    })
-    newAudio.addEventListener('error', (e) => {
-      console.error('❌ Audio error:', e, newAudio.error)
-    })
-    newAudio.addEventListener('waiting', () => {
-      console.log('⏳ Audio is buffering...')
-    })
-    newAudio.addEventListener('playing', () => {
-      console.log('▶️ Audio started playing')
-    })
-    newAudio.addEventListener('pause', () => {
-      console.log('⏸️ Audio paused')
-    })
-    newAudio.addEventListener('canplaythrough', () => {
-      console.log('✅ Audio can play through')
-    })
-
-    // Set the source and load
-    newAudio.src = newUrl
-    audio.value = newAudio
-    
-    console.log('🔄 Preloading audio...')
-    newAudio.load()
-  } catch (error) {
-    console.error('❌ Error initializing audio:', error)
+// Reset audio when call changes
+watch(() => call.value?.recordingUrl, () => {
+  if (audio.value) {
+    audio.value.pause()
+    audio.value.removeEventListener('timeupdate', updateTime)
+    audio.value = null
+    isPlaying.value = false
+    currentTime.value = 0
+    duration.value = 0
+    isAudioInitialized.value = false
   }
 }, { immediate: true })
 
@@ -298,6 +441,7 @@ onUnmounted(() => {
     audio.value.pause()
     audio.value.removeEventListener('timeupdate', updateTime)
     audio.value = null
+    isAudioInitialized.value = false
   }
 })
 
