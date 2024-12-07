@@ -12,7 +12,6 @@ export default {
   profile: 'Profile',
   support: 'Support',
   advanced: 'Advanced',
-  analysis: 'Analysis',
   create: 'Create',
   explore: 'Explore',
   security: 'Security',
@@ -234,7 +233,7 @@ export default {
   'schedule-now': 'Schedule Now',
 
   // Analysis
-  'analysis': {
+  analysis: {
     'evaluation-criteria': 'Evaluation Criteria',
     'data-collection': 'Data Collection',
     'add-criteria': 'Add Criteria',

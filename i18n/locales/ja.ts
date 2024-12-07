@@ -14,7 +14,6 @@ export default {
   advanced: '詳細',
   analysis: '分析',
   create: '作成',
-  explore: '探索',
   security: 'セキュリティ',
   widget: 'ウィジェット',
   copied: 'コピーしました',
@@ -77,7 +76,6 @@ export default {
   summary: '概要',
   tags: 'タグ',
   recording: '録音',
-  'download-recording': '録音をダウンロード',
   queued: 'キュー中',
   ended: '終了',
 
@@ -135,7 +133,6 @@ export default {
   'call-status': '通話状態',
   'call-type': '通話種類',
   'call-recording': '通話録音',
-  'download-recording': '録音をダウンロード',
   'play-recording': '録音を再生',
   'pause-recording': '録音を一時停止',
   'no-summary-available': 'サマリーはありません',
@@ -228,7 +225,6 @@ export default {
   'multilingual-voice-translation': '多言語音声翻訳',
 
   // General UI keys
-  'explore': '探索',
   'press-to-speak': '音声を押して話す',
   translation: {
     title: '音声翻訳',

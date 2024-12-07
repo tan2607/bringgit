@@ -77,7 +77,8 @@ export default {
     'summary': '요약',
     'tags': '태그',
     'recording': '녹음',
-    'download-recording': '녹음 다운로드',
+    'play-recording': '녹음 재생',
+    'pause-recording': '녹음 일시정지',
     'queued': '대기 중',
     'ended': '종료',
 
@@ -135,9 +136,6 @@ export default {
     'call-status': '통화 상태',
     'call-type': '통화 유형',
     'call-recording': '통화 녹음',
-    'download-recording': '녹음 다운로드',
-    'play-recording': '녹음 재생',
-    'pause-recording': '녹음 일시정지',
     'no-summary-available': '요약 없음',
 
     // Assistant List

@@ -19,7 +19,6 @@ export default {
   widget: '小工具',
   copied: '已複製',
   demos: '示範',
-  'explore-demos': '探索AI示範',
   'voice-translation': '語音翻譯',
   'multilingual-voice-translation': '多語言語音翻譯',
 
@@ -82,7 +81,8 @@ export default {
   'summary': '摘要',
   'tags': '標籤',
   'recording': '錄音',
-  'download-recording': '下載錄音',
+  'play-recording': '播放錄音',
+  'pause-recording': '暫停錄音',
   'queued': '排隊中',
   'ended': '已結束',
 
@@ -139,10 +139,6 @@ export default {
   'call-duration': '通話時長',
   'call-status': '通話狀態',
   'call-type': '通話類型',
-  'call-recording': '通話錄音',
-  'download-recording': '下載錄音',
-  'play-recording': '播放錄音',
-  'pause-recording': '暫停錄音',
   'no-summary-available': '暫無摘要',
 
   // Form Fields
@@ -208,8 +204,6 @@ export default {
   'copy-error': '複製到剪貼板時出錯',
   'translation-error': '翻譯過程中出錯',
   'unknown-error': '發生未知錯誤',
-  'voice-translation': '語音翻譯',
-  'multilingual-voice-translation': '多語言語音翻譯',
   translation: {
     title: '語音翻譯',
     sourceLanguage: '源語言',
@@ -261,10 +255,6 @@ export default {
     submit: '提交表格'
   },
   // Navigation keys
-  'demos': '示範',
-  'explore-demos': '探索AI示範',
-  'voice-translation': '語音翻譯',
-  'multilingual-voice-translation': '多語言語音翻譯',
   assistant: {
     delete: '刪除',
     duplicate: '複製',

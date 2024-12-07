@@ -135,7 +135,6 @@ export default {
   'call-status': 'Status Panggilan',
   'call-type': 'Jenis Panggilan',
   'call-recording': 'Rekaman Panggilan',
-  'download-recording': 'Unduh Rekaman',
   'play-recording': 'Putar Rekaman',
   'pause-recording': 'Jeda Rekaman',
   'no-summary-available': 'Ringkasan tidak tersedia',

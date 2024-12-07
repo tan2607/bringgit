@@ -14,7 +14,6 @@ export default {
   advanced: '高级',
   analysis: '分析',
   create: '创建',
-  explore: '探索',
   security: '安全',
   widget: '小部件',
   copied: '已复制',
@@ -78,7 +77,9 @@ export default {
   'transcript': '通话记录',
   'summary': '摘要',
   'tags': '标签',
-  'download-recording': '下载录音',
+  'play-recording': '播放录音',
+  'pause-recording': '暂停录音',
+  'no-summary-available': '暂无摘要',
   'queued': '排队中',
   'ended': '已结束',
 
@@ -136,10 +137,6 @@ export default {
   'call-status': '通话状态',
   'call-type': '通话类型',
   'call-recording': '通话录音',
-  'download-recording': '下载录音',
-  'play-recording': '播放录音',
-  'pause-recording': '暂停录音',
-  'no-summary-available': '暂无摘要',
 
   // Assistant List
   'assistant-list': 'AI助手列表',
@@ -238,7 +235,6 @@ export default {
   'translate-voice': '语音翻译',
   'no-audio': '无音频',
   'please-record-audio': '请先录制音频片段',
-  'explore': '探索',
   'demos': '演示',
   'explore-demos': '探索我们的AI演示',
   'voice-translation': '语音翻译',

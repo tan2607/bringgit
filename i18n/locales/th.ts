@@ -77,7 +77,6 @@ export default {
   'summary': 'สรุป',
   'tags': 'แท็ก',
   'recording': 'การบันทึก',
-  'download-recording': 'ดาวน์โหลดการบันทึก',
   'queued': 'อยู่ในคิว',
   'ended': 'สิ้นสุดแล้ว',
 

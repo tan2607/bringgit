@@ -113,7 +113,8 @@ export default {
   transcript: 'Bản ghi',
   summary: 'Tóm tắt',
   tags: 'Thẻ',
-  'download-recording': 'Tải bản ghi âm',
+  'play-recording': 'Phát Bản ghi âm',
+  'pause-recording': 'Tạm dừng Bản ghi âm',
   queued: 'Đang chờ',
   ended: 'Đã kết thúc',
 
@@ -179,9 +180,6 @@ export default {
   'call-status': 'Trạng thái Cuộc gọi',
   'call-type': 'Loại Cuộc gọi',
   'call-recording': 'Ghi âm Cuộc gọi',
-  'download-recording': 'Tải xuống Bản ghi âm',
-  'play-recording': 'Phát Bản ghi âm',
-  'pause-recording': 'Tạm dừng Bản ghi âm',
   'no-summary-available': 'Không có tóm tắt',
 
   // Form Fields
@@ -200,23 +198,20 @@ export default {
   required: 'Trường này là bắt buộc',
 
   // Prompt Editor
-  prompt: {
-    instructions: 'Hướng dẫn',
-    'assistant-prompt': 'Lời nhắc trợ lý',
-    edit: 'Chỉnh sửa',
-    'enhancement-instructions-placeholder': 'Nhập hướng dẫn cách thay đổi lời nhắc',
-    'clear-input': 'Xóa nhập liệu',
-    'apply-changes': 'Áp dụng thay đổi',
-    cancel: 'Hủy',
-    close: 'Đóng',
-    save: 'Lưu',
-    success: 'Thành công',
-    error: 'Lỗi',
-    'prompt-enhanced': 'Đã cải thiện lời nhắc thành công',
-    'enhancement-failed': 'Cải thiện lời nhắc thất bại',
-    'assistant-updated': 'Đã cập nhật trợ lý thành công',
-    'error-saving-changes': 'Lỗi khi lưu thay đổi'
-  },
+  'prompt-instructions': 'Hướng dẫn',
+  'assistant-prompt': 'Lời nhắc trợ lý',
+  edit: 'Chỉnh sửa',
+  'enhancement-instructions-placeholder': 'Nhập hướng dẫn cách thay đổi lời nhắc',
+  'clear-input': 'Xóa nhập liệu',
+  'apply-changes': 'Áp dụng thay đổi',
+  
+  close: 'Đóng',
+  save: 'Lưu',
+  error: 'Lỗi',
+  'prompt-enhanced': 'Đã cải thiện lời nhắc thành công',
+  'enhancement-failed': 'Cải thiện lời nhắc thất bại',
+  'assistant-updated': 'Đã cập nhật trợ lý thành công',
+  'error-saving-changes': 'Lỗi khi lưu thay đổi',
 
   // Translation page specific keys
   'advanced-options': 'Tùy chọn nâng cao',
