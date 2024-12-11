@@ -13,9 +13,10 @@
   "dependencies": {
     "@auth/core": "latest",
     "@cartesia/cartesia-js": "latest",
+    "@internationalized/date": "^3.6.0",
     "@nuxt/content": "next",
     "@nuxt/icon": "latest",
-    "@nuxt/ui-pro": "https://pkg.pr.new/@nuxt/ui-pro@9a36879",
+    "@nuxt/ui-pro": "3.0.0-alpha.10",
     "@nuxthub/core": "latest",
     "@nuxtjs/i18n": "latest",
     "@nuxtjs/mdc": "latest",

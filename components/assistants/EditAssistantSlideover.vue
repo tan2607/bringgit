@@ -23,7 +23,7 @@
                 <USelect
                   v-model="assistant.language"
                   :items="languageOptions"
-                  option-attribute="label"
+                  option-attribute="value"
                 />
                 <template #help>
                   {{ t('assistant.language-help') }}
@@ -54,7 +54,7 @@
                 <USelect
                   v-model="assistant.llm"
                   :items="llmOptions"
-                  option-attribute="label"
+                  option-attribute="value"
                 />
                 <template #help>
                   {{ t('assistant.llm-help') }}
@@ -117,8 +117,8 @@
 
                 <div class="space-y-2">
                   <!-- Criteria list -->
-                  <div v-if="assistant.criteria?.length" class="space-y-2">
-                    <div v-for="criterion in assistant.criteria" :key="criterion.id" class="p-4 bg-gray-50 rounded-lg">
+                  <div v-if="assistant.metadata?.criteria?.length" class="space-y-2">
+                    <div v-for="criterion in assistant.metadata.criteria" :key="criterion.id" class="p-4 bg-gray-50 rounded-lg">
                       <div class="flex justify-between items-start">
                         <div>
                           <h4 class="font-medium">{{ criterion.name }}</h4>
@@ -150,8 +150,8 @@
 
                 <div class="space-y-2">
                   <!-- Data items list -->
-                  <div v-if="assistant.dataItems?.length" class="space-y-2">
-                    <div v-for="item in assistant.dataItems" :key="item.id" class="p-4 bg-gray-50 rounded-lg">
+                  <div v-if="assistant.metadata?.dataItems?.length" class="space-y-2">
+                    <div v-for="item in assistant.metadata.dataItems" :key="item.id" class="p-4 bg-gray-50 rounded-lg">
                       <div class="flex justify-between items-start">
                         <div>
                           <div class="flex items-center gap-2">
@@ -192,45 +192,39 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import { Vapi } from '@vapi-ai/server-sdk'
+import { languageOptions, llmOptions } from '~/types/assistant'
 
 interface Props {
   modelValue: boolean
-  assistant: any
+  assistant: Vapi.Assistant
 }
 
 const props = defineProps<Props>()
-const emit = defineEmits(['update:modelValue', 'test', 'add-criteria', 'add-data-item'])
+const emit = defineEmits(['update:modelValue', 'save', 'test', 'add-criteria', 'add-data-item'])
 
 const { t } = useI18n()
 
 const open = computed({
-  get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value)
+  get() {
+    return props.modelValue
+  },
+  set(value) {
+    emit('update:modelValue', value)
+  }
 })
 
 const activeTab = ref('agent')
 
 const tabs = [
   {
-    label: t('assistant.agent'),
-    value: 'agent',
-    icon: 'i-lucide-bot'
+    name: t('assistant.agent'),
+    value: 'agent'
   },
   {
-    label: t('assistant.analysis'),
-    value: 'analysis',
-    icon: 'i-lucide-chart-bar'
+    name: t('assistant.analysis'),
+    value: 'analysis'
   }
-]
-
-const languageOptions = [
-  { label: 'English', value: 'en' },
-  { label: 'Chinese', value: 'zh' }
-]
-
-const llmOptions = [
-  { label: 'GPT-4', value: 'gpt-4' },
-  { label: 'GPT-3.5', value: 'gpt-3.5-turbo' }
 ]
 
 function close() {
@@ -238,15 +232,19 @@ function close() {
 }
 
 function save() {
-  // TODO: Implement save
+  emit('save', props.assistant)
   close()
 }
 
 function deleteCriterion(id: string) {
-  // TODO: Implement delete criterion
+  if (props.assistant.metadata?.criteria) {
+    props.assistant.metadata.criteria = (props.assistant.metadata.criteria as any[]).filter(c => c.id !== id)
+  }
 }
 
 function deleteDataItem(id: string) {
-  // TODO: Implement delete data item
+  if (props.assistant.metadata?.dataItems) {
+    props.assistant.metadata.dataItems = (props.assistant.metadata.dataItems as any[]).filter(item => item.id !== id)
+  }
 }
 </script>

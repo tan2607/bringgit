@@ -7,7 +7,7 @@ The project aims to develop a comprehensive **Call Tracking and Management Dashb
 # Stack
 Nuxt 3, 
 NuxtUI v3 components
-Tailwind CSS
+Tailwind CSS v4
 Lucide Icons
 Drizzle ORM
 Cloudflare pages hosting with D1 database (managed via Nuxt Hub and Drizzle ORM)

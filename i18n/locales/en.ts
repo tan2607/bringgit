@@ -162,7 +162,8 @@ export default {
     status: 'Status',
     actions: 'Actions',
     assistant: 'Assistant',
-    id: '#'
+    id: '#',
+    filterAssistant: 'Filter Assistant',
   },
 
   // Calls
@@ -245,7 +246,14 @@ export default {
     'data-description': 'Description',
     'criteria-description': 'Passes the conversation transcript together with a custom prompt to the LLM that verifies if a goal was met.',
     'criteria-result': 'The result will be one of three values: success, failure, or unknown, as well as a rationale describing why the given result was chosen.',
-    'data-description-help': 'This field will be passed to the LLM and should describe in detail how to extract the data from the transcript.'
+    'data-description-help': 'This field will be passed to the LLM and should describe in detail how to extract the data from the transcript.',
+    'analysis': 'Analysis',
+    'analysis.description': 'Analysis Description',
+    'analysis.identifier': 'Analysis Identifier',
+    'analysis.name': 'Analysis Name',
+    'analysis.prompt': 'Analysis Prompt',
+    'analysis.type': 'Analysis Type',
+    'assistant.analysis': 'Assistant Analysis',
   },
 
   // Form Fields
@@ -278,6 +286,16 @@ export default {
   'failed-to-delete-assistant': 'Failed to delete assistant',
   'failed-to-duplicate-assistant': 'Failed to duplicate assistant',
   'patient-intake.form-submitted': 'Patient intake form submitted successfully',
+  'add-criteria': 'Add Criteria',
+  'add-data-item': 'Add Data Item',
+  close: 'Close',
+  save: 'Save',
+  'sign-out': 'Sign Out',
+  logout: 'Logout',
+  test: 'Test',
+  'bottom-end': 'Bottom End',
+  'color-mode': 'Color Mode',
+  'update:modelValue': 'Update Model Value',
 
   // Translation page specific keys
   'advanced-options': 'Advanced Options',

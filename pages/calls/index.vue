@@ -4,10 +4,25 @@
 
     <!-- Filters -->
     <div class="filters flex gap-4 mb-4">
-      <div class="flex gap-2">
-        <UInput type="date" v-model="startDate" />
-        <UInput type="date" v-model="endDate" />
-      </div>
+      <UPopover>
+        <UButton color="neutral" variant="subtle" icon="i-lucide-calendar">
+          <template v-if="dateRange.start">
+            <template v-if="dateRange.end">
+              {{ df.format(dateRange.start.toDate(getLocalTimeZone())) }} - {{ df.format(dateRange.end.toDate(getLocalTimeZone())) }}
+            </template>
+            <template v-else>
+              {{ df.format(dateRange.start.toDate(getLocalTimeZone())) }}
+            </template>
+          </template>
+          <template v-else>
+            Pick a date
+          </template>
+        </UButton>
+
+        <template #content>
+          <UCalendar v-model="dateRange" class="p-2" :number-of-months="2" range />
+        </template>
+      </UPopover>
 
       <USelect v-model="callStatus" :items="[
         { label: t('queued'), value: 'queued' },
@@ -21,21 +36,31 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import { CalendarDate, DateFormatter, getLocalTimeZone } from '@internationalized/date'
 definePageMeta({ middleware: "auth" })
 import { useCalls } from '@/composables/useCalls'
 import CallTable from '@/components/CallTable.vue'
 
 const { t } = useI18n()
 
-const startDate = ref(new Date(Date.now() - (7 * 86400000)).toISOString().split('T')[0])
-const endDate = ref(new Date(Date.now() + 86400000).toISOString().split('T')[0])
+const df = new DateFormatter('en-US', {
+  dateStyle: 'medium'
+})
+
+const dateRange = shallowRef({
+  start: new CalendarDate(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate() - 7),
+  end: new CalendarDate(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate() + 1)
+})
+
 const callStatus = ref('ended')
 
 const { calls, stopCurrentAudio, fetchCalls } = useCalls()
 
 const filteredCalls = computed(() => {
-  const start = new Date(startDate.value)
-  const end = new Date(endDate.value)
+  if (!dateRange.value.start || !dateRange.value.end) return calls.value
+  
+  const start = dateRange.value.start.toDate(getLocalTimeZone())
+  const end = dateRange.value.end.toDate(getLocalTimeZone())
   
   return calls.value.filter(call => {
     const callDate = new Date(call.startedAt)

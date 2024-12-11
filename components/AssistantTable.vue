@@ -33,6 +33,10 @@
       :columns="columns"
       :loading="isLoading"
       class="flex-1"
+      :ui="{ 
+        tr: 'cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors'
+      }"
+      @row-select="openEditSlideover"
     >
       <template #loading-state>
         <div class="flex items-center justify-center h-32">
@@ -258,6 +262,15 @@ function getRowItems(row: Row<Assistant>) {
       }
     }
   ]
+}
+
+function openEditSlideover(row: Row<Assistant>) {
+  slideover.open(AssistantSlideover, {
+    title: t('assistant.edit'),
+    props: {
+      assistant: row.original
+    }
+  })
 }
 
 const deleteAssistant = async (id: string) => {

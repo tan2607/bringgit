@@ -53,61 +53,40 @@
 </template>
 
 <script setup lang="ts">
-const { t } = useI18n()
-const slideover = useSlideover()
+import { useI18n } from 'vue-i18n'
+import { Vapi } from '@vapi-ai/server-sdk'
+import { defaultAssistant } from '~/types/assistant'
+import { useAssistant } from '~/composables/useAssistant'
 
 interface Props {
   title?: string
 }
+
 defineProps<Props>()
+const emit = defineEmits(['created'])
+
+const { t } = useI18n()
+const slideover = useSlideover()
+const { templates, applyTemplate } = useAssistant()
 
 const selectedTemplate = ref('')
-const newAgent = reactive({
-  name: '',
-})
+const newAgent = reactive<Vapi.Assistant>({ ...defaultAssistant })
 
 const isCreating = ref(false)
-const isValid = computed(() => newAgent.name && selectedTemplate)
+const isValid = computed(() => newAgent.name && selectedTemplate.value)
 
-const templates = [
-  {
-    id: 'blank-template',
-    icon: 'i-lucide-file-plus',
-    avatar: { name: 'Custom', src: '' }
-  },
-  {
-    id: 'patient-triage',
-    icon: 'i-lucide-stethoscope',
-    avatar: { name: 'Sarah', src: '' }
-  },
-  {
-    id: 'appointment-scheduler',
-    icon: 'i-lucide-calendar-clock',
-    avatar: { name: 'Alex', src: '' }
-  },
-  {
-    id: 'nurse-assistant',
-    icon: 'i-lucide-heart-pulse',
-    avatar: { name: 'Emma', src: '' }
-  },
-  {
-    id: 'pharmacy-assistant',
-    icon: 'i-lucide-pill',
-    avatar: { name: 'Michael', src: '' }
-  },
-  {
-    id: 'medical-records',
-    icon: 'i-lucide-clipboard-list',
-    avatar: { name: 'David', src: '' }
+watch(selectedTemplate, (newTemplate) => {
+  if (newTemplate) {
+    applyTemplate(newAgent, newTemplate)
   }
-]
+})
 
 async function createAgent() {
   if (!isValid.value) return
   
   isCreating.value = true
   try {
-    // Your create agent logic here
+    emit('created', { ...newAgent, template: selectedTemplate.value })
     slideover.close()
   } catch (error) {
     console.error('Failed to create assistant:', error)
