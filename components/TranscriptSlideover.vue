@@ -183,9 +183,12 @@
 
 <script setup lang="ts">
 import { useCalls } from '@/composables/useCalls'
+import { useRecordingUrl } from '@/composables/useRecordingUrl'
+import { useSlideover } from '@/composables/useSlideover'
 
 const { selectedCall: call } = useCalls()
 const slideover = useSlideover()
+const { transformRecordingUrl } = useRecordingUrl()
 
 const audio = ref<HTMLAudioElement | null>(null)
 const currentTime = ref(0)
@@ -300,7 +303,8 @@ const initializeAudio = async () => {
     })
 
     // Set the source and load
-    newAudio.src = call.value.recordingUrl
+    const proxyUrl = transformRecordingUrl(call.value.recordingUrl)
+    newAudio.src = proxyUrl
     audio.value = newAudio
     isAudioInitialized.value = true
     
@@ -379,7 +383,8 @@ const jumpToTime = async (seconds: number) => {
 
 const downloadRecording = () => {
   if (call.value?.recordingUrl) {
-    window.open(call.value.recordingUrl, '_blank')
+    const proxyUrl = transformRecordingUrl(call.value.recordingUrl)
+    window.open(proxyUrl, '_blank')
   }
 }
 

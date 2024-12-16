@@ -60,6 +60,8 @@ import { formatTimeAgo, useClipboard } from '@vueuse/core'
 import { useCalls } from '@/composables/useCalls'
 import TranscriptSlideover from '@/components/TranscriptSlideover.vue'
 import { upperFirst } from 'scule'
+import { useI18n } from 'vue-i18n'
+import { useRecordingUrl } from '@/composables/useRecordingUrl'
 
 const UButton = resolveComponent('UButton')
 const UBadge = resolveComponent('UBadge')
@@ -91,6 +93,7 @@ const props = defineProps({
 const { isLoading, currentPlayingId, togglePlayAudio, selectedCall } = useCalls()
 
 const { t } = useI18n()
+const { transformRecordingUrl } = useRecordingUrl()
 
 const { copy } = useClipboard()
 
@@ -108,14 +111,6 @@ const uniqueAssistants = computed(() => {
 })
 
 const selectedAssistant = ref('')
-
-const transformRecordingUrl = (originalUrl: string) => {
-  if (!originalUrl) return ''
-  const host = window.location.host
-  const protocol = window.location.protocol
-  const path = originalUrl.replace('https://storage.vapi.ai/', '')
-  return `${protocol}//${host}/api/recording/${path}`
-}
 
 const columns = computed(() => {
   const baseColumns = [
