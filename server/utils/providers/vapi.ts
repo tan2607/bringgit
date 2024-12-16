@@ -89,9 +89,12 @@ export class VapiProvider {
   }
 
   // Call Methods
-  async listCalls() {
+  async listCalls(params?: {
+    createdAtGe?: string;
+    createdAtLe?: string;
+  }) {
     const [calls, assistants] = await Promise.all([
-      this.client.calls.list(),
+      this.client.calls.list(params),
       this.client.assistants.list()
     ]);
 

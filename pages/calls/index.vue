@@ -20,7 +20,7 @@
         </UButton>
 
         <template #content>
-          <UCalendar v-model="dateRange" class="p-2" :number-of-months="2" range />
+          <UCalendar v-model="dateRange" class="p-2" range />
         </template>
       </UPopover>
 
@@ -49,7 +49,7 @@ const df = new DateFormatter('en-US', {
 
 const dateRange = shallowRef({
   start: new CalendarDate(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate() - 7),
-  end: new CalendarDate(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate() + 1)
+  end: new CalendarDate(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate())
 })
 
 const callStatus = ref('ended')
@@ -71,6 +71,20 @@ const filteredCalls = computed(() => {
     )
   })
 })
+
+watch(dateRange, async (newRange) => {
+  if (!newRange.start || !newRange.end) return
+  
+  const startDateTime = newRange.start.toDate(getLocalTimeZone())
+  startDateTime.setHours(0, 0, 0, 0)
+  
+  const endDateTime = newRange.end.toDate(getLocalTimeZone())
+  endDateTime.setHours(23, 59, 59, 999)
+  
+  const startDate = startDateTime.toISOString()
+  const endDate = endDateTime.toISOString()
+  await fetchCalls(startDate, endDate)
+}, { immediate: true, deep: true })
 
 onMounted(async () => {
   await fetchCalls()

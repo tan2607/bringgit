@@ -2,6 +2,10 @@
 @import "tailwindcss";
 @import "@nuxt/ui-pro";
 
+a[aria-label="Nuxt UI Pro"] {
+  display: none;
+}
+
 @theme {
   --font-sans: 'Public Sans', sans-serif;
   --breakpoint-3xl: 1920px;

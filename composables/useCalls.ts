@@ -5,10 +5,14 @@ export const useCalls = () => {
   const selectedCall = useState<TableData | null>('selectedCall', () => null)
   const isLoading = useState('callsIsLoading', () => false)
 
-  const fetchCalls = async () => {
+  const fetchCalls = async (startDate?: string, endDate?: string) => {
     isLoading.value = true
     try {
-      const { data } = await useFetch('/api/calls')
+      const queryParams = new URLSearchParams()
+      if (startDate) queryParams.append('startDate', startDate)
+      if (endDate) queryParams.append('endDate', endDate)
+      
+      const { data } = await useFetch(`/api/calls?${queryParams.toString()}`)
       calls.value = data.value
     } finally {
       isLoading.value = false
