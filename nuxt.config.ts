@@ -17,6 +17,7 @@ export default defineNuxtConfig({
       secret: process.env.NEXTAUTH_SECRET,
     },
     public: {
+      googleApiKey: process.env.GOOGLE_API_KEY,
       authJs: {
         baseUrl: "https://next.keyreply.com",
         guestRedirectTo: "/auth/login",
@@ -51,7 +52,8 @@ export default defineNuxtConfig({
     '@hebilicious/authjs-nuxt',
     '@nuxtjs/i18n',
     '@nuxtjs/mdc',
-    '@nuxt/icon'
+    '@nuxt/icon',
+    '@nuxt/scripts'
   ],
   hub: {
     database: true

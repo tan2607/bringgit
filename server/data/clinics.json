@@ -1,0 +1,124 @@
+{
+  "clinics": [
+    {
+      "name": "57 Medical Clinic (Geylang Bahru)",
+      "description": "Dr Kang Pei Lin",
+      "lat": 1.3234425,
+      "lon": 103.8690152
+    },
+    {
+      "name": "57 Medical Clinic (Kallang Airport)",
+      "description": "Dr Kwa Pei Wen Tammy",
+      "lat": 1.3094495,
+      "lon": 103.8839049
+    },
+    {
+      "name": "57 Medical Clinic (Parkway Centre)",
+      "description": "Dr Chen Yan Jun Jean",
+      "lat": 1.3018408,
+      "lon": 103.9060621
+    },
+    {
+      "name": "57 Medical Clinic (Pek Kio)",
+      "description": "Dr Loke Ea Ling",
+      "lat": 1.3154145,
+      "lon": 103.8498199
+    },
+    {
+      "name": "94 Dawson Family Clinic",
+      "description": "Dr Alycia Fang",
+      "lat": 1.296388,
+      "lon": 103.8110887
+    },
+    {
+      "name": "A Life Clinic",
+      "description": "Dr Choo Kay Wee",
+      "lat": 1.3211072,
+      "lon": 103.8443378
+    },
+    {
+      "name": "A Medical Clinic (Everton Park)",
+      "description": "Dr Han Xiao, Dr Sng Wei Rong Joshua",
+      "lat": 1.2774492,
+      "lon": 103.8400579
+    },
+    {
+      "name": "Advantage Medical Clinic (Geylang East)",
+      "description": "Dr Vivyan Tay",
+      "lat": 1.3178463,
+      "lon": 103.8864491
+    },
+    {
+      "name": "Anteh Dispensary",
+      "description": "Dr Chai Chwan, Dr Marie Li Meiyan",
+      "lat": 1.3128636,
+      "lon": 103.8824266
+    },
+    {
+      "name": "Apollo Medical Centre",
+      "description": "Dr Sorinder Singh",
+      "lat": 1.3079344,
+      "lon": 103.851763
+    },
+    {
+      "name": "Belief Family Clinic",
+      "description": "Dr Samuel Lau",
+      "lat": 1.3084036,
+      "lon": 103.8622518
+    },
+    {
+      "name": "Brighton Medical Clinic",
+      "description": "Dr Chow Yong Sheng",
+      "lat": 1.3357938,
+      "lon": 103.8479661
+    },
+    {
+      "name": "C3 Family Clinic@Aljunied Crescent",
+      "description": "Dr Cheong Siew Meng",
+      "lat": 1.3213517,
+      "lon": 103.8864088
+    },
+    {
+      "name": "Camry Medical Centre",
+      "description": "Dr Teo Boon See, Dr Tham Tuck Seng",
+      "lat": 1.3386965,
+      "lon": 103.849054
+    },
+    {
+      "name": "Chang Clinic",
+      "description": "Dr Janet Gouw",
+      "lat": 1.3389815,
+      "lon": 103.7788238
+    },
+    {
+      "name": "Chang Clinic & Surgery",
+      "description": "Dr Stephen Chang Chean Seng",
+      "lat": 1.2771303,
+      "lon": 103.8394721
+    },
+    {
+      "name": "Chinatown Wellness Clinic",
+      "description": "Dr Lai Li Cheng",
+      "lat": 1.2852713,
+      "lon": 103.8460894
+    },
+    {
+      "name": "Chung & Ee Medical Clinic",
+      "description": "Dr Chung Wing Hong",
+      "lat": 1.2778441,
+      "lon": 103.8197434
+    },
+    {
+      "name": "Clinic @ The Sail",
+      "description": "Dr Lim Chin Wei",
+      "lat": 1.2810307,
+      "lon": 103.8533909
+    },
+    {
+      "name": "Cornerstone Medical",
+      "description": "Dr Kevin Lim",
+      "lat": 1.3084094,
+      "lon": 103.784729
+    }
+  ]
+}

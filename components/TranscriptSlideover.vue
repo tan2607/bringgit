@@ -184,7 +184,6 @@
 <script setup lang="ts">
 import { useCalls } from '@/composables/useCalls'
 import { useRecordingUrl } from '@/composables/useRecordingUrl'
-import { useSlideover } from '@/composables/useSlideover'
 
 const { selectedCall: call } = useCalls()
 const slideover = useSlideover()

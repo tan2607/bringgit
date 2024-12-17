@@ -39,6 +39,7 @@
     "@hebilicious/authjs-nuxt": "latest",
     "@iconify-json/lucide": "latest",
     "@inspira-ui/plugins": "latest",
+    "@nuxt/scripts": "^0.9.5",
     "class-variance-authority": "latest",
     "clsx": "latest",
     "drizzle-kit": "latest",

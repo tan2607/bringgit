@@ -97,6 +97,12 @@ const items = computed(() => [
                 icon: 'i-lucide-clipboard-list',
                 description: 'Patient intake form demo',
                 to: localeRoute('/demo/patient-intake-form')?.path
+            },
+            {
+                label: 'Location Search',
+                icon: 'i-lucide-map-pin',
+                description: 'Clinic location search demo',
+                to: localeRoute('/demo/location')?.path
             }
         ]
     },
