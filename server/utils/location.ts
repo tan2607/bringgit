@@ -24,9 +24,10 @@ export function calculateDistance(coord1: Coordinates, coord2: Coordinates): num
   return R * c // Distance in km
 }
 
-// Mock geocoding function - replace with actual API call in production
-export async function getCoordinatesFromPostalCode(postalCode: string): Promise<Coordinates> {
-  const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${postalCode}+Singapore&key=${config.public.googleApiKey}`);
+// Geocoding function that accepts any search query
+export async function getCoordinatesFromQuery(query: string): Promise<Coordinates> {
+  const encodedQuery = encodeURIComponent(`${query}, Singapore`);
+  const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodedQuery}&key=${config.public.googleApiKey}`);
   const data = await response.json();
 
   console.log(data)
@@ -34,16 +35,16 @@ export async function getCoordinatesFromPostalCode(postalCode: string): Promise<
     const location = data.results[0].geometry.location;
     return { lat: location.lat, lon: location.lng };
   } else {
-    throw new Error('Could not geocode postal code');
+    throw new Error('Location not found');
   }
 }
 
 export async function findNearestClinics(
-  postalCode: string,
+  searchQuery: string,
   limit: number = 3
 ): Promise<ClinicWithDistance[]> {
-  // Get coordinates of input postal code
-  const userCoords = await getCoordinatesFromPostalCode(postalCode)
+  // Get coordinates of input search query
+  const userCoords = await getCoordinatesFromQuery(searchQuery)
 
   // Calculate distance for each clinic and store it
   const clinicsWithDistance = clinics.map(clinic => ({
