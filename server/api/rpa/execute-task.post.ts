@@ -1,10 +1,10 @@
-import { chromium } from 'playwright-core'
 import { Browserbase } from '@browserbasehq/sdk'
 import { PromptEnhancer } from '~/server/utils/providers/copilot'
 import { auto } from 'auto-playwright'
 import { test } from '@playwright/test'
 
 export default defineEventHandler(async (event) => {
+  const chromium = {} // Mock
   try {
     const body = await readBody(event)
     const { description, parameters } = body

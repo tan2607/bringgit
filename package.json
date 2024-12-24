@@ -33,7 +33,6 @@
     "ical-generator": "^8.0.1",
     "nuxt": "latest",
     "openai": "latest",
-    "playwright-core": "^1.49.1",
     "vue": "latest",
     "vue-chartjs": "latest",
     "vue-router": "latest",

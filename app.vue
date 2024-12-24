@@ -112,7 +112,7 @@ const items = computed(() => [
             {
               label: 'RPA Demo',
               icon: 'i-lucide-cpu',
-              description: 'Medicare Eligibility RPA',
+              description: 'RPA',
               to: localeRoute('/demo/rpa')?.path
             },
         ]
