@@ -124,7 +124,7 @@
         <div v-if="crawledContent" class="mt-4">
           <h4 class="font-medium mb-2">{{ t('prompt.crawled-content') }}</h4>
           <UCard>
-            <MDC :content="crawledContent" />
+            <MDC :value="crawledContent" />
           </UCard>
         </div>
       </div>

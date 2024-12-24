@@ -1,0 +1,26 @@
+Title: The Messy Inbox Problem: Wedge Strategies in AI Apps
+
+URL Source: https://a16z.com/the-messy-inbox-problem-ai-apps-wedge-strategies/
+
+Published Time: 2024-10-15T15:45:43Z
+
+Markdown Content:
+Walk into a physician’s office any day of the week and you’ll likely hear the whirring purr of a fax machine in the corner. No, it’s not some nostalgic ambient soundtrack from a time long ago — it’s this practice’s — and many other modern practices’ — primary communication method for sharing new patient referrals, lab updates, progress notes, and insurance authorizations.
+
+While the clinical side of modern medicine has [made radical advances](https://a16z.com/ai-at-the-intersection-the-a16z-investment-thesis-on-ai-in-bio-health/) in recent years, their offices are stuck in the 1980s. They still rely on an army of administrative staff to manually gather faxes, sift through emailed PDFs and phone messages, and input patient data into electronic medical records. And it’s not just in medicine. Every day, millions of small businesses in industries that run the gamut from law and insurance to freight and oil & gas, also waste countless hours synthesizing waves of unstructured information and entering data into industry-specific systems of record to qualify their prospective customers and initiate a number of downstream workflows.
+
+We call this the “messy inbox problem,” and replacing this historically judgment-intensive work with LLMs is quickly becoming one of the most effective wedge strategies when building AI-native applications. Why is that the case?
+
+For context, this “messy inbox problem” typically sits at the top of the funnel for most white-collar work. By being able to [replace human labor with LLMs](https://a16z.com/ai-turns-capital-to-labor/), you’re effectively stepping in front of any existing downstream software systems. The ability to synthesize unstructured voice or text data and systematically extract relevant information earns you the right to initiate (and own) other downstream workflows.
+
+[![Image 9](https://d1lamhf6l6yk6d.cloudfront.net/uploads/2024/10/241007-Messy-Inbox-ILG-1-2000x1993-1-1024x1020.png)](https://d1lamhf6l6yk6d.cloudfront.net/uploads/2024/10/241007-Messy-Inbox-ILG-1-2000x1993-1.png)
+
+Take the case of our earlier medical practice. While the job of Anne, an administrative assistant, may be to sift through physical faxes and enter in patient information into their electronic medical record (EMR), she must then pass the baton to Sally, whose job it is to qualify patients and evaluate their eligibility and insurance benefits. Jimmy then requests prior authorization from the patient’s health plan, and Joe schedules that patient’s visit against the limited availability of their physician’s calendars. Each of these administrators use a different software system to complete their work.
+
+[Tennr](http://tennr.com/), one of a16z’s portfolio companies, replaces this entire workflow with their platform by first solving this messy inbox problem. They’ve trained their own LLMs (on a corpus of 3 million medical records) which allows them to extract patient information accurately (and programmatically) from the practice’s faxes, emails, call transcripts, and file management systems. By owning the top-of-funnel in the patient intake process, they can route patient information into the practice’s other software systems (or make calls to third-party databases). A quick API call can return qualification information, eligibility and benefits, initiate a prior auth request, and begin the scheduling process. By leveraging Tennr’s AI workflows, practices have been able to cut administrative overhead by 90% and importantly, Tennr has quickly earned the right to become many of their customer’s [core system of record](https://a16z.com/ai-transforms-sales/).
+
+[![Image 10](https://d1lamhf6l6yk6d.cloudfront.net/uploads/2024/10/241007-Messy-Inbox-ILG-Tennr-2000x1993-1-1024x1020.png)](https://d1lamhf6l6yk6d.cloudfront.net/uploads/2024/10/241007-Messy-Inbox-ILG-Tennr-2000x1993-1.png)
+
+We’re beginning to see many Tennr-like AI applications across almost every vertical. [Heron Data](https://www.herondata.io/) is helping small business lenders synthetize loan files from brokers, significantly speeding up underwriting times and reducing cost. [HappyRobot](https://www.happyrobot.ai/) has automated the quoting and pricing process for freight brokers and their network of shippers and carriers. And [Eve](https://www.eve.legal/) is helping plaintiff law firms more efficiently qualify leads at intake as well as step through the entire litigation process (including automatically drafting demand letters and complaints) — effectively enabling them to take on more cases and increase revenue (without scaling headcount).
+
+These are just a few of the companies that are solving the messy inbox problem as a wedge for displacing legacy software and building new AI-native systems of record in their respective verticals. Plenty more are underway, perhaps in novel ways that we haven’t even imagined yet. If you’re building an AI app that’s solving this headache for small businesses, we’d love to chat!

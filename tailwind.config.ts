@@ -6,7 +6,7 @@ export default {
   darkMode: "selector",
   safelist: ["dark"],
   prefix: "",
-  content: [],
+  content: ["./formkit.theme.ts"],
   theme: {
     extend: {
       colors: {

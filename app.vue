@@ -103,7 +103,18 @@ const items = computed(() => [
                 icon: 'i-lucide-map-pin',
                 description: 'Clinic location search demo',
                 to: localeRoute('/demo/location')?.path
-            }
+            },
+            {
+              label: 'OCR Demo',
+              icon: 'i-lucide-file-scan',
+              to: localeRoute('/ocr')
+            },
+            {
+              label: 'RPA Demo',
+              icon: 'i-lucide-cpu',
+              description: 'Medicare Eligibility RPA',
+              to: localeRoute('/demo/rpa')?.path
+            },
         ]
     },
     {

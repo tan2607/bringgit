@@ -1,43 +1,27 @@
 <template>
   <div>
     <div class="flex justify-end px-4 py-3.5 border-b border-[var(--ui-border-accented)]">
-      <UDropdownMenu
-        :items="table?.tableApi
-          ?.getAllColumns()
-          .filter((column) => ['id', 'voice', 'model'].includes(column.id))
-          .map((column) => ({
-            label: upperFirst(column.id),
-            type: 'checkbox' as const,
-            checked: column.getIsVisible(),
-            onUpdateChecked(checked: boolean) {
-              table?.tableApi?.getColumn(column.id)?.toggleVisibility(!!checked)
-            },
-            onSelect(e?: Event) {
-              e?.preventDefault()
-            }
-          }))"
-        :content="{ align: 'end' }"
-      >
-        <UButton
-          label="Columns"
-          color="neutral"
-          variant="outline"
-          trailing-icon="i-lucide-chevron-down"
-        />
+      <UDropdownMenu :items="table?.tableApi
+        ?.getAllColumns()
+        .filter((column) => ['id', 'voice', 'model'].includes(column.id))
+        .map((column) => ({
+          label: upperFirst(column.id),
+          type: 'checkbox' as const,
+          checked: column.getIsVisible(),
+          onUpdateChecked(checked: boolean) {
+            table?.tableApi?.getColumn(column.id)?.toggleVisibility(!!checked)
+          },
+          onSelect(e?: Event) {
+            e?.preventDefault()
+          }
+        }))" :content="{ align: 'end' }">
+        <UButton label="Columns" color="neutral" variant="outline" trailing-icon="i-lucide-chevron-down" />
       </UDropdownMenu>
     </div>
-    <UTable 
-      ref="table"
-      v-model:column-visibility="columnVisibility"
-      :data="data" 
-      :columns="columns"
-      :loading="isLoading"
-      class="flex-1"
-      :ui="{ 
+    <UTable ref="table" v-model:column-visibility="columnVisibility" :data="data" :columns="columns"
+      :loading="isLoading" class="flex-1" :ui="{
         tr: 'cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors'
-      }"
-      @row-select="openEditSlideover"
-    >
+      }" @row-select="openEditSlideover">
       <template #loading-state>
         <div class="flex items-center justify-center h-32">
           <UIcon name="i-lucide-loader-2" class="animate-spin" />
@@ -65,6 +49,8 @@ const UIcon = resolveComponent('UIcon')
 const UTooltip = resolveComponent('UTooltip')
 const UPopover = resolveComponent('UPopover')
 const UInput = resolveComponent('UInput')
+const UForm = resolveComponent('UForm')
+const UFormField = resolveComponent('UFormField')
 
 const toast = useToast()
 const { t } = useI18n()
@@ -100,6 +86,41 @@ const columnVisibility = ref({
   voice: false,
   model: false
 })
+
+const phoneNumber = ref('+6582888399')
+const isCallLoading = ref(false)
+
+const makeCall = async (assistant: Assistant) => {
+  try {
+    isCallLoading.value = true
+    const { data: response } = await useFetch('/api/call', {
+      method: 'POST',
+      body: {
+        assistantId: assistant.id,
+        phoneNumber: phoneNumber.value
+      }
+    })
+
+    if (response.value?.error) {
+      throw new Error(response.value.error)
+    }
+
+    toast.add({
+      title: 'Call initiated',
+      description: `Call to ${phoneNumber.value} has been initiated using assistant "${assistant.name}"`,
+      icon: 'i-heroicons-phone'
+    })
+    phoneNumber.value = ''
+  } catch (error: any) {
+    toast.add({
+      title: 'Error',
+      description: error.message,
+      color: 'red'
+    })
+  } finally {
+    isCallLoading.value = false
+  }
+}
 
 const columns: TableColumn<Assistant>[] = [
   {
@@ -177,28 +198,49 @@ const columns: TableColumn<Assistant>[] = [
     }
   },
   {
-    id: 'actions',
+    id: 'call',
+    header: () => h('div', { class: 'text-left' }, 'Call'),
     cell: ({ row }) => {
-      return h(
-        'div',
-        { class: 'text-right' },
-        h(
-          UDropdownMenu,
-          {
-            content: {
-              align: 'end'
-            },
-            items: getRowItems(row)
-          },
-          () =>
-            h(UButton, {
-              icon: 'i-lucide-ellipsis-vertical',
-              color: 'gray',
-              variant: 'ghost',
-              class: 'ml-auto'
-            })
-        )
-      )
+      return h(UFormField, {
+        label: 'Phone Number',
+        name: 'phoneNumber',
+        required: true,
+        help: 'Enter phone number with country code',
+      }, () => h('div', { class: 'flex gap-2 items-center' }, [
+        h(UInput, {
+          modelValue: phoneNumber.value,
+          'onUpdate:modelValue': (value: string) => phoneNumber.value = value,
+          placeholder: '+6597599995',
+          type: 'tel'
+        }),
+        h(UButton, {
+          icon: 'i-heroicons-phone',
+          color: 'primary',
+          loading: isCallLoading.value,
+          onClick: () => makeCall(row.original)
+        })
+      ]))
+    }
+  },
+  {
+    id: 'actions',
+    header: () => h('div', { class: 'text-right' }, 'Actions'),
+    cell: ({ row }) => {
+      const items = getRowItems(row)
+      return h('div', { class: 'flex items-center justify-end gap-2' }, [
+        h(UDropdownMenu, {
+          items,
+          'content-class': 'w-48'
+        }, {
+          default: () => h(UButton, {
+            icon: 'i-heroicons-ellipsis-horizontal',
+            color: 'gray',
+            variant: 'ghost',
+            size: 'xs',
+            square: true
+          })
+        })
+      ])
     }
   }
 ]
@@ -301,13 +343,13 @@ const duplicateAssistant = async (assistant: any) => {
         id: undefined
       }
     })
-    
+
     toast.add({
       title: t('success'),
       description: t('assistant.assistant-duplicated'),
       color: 'success'
     })
-    
+
     return data
   } catch (error: any) {
     console.error('Failed to duplicate assistant:', error)

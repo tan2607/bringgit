@@ -8,11 +8,13 @@ export default defineNuxtConfig({
     vapiApiKey: process.env.VAPI_API_KEY,
     cartesiaApiKey: process.env.CARTESIA_API_KEY,
     copilotApiKey: process.env.OPENAI_API_KEY,
+    groqApiKey: process.env.GROQ_API_KEY,
     playaiApiKey: process.env.PLAYAI_API_KEY,
     playaiUserId: process.env.PLAYAI_USER_ID,
     whisperApiKey: process.env.GROQ_API_KEY,
     sendgridApiKey: process.env.SENDGRID_API_KEY,
     firecrawlApiKey: process.env.FIRECRAWL_API_KEY,
+    geminiApiKey: process.env.GEMINI_API_KEY,
     authJs: {
       secret: process.env.NEXTAUTH_SECRET,
     },
@@ -42,6 +44,9 @@ export default defineNuxtConfig({
       }
     }
   },
+  future: {
+    compatibilityVersion: 4,
+  },
   compatibilityDate: '2024-04-03',
   modules: [
     '@nuxt/ui-pro',
@@ -53,10 +58,15 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n',
     '@nuxtjs/mdc',
     '@nuxt/icon',
-    '@nuxt/scripts'
+    '@nuxt/scripts',
+    '@formkit/nuxt'
   ],
   hub: {
     database: true
+  },
+  formkit: {
+    // Experimental support for auto loading (see note):
+    autoImport: true
   },
   content: {
     // Content module configuration

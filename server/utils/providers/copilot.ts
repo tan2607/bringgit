@@ -116,4 +116,66 @@ export class PromptEnhancer {
 
     return invite;
   }
+
+  async formatToMarkdown(text: string): Promise<string> {
+    const response = await this.client.chat.completions.create({
+      model: "llama-3.3-70b-versatile",
+      messages: [
+        {
+          role: "system",
+          content: "You are an expert at formatting text into clean, well-structured markdown. Format the given text into markdown with appropriate headers, lists, and emphasis. Return only the markdown without any explanations."
+        },
+        {
+          role: "user",
+          content: text
+        }
+      ],
+      temperature: 0.3,
+    });
+
+    return response.choices[0].message.content || text;
+  }
+}
+
+export class GroqOCR {
+  private client: Groq;
+
+  constructor(apiKey: string) {
+    this.client = new Groq({
+      apiKey,
+    });
+  }
+
+  async processDocument(dataUrl: string): Promise<Record<string, any>> {
+    try {
+      const response = await this.client.chat.completions.create({
+        messages: [
+          {
+            role: "user",
+            content: [
+              {
+                type: "text",
+                text: "Extract all relevant information from this document and return it as a JSON object. Include all important details like dates, names, addresses, amounts, and any other significant information. Format the response as a clean JSON object with appropriate key-value pairs."
+              },
+              {
+                type: "image_url",
+                image_url: {
+                  url: dataUrl
+                }
+              }
+            ]
+          }
+        ],
+        model: "llama-3.2-90b-vision-preview",
+        response_format: { type: "json_object" },
+        temperature: 0.2
+      });
+
+      const result = JSON.parse(response.choices[0].message.content);
+      return result;
+    } catch (error) {
+      console.error('Groq OCR Error:', error);
+      throw error;
+    }
+  }
 }
