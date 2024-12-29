@@ -3,7 +3,7 @@
     <UCard>
       <template #header>
         <div class="flex items-center gap-2">
-          <UIcon name="i-heroicons-document-text" class="text-primary" />
+          <UIcon name="i-lucide-file-text" class="text-primary" />
           <h3 class="text-xl font-semibold">Document Processor</h3>
         </div>
       </template>
@@ -15,31 +15,49 @@
             <label
               id="dropcontainer"
               for="file-input"
-              class="drop-container"
+              :class="[
+                'drop-container',
+                { 'h-[600px] flex items-center justify-center': imagePreview }
+              ]"
               @dragover.prevent
               @dragenter.prevent="(e: any) => {e.target.classList.add('drag-active')}"
               @dragleave.prevent="(e: any) => {e.target.classList.remove('drag-active')}"
               @drop.prevent="handleDrop"
             >
-              <span class="drop-title">Drop document here</span>
-              <span class="text-sm text-gray-500">or</span>
-              <input
-                id="file-input"
-                ref="fileInput"
-                type="file"
-                accept=".pdf,image/*"
-                @input="handleFileInput"
-              />
-              <div class="text-xs text-gray-400 mt-2">
-                <div>Supported formats: PDF, Images (JPG, PNG)</div>
-                <div>Max file size: 5MB</div>
-              </div>
+              <template v-if="!imagePreview">
+                <span class="drop-title">Drop document here</span>
+                <span class="text-sm text-gray-500">or</span>
+                <input
+                  id="file-input"
+                  ref="fileInput"
+                  type="file"
+                  accept=".pdf,image/*"
+                  @input="handleFileInput"
+                />
+                <div class="text-xs text-gray-400 mt-2">
+                  <div>Supported formats: PDF, Images (JPG, PNG)</div>
+                  <div>Max file size: 5MB</div>
+                </div>
+              </template>
+              <template v-else>
+                <div class="relative w-full max-w-md">
+                  <img :src="imagePreview" alt="Preview" class="w-full h-auto object-contain rounded-lg shadow-lg" />
+                  <UButton
+                    class="absolute top-2 right-2"
+                    color="gray"
+                    variant="solid"
+                    icon="i-lucide-x"
+                    size="sm"
+                    @click.prevent="resetForm"
+                  />
+                </div>
+              </template>
             </label>
 
             <UCard v-if="isProcessing" color="primary" class="p-4">
               <div class="space-y-3">
                 <div class="flex items-center gap-2">
-                  <UIcon name="i-heroicons-cog-6-tooth" class="animate-spin" />
+                  <UIcon name="i-lucide-settings-2" class="animate-spin" />
                   <span>Processing your document...</span>
                 </div>
                 <UProgress class="w-full" animation="carousel" indeterminate />
@@ -50,7 +68,7 @@
               v-if="error"
               color="red"
               variant="soft"
-              icon="i-heroicons-exclamation-triangle"
+              icon="i-lucide-alert-triangle"
               :title="error"
             />
           </div>
@@ -67,7 +85,7 @@
                 </pre>
               </template>
             </UCollapsible>
-            <FormKitSchema :schema="patientIntakeSchema" :value="extractedFields" />
+            <FormKitSchema :schema="patientIntakeFormSchema" :value="extractedFields" />
           </div>
         </template>
 
@@ -100,32 +118,34 @@
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-import { patientIntakeSchema } from '~/shared/forms/patientIntakeSchema'
+import { patientIntakeFormSchema } from '~/shared/forms/patientIntakeSchema'
 
 const stepper = ref(null)
 const fileInput = ref(null)
 const isProcessing = ref(false)
 const error = ref('')
 const extractedFields = ref({})
+const imagePreview = ref('')
+const isImage = ref(false)
 
 const steps = [
   {
     slot: 'upload',
     title: 'Upload Document',
     description: 'Upload a document to process',
-    icon: 'i-heroicons-cloud-arrow-up'
+    icon: 'i-lucide-upload-cloud'
   },
   {
     slot: 'review',
     title: 'Review Data',
     description: 'Review extracted information',
-    icon: 'i-heroicons-document-text'
+    icon: 'i-lucide-file-text'
   },
   {
     slot: 'process',
     title: 'Process',
     description: 'Choose next actions',
-    icon: 'i-heroicons-cog-6-tooth'
+    icon: 'i-lucide-settings-2'
   }
 ]
 
@@ -135,7 +155,7 @@ const suggestedActions = ref([
     description: 'Store the extracted information in the database',
     buttonText: 'Save',
     type: 'primary',
-    icon: 'i-heroicons-cloud-arrow-up',
+    icon: 'i-lucide-upload-cloud',
     action: 'save'
   },
   {
@@ -143,7 +163,7 @@ const suggestedActions = ref([
     description: 'Use RPA to automate tasks with the extracted data',
     buttonText: 'Automate',
     type: 'success',
-    icon: 'i-heroicons-cpu-chip',
+    icon: 'i-lucide-cpu',
     action: 'rpa'
   }
 ])
@@ -158,6 +178,7 @@ function resetForm() {
   }
   error.value = ''
   extractedFields.value = {}
+  imagePreview.value = ''
   stepper.value?.go(0)
 }
 
@@ -180,6 +201,17 @@ async function processFile(file: File) {
   try {
     isProcessing.value = true
     error.value = ''
+    isImage.value = file.type.startsWith('image/')
+    
+    if (isImage.value) {
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        imagePreview.value = e.target?.result as string
+      }
+      reader.readAsDataURL(file)
+    } else {
+      imagePreview.value = ''
+    }
 
     const formData = new FormData()
     formData.append('file', file)
@@ -219,7 +251,7 @@ async function executeAction(action: any) {
       useToast().add({
         title: 'Success',
         description: 'Data saved successfully',
-        icon: 'i-heroicons-check-circle',
+        icon: 'i-lucide-check-circle',
         color: 'green'
       })
       
@@ -237,7 +269,7 @@ async function executeAction(action: any) {
     useToast().add({
       title: 'Error',
       description: error.message,
-      icon: 'i-heroicons-x-circle',
+      icon: 'i-lucide-x-circle',
       color: 'red'
     })
   }
@@ -252,51 +284,55 @@ async function executeAction(action: any) {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 200px;
   padding: 20px;
   border-radius: 10px;
-  border: 2px dashed #e5e7eb;
-  color: #374151;
+  border: 2px dashed #555;
+  color: #444;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  transition: background .2s ease-in-out, border .2s ease-in-out;
+  min-height: 200px;
 }
 
 .drop-container:hover {
-  border-color: #6b7280;
-  background: #f9fafb;
+  background: rgba(0, 0, 0, 0.02);
+  border-color: rgba(0, 0, 0, 0.3);
 }
 
 .drop-container.drag-active {
-  border-color: #6b7280;
-  background: #f9fafb;
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.4);
 }
 
 .drop-title {
-  color: #374151;
-  font-size: 1.25rem;
-  font-weight: 600;
+  color: #444;
+  font-size: 20px;
+  font-weight: bold;
   text-align: center;
-  transition: color 0.2s ease-in-out;
+  transition: color .2s ease-in-out;
 }
 
 input[type=file] {
+  width: 350px;
   max-width: 100%;
-  padding: 8px 12px;
-  cursor: pointer;
+  color: #444;
+  padding: 5px;
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #555;
 }
 
 input[type=file]::file-selector-button {
-  margin-right: 12px;
+  margin-right: 20px;
   border: none;
-  background: #00dc82;
-  padding: 8px 16px;
-  border-radius: 6px;
-  color: #ffffff;
+  background: #084cdf;
+  padding: 10px 20px;
+  border-radius: 10px;
+  color: #fff;
   cursor: pointer;
-  transition: background 0.2s ease-in-out;
+  transition: background .2s ease-in-out;
 }
 
 input[type=file]::file-selector-button:hover {
-  background: #00b368;
+  background: #0d45a5;
 }
 </style>

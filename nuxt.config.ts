@@ -48,6 +48,16 @@ export default defineNuxtConfig({
     compatibilityVersion: 4,
   },
   compatibilityDate: '2024-04-03',
+  vite: {
+    optimizeDeps: {
+      include: ['debug']
+    },
+    build: {
+      commonjsOptions: {
+        include: [/debug/, /node_modules/]
+      }
+    }
+  },
   modules: [
     '@nuxt/ui-pro',
     '@nuxt/content',

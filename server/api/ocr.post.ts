@@ -2,6 +2,7 @@ import { createError } from 'h3'
 import { readFiles } from 'h3-formidable'
 import { GeminiOCR } from '../utils/providers/gemini'
 import { readFile } from 'fs/promises'
+import { patientDataSchema } from '~/shared/forms/patientIntakeSchema'
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 const ALLOWED_MIME_TYPES = [
@@ -14,7 +15,7 @@ const ALLOWED_MIME_TYPES = [
 
 export default defineEventHandler(async (event) => {
   try {
-    console.log('Processing OCR request...');
+    console.log('Processing OCR request...')
     
     // Parse multipart form data
     const { files } = await readFiles(event, {
@@ -54,18 +55,35 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    // Read file content
-    const fileContent = await readFile(file.filepath)
+    // Read file buffer
+    const fileBuffer = await readFile(file.filepath)
 
-    const geminiOcr = new GeminiOCR(config.geminiApiKey)
-    const result = await geminiOcr.processDocument(fileContent, file.mimetype)
-    console.log('OCR result:', result);
-    return result
+    // Process with Gemini OCR
+    const ocr = new GeminiOCR(config.geminiApiKey)
+    const extractedData = await ocr.processDocument(fileBuffer, file.mimetype || 'application/octet-stream')
+
+    // Validate extracted data against schema
+    const validatedData = patientDataSchema.safeParse(extractedData)
+
+    if (!validatedData.success) {
+      console.error('Validation errors:', validatedData.error)
+      return {
+        success: false,
+        error: 'Invalid data format',
+        details: validatedData.error.errors
+      }
+    }
+
+    return {
+      success: true,
+      data: validatedData.data
+    }
+
   } catch (error: any) {
-    console.error('OCR processing error:', error)
-    throw createError({
-      statusCode: error.statusCode || 500,
-      message: error.message || 'Failed to process document',
-    })
+    console.error('OCR Error:', error)
+    return {
+      success: false,
+      error: error.message
+    }
   }
 })

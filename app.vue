@@ -115,6 +115,12 @@ const items = computed(() => [
               description: 'RPA',
               to: localeRoute('/demo/rpa')?.path
             },
+            {
+              label: 'Workflow Demo',
+              icon: 'i-lucide-workflow',
+              description: 'Home Sleep Study Workflow',
+              to: localeRoute('/demo/workflow')?.path
+            },
         ]
     },
     {

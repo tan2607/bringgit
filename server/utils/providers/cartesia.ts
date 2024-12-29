@@ -1,9 +1,9 @@
 import { VoiceProvider, VoiceConfig, TTSOptions } from '../types';
-import Cartesia from "@cartesia/cartesia-js";
+import { CartesiaClient } from "@cartesia/cartesia-js";
 
 export class CartesiaProvider implements VoiceProvider {
   private static instance: CartesiaProvider;
-  private client: Cartesia;
+  private client: CartesiaClient;
   private websocket: any;
 
   private constructor(apiKey: string) {
@@ -11,7 +11,7 @@ export class CartesiaProvider implements VoiceProvider {
       throw new Error('Cartesia requires an API key');
     }
     console.log('[Cartesia] Initializing with API key:', apiKey.substring(0, 5) + '...');
-    this.client = new Cartesia({
+    this.client = new CartesiaClient({
       apiKey,
     });
   }

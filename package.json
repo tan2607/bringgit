@@ -7,44 +7,50 @@
     "build": "nuxt build",
     "dev": "nuxt dev",
     "preview": "nuxt preview",
-    "cleanup": "nuxt cleanup"
+    "cleanup": "nuxt cleanup",
+    "upgrade": "npx nuxi@latest upgrade --force"
   },
   "dependencies": {
     "@auth/core": "latest",
     "@browserbasehq/sdk": "^2.0.0",
+    "@browserbasehq/stagehand": "^1.8.0",
     "@cartesia/cartesia-js": "latest",
     "@formkit/nuxt": "^1.6.9",
     "@google/generative-ai": "^0.21.0",
+    "@img/sharp-libvips-dev": "^1.0.6",
+    "@img/sharp-wasm32": "^0.33.5",
     "@internationalized/date": "^3.6.0",
     "@nuxt/content": "next",
     "@nuxt/icon": "latest",
-    "@nuxt/ui-pro": "3.0.0-alpha.10",
+    "@nuxt/ui-pro": "https://pkg.pr.new/@nuxt/ui-pro@364cc97",
     "@nuxthub/core": "latest",
     "@nuxtjs/i18n": "latest",
     "@nuxtjs/mdc": "latest",
     "@sendgrid/mail": "^8.1.4",
-    "@vapi-ai/server-sdk": "latest",
+    "@vapi-ai/server-sdk": "^0.1.0",
     "@vueuse/core": "latest",
     "@vueuse/motion": "latest",
-    "auto-playwright": "^1.16.0",
+    "bufferutil": "^4.0.9",
+    "chromium-bidi": "^0.11.1",
     "drizzle-orm": "latest",
+    "electron": "^33.2.1",
     "groq-sdk": "latest",
     "h3-formidable": "^1.0.0",
     "ical-generator": "^8.0.1",
-    "nuxt": "latest",
+    "nuxt": "^3.15.0",
     "openai": "latest",
+    "playwright-core": "^1.49.1",
     "vue": "latest",
     "vue-chartjs": "latest",
     "vue-router": "latest",
     "xlsx": "^0.18.5",
-    "zod": "latest"
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@hebilicious/authjs-nuxt": "latest",
     "@iconify-json/lucide": "latest",
     "@inspira-ui/plugins": "latest",
     "@nuxt/scripts": "^0.9.5",
-    "@zerostep/playwright": "^0.1.5",
     "class-variance-authority": "latest",
     "clsx": "latest",
     "drizzle-kit": "latest",
@@ -53,6 +59,9 @@
     "wrangler": "3.91.0"
   },
   "resolutions": {
-    "unenv": "1.10.0"
+    "unenv": "1.10.0",
+    "@auth/core": "0.37.4",
+    "tailwindcss": "4.0.0-beta.8",
+    "@typescript-eslint/typescript-estree": "8.18.2"
   }
 }

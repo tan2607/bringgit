@@ -87,7 +87,7 @@ const columnVisibility = ref({
   model: false
 })
 
-const phoneNumber = ref('+6582888399')
+const phoneNumber = ref('+65')
 const isCallLoading = ref(false)
 
 const makeCall = async (assistant: Assistant) => {
@@ -108,7 +108,7 @@ const makeCall = async (assistant: Assistant) => {
     toast.add({
       title: 'Call initiated',
       description: `Call to ${phoneNumber.value} has been initiated using assistant "${assistant.name}"`,
-      icon: 'i-heroicons-phone'
+      icon: 'i-lucide-phone'
     })
     phoneNumber.value = ''
   } catch (error: any) {
@@ -164,7 +164,7 @@ const columns: TableColumn<Assistant>[] = [
       const model = row.getValue('model')
       return h('div', { class: 'flex items-center gap-2' }, [
         h(UIcon, {
-          name: model.provider === 'openai' ? 'i-simple-icons-openai' : 'i-lucide-cpu',
+          name: model.provider === 'openai' ? 'i-lucide-bot' : 'i-lucide-cpu',
           class: 'w-4 h-4'
         }),
         h('span', {}, model.model)
@@ -179,7 +179,7 @@ const columns: TableColumn<Assistant>[] = [
       const voice = row.getValue('voice')
       return h('div', { class: 'flex items-center gap-2' }, [
         h(UIcon, {
-          name: voice.provider === 'elevenlabs' ? 'i-simple-icons-elevenlabs' : 'i-lucide-mic',
+          name: voice.provider === 'elevenlabs' ? 'i-lucide-mic-2' : 'i-lucide-mic',
           class: 'w-4 h-4'
         }),
         h('span', {}, voice.provider + ' / ' + voice.voiceId)
@@ -199,27 +199,46 @@ const columns: TableColumn<Assistant>[] = [
   },
   {
     id: 'call',
-    header: () => h('div', { class: 'text-left' }, 'Call'),
+    header: () => t('call'),
     cell: ({ row }) => {
-      return h(UFormField, {
-        label: 'Phone Number',
-        name: 'phoneNumber',
-        required: true,
-        help: 'Enter phone number with country code',
-      }, () => h('div', { class: 'flex gap-2 items-center' }, [
-        h(UInput, {
-          modelValue: phoneNumber.value,
-          'onUpdate:modelValue': (value: string) => phoneNumber.value = value,
-          placeholder: '+6597599995',
-          type: 'tel'
-        }),
-        h(UButton, {
-          icon: 'i-heroicons-phone',
-          color: 'primary',
-          loading: isCallLoading.value,
-          onClick: () => makeCall(row.original)
+      return h('div', { class: 'flex items-center gap-2' }, [
+        h(UPopover, {}, {
+          default: () => h(UButton, {
+            icon: 'i-lucide-phone',
+            color: 'primary',
+            variant: 'ghost',
+            size: 'sm',
+            label: t('call')
+          }),
+          content: () => h('div', { class: 'p-4 w-72' }, [
+            h(UForm, {
+              state: phoneNumber,
+              onSubmit: () => makeCall(row.original)
+            }, {
+              default: () => [
+                h(UFormField, {
+                  name: 'phoneNumber',
+                  label: t('phone-number')
+                }, () => h(UInput, {
+                  modelValue: phoneNumber.value,
+                  'onUpdate:modelValue': (value) => phoneNumber.value = value,
+                  placeholder: '+1234567890',
+                  icon: 'i-lucide-phone'
+                })),
+                h('div', { class: 'mt-4 flex justify-end' }, [
+                  h(UButton, {
+                    type: 'submit',
+                    color: 'primary',
+                    label: t('call'),
+                    loading: isCallLoading.value,
+                    icon: 'i-lucide-phone'
+                  })
+                ])
+              ]
+            })
+          ])
         })
-      ]))
+      ])
     }
   },
   {
@@ -233,7 +252,7 @@ const columns: TableColumn<Assistant>[] = [
           'content-class': 'w-48'
         }, {
           default: () => h(UButton, {
-            icon: 'i-heroicons-ellipsis-horizontal',
+            icon: 'i-lucide-ellipsis-horizontal',
             color: 'gray',
             variant: 'ghost',
             size: 'xs',

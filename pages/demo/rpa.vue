@@ -14,32 +14,53 @@
           <div class="space-y-6">
             <UCard class="p-4">
               <UForm :state="formState" class="space-y-4" @submit="handleSubmit">
-                <UFormField label="Target URL" required>
-                  <UInput
-                    v-model="formState.url"
-                    placeholder="Enter the webpage URL (e.g., https://example.com)"
-                  />
-                </UFormField>
-                <UFormField label="Task Description" required>
-                  <UTextarea
-                    class="w-full"
-                    v-model="formState.taskDescription"
-                    placeholder="Enter each task step on a new line. For example:&#10;1. Click the login button&#10;2. Enter username in the form&#10;3. Click submit"
-                    autoresize
-                    :rows="4"
-                  />
-                </UFormField>
-                <UFormField label="Task Parameters">
-                  <UTextarea
-                    class="w-full"
-                    v-model="formState.taskParameters"
-                    placeholder="Provide any required parameters in JSON format. For example: { 'name': 'John Doe', 'email': 'john@example.com' }"
-                    autoresize
-                    :rows="4"
-                  />
-                </UFormField>
-                <div class="flex justify-end">
-                  <UButton type="submit" :loading="isProcessing" :disabled="isProcessing">
+                <UFormGroup label="Task Details" required>
+                  <UFormField label="Target URL" name="url">
+                    <UInput
+                      v-model="formState.url"
+                      placeholder="Enter the webpage URL (e.g., https://example.com)"
+                    />
+                  </UFormField>
+                  <UFormField label="Task Description" name="taskDescription">
+                    <UTextarea
+                      v-model="formState.taskDescription"
+                      placeholder="Enter each task step on a new line. Use %variable% for dynamic values. For example:&#10;1. Click the login button&#10;2. Enter %username% in the username field&#10;3. Enter %password% in the password field&#10;4. Click submit"
+                      :ui="{ 
+                        base: 'relative w-full flex flex-col',
+                        wrapper: 'relative',
+                        input: 'relative block w-full rounded-md border-0 py-3 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-500 sm:text-sm sm:leading-6 disabled:cursor-not-allowed disabled:opacity-75 dark:bg-gray-900 dark:text-white dark:ring-gray-700 dark:focus:ring-primary-400 dark:placeholder:text-gray-500',
+                      }"
+                      :rows="6"
+                      @input="extractVariables"
+                    />
+                  </UFormField>
+                </UFormGroup>
+
+                <!-- Dynamic Parameters Form -->
+                <UFormGroup v-if="extractedVariables.length > 0" label="Task Parameters" class="mt-6">
+                  <div class="grid gap-4 sm:grid-cols-2">
+                    <UFormField 
+                      v-for="variable in extractedVariables" 
+                      :key="variable"
+                      :label="variable"
+                      :name="variable"
+                    >
+                      <UInput
+                        v-model="formState.taskParameters[variable]"
+                        :placeholder="'Enter value for ' + variable"
+                      />
+                    </UFormField>
+                  </div>
+                </UFormGroup>
+
+                <div class="flex justify-end pt-4">
+                  <UButton 
+                    type="submit" 
+                    :loading="isProcessing" 
+                    :disabled="isProcessing"
+                    color="primary"
+                    size="lg"
+                  >
                     Execute Task
                   </UButton>
                 </div>
@@ -50,7 +71,7 @@
               v-if="error"
               color="red"
               variant="soft"
-              icon="i-heroicons-exclamation-triangle"
+              icon="i-lucide-alert-triangle"
               :title="error"
             />
           </div>
@@ -103,24 +124,36 @@ const route = useRoute()
 const stepper = ref(null)
 const formState = reactive({
   taskDescription: '',
-  taskParameters: '{}',
-  url: ''
+  taskParameters: {} as Record<string, string>,
+  url: 'https://forms.office.com/r/ADdwWc7QaL'
 })
 
+const extractedVariables = ref<string[]>([])
 const isProcessing = ref(false)
 const error = ref('')
 const markdownContent = ref('')
 const debugUrl = ref('')
+
+function extractVariables() {
+  const matches = formState.taskDescription.match(/%([^%]+)%/g) || []
+  const variables = matches.map(match => match.replace(/%/g, ''))
+  extractedVariables.value = [...new Set(variables)]
+
+  // Initialize or clean up taskParameters
+  const newParams: Record<string, string> = {}
+  extractedVariables.value.forEach(variable => {
+    newParams[variable] = formState.taskParameters[variable] || ''
+  })
+  formState.taskParameters = newParams
+}
 
 // Handle incoming task parameters from OCR page
 onMounted(() => {
   const { taskParameters } = route.query
   if (taskParameters) {
     try {
-      // Validate that it's proper JSON before setting
-      JSON.parse(taskParameters as string)
-      formState.taskParameters = taskParameters as string
-      // formState.taskDescription = ''
+      const params = JSON.parse(taskParameters as string)
+      Object.assign(formState.taskParameters, params)
     } catch (e) {
       error.value = 'Invalid task parameters received'
     }
@@ -129,19 +162,22 @@ onMounted(() => {
 
 const steps = [
   {
-    id: 'input',
+    slot: 'input',
     title: 'Input',
-    description: 'Provide task details'
+    description: 'Provide task details',
+    icon: 'i-lucide-edit'
   },
   {
-    id: 'process',
+    slot: 'process',
     title: 'Process',
-    description: 'Execute the task'
+    description: 'Execute the task',
+    icon: 'i-lucide-settings-2'
   },
   {
-    id: 'results',
+    slot: 'results',
     title: 'Results',
-    description: 'View task results'
+    description: 'View task results',
+    icon: 'i-lucide-check-circle'
   }
 ]
 
@@ -149,14 +185,6 @@ async function handleSubmit() {
   try {
     error.value = ''
     isProcessing.value = true
-    
-    // Parse task parameters
-    let parsedParams = {}
-    try {
-      parsedParams = JSON.parse(formState.taskParameters)
-    } catch (e) {
-      throw new Error('Invalid task parameters JSON format')
-    }
 
     // Validate URL
     if (!formState.url) {
@@ -173,12 +201,20 @@ async function handleSubmit() {
       throw new Error('Task description must contain at least one step')
     }
 
+    // Validate all required parameters are filled
+    const missingParams = extractedVariables.value.filter(
+      variable => !formState.taskParameters[variable]
+    )
+    if (missingParams.length > 0) {
+      throw new Error(`Missing required parameters: ${missingParams.join(', ')}`)
+    }
+
     const response = await $fetch('/api/rpa/execute-task', {
       method: 'POST',
       body: {
         description: taskSteps,
         parameters: {
-          ...parsedParams,
+          ...formState.taskParameters,
           url: formState.url
         }
       }
