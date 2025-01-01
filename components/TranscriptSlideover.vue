@@ -38,7 +38,7 @@
             :step="0.1"
             color="info"
             class="w-full"
-            @change="seekTo"
+            @change="handleSeek"
           />
           <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
             <span>{{ formatTime(currentTime) }}</span>
@@ -189,6 +189,13 @@ const { selectedCall: call } = useCalls()
 const slideover = useSlideover()
 const { transformRecordingUrl } = useRecordingUrl()
 
+const emit = defineEmits(['close'])
+
+const close = () => {
+  slideover.close()
+  emit('close')
+}
+
 const audio = ref<HTMLAudioElement | null>(null)
 const currentTime = ref(0)
 const duration = ref(0)
@@ -206,172 +213,141 @@ const speedOptions = [
   { label: '2x', value: 2 }
 ]
 
-const setPlaybackSpeed = (speed: number) => {
-  if (audio.value) {
-    audio.value.playbackRate = speed
-    playbackSpeed.value = speed
-    
-    // Show pitch indicator briefly
-    showPitchIndicator.value = true
-    setTimeout(() => {
-      showPitchIndicator.value = false
-    }, 2000)
-  }
-}
-
-const adjustSpeed = (increment: boolean) => {
-  const currentIndex = speedOptions.findIndex(option => option.value === playbackSpeed.value)
-  const newIndex = increment 
-    ? Math.min(currentIndex + 1, speedOptions.length - 1)
-    : Math.max(currentIndex - 1, 0)
-  setPlaybackSpeed(speedOptions[newIndex].value)
-}
-
-defineShortcuts({
-  'shift_>': () => adjustSpeed(true),
-  'shift_<': () => adjustSpeed(false),
-  'arrowleft': () => skipTime(-10),
-  'arrowright': () => skipTime(10)
-})
-
-const skipTime = (seconds: number) => {
-  if (!audio.value) return
-  const newTime = Math.max(0, Math.min(audio.value.currentTime + seconds, duration.value))
-  audio.value.currentTime = newTime
-  currentTime.value = newTime
-}
-
-const updateTime = () => {
-  if (audio.value) {
-    currentTime.value = audio.value.currentTime
-    console.log('⏱️ Current time:', formatTime(currentTime.value))
-  }
-}
-
 const formatTime = (seconds: number) => {
   const mins = Math.floor(seconds / 60)
   const secs = Math.floor(seconds % 60)
   return `${mins}:${secs.toString().padStart(2, '0')}`
 }
 
-const seekTo = () => {
-  const value = currentTime.value
-  if (!audio.value) return
-  
+const initializeAudio = async () => {
+  if (isAudioInitialized.value || !call.value?.recordingUrl) return
+
   try {
-    console.log('⏩ Seeking to:', formatTime(value))
-    audio.value.currentTime = value
-    currentTime.value = value
+    const url = await transformRecordingUrl(call.value.recordingUrl)
+    audio.value = new Audio(url)
+    
+    // Set up audio event listeners
+    audio.value.addEventListener('loadedmetadata', () => {
+      duration.value = audio.value?.duration || 0
+      isAudioInitialized.value = true
+      console.log('🎵 Audio metadata loaded - Duration:', duration.value)
+    })
+
+    audio.value.addEventListener('timeupdate', () => {
+      if (audio.value) {
+        currentTime.value = audio.value.currentTime
+      }
+    })
+
+    audio.value.addEventListener('ended', () => {
+      isPlaying.value = false
+      currentTime.value = 0
+    })
+
+    // Load audio
+    await audio.value.load()
+
+    // Wait for metadata
+    if (audio.value.readyState === 0) {
+      await new Promise((resolve) => {
+        audio.value!.addEventListener('loadedmetadata', resolve, { once: true })
+      })
+    }
+
+    console.log('🎵 Audio initialized')
+  } catch (error) {
+    console.error('❌ Audio initialization error:', error)
+    isAudioInitialized.value = false
+  }
+}
+
+const handleSeek = async (value: number) => {
+  if (!audio.value || !isAudioInitialized.value) return
+
+  try {
+    // Ensure value is a valid number and within bounds
+    const seekTime = Math.max(0, Math.min(Number(value), duration.value))
+    if (isNaN(seekTime)) {
+      console.error('❌ Invalid seek time:', value)
+      return
+    }
+
+    console.log('⏩ Seeking to:', formatTime(seekTime))
+    
+    // Pause audio before seeking
+    const wasPlaying = isPlaying.value
+    if (wasPlaying) {
+      audio.value.pause()
+    }
+
+    // Set the time
+    audio.value.currentTime = seekTime
+    currentTime.value = seekTime
+
+    // Resume if was playing
+    if (wasPlaying) {
+      await audio.value.play()
+    }
   } catch (error) {
     console.error('❌ Seek error:', error)
   }
 }
 
-const initializeAudio = async () => {
-  if (isAudioInitialized.value || !call.value?.recordingUrl) return
-
-  try {
-    console.log('🎵 Creating new audio instance')
-    const newAudio = new Audio()
-    
-    // Set up audio event listeners before setting src
-    newAudio.addEventListener('timeupdate', updateTime)
-    newAudio.addEventListener('loadedmetadata', () => {
-      duration.value = newAudio.duration || 0
-      console.log('📊 Audio metadata loaded - Duration:', duration.value)
-    })
-    newAudio.addEventListener('ended', () => {
-      console.log('🏁 Audio playback ended')
-      isPlaying.value = false
-      currentTime.value = 0
-    })
-    newAudio.addEventListener('error', (e) => {
-      console.error('❌ Audio error:', e, newAudio.error)
-    })
-    newAudio.addEventListener('waiting', () => {
-      console.log('⏳ Audio is buffering...')
-    })
-    newAudio.addEventListener('playing', () => {
-      console.log('▶️ Audio started playing')
-    })
-    newAudio.addEventListener('pause', () => {
-      console.log('⏸️ Audio paused')
-    })
-    newAudio.addEventListener('canplaythrough', () => {
-      console.log('✅ Audio can play through')
-    })
-
-    // Set the source and load
-    const proxyUrl = transformRecordingUrl(call.value.recordingUrl)
-    newAudio.src = proxyUrl
-    audio.value = newAudio
-    isAudioInitialized.value = true
-    
-    console.log('🔄 Loading audio...')
-    await newAudio.load()
-  } catch (error) {
-    console.error('❌ Error initializing audio:', error)
-  }
-}
-
 const togglePlayback = async () => {
-  if (!isAudioInitialized.value) {
-    await initializeAudio()
-  }
-  
-  if (!audio.value) {
-    console.log('❌ No audio instance available')
-    return
-  }
-  
+  if (!audio.value || !isAudioInitialized.value) return
+
   try {
     if (isPlaying.value) {
-      console.log('⏸️ Pausing audio')
-      await audio.value.pause()
+      audio.value.pause()
+      isPlaying.value = false
     } else {
-      console.log('▶️ Starting playback')
       await audio.value.play()
+      isPlaying.value = true
     }
-    isPlaying.value = !isPlaying.value
   } catch (error) {
     console.error('❌ Playback error:', error)
     isPlaying.value = false
   }
 }
 
-const jumpToTime = async (seconds: number) => {
-  if (!isAudioInitialized.value) {
-    await initializeAudio()
-  }
+const skipTime = (seconds: number) => {
+  if (!audio.value || !isAudioInitialized.value) return
 
-  if (!audio.value) {
-    console.log('❌ No audio instance available')
-    return
-  }
+  const newTime = Math.max(0, Math.min(currentTime.value + seconds, duration.value))
+  handleSeek(newTime)
+}
+
+const setPlaybackSpeed = (speed: number) => {
+  if (!audio.value || !isAudioInitialized.value) return
+
+  audio.value.playbackRate = speed
+  playbackSpeed.value = speed
   
+  // Show pitch indicator briefly
+  showPitchIndicator.value = true
+  setTimeout(() => {
+    showPitchIndicator.value = false
+  }, 2000)
+}
+
+const jumpToTime = async (seconds: number) => {
+  if (!audio.value || !isAudioInitialized.value) return
+
   try {
-    console.log('⏩ Jumping to timestamp:', seconds)
-    // Ensure seconds is a valid number
-    const timestamp = parseFloat(seconds.toString())
+    // Ensure seconds is a valid number and within bounds
+    const timestamp = Math.max(0, Math.min(parseFloat(seconds.toString()), duration.value))
     if (isNaN(timestamp)) {
       console.error('❌ Invalid timestamp:', seconds)
       return
     }
 
-    // Ensure timestamp is within bounds
-    if (timestamp < 0 || (duration.value && timestamp > duration.value)) {
-      console.error('❌ Timestamp out of bounds:', timestamp)
-      return
-    }
-
-    // Set the time and update UI
-    audio.value.currentTime = timestamp - 1
-    currentTime.value = timestamp
-    console.log('✅ Jumped to:', formatTime(timestamp))
+    console.log('⏩ Jumping to timestamp:', formatTime(timestamp))
+    
+    // Use handleSeek for consistent behavior
+    await handleSeek(timestamp)
 
     // Start playing if not already playing
     if (!isPlaying.value) {
-      console.log('▶️ Auto-starting playback after jump')
       await audio.value.play()
       isPlaying.value = true
     }
@@ -387,13 +363,6 @@ const downloadRecording = () => {
   }
 }
 
-const emit = defineEmits(['close'])
-
-const close = () => {
-  slideover.close()
-  emit('close')
-}
-
 const cleanupAudio = () => {
   if (audio.value) {
     audio.value.pause()
@@ -402,54 +371,30 @@ const cleanupAudio = () => {
     audio.value = null
   }
   isPlaying.value = false
-  isAudioInitialized.value = false
   currentTime.value = 0
   duration.value = 0
-  playbackSpeed.value = 1
+  isAudioInitialized.value = false
 }
 
-// Watch for slideover close from any source (button click or clicking outside)
+// Initialize audio when call changes
+watch(call, async () => {
+  if (call.value?.recordingUrl) {
+    await initializeAudio()
+  }
+}, { immediate: true })
+
+// Cleanup on unmount
+onBeforeUnmount(() => {
+  cleanupAudio()
+})
+
+// Watch for slideover close
 watch(() => slideover.isOpen.value, (isOpen) => {
   if (!isOpen) {
     cleanupAudio()
   }
 })
 
-// Clean up when component is unmounted
-onBeforeUnmount(() => {
-  cleanupAudio()
-})
-
-// Debug call object
-watch(() => call.value, (newCall) => {
-  console.log('📞 Call object changed:', newCall)
-  console.log('🔗 Recording URL:', newCall?.recordingUrl)
-}, { immediate: true })
-
-// Reset audio when call changes
-watch(() => call.value?.recordingUrl, () => {
-  if (audio.value) {
-    audio.value.pause()
-    audio.value.removeEventListener('timeupdate', updateTime)
-    audio.value = null
-    isPlaying.value = false
-    currentTime.value = 0
-    duration.value = 0
-    isAudioInitialized.value = false
-  }
-}, { immediate: true })
-
-// Clean up audio element
-onUnmounted(() => {
-  if (audio.value) {
-    audio.value.pause()
-    audio.value.removeEventListener('timeupdate', updateTime)
-    audio.value = null
-    isAudioInitialized.value = false
-  }
-})
-
-// Filter messages to only show user and bot messages
 const messages = computed(() => {
   if (!call.value?.messages) return []
   return call.value.messages.filter(msg =>

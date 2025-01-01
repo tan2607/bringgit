@@ -48,8 +48,20 @@ const df = new DateFormatter('en-US', {
 })
 
 const dateRange = shallowRef({
-  start: new CalendarDate(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate() - 7),
-  end: new CalendarDate(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate())
+  start: new CalendarDate(
+    ...(() => {
+      const d = new Date()
+      d.setDate(d.getDate() - 7)
+      return [d.getFullYear(), d.getMonth() + 1, d.getDate()]
+    })()
+  ),
+  end: new CalendarDate(
+    ...(() => {
+      const d = new Date()
+      d.setDate(d.getDate() + 1)
+      return [d.getFullYear(), d.getMonth() + 1, d.getDate()]
+    })()
+  )
 })
 
 const callStatus = ref('ended')

@@ -94,7 +94,7 @@ For phone numbers, use (XXX) XXX-XXXX format. For addresses, extract street, cit
 
       console.log('Extracted data:', extractedData);
 
-      Validate against schema
+      // Validate against schema
       const validation = validateWithSchema(patientDataSchema, extractedData)
       if (!validation.success) {
         throw new Error(`Validation failed: ${validation.error}`)

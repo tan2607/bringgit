@@ -66,6 +66,10 @@ export class VapiProvider {
     return await this.client.assistants.get(id);
   }
 
+  async getPhoneNumbers() {
+    return await this.client.phoneNumbers.list();
+  }
+
   async updateAssistant(id: string, data: any) {
     return await this.client.assistants.update(id, data);
   }

@@ -111,8 +111,37 @@
               </template>
 
               <div class="space-y-4">
+                <UFormField label="Patient Phone Number">
+                  <UInput
+                    v-model="patientPhone"
+                    placeholder="Enter phone number (E.164 format, e.g., +6597599995)"
+                    class="w-full"
+                  />
+                </UFormField>
+
+                <div class="flex items-center gap-4">
+                  <UButton
+                    color="primary"
+                    :loading="isCallLoading"
+                    :disabled="!isValidPhoneNumber"
+                    icon="i-lucide-phone-outgoing"
+                    @click="initiateCall"
+                  >
+                    Call Patient
+                  </UButton>
+                  
+                  <UBadge
+                    v-if="callStatus"
+                    :color="callStatus === 'ended' ? 'success' : 'info'"
+                  >
+                    {{ callStatus }}
+                  </UBadge>
+                </div>
+
+                <UDivider />
+
                 <UFormField label="Appointment Date">
-                  <UInput type="date" v-model="appointmentDate" />
+                  <UInput type="date" v-model="appointmentDate" class="w-full" />
                 </UFormField>
 
                 <UFormField label="Time Slot">
@@ -135,6 +164,7 @@
                   <UTextarea
                     v-model="appointmentNotes"
                     placeholder="Any special requirements or notes"
+                    class="w-full"
                   />
                 </UFormField>
               </div>
@@ -585,6 +615,83 @@ const meetingNotes = ref('')
 const testStatus = ref('pending')
 const equipmentStatus = ref('pending')
 const testNotes = ref('')
+
+// Scheduling state
+const patientPhone = ref('')
+const isCallLoading = ref(false)
+const callStatus = ref('')
+const SCHEDULING_ASSISTANT_ID = 'asst_sleep_study_scheduler'
+
+const isValidPhoneNumber = computed(() => {
+  return patientPhone.value.match(/^\+[1-9]\d{1,14}$/)
+})
+
+async function initiateCall() {
+  if (!isValidPhoneNumber.value) return
+
+  isCallLoading.value = true
+  callStatus.value = 'initiating'
+  error.value = ''
+
+  try {
+    const response = await fetch('/api/call', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        phoneNumber: patientPhone.value,
+        assistantId: SCHEDULING_ASSISTANT_ID
+      })
+    })
+
+    const result = await response.json()
+
+    if (!result.success) {
+      throw new Error(result.error || 'Failed to initiate call')
+    }
+
+    callStatus.value = 'connected'
+    
+    // Poll for call status
+    const pollInterval = setInterval(async () => {
+      try {
+        const statusResponse = await fetch(`/api/call/${result.callId}`)
+        const statusResult = await statusResponse.json()
+        
+        if (statusResult.status === 'ended') {
+          callStatus.value = 'ended'
+          clearInterval(pollInterval)
+        }
+      } catch (err) {
+        console.error('Error polling call status:', err)
+      }
+    }, 5000)
+
+    // Clear interval after 10 minutes to prevent indefinite polling
+    setTimeout(() => {
+      clearInterval(pollInterval)
+    }, 10 * 60 * 1000)
+
+    useToast().add({
+      title: 'Call Initiated',
+      description: 'Connected to patient',
+      icon: 'i-lucide-phone-outgoing',
+      color: 'green'
+    })
+  } catch (err: any) {
+    error.value = err.message
+    callStatus.value = 'failed'
+    useToast().add({
+      title: 'Call Failed',
+      description: err.message,
+      icon: 'i-lucide-phone-off',
+      color: 'red'
+    })
+  } finally {
+    isCallLoading.value = false
+  }
+}
 
 // RPA task configurations
 const insuranceVerificationUrl = 'https://insurance-portal.example.com'

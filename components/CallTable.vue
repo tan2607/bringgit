@@ -1,14 +1,16 @@
 <template>
   <div>
     <div class="flex items-center justify-between px-4 py-3.5 border-b border-[var(--ui-border-accented)]">
-      <USelectMenu
-        v-model="selectedAssistant"
-        :items="uniqueAssistants"
-        :placeholder="t('table.filterAssistant')"
-        class="w-64"
-        clearable
-        @update:model-value="table?.tableApi?.getColumn('assistant')?.setFilterValue($event || '')"
-      />
+      <div class="flex items-center gap-4">
+        <USelectMenu
+          v-model="selectedAssistant"
+          :items="uniqueAssistants"
+          :placeholder="t('table.filterAssistant')"
+          class="w-64"
+          clearable
+          @update:model-value="table?.tableApi?.getColumn('assistant')?.setFilterValue($event || '')"
+        />
+      </div>
       <UDropdownMenu
         :items="table?.tableApi
           ?.getAllColumns()
@@ -68,6 +70,7 @@ const UBadge = resolveComponent('UBadge')
 const UDropdownMenu = resolveComponent('UDropdownMenu')
 const USelectMenu = resolveComponent('USelectMenu')
 const toast = useToast();
+const slideover = useSlideover()
 
 interface TableData {
   id: string
@@ -223,10 +226,7 @@ const columns = computed(() => {
               const id = row.getValue('id');
               const call = props.data.find(call => call.id === id)
               selectedCall.value = call
-              const slideover = useSlideover()
-              slideover.open(TranscriptSlideover, { 
-                call 
-              })
+              slideover.open(TranscriptSlideover)
             }
           })
         ])

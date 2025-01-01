@@ -28,7 +28,14 @@
         <!-- Upcoming Calls Section -->
         <UCard class="lg:col-span-1">
           <template #header>
-            <h2 class="text-lg font-semibold">Upcoming Calls</h2>
+            <div class="flex items-center justify-between">
+              <h2 class="text-lg font-semibold">Upcoming Calls</h2>
+              <UButton 
+                icon="i-lucide-calendar" 
+                label="Schedule Calls"
+                @click="openSlideover"
+              />
+            </div>
           </template>
           <UTable 
             :rows="state.jobs" 
@@ -135,11 +142,6 @@
               size="xl"
               required
             >
-              <UDatePicker 
-                v-model="newJob.schedule" 
-                class="w-full"
-                :min="new Date()"
-              />
             </UFormField>
 
             <UFormField 
@@ -242,12 +244,25 @@
 </template>
 
 <script setup lang="ts">
-definePageMeta({ middleware: "auth" })
+import SchedulingSlideover from '@/components/SchedulingSlideover.vue'
+import { useState } from '#imports'
+import { ref } from 'vue'
 import * as XLSX from 'xlsx'
 import { useJobState, type Job } from '~/composables/useJobState'
 
 const toast = useToast()
-const { state, pauseJob, resumeJob, stopJob, createJob } = useJobState()
+const { state: jobState, pauseJob, resumeJob, stopJob, createJob } = useJobState()
+
+const state = useState('scheduling', () => ({
+  openScheduleModal: false,
+  jobs: [] as Job[],
+  loadingJobId: null as string | null,
+  uploadStatus: '',
+  isFileUploaded: false,
+  phoneNumbers: [] as string[]
+}))
+
+const isSchedulingOpen = ref(false)
 
 const outboundNumbers = [
   { label: '+1 732-585-1638', value: '+17325851638' },
@@ -304,7 +319,7 @@ const jobColumns = [
     accessorKey: 'status',
     header: 'Status',
     sortable: true,
-    filterValue: computed(() => state.value.selectedStatus)
+    filterValue: computed(() => jobState.value.selectedStatus)
   },
   {
     accessorKey: 'progress',
@@ -359,6 +374,11 @@ const handleFileUpload = async (event: Event) => {
     state.value.uploadStatus = 'Error processing file'
     state.value.isFileUploaded = false
   }
+}
+
+const slideover = useSlideover()
+const openSlideover = () => {
+  slideover.open(SchedulingSlideover, {})
 }
 
 const showJobDetails = (job: Job) => {

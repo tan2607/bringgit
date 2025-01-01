@@ -222,7 +222,7 @@ useHead({
 
 <template>
   <UApp :locale="locales[locale as string]">
-    <UHeader :links="items">
+    <UHeader>
       <template #left></template>
       <template #right>
         <UColorModeButton />
