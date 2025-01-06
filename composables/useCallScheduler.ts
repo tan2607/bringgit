@@ -102,22 +102,30 @@ export const useCallScheduler = () => {
   }
 
   function generateMockData(count: number) {
+    console.log('Generating mock data with count:', count)
     const timeSlots = generateTimeSlots(count)
+    console.log('Generated time slots:', timeSlots)
     const { min, max } = simulationConfig.value.callDurationRange
+    console.log('Duration range:', { min, max })
 
-    scheduledCalls.value = Array.from({ length: count }, (_, i) => ({
-      id: crypto.randomUUID(),
-      phone: generatePhoneNumber(),
-      estimatedDuration: Math.floor(Math.random() * (max - min + 1)) + min,
-      status: CallStatus.Queued,
-      scheduledTime: timeSlots[i],
-      priority: Math.floor(Math.random() * 3) + 1, // 1-3 priority
-      notes: `Call ID ${i + 1}`,
-      callWindow: {
-        start: timeSlots[i],
-        end: new Date(timeSlots[i].getTime() + (max * 60 * 1000))
+    scheduledCalls.value = Array.from({ length: count }, (_, i) => {
+      const mockCall = {
+        id: crypto.randomUUID(),
+        phone: generatePhoneNumber(),
+        estimatedDuration: Math.floor(Math.random() * (max - min + 1)) + min,
+        status: CallStatus.Queued,
+        scheduledTime: timeSlots[i],
+        notes: `Call ID ${i + 1}`,
+        callWindow: {
+          start: timeSlots[i],
+          end: new Date(timeSlots[i].getTime() + (max * 60 * 1000))
+        }
       }
-    }))
+      console.log(`Generated mock call ${i + 1}:`, mockCall)
+      return mockCall
+    })
+
+    console.log('Final scheduled calls:', scheduledCalls.value)
   }
 
   async function runSimulation() {

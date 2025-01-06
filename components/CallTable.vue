@@ -54,6 +54,12 @@
         </div>
       </template>
     </UTable>
+    <CallSlideover
+      v-model="isCallSlideoverOpen"
+      :assistant="selectedAssistant"
+      @success="(message) => toast.add({ title: 'Success', description: message, color: 'success', icon: 'i-lucide-check-circle' })"
+      @error="(message) => toast.add({ title: 'Error', description: message, color: 'error', icon: 'i-lucide-alert-circle' })"
+    />
   </div>
 </template>
 
@@ -61,6 +67,7 @@
 import { formatTimeAgo, useClipboard } from '@vueuse/core'
 import { useCalls } from '@/composables/useCalls'
 import TranscriptSlideover from '@/components/TranscriptSlideover.vue'
+import CallSlideover from '@/components/CallSlideover.vue'
 import { upperFirst } from 'scule'
 import { useI18n } from 'vue-i18n'
 import { useRecordingUrl } from '@/composables/useRecordingUrl'
@@ -113,7 +120,14 @@ const uniqueAssistants = computed(() => {
   return Array.from(assistants).sort()
 })
 
-const selectedAssistant = ref('')
+const selectedAssistant = ref<{ id: string, name: string } | null>(null)
+
+const isCallSlideoverOpen = ref(false)
+
+const handleCallClick = (assistant: { id: string, name: string }) => {
+  selectedAssistant.value = assistant
+  isCallSlideoverOpen.value = true
+}
 
 const columns = computed(() => {
   const baseColumns = [
@@ -191,6 +205,19 @@ const columns = computed(() => {
       header: () => t('table.duration'),
       cell: (row) => row.getValue("duration")
     },
+    {
+      accessorKey: "id",
+      header: () => t('actions'),
+      cell: (row) => h('div', { class: 'flex items-center justify-end gap-2' }, [
+        h(UButton, {
+          icon: 'i-lucide-phone',
+          color: 'primary',
+          variant: 'ghost',
+          square: true,
+          onClick: () => handleCallClick(row.original)
+        })
+      ])
+    }
   ]
 
   // Only add these columns if not in compact mode

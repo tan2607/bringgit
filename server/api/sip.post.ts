@@ -8,35 +8,10 @@ export default defineEventHandler(async (event) => {
     if (!process.env.VAPI_API_KEY) {
       throw new Error('VAPI API key is not configured')
     }
-
-    if (!assistantId) {
-      throw new Error('Assistant ID is required')
-    }
-
-    if (!phoneNumber) {
-      throw new Error('Phone number is required')
-    }
-
     const vapi = VapiProvider.getInstance()
-
-    // throw new Error('Phone number must be in E.164 format (e.g., +6597599995)')
-    // Initialize VAPI provider
     
-    
-    // Create the call
-    // if (phoneNumber.startsWith('+65')) {
-    //   phoneNumber = phoneNumber.replace('+65', '')
-    //   phoneNumberId = SG_LOCAL_NUMBER;
-    // }
-
     try {
-      console.log("Calling number:", phoneNumber, "with ID:", phoneNumberId);
-      // let phoneNumberId = SG_PHONE_NUMBER;
-      
-      // Hard code phoone number for testing
-      // phoneNumber = '97599995';
-  
-      const call = await vapi.client.calls.create({
+      const call = await vapi.client.credentials.create({
         assistantId,
         phoneNumberId,
         customer: {

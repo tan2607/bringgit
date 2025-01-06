@@ -41,6 +41,7 @@ import { useI18n } from 'vue-i18n'
 import { upperFirst } from 'scule'
 import AssistantSlideover from './AssistantSlideover.vue'
 import PromptSlideover from './PromptSlideover.vue'
+import CallSlideover from './CallSlideover.vue'
 
 const UButton = resolveComponent('UButton')
 const UBadge = resolveComponent('UBadge')
@@ -87,41 +88,6 @@ const columnVisibility = ref({
   model: false
 })
 
-const phoneNumber = ref('+65')
-const isCallLoading = ref(false)
-
-const makeCall = async (assistant: Assistant) => {
-  try {
-    isCallLoading.value = true
-    const { data: response } = await useFetch('/api/call', {
-      method: 'POST',
-      body: {
-        assistantId: assistant.id,
-        phoneNumber: phoneNumber.value
-      }
-    })
-
-    if (response.value?.error) {
-      throw new Error(response.value.error)
-    }
-
-    toast.add({
-      title: 'Call initiated',
-      description: `Call to ${phoneNumber.value} has been initiated using assistant "${assistant.name}"`,
-      icon: 'i-lucide-phone'
-    })
-    phoneNumber.value = ''
-  } catch (error: any) {
-    toast.add({
-      title: 'Error',
-      description: error.message,
-      color: 'red'
-    })
-  } finally {
-    isCallLoading.value = false
-  }
-}
-
 const columns: TableColumn<Assistant>[] = [
   {
     accessorKey: 'id',
@@ -150,12 +116,20 @@ const columns: TableColumn<Assistant>[] = [
   {
     accessorKey: 'name',
     header: () => t('assistant.name'),
-    cell: ({ row }) => {
-      return h('div', { class: 'flex items-center gap-2' }, [
-        h(UIcon, { name: 'i-lucide-bot', class: 'w-4 h-4' }),
-        h('span', {}, row.getValue('name'))
-      ])
-    }
+    cell: ({ row }) => h('div', { class: 'flex items-center gap-2' }, [
+      h('span', row.original.name),
+      h(UButton, {
+        icon: 'i-lucide-phone',
+        color: 'primary',
+        variant: 'ghost',
+        size: 'xs',
+        onClick: () => {
+          slideover.open(CallSlideover, {
+            assistant: row.original
+          })
+        }
+      })
+    ])
   },
   {
     accessorKey: 'model',
@@ -198,61 +172,18 @@ const columns: TableColumn<Assistant>[] = [
     }
   },
   {
-    id: 'call',
-    header: () => t('call'),
-    cell: ({ row }) => {
-      return h('div', { class: 'flex items-center gap-2' }, [
-        h(UPopover, {}, {
-          default: () => h(UButton, {
-            icon: 'i-lucide-phone',
-            color: 'primary',
-            variant: 'ghost',
-            size: 'sm',
-            label: t('call')
-          }),
-          content: () => h('div', { class: 'p-4 w-72' }, [
-            h(UForm, {
-              state: phoneNumber,
-              onSubmit: () => makeCall(row.original)
-            }, {
-              default: () => [
-                h(UFormField, {
-                  name: 'phoneNumber',
-                  label: t('phone-number')
-                }, () => h(UInput, {
-                  modelValue: phoneNumber.value,
-                  'onUpdate:modelValue': (value) => phoneNumber.value = value,
-                  placeholder: '+1234567890',
-                  icon: 'i-lucide-phone'
-                })),
-                h('div', { class: 'mt-4 flex justify-end' }, [
-                  h(UButton, {
-                    type: 'submit',
-                    color: 'primary',
-                    label: t('call'),
-                    loading: isCallLoading.value,
-                    icon: 'i-lucide-phone'
-                  })
-                ])
-              ]
-            })
-          ])
-        })
-      ])
-    }
-  },
-  {
     id: 'actions',
-    header: () => h('div', { class: 'text-right' }, 'Actions'),
+    header: () => 'Actions',
     cell: ({ row }) => {
       const items = getRowItems(row)
-      return h('div', { class: 'flex items-center justify-end gap-2' }, [
+      return h('div', [
         h(UDropdownMenu, {
           items,
-          'content-class': 'w-48'
+          mode: 'click',
+          placement: 'bottom-end'
         }, {
           default: () => h(UButton, {
-            icon: 'i-lucide-ellipsis-horizontal',
+            icon: 'i-lucide-more-horizontal',
             color: 'gray',
             variant: 'ghost',
             size: 'xs',
@@ -287,19 +218,19 @@ function getRowItems(row: Row<Assistant>) {
       type: 'separator'
     },
     {
-      label: t('call-assistant'),
-      icon: 'i-lucide-phone',
+      label: t('assistant.edit'),
+      icon: 'i-lucide-pencil',
       onSelect() {
-        slideover.open(AssistantSlideover, {
+        slideover.open(PromptSlideover, {
           assistant: row.original
         })
       }
     },
     {
-      label: t('assistant.edit'),
+      label: t('assistant.edit') + ' Advanced',
       icon: 'i-lucide-pencil',
       onSelect() {
-        slideover.open(PromptSlideover, {
+        slideover.open(AssistantSlideover, {
           assistant: row.original
         })
       }

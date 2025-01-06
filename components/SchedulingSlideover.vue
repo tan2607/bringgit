@@ -17,6 +17,10 @@
               <UIcon name="i-heroicons-play" />
               {{ statusCounts.inProgress }} In Progress
             </UBadge>
+            <UBadge v-if="statusCounts.forwarding" color="warning" variant="solid" class="flex items-center gap-1">
+              <UIcon name="i-heroicons-arrow-path" />
+              {{ statusCounts.forwarding }} Forwarding
+            </UBadge>
             <UBadge v-if="statusCounts.ended" color="success" variant="solid" class="flex items-center gap-1">
               <UIcon name="i-heroicons-check-circle" />
               {{ statusCounts.ended }} Completed
@@ -24,16 +28,15 @@
           </div>
         </div>
         <div class="flex gap-2">
-          <UButton v-if="scheduledCalls.length" color="red" variant="ghost" icon="i-lucide-trash-2"
+          <UButton v-if="scheduledCalls.length" color="error" variant="ghost" icon="i-lucide-trash-2"
             @click="clearCalls" />
-          <UButton v-if="!isSimulating" color="primary" label="Generate Mock Data"
-            @click="() => generateMockData(numberOfCalls)" />
+          <UButton v-if="scheduledCalls.length" color="primary" variant="ghost" icon="i-lucide-download"
+            label="Export Results" @click="downloadResults" />
         </div>
       </div>
       <div class="flex justify-between items-center">
-
         <p class="text-sm text-gray-500">
-          Priority levels: P1 (High) - P3 (Low)
+          Upload your call schedule list
         </p>
       </div>
     </template>
@@ -49,58 +52,58 @@
           <div class="text-xs text-gray-400 mt-2">
             <div>Supported formats: CSV, Excel (XLSX, XLS)</div>
             <div>Required columns: phone_number</div>
+            <UButton size="xs" color="primary" variant="ghost" icon="i-heroicons-document-arrow-down"
+              label="Download Template" class="mt-2" @click="downloadTemplate" />
           </div>
         </label>
 
-        <div class="flex items-center gap-2">
-          <UInput v-model="numberOfCalls" type="number" min="1" max="100" placeholder="Number of calls" class="w-32" />
-          <UButton color="primary" label="Generate Mock Data" @click="() => generateMockData(numberOfCalls)" />
+        <div class="flex items-center gap-2 float-right">
+          <UInput v-model.number="numberOfCalls" type="number" min="1" max="100" placeholder="Number of calls" class="w-32" />
+          <UButton color="neutral" variant="ghost" label="Generate Mock Data"
+            @click="generateMockData(Number(numberOfCalls))" />
         </div>
       </div>
 
       <template v-else>
         <div class="flex flex-col gap-4 mb-6">
-          <div class="flex items-center gap-4">
-            <UInput v-model="numberOfCalls" type="number" min="1" max="100" placeholder="Number of calls"
-              class="w-32" />
-            <USelect v-model="selectedTimeWindow" :items="timeWindowOptions" class="w-48" />
-          </div>
 
           <div class="flex items-center gap-4">
-            <USelect v-model="selectedAssistant"
-              :items="assistants.map(assistant => ({ value: assistant.id, label: assistant.name }))"
-              placeholder="Select Assistant" class="flex-1" option-attribute="name" value-attribute="id" required />
-            <USelect v-model="selectedNumber"
-              :items="numbers.map(number => ({ value: number.id, label: `${number.name} (${number.number})` }))"
-              placeholder="Select Number" class="flex-1" option-attribute="name" value-attribute="id" required />
+            <UFormField label="Working Hours">
+              <USelect v-model="selectedTimeWindow" :items="timeWindowOptions" class="w-48" />
+            </UFormField>
+
+            <UFormField label="Choose Assistant">
+              <USelect v-model="selectedAssistant"
+                :items="assistants.map(assistant => ({ value: assistant.id, label: assistant.name }))"
+                placeholder="Select Assistant" class="w-48" option-attribute="name" value-attribute="id" required />
+            </UFormField>
+            <UFormField label="Select Outbound Phone Number">
+              <PhoneNumberSelect v-model="selectedNumber" class="w-full" />
+            </UFormField>
+
+
           </div>
 
           <div class="flex items-center justify-between">
             <div class="space-y-2 text-sm text-gray-500">
-              <p>{{ scheduledCalls.length }} calls scheduled between {{ formatTime(workingHours.start) }} - {{
-                formatTime(workingHours.end) }}</p>
+              <p><span class="font-medium text-primary">{{ scheduledCalls.length }}</span> calls scheduled between <span
+                  class="font-medium text-primary">{{ formatTime(workingHours.start) }} - {{
+                    formatTime(workingHours.end) }}</span></p>
               <template v-if="selectedAssistant && selectedNumber">
                 <p>
-                  Using assistant <span class="font-medium text-primary-600">{{ getSelectedAssistantName }}</span>
-                  with phone number <span class="font-medium text-primary-600">{{ getSelectedNumberName }}</span>
+                  Using assistant <span class="font-medium text-primary">{{ getSelectedAssistantName }}</span>
+                  with phone number <span class="font-medium text-primary">{{ getSelectedNumberName }}</span>
                 </p>
               </template>
             </div>
 
             <div class="flex justify-end space-x-2 mt-4">
-              <UButton
-                v-if="scheduledCalls.length && !isSimulating"
-                color="primary"
-                :disabled="!selectedAssistant || !selectedNumber"
-                @click="runSimulation"
-              >
+              <UButton v-if="scheduledCalls.length && !isSimulating" color="primary"
+                :disabled="!selectedAssistant || !selectedNumber" @click="runSimulation">
                 {{ !selectedAssistant || !selectedNumber ? 'Select Assistant & Phone Number' : 'Run Job' }}
               </UButton>
-              <UButton
-                v-if="isSimulating"
-                :color="isPaused ? 'primary' : 'yellow'"
-                @click="isPaused ? runSimulation() : pauseJob()"
-              >
+              <UButton v-if="isSimulating" :color="isPaused ? 'primary' : 'yellow'"
+                @click="isPaused ? runSimulation() : pauseJob()">
                 {{ isPaused ? 'Resume Job' : 'Pause Job' }}
               </UButton>
             </div>
@@ -118,20 +121,11 @@
                 </div>
               </div>
               <div class="flex items-center gap-2">
-                <UButton
-                  v-if="call.status === CallStatus.Ended"
-                  size="xs"
-                  color="gray"
-                  variant="ghost"
-                  icon="i-heroicons-document-text"
-                  @click="openTranscript(call)"
-                >
+                <UButton v-if="call.status === CallStatus.Ended" size="xs" color="gray" variant="ghost"
+                  icon="i-heroicons-document-text" @click="openTranscript(call)">
                   View Transcript
                 </UButton>
-                <UBadge
-                  :color="getStatusColor(call.status)"
-                  class="capitalize"
-                >
+                <UBadge :color="getStatusColor(call.status)" class="capitalize">
                   {{ call.status }}
                 </UBadge>
               </div>
@@ -147,18 +141,11 @@
           <UIcon v-if="!isPaused" name="i-heroicons-arrow-path" class="animate-spin" />
           <span>{{ completedCalls }} of {{ totalCalls }} calls completed</span>
         </div>
-        <UButton
-          :color="isPaused ? 'primary' : 'yellow'"
-          @click="isPaused ? runSimulation() : pauseJob()"
-        >
+        <UButton :color="isPaused ? 'primary' : 'yellow'" @click="isPaused ? runSimulation() : pauseJob()">
           {{ isPaused ? 'Resume Job' : 'Pause Job' }}
         </UButton>
       </div>
-      <UProgress
-        :value="completedPercentage"
-        :color="isPaused ? 'gray' : 'primary'"
-        size="sm"
-      />
+      <UProgress :value="completedPercentage" :color="isPaused ? 'gray' : 'primary'" size="sm" />
     </div>
   </USlideover>
 </template>
@@ -168,10 +155,81 @@ import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useCallScheduler, CallStatus } from '@/composables/useCallScheduler'
 import { useAssistants } from '@/composables/useAssistants'
 import TranscriptSlideover from '@/components/TranscriptSlideover.vue'
+import PhoneNumberSelect from '@/components/PhoneNumberSelect.vue'
 import * as XLSX from 'xlsx'
 
+const toast = useToast()
+
 const isOpen = defineModel('modelValue', { type: Boolean })
-const numberOfCalls = ref(10)
+
+const { 
+  scheduledCalls,
+  isSimulating,
+  generateMockData,
+  runSimulation,
+  pauseJob,
+  clearCalls
+} = useCallScheduler()
+
+const isPaused = ref(false)
+const numberOfCalls = ref<number>(10)
+const completedCalls = ref(0)
+const totalCalls = ref(0)
+
+const statusCounts = computed(() => ({
+  queued: scheduledCalls.value.filter(call => call.status === CallStatus.Queued).length,
+  ringing: scheduledCalls.value.filter(call => call.status === CallStatus.Ringing).length,
+  inProgress: scheduledCalls.value.filter(call => call.status === CallStatus.InProgress).length,
+  forwarding: scheduledCalls.value.filter(call => call.status === CallStatus.Forwarding).length,
+  ended: scheduledCalls.value.filter(call => call.status === CallStatus.Ended).length
+}))
+
+// Polling interval for status updates (in milliseconds)
+const POLLING_INTERVAL = 5000
+let statusPollingTimer: NodeJS.Timer | null = null
+
+const startStatusPolling = () => {
+  if (statusPollingTimer) return
+
+  // Initial fetch
+  fetchScheduleStatus()
+
+  // Start polling
+  statusPollingTimer = setInterval(fetchScheduleStatus, POLLING_INTERVAL)
+}
+
+const stopStatusPolling = () => {
+  if (statusPollingTimer) {
+    clearInterval(statusPollingTimer)
+    statusPollingTimer = null
+  }
+}
+
+const fetchScheduleStatus = async () => {
+  try {
+    const { data: response } = await useFetch('/api/schedule/status')
+    if (response.value?.success) {
+      scheduledCalls.value = response.value.jobs
+
+      // Update counts
+      completedCalls.value = scheduledCalls.value.filter(call => call.status === CallStatus.Ended).length
+      totalCalls.value = scheduledCalls.value.length
+
+      // Stop polling if all calls are completed
+      if (completedCalls.value === totalCalls.value && totalCalls.value > 0) {
+        stopStatusPolling()
+      }
+    }
+  } catch (error) {
+    console.error('Error fetching schedule status:', error)
+  }
+}
+
+// Clean up polling on component unmount
+onBeforeUnmount(() => {
+  stopStatusPolling()
+})
+
 const fileInput = ref<HTMLInputElement | null>(null)
 
 const { assistants, fetchAssistants } = useAssistants()
@@ -236,7 +294,6 @@ async function processFile(file: File) {
       estimatedDuration: Math.floor(Math.random() * (simulationConfig.value.callDurationRange.max - simulationConfig.value.callDurationRange.min + 1)) + simulationConfig.value.callDurationRange.min,
       status: CallStatus.Queued,
       scheduledTime: new Date(),
-      priority: row.priority || Math.floor(Math.random() * 3) + 1,
       notes: row.notes || `Call ID ${scheduledCalls.value.length + 1}`
     }))
   } catch (error: any) {
@@ -255,25 +312,8 @@ function readFileAsArrayBuffer(file: File): Promise<ArrayBuffer> {
 }
 
 const {
-  scheduledCalls,
-  isSimulating,
   simulationConfig,
-  selectedAssistant: schedulerAssistant,
-  selectedNumber: schedulerNumber,
-  generateMockData,
-  clearCalls,
 } = useCallScheduler()
-
-const isPaused = ref(false)
-
-// Sync local state with scheduler state
-watch(selectedAssistant, (value) => {
-  schedulerAssistant.value = value
-})
-
-watch(selectedNumber, (value) => {
-  schedulerNumber.value = value
-})
 
 const slideover = useSlideover();
 const openTranscript = (call: any) => {
@@ -283,137 +323,6 @@ const openTranscript = (call: any) => {
   slideover.open(TranscriptSlideover)
 }
 
-async function processNextCall() {
-  if (!isSimulating.value || isPaused.value) return
-
-  const nextCall = scheduledCalls.value.find(call => call.status === CallStatus.Queued)
-  if (!nextCall) {
-    // No more calls in queue, end simulation
-    isSimulating.value = false
-    return
-  }
-
-  try {
-    const result = await $fetch('/api/call', {
-      method: 'POST',
-      body: {
-        phoneNumber: nextCall.phone,
-        assistantId: selectedAssistant.value,
-        phoneNumberId: selectedNumber.value
-      }
-    })
-
-    if (result.success) {
-      nextCall.callId = result.callId
-      pollCallStatus(nextCall)
-    } else {
-      nextCall.status = CallStatus.Ended
-    }
-  } catch (error) {
-    console.error('Call creation error:', error)
-    nextCall.status = CallStatus.Ended
-  }
-}
-
-// Polling intervals in milliseconds
-const POLLING_INITIAL_DELAY = 10000
-const POLLING_INTERVAL = 5000
-const POLLING_MAX_ATTEMPTS = 60
-
-async function pollCallStatus(call: any) {
-  if (!call.callId || call.status === CallStatus.Ended) return
-
-  call.polling = true
-  call.pollingAttempts = 0
-  call.pollTimer = null
-
-  const clearPolling = () => {
-    if (call.pollTimer) {
-      clearTimeout(call.pollTimer)
-      call.pollTimer = null
-    }
-    call.polling = false
-  }
-
-  const pollCall = async () => {
-    try {
-      const data = await $fetch(`/api/call/${call.callId}`)    
-      
-      // Update call object with API response data
-      call.status = data.status
-      call.transcript = data.transcript
-      call.recordingUrl = data.recordingUrl
-      call.duration = data.duration
-      
-      if (data.status === CallStatus.Ended) {
-        call.summary = data.summary
-        clearPolling()
-        // Process next call in queue
-        processNextCall()
-      } else if (data.status === 'failed') {
-        call.status = CallStatus.Ended
-        clearPolling()
-        // Process next call even if current call failed
-        processNextCall()
-      } else {
-        // Continue polling if not ended and within max attempts
-        call.pollingAttempts++
-        if (call.pollingAttempts < POLLING_MAX_ATTEMPTS) {
-          call.pollTimer = setTimeout(pollCall, POLLING_INTERVAL)
-        } else {
-          console.warn('Max polling attempts reached for call:', call.callId)
-          call.status = CallStatus.Ended
-          clearPolling()
-          processNextCall()
-        }
-      }
-    } catch (error) {
-      console.error('Error polling call status:', error)
-      call.status = CallStatus.Ended
-      clearPolling()
-      // Process next call even if there was an error
-      processNextCall()
-    }
-  }
-
-  // Start initial poll after a short delay
-  call.pollTimer = setTimeout(pollCall, POLLING_INITIAL_DELAY)
-}
-
-// Clean up any active polling timers when component is unmounted
-onBeforeUnmount(() => {
-  scheduledCalls.value.forEach(call => {
-    if (call.pollTimer) {
-      clearTimeout(call.pollTimer)
-    }
-  })
-})
-
-async function runSimulation() {
-  if (!selectedAssistant.value || !selectedNumber.value) {
-    return
-  }
-
-  if (isSimulating.value && !isPaused.value) return
-  
-  if (isPaused.value) {
-    isPaused.value = false
-    return
-  }
-
-  isSimulating.value = true
-  isPaused.value = false
-
-  // Start with the first call in queue
-  processNextCall()
-}
-
-function pauseJob() {
-  if (!isSimulating.value) return
-  isPaused.value = true
-}
-
-// Initialize the scheduler with default time window
 const workingHours = computed(() => ({
   start: new Date().setHours(simulationConfig.value.timeWindowHours.start, 0, 0, 0),
   end: new Date().setHours(simulationConfig.value.timeWindowHours.end, 0, 0, 0)
@@ -445,32 +354,15 @@ const sortedCalls = computed(() => {
     if (a.status === CallStatus.Queued && b.status !== CallStatus.Queued) return -1
     if (a.status !== CallStatus.Queued && b.status === CallStatus.Queued) return 1
 
-    // Then by priority
-    if (a.priority !== b.priority) return (a.priority || 0) - (b.priority || 0)
-
-    // Finally by scheduled time
+    // Then by scheduled time
     return a.scheduledTime.getTime() - b.scheduledTime.getTime()
   })
-})
-
-const callCounts = computed(() => {
-  const counts = {
-    PENDING: 0,
-    CONNECTED: 0,
-    REJECTED: 0
-  }
-
-  scheduledCalls.value.forEach(call => {
-    counts[call.status]++
-  })
-
-  return counts
 })
 
 function getStatusColor(status: string) {
   switch (status) {
     case CallStatus.Queued:
-      return 'neutral'
+      return 'error'
     case CallStatus.Ringing:
       return 'warning'
     case CallStatus.InProgress:
@@ -504,42 +396,7 @@ const getSelectedNumberName = computed(() => {
 })
 
 // Progress tracking
-const totalCalls = computed(() => scheduledCalls.value.length)
-const completedCalls = computed(() => scheduledCalls.value.filter(call => call.status === CallStatus.Ended).length)
 const completedPercentage = computed(() => (completedCalls.value / totalCalls.value) * 100)
-
-// Status counts
-const statusCounts = computed(() => {
-  const counts = {
-    queued: 0,
-    ringing: 0,
-    inProgress: 0,
-    forwarding: 0,
-    ended: 0
-  }
-  
-  scheduledCalls.value.forEach(call => {
-    switch (call.status) {
-      case CallStatus.Queued:
-        counts.queued++
-        break
-      case CallStatus.Ringing:
-        counts.ringing++
-        break
-      case CallStatus.InProgress:
-        counts.inProgress++
-        break
-      case CallStatus.Forwarding:
-        counts.forwarding++
-        break
-      case CallStatus.Ended:
-        counts.ended++
-        break
-    }
-  })
-  
-  return counts
-})
 
 function getStatusIcon(status: string) {
   switch (status) {
@@ -563,16 +420,77 @@ function getStatusIconColor(status: string) {
     case CallStatus.Queued:
       return 'text-gray-500'
     case CallStatus.Ringing:
-      return 'text-yellow-500'
+      return 'text-warning'
     case CallStatus.InProgress:
-      return 'text-blue-500'
+      return 'text-info'
     case CallStatus.Forwarding:
-      return 'text-yellow-500'
+      return 'text-warning'
     case CallStatus.Ended:
-      return 'text-green-500'
+      return 'text-success'
     default:
-      return 'text-red-500'
+      return 'text-error'
   }
+}
+
+function downloadTemplate() {
+  const headers = ['phone_number', 'name', 'notes']
+  const sampleData = [
+    ['12345678901', 'John Doe', 'Follow up on previous conversation'],
+    ['98765432109', 'Jane Smith', 'Discuss new requirements'],
+    ['55544433322', 'Bob Johnson', 'Regular check-in call']
+  ]
+
+  const csvContent = [
+    headers.join(','),
+    ...sampleData.map(row => row.join(','))
+  ].join('\n')
+
+  const blob = new Blob([csvContent], { type: 'text/csv' })
+  const url = window.URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.setAttribute('download', 'call_schedule_template.csv')
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+  window.URL.revokeObjectURL(url)
+}
+
+// Function to download call results as CSV
+function downloadResults() {
+  const headers = ['phone_number', 'name', 'notes', 'status', 'scheduled_time', 'duration', 'transcript']
+
+  const resultData = scheduledCalls.value.map(call => [
+    call.phone,
+    call.name || '',
+    call.notes || '',
+    call.status,
+    new Date(call.scheduledTime).toISOString(),
+    call.duration || '',
+    call.transcript || ''
+  ])
+
+  const csvContent = [
+    headers.join(','),
+    ...resultData.map(row => row.map(cell => {
+      // Handle cells that might contain commas by wrapping in quotes
+      if (cell && cell.toString().includes(',')) {
+        return `"${cell.toString().replace(/"/g, '""')}"` // Fix: escape double quotes
+      }
+      return cell
+    }).join(','))
+  ].join('\n')
+
+  const blob = new Blob([csvContent], { type: 'text/csv' })
+  const url = window.URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  const timestamp = new Date().toISOString().replace(/[:.]/g, '-')
+  link.setAttribute('download', `call_results_${timestamp}.csv`)
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+  window.URL.revokeObjectURL(url)
 }
 </script>
 

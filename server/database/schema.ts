@@ -29,3 +29,20 @@ export const callTags = sqliteTable('call_tags', {
   name: text('name').notNull(),
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull()
 })
+
+export const scheduledCalls = sqliteTable('scheduled_calls', {
+  id: text('id').primaryKey(),
+  userId: integer('user_id').references(() => users.id),
+  phoneNumber: text('phone_number').notNull(),
+  name: text('name'),
+  notes: text('notes'),
+  scheduledTime: integer('scheduled_time', { mode: 'timestamp' }).notNull(),
+  status: text('status', { enum: ['QUEUED', 'RINGING', 'IN_PROGRESS', 'FORWARDED', 'ENDED'] }).notNull().default('QUEUED'),
+  assistantId: text('assistant_id').notNull(),
+  numberId: text('number_id').notNull(),
+  callId: text('call_id'),
+  transcript: text('transcript'),
+  duration: integer('duration'),
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().default(sql`CURRENT_TIMESTAMP`)
+})

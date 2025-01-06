@@ -495,33 +495,46 @@ const processNotes = [
   {
     label: 'WIP States',
     icon: 'i-lucide-list-todo',
-    content: `Classification for sales orders that lets team know the status:
-    • Missing Documents
-    • Pending Insurance Verification
-    • Ready to Schedule
-    • Pending Follow-Up
-    Used to organize and track order progress through the workflow.`
+    content: `<div class="whitespace-pre-line">
+      <ul class="list-disc list-inside space-y-1">
+        <li>Missing Documents</li>
+        <li>Pending Insurance Verification</li>
+        <li>Ready to Schedule</li>
+      </ul>
+    </div>`
   },
   {
     label: 'Sales Orders',
     icon: 'i-lucide-clipboard-list',
-    content: `• Order for specific service sent by doctor with billing/insurance code information
-    • Gets billed to insurance once completed
-    • Types: CHST, CHST/WST, CHAP, DME
-    • Rental Device Sales Order: Created for CHST or CHAP scheduling, used for shipping tracking only (not billed)`
+    content: `<div class="whitespace-pre-line">
+      <ul class="list-disc list-inside space-y-1">
+        <li>Order for specific service sent by doctor with billing/insurance code information</li>
+        <li>Gets billed to insurance once completed</li>
+        <li>Types: CHST, CHST/WST, CHAP, DME</li>
+        <li>Rental Device Sales Order: Created for CHST or CHAP scheduling, used for shipping tracking only (not billed)</li>
+      </ul>
+    </div>`
   },
   {
     label: 'Work Lists & Organization',
     icon: 'i-lucide-list-checks',
-    content: `• Sales Orders Work List: List of all sales orders by WIP state or employee assignment
-    • Can be organized by Doctor for clinic updates
-    • Used for scheduling and tracking missing documents
-    • Patient Chart: Comprehensive record of patient information, orders, documents, and contact history`
+    content: `<div class="whitespace-pre-line">
+      <ul class="list-disc list-inside space-y-1">
+        <li>Sales Orders Work List: List of all sales orders by WIP state or employee assignment</li>
+        <li>Can be organized by Doctor for clinic updates</li>
+        <li>Used for scheduling and tracking missing documents</li>
+        <li>Patient Chart: Comprehensive record of patient information, orders, documents, and contact history</li>
+      </ul>
+    </div>`
   },
   {
     label: 'Scheduling System',
     icon: 'i-lucide-calendar',
-    content: 'Scheduler: Color-coded calendar system for scheduling team to manage appointments for shipping team and sleep coaches'
+    content: `<div class="whitespace-pre-line">
+      <ul class="list-disc list-inside space-y-1">
+        <li>Scheduler: Color-coded calendar system for scheduling team to manage appointments for shipping team and sleep coaches</li>
+      </ul>
+    </div>`
   }
 ]
 

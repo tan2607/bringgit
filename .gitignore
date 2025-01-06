@@ -26,3 +26,6 @@ logs
 .wrangler
 livekit
 # prompts
+
+# windsurf rules
+.windsurfrules

@@ -1,6 +1,9 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   debug: false,
+  icon: {
+    serverBundle: 'remote'
+  },
   runtimeConfig: {
     apiToken: process.env.API_TOKEN,
     // Provider API Keys
@@ -15,6 +18,11 @@ export default defineNuxtConfig({
     sendgridApiKey: process.env.SENDGRID_API_KEY,
     firecrawlApiKey: process.env.FIRECRAWL_API_KEY,
     geminiApiKey: process.env.GEMINI_API_KEY,
+    twilio: {
+      accountSid: process.env.TWILIO_ACCOUNT_SID,
+      authToken: process.env.TWILIO_AUTH_TOKEN,
+      fromNumber: process.env.TWILIO_FROM_NUMBER
+    },
     authJs: {
       secret: process.env.NEXTAUTH_SECRET,
     },
@@ -49,8 +57,16 @@ export default defineNuxtConfig({
   },
   compatibilityDate: '2024-04-03',
   vite: {
+    resolve: {
+      alias: {
+        "electron/index.js": 'mocks/electron.js',
+      },
+    },
     optimizeDeps: {
       include: ['debug']
+    },
+    css: {
+      transformer: 'lightningcss'
     },
     build: {
       commonjsOptions: {
@@ -84,14 +100,14 @@ export default defineNuxtConfig({
       type: 'd1',
       binding: 'DB'
     },
-    build: {
-      markdown: {
-        toc: {
-          depth: 3,
-          searchDepth: 3
-        }
-      }
-    }
+    // build: {
+    //   markdown: {
+    //     toc: {
+    //       depth: 3,
+    //       searchDepth: 3
+    //     }
+    //   }
+    // }
   },
   i18n: {
     lazy: true,

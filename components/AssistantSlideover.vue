@@ -1,5 +1,5 @@
 <template>
-  <USlideover v-model="open">
+  <USlideover>
     <template #header>
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2">
@@ -9,442 +9,179 @@
       </div>
     </template>
 
-    <div class="flex flex-col h-full">
-      <UTabs v-model="activeTab" :items="tabs">
-        <template #default="{ item }">
-          <div class="p-4">
-            <!-- Agent Tab -->
-            <div v-if="item.value === 'agent'" class="space-y-4">
-              <UFormField :label="t('assistant.name')" required>
-                <UInput v-model="assistant.name" />
-              </UFormField>
+    <template #body>
+      <div class="flex flex-col h-full">
+        <UTabs v-model="assistantState.activeTab.value" :items="tabs">
+          <template #content="{ item }">
+            <div class="p-4">
+              <!-- Agent Tab -->
+              <div v-if="item.value === 'agent'" class="space-y-4">
+                <UFormField :label="t('assistant.name')" required>
+                  <UInput v-model="assistant.name" />
+                </UFormField>
 
-              <UFormField :label="t('assistant.language')" required>
-                <USelect
-                  v-model="assistant.language"
-                  :items="languageOptions"
-                  option-attribute="label"
-                />
-                <template #help>
-                  {{ t('assistant.language-help') }}
-                </template>
-              </UFormField>
+                <UFormField :label="t('assistant.language')" required>
+                  <USelect v-model="assistant.language" :items="languageOptions" option-attribute="label" />
+                  <template #help>
+                    {{ t('assistant.language-help') }}
+                  </template>
+                </UFormField>
 
-              <UFormField :label="t('assistant.firstMessage')" required>
-                <UTextarea
-                  v-model="assistant.firstMessage"
-                  :rows="3"
-                />
-                <template #help>
-                  {{ t('assistant.firstMessage-help') }}
-                </template>
-              </UFormField>
+                <UFormField :label="t('assistant.firstMessage')" required>
+                  <UTextarea v-model="assistant.firstMessage" :rows="3" />
+                  <template #help>
+                    {{ t('assistant.firstMessage-help') }}
+                  </template>
+                </UFormField>
 
-              <UFormField :label="t('assistant.systemPrompt')" required>
-                <UTextarea
-                  v-model="assistant.systemPrompt"
-                  :rows="5"
-                />
-                <template #help>
-                  {{ t('assistant.systemPrompt-help') }}
-                </template>
-              </UFormField>
-
-              <UFormField :label="t('assistant.llm')">
-                <USelect
-                  v-model="assistant.llm"
-                  :items="llmOptions"
-                  option-attribute="label"
-                />
-                <template #help>
-                  {{ t('assistant.llm-help') }}
-                </template>
-              </UFormField>
-
-              <UFormField :label="t('assistant.temperature')">
-                <UInput
-                  type="range"
-                  v-model="assistant.temperature"
-                  :min="0"
-                  :max="2"
-                  :step="0.1"
-                />
-                <template #help>
-                  {{ t('assistant.temperature-help') }}
-                </template>
-              </UFormField>
-
-              <UFormField :label="t('assistant.tokenLimit')">
-                <UInput
-                  v-model="assistant.tokenLimit"
-                  type="number"
-                  placeholder="-1"
-                />
-                <template #help>
-                  {{ t('assistant.tokenLimit-help') }}
-                </template>
-              </UFormField>
-
-              <div class="flex justify-end gap-2">
-                <UButton
-                  color="neutral"
-                  variant="outline"
-                  :label="t('assistant.cancel')"
-                  @click="close"
-                />
-                <UButton
-                  color="black"
-                  variant="solid"
-                  :label="t('assistant.save')"
-                  @click="save"
-                />
+                <UFormField :label="t('assistant.systemPrompt')" required>
+                  <UTextarea v-model="assistant.systemPrompt" :rows="5" />
+                  <template #help>
+                    {{ t('assistant.systemPrompt-help') }}
+                  </template>
+                </UFormField>
               </div>
-            </div>
 
-            <!-- Analysis Tab -->
-            <div v-if="item.value === 'analysis'" class="space-y-6">
-              <!-- Evaluation Criteria -->
-              <div class="space-y-4">
-                <div class="flex items-center justify-between">
-                  <h3 class="text-lg font-medium">{{ t('analysis.evaluation-criteria') }}</h3>
-                  <UButton
-                    color="black"
-                    variant="solid"
-                    :label="t('analysis.add-criteria')"
-                    @click="openAddCriteriaForm"
-                  />
-                </div>
+              <!-- Analysis Tab -->
+              <div v-if="item.value === 'analysis'" class="space-y-6">
+                <!-- Evaluation Criteria -->
+                <div class="space-y-4">
+                  <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-medium">{{ t('analysis.evaluation-criteria') }}</h3>
+                    <UButton color="primary" variant="soft" icon="i-lucide-plus" @click="openAddCriteria">
+                      {{ t('analysis.add-criterion') }}
+                    </UButton>
+                  </div>
 
-                <div class="space-y-2">
-                  <!-- Criteria list -->
-                  <div v-if="assistant.criteria?.length" class="space-y-2">
-                    <div v-for="criterion in assistant.criteria" :key="criterion.id" class="p-4 bg-gray-50 rounded-lg">
-                      <div class="flex justify-between items-start">
-                        <div>
+                  <div v-if="assistant.criteria?.length" class="space-y-4">
+                    <UCard v-for="criterion in assistant.criteria" :key="criterion.id"
+                      class="bg-gray-50 dark:bg-gray-800/50">
+                      <div class="flex justify-between items-start gap-4">
+                        <div class="space-y-1 flex-1">
                           <h4 class="font-medium">{{ criterion.name }}</h4>
-                          <p class="text-sm text-gray-600 mt-1">{{ criterion.prompt }}</p>
+                          <p class="text-sm text-gray-500">{{ criterion.description }}</p>
                         </div>
-                        <UButton
-                          icon="i-lucide-trash-2"
-                          color="neutral"
-                          variant="ghost"
-                          @click="deleteCriterion(criterion.id)"
-                        />
+                        <UButton color="red" variant="ghost" icon="i-lucide-trash-2" size="xs"
+                          @click="deleteCriterion(criterion.id)" />
                       </div>
-                    </div>
+                    </UCard>
                   </div>
-                </div>
-              </div>
-
-              <!-- Data Collection -->
-              <div class="space-y-4">
-                <div class="flex items-center justify-between">
-                  <h3 class="text-lg font-medium">{{ t('analysis.data-collection') }}</h3>
-                  <UButton
-                    color="black"
-                    variant="solid"
-                    :label="t('analysis.add-data-item')"
-                    @click="openAddDataItem"
-                  />
-                </div>
-
-                <div class="space-y-2">
-                  <!-- Data items list -->
-                  <div v-if="assistant.dataItems?.length" class="space-y-2">
-                    <div v-for="item in assistant.dataItems" :key="item.id" class="p-4 bg-gray-50 rounded-lg">
-                      <div class="flex justify-between items-start">
-                        <div>
-                          <div class="flex items-center gap-2">
-                            <h4 class="font-medium">{{ item.identifier }}</h4>
-                            <UBadge color="neutral" variant="soft" size="sm">{{ item.type }}</UBadge>
-                          </div>
-                          <p class="text-sm text-gray-600 mt-1">{{ item.description }}</p>
-                        </div>
-                        <UButton
-                          icon="i-lucide-trash-2"
-                          color="neutral"
-                          variant="ghost"
-                          @click="deleteDataItem(item.id)"
-                        />
-                      </div>
-                    </div>
+                  <div v-else class="text-center py-8 text-gray-500">
+                    {{ t('analysis.no-criteria') }}
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </template>
-      </UTabs>
-    </div>
+          </template>
+        </UTabs>
+      </div>
+    </template>
 
     <template #footer>
       <div class="flex justify-end gap-2">
-        <UButton
-          color="black"
-          variant="outline"
-          :label="t('assistant.test')"
-          @click="openTest"
-        />
+        <UButton color="gray" variant="soft" @click="close">
+          {{ t('cancel') }}
+        </UButton>
+        <UButton color="primary" :loading="isLoading" :disabled="!isValid" @click="save">
+          {{ t('save') }}
+        </UButton>
       </div>
     </template>
-  </USlideover>
-
-  <!-- Test AI Agent Slideover -->
-  <USlideover 
-    v-model="isTestOpen"
-    :title="`${t('assistant.test')} ${assistant?.name}`"
-    :ui="{ content: 'sm:max-w-2xl', body: 'p-0' }"
-  >
-    <template #body>
-      <div class="h-full">
-        <iframe 
-          :src="`https://vai.keyreply.com/${assistant?.id}`"
-          class="w-full h-full border-0"
-          allow="microphone"
-        />
-      </div>
-    </template>
-  </USlideover>
-
-  <!-- Add Criteria Slideover -->
-  <USlideover
-    v-model="isAddCriteriaOpen"
-    side="right"
-    :ui="{ width: 'sm:max-w-lg' }"
-  >
-    <template #header>
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <UIcon name="i-lucide-brain" class="w-5 h-5" />
-          <span class="text-lg font-medium">{{ t('analysis.add-criteria') }}</span>
-        </div>
-      </div>
-    </template>
-
-    <div class="p-4 space-y-4">
-      <p class="text-sm text-gray-500">
-        {{ t('analysis.criteria-description') }}
-        {{ t('analysis.criteria-result') }}
-      </p>
-
-      <UFormField :label="t('analysis.criteria-name')" required>
-        <UInput v-model="newCriterion.name" placeholder="Enter the name to generate an ID" />
-      </UFormField>
-
-      <UFormField :label="t('analysis.criteria-prompt')" required>
-        <UTextarea
-          v-model="newCriterion.prompt"
-          :rows="5"
-          placeholder="Enter the prompt that will be passed to the LLM"
-        />
-      </UFormField>
-
-      <div class="flex justify-end gap-2">
-        <UButton
-          color="neutral"
-          variant="outline"
-          :label="t('assistant.cancel')"
-          @click="isAddCriteriaOpen = false"
-        />
-        <UButton
-          color="black"
-          variant="solid"
-          :label="t('analysis.add-criteria')"
-          :disabled="!newCriterion.name || !newCriterion.prompt"
-          @click="addCriterion"
-        />
-      </div>
-    </div>
-  </USlideover>
-
-  <!-- Add Data Item Slideover -->
-  <USlideover
-    v-model="isAddDataItemOpen"
-    side="right"
-    :ui="{ width: 'sm:max-w-lg' }"
-  >
-    <template #header>
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <UIcon name="i-lucide-table" class="w-5 h-5" />
-          <span class="text-lg font-medium">{{ t('analysis.add-data-item') }}</span>
-        </div>
-      </div>
-    </template>
-
-    <div class="p-4 space-y-4">
-      <div class="grid grid-cols-2 gap-4">
-        <UFormField :label="t('analysis.data-type')" required>
-          <USelect
-            v-model="newDataItem.type"
-            :items="dataTypeOptions"
-            option-attribute="label"
-          />
-        </UFormField>
-
-        <UFormField :label="t('analysis.data-identifier')" required>
-          <UInput v-model="newDataItem.identifier" />
-        </UFormField>
-      </div>
-
-      <UFormField :label="t('analysis.data-description')" required>
-        <UTextarea
-          v-model="newDataItem.description"
-          :rows="5"
-          :placeholder="t('analysis.data-description-help')"
-        />
-      </UFormField>
-
-      <div class="flex justify-end gap-2">
-        <UButton
-          color="neutral"
-          variant="outline"
-          :label="t('assistant.cancel')"
-          @click="isAddDataItemOpen = false"
-        />
-        <UButton
-          color="black"
-          variant="solid"
-          :label="t('analysis.add-data-item')"
-          :disabled="!newDataItem.type || !newDataItem.identifier || !newDataItem.description"
-          @click="addDataItem"
-        />
-      </div>
-    </div>
   </USlideover>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import { useAssistantState } from '@/composables/useAssistantState'
+import TestSlideover from './assistant/TestSlideover.vue'
+import CriteriaSlideover from './assistant/CriteriaSlideover.vue'
+import type { Assistant } from '@/types'
 
 const { t } = useI18n()
 const slideover = useSlideover()
+const assistantState = useAssistantState()
 
-interface Props {
-  open: boolean
-  assistant?: {
-    id: string
-    name: string
-    language: string
-    firstMessage: string
-    systemPrompt: string
-    llm: string
-    temperature: number
-    tokenLimit: number
-    criteria?: {
-      id: string
-      name: string
-      prompt: string
-    }[]
-    dataItems?: {
-      id: string
-      type: 'String' | 'Number' | 'Boolean' | 'Date'
-      identifier: string
-      description: string
-    }[]
+const props = defineProps<{
+  assistant?: Assistant
+}>()
+
+const assistant = ref<Assistant>(props.assistant || {
+  name: '',
+  language: 'en',
+  firstMessage: '',
+  systemPrompt: '',
+  criteria: []
+})
+
+const isLoading = ref(false)
+
+const tabs = computed(() => [
+  {
+    label: t('assistant.agent'),
+    value: 'agent',
+    icon: 'i-lucide-bot'
+  },
+  {
+    label: t('assistant.analysis'),
+    value: 'analysis',
+    icon: 'i-lucide-chart-bar'
+  }
+])
+
+const languageOptions = [
+  { value: 'en', label: 'English' },
+  { value: 'es', label: 'Spanish' },
+  { value: 'fr', label: 'French' }
+]
+
+const isValid = computed(() => {
+  return assistant.value.name &&
+    assistant.value.language &&
+    assistant.value.firstMessage &&
+    assistant.value.systemPrompt
+})
+
+const close = () => {
+  slideover.close()
+  assistantState.resetState()
+}
+
+const save = async () => {
+  if (!isValid.value) return
+
+  try {
+    isLoading.value = true
+    // Save assistant logic here
+    close()
+  } catch (error: any) {
+    console.error('Save assistant error:', error)
+  } finally {
+    isLoading.value = false
   }
 }
 
-const props = defineProps<Props>()
-const emit = defineEmits(['update:open'])
+const openTest = () => {
+  assistantState.isTestMode.value = true
+  slideover.open(TestSlideover)
+}
 
-const open = computed({
-  get: () => props.open,
-  set: (value) => emit('update:open', value)
+const openAddCriteria = () => {
+  slideover.open(CriteriaSlideover)
+}
+
+const deleteCriterion = (id: string) => {
+  assistant.value.criteria = assistant.value.criteria?.filter(c => c.id !== id)
+}
+
+// Set current assistant in shared state
+onMounted(() => {
+  if (props.assistant) {
+    assistantState.setAssistant(props.assistant)
+  }
 })
 
-const activeTab = ref('agent')
-const isTestOpen = ref(false)
-const isAddCriteriaOpen = ref(false)
-const isAddDataItemOpen = ref(false)
-
-const tabs = [
-  { label: t('assistant.agent'), value: 'agent' },
-  { label: t('voice'), value: 'voice' },
-  { label: t('analysis'), value: 'analysis' },
-  { label: t('security'), value: 'security' },
-  { label: t('advanced'), value: 'advanced' },
-  { label: t('widget'), value: 'widget' }
-]
-
-const languageOptions = [
-  { label: 'English', value: 'en' },
-  { label: 'Spanish', value: 'es' },
-  { label: 'French', value: 'fr' },
-  { label: 'German', value: 'de' },
-  { label: 'Chinese', value: 'zh' },
-  { label: 'Japanese', value: 'ja' }
-]
-
-const llmOptions = [
-  { label: 'GPT-4 Turbo', value: 'gpt-4-turbo' },
-  { label: 'GPT-4', value: 'gpt-4' },
-  { label: 'GPT-3.5 Turbo', value: 'gpt-3.5-turbo' },
-  { label: 'Claude 3 Opus', value: 'claude-3-opus' },
-  { label: 'Claude 3 Sonnet', value: 'claude-3-sonnet' },
-  { label: 'Gemini 1.5 Pro', value: 'gemini-1.5-pro' },
-  { label: 'Gemini 1.5 Flash', value: 'gemini-1.5-flash' }
-]
-
-const newCriterion = reactive({
-  name: '',
-  prompt: ''
+// Cleanup on unmount
+onUnmounted(() => {
+  assistantState.resetState()
 })
-
-const newDataItem = reactive({
-  type: 'String',
-  identifier: '',
-  description: ''
-})
-
-const dataTypeOptions = [
-  { label: 'String', value: 'String' },
-  { label: 'Number', value: 'Number' },
-  { label: 'Boolean', value: 'Boolean' },
-  { label: 'Date', value: 'Date' }
-]
-
-function close() {
-  slideover.close()
-}
-
-function save() {
-  // TODO: Implement save logic
-  close()
-}
-
-function openTest() {
-  isTestOpen.value = true
-}
-
-function openAddCriteriaForm() {
-  isAddCriteriaOpen.value = true
-}
-
-function openAddDataItem() {
-  isAddDataItemOpen.value = true
-}
-
-function addCriterion() {
-  // TODO: Implement add criterion logic
-  isAddCriteriaOpen.value = false
-  newCriterion.name = ''
-  newCriterion.prompt = ''
-}
-
-function addDataItem() {
-  // TODO: Implement add data item logic
-  isAddDataItemOpen.value = false
-  newDataItem.type = 'String'
-  newDataItem.identifier = ''
-  newDataItem.description = ''
-}
-
-function deleteCriterion(id: string) {
-  // TODO: Implement delete criterion logic
-}
-
-function deleteDataItem(id: string) {
-  // TODO: Implement delete data item logic
-}
 </script>

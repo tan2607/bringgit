@@ -1,38 +1,88 @@
 import { Stagehand } from "@browserbasehq/stagehand";
 import { z } from "zod";
 
-let sessionId: string;
+// Define input validation schema
+const taskInputSchema = z.object({
+  description: z.array(z.string()),
+  parameters: z.object({
+    url: z.string().url(),
+  }).catchall(z.string()),
+});
 
-async function runJob(page, parameters) {
-  console.log("Running job...");
-  console.log('Executing task steps:', description)
-  console.log('Parameters:', parameters)
+type TaskInput = z.infer<typeof taskInputSchema>;
 
-  // Execute each task step sequentially
-  const results = []
-  for (const step of description) {
-    // Extract variables from the step if it contains any
-    const hasVariables = step.includes('%')
-    const stepResult = await page.act({
-      action: step,
-      ...(hasVariables && { variables: parameters })
-    })
-    results.push(stepResult)
-  }
+export default defineEventHandler(async (event) => {
+  try {
+    // Get runtime config
+    const config = useRuntimeConfig();
+    
+    // Validate required config
+    if (!config.browserbaseApiKey || !config.browserbaseProjectId || 
+        !config.groqApiKey || !config.openaiApiKey) {
+      throw createError({
+        statusCode: 500,
+        message: "Required API configuration missing",
+      });
+    }
 
-  // Extract final verification if needed
-  const verification = await page.extract({
-    instruction: "Verify and summarize the task completion",
-    schema: z.object({
-      success: z.boolean(),
-      summary: z.string(),
-    }),
-  })
+    // Parse and validate request body
+    const body = await readBody(event);
+    const validatedInput = taskInputSchema.safeParse(body);
+    
+    if (!validatedInput.success) {
+      throw createError({
+        statusCode: 400,
+        message: "Invalid input",
+        data: validatedInput.error.format(),
+      });
+    }
 
-  await stagehand.close()
+    const { description, parameters } = validatedInput.data;
 
-  // Format the results into markdown
-  const markdownContent = `
+    // Initialize Stagehand
+    const stagehand = new Stagehand({
+      env: "BROWSERBASE",
+      verbose: 0,
+      enableCaching: true,
+      apiKey: config.browserbaseApiKey,
+      projectId: config.browserbaseProjectId,
+    });
+
+    // Initialize session
+    const { sessionId, sessionUrl, debugUrl } = await stagehand.init();
+    const page = stagehand.page;
+
+    // Navigate to URL
+    await page.goto(parameters.url);
+
+    // Observe available actions
+    const actions = await page.observe();
+
+    // Execute task steps
+    const results = [];
+    for (const step of description) {
+      const hasVariables = step.includes('%');
+      const stepResult = await page.act({
+        action: step,
+        ...(hasVariables && { variables: parameters }),
+      });
+      results.push(stepResult);
+    }
+
+    // Verify task completion
+    const verification = await page.extract({
+      instruction: "Verify and summarize the task completion",
+      schema: z.object({
+        success: z.boolean(),
+        summary: z.string(),
+      }),
+    });
+
+    // Close session
+    await stagehand.close();
+
+    // Format results as markdown
+    const markdownContent = `
 Task Execution Results:
 ----------------------
 ${results.map((result, index) => `Step ${index + 1}:\n${JSON.stringify(result, null, 2)}`).join('\n\n')}
@@ -40,53 +90,7 @@ ${results.map((result, index) => `Step ${index + 1}:\n${JSON.stringify(result, n
 Verification:
 ------------
 ${verification.summary}
-`
-
-  return {
-    success: true,
-    markdownContent,
-    debugUrl: ""
-  }
-}
-export default defineEventHandler(async (event) => {
-  try {
-    const body = await readBody(event);
-    const { description, parameters } = body;
-
-    // Validate required URL parameter
-    if (!parameters.url) {
-      throw new Error("URL parameter is required");
-    }
-
-    if (
-      !process.env.BROWSERBASE_API_KEY || !process.env.BROWSERBASE_PROJECT_ID ||
-      !process.env.GROQ_API_KEY || !process.env.OPENAI_API_KEY
-    ) {
-      throw new Error("Required configuration missing");
-    }
-
-    console.log("Starting RPA process...");
-
-    // Initialize Stagehand
-    let env: "LOCAL" | "BROWSERBASE" = "BROWSERBASE";
-    const stagehand = new Stagehand({
-      env,
-      verbose: 0,
-      enableCaching: true,
-    });
-
-    let {sessionId, sessionUrl, debugUrl} = await stagehand.init();
-    const page = stagehand.page;
-
-    // Navigate to the specified URL
-    await page.goto(parameters.url);
-
-    // Observe the page
-    const actions = await page.observe();
-    console.log("Observed actions:", actions);
-    
-    // Run the job asynchronously
-    // runJob(page, parameters);
+`;
 
     return {
       success: true,
@@ -95,13 +99,19 @@ export default defineEventHandler(async (event) => {
         sessionUrl,
         debugUrl,
         actions,
+        results,
+        verification,
+        markdownContent,
       },
     };
+
   } catch (error: any) {
     console.error("RPA Error:", error);
-    return {
-      success: false,
-      error: error.message,
-    };
+    
+    throw createError({
+      statusCode: error.statusCode || 500,
+      message: error.message || "Failed to execute RPA task",
+      data: error.data,
+    });
   }
 });

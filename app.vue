@@ -99,6 +99,12 @@ const items = computed(() => [
                 to: localeRoute('/demo/patient-intake-form')?.path
             },
             {
+                label: 'SMS',
+                icon: 'i-lucide-message-square',
+                description: 'SMS sender demo',
+                to: localeRoute('/demo/sms')?.path
+            },
+            {
                 label: 'Location Search',
                 icon: 'i-lucide-map-pin',
                 description: 'Clinic location search demo',

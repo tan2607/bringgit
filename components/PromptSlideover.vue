@@ -1,6 +1,5 @@
 <template>
-  <USlideover 
-    v-model="slideover.isOpen"
+  <USlideover
     :title="t('prompt.instructions')"
   >
     <template #header>
