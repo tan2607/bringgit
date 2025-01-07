@@ -6,6 +6,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     apiToken: process.env.API_TOKEN,
+    vapiSecret: process.env.VAPI_SECRET_TOKEN,
     // Provider API Keys
     openaiApiKey: process.env.OPENAI_API_KEY,
     vapiApiKey: process.env.VAPI_API_KEY,
