@@ -120,21 +120,17 @@ const uniqueAssistants = computed(() => {
   return Array.from(assistants).sort()
 })
 
-const selectedAssistant = ref<{ id: string, name: string } | null>(null)
-
-const isCallSlideoverOpen = ref(false)
-
-const handleCallClick = (assistant: { id: string, name: string }) => {
-  selectedAssistant.value = assistant
-  isCallSlideoverOpen.value = true
-}
-
 const columns = computed(() => {
   const baseColumns = [
     {
       accessorKey: "assistant",
       header: () => t('table.assistant'),
       cell: (row) => row.getValue("assistant")
+    },
+    {
+      accessorKey: "customer",
+      header: () => 'Phone Number',
+      cell: (row) => row.getValue("customer")?.number?.replace(/^(\+\d\d)?..../, '****')
     },
     {
       accessorKey: 'startedAt',
@@ -204,19 +200,6 @@ const columns = computed(() => {
       accessorKey: "duration",
       header: () => t('table.duration'),
       cell: (row) => row.getValue("duration")
-    },
-    {
-      accessorKey: "id",
-      header: () => t('actions'),
-      cell: (row) => h('div', { class: 'flex items-center justify-end gap-2' }, [
-        h(UButton, {
-          icon: 'i-lucide-phone',
-          color: 'primary',
-          variant: 'ghost',
-          square: true,
-          onClick: () => handleCallClick(row.original)
-        })
-      ])
     }
   ]
 

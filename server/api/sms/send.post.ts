@@ -1,5 +1,3 @@
-import twilio from 'twilio'
-
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   const { accountSid, authToken, fromNumber } = config.twilio
@@ -11,7 +9,6 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const client = twilio(accountSid, authToken)
   const body = await readBody(event)
   const { to, message } = body
 
@@ -23,11 +20,32 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const result = await client.messages.create({
-      body: message,
-      to,
-      from: fromNumber
+    const endpoint = `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`
+    const encoded = new URLSearchParams({
+      To: to,
+      From: fromNumber,
+      Body: message,
     })
+
+    const token = Buffer.from(`${accountSid}:${authToken}`).toString('base64')
+
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Basic ${token}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: encoded,
+    })
+
+    const result = await response.json()
+
+    if (!response.ok) {
+      throw createError({
+        statusCode: response.status,
+        message: result.message || 'Failed to send SMS'
+      })
+    }
 
     return {
       success: true,

@@ -20,14 +20,14 @@
                   <UInput v-model="assistant.name" />
                 </UFormField>
 
-                <UFormField :label="t('assistant.language')" required>
-                  <USelect v-model="assistant.language" :items="languageOptions" option-attribute="value" />
+                <UFormField :label="t('assistant.language')" class="w-full" required>
+                  <USelect v-model="assistant.language" :items="languageOptions" option-attribute="value" class="w-full" />
                   <template #help>
                     {{ t('assistant.language-help') }}
                   </template>
                 </UFormField>
 
-                <UFormField :label="t('assistant.firstMessage')" required>
+                <UFormField :label="t('assistant.firstMessage')" class="w-full" required>
                   <UTextarea v-model="assistant.firstMessage" :rows="3" />
                   <template #help>
                     {{ t('assistant.firstMessage-help') }}
