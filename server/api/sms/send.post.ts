@@ -20,6 +20,13 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
+    console.log('📱 SMS Send Request:', {
+      timestamp: new Date().toISOString(),
+      to,
+      message,
+      messageLength: message.length
+    })
+
     const endpoint = `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`
     const encoded = new URLSearchParams({
       To: to,
@@ -47,16 +54,38 @@ export default defineEventHandler(async (event) => {
       })
     }
 
+    console.log('✅ SMS Sent Successfully:', {
+      timestamp: new Date().toISOString(),
+      to,
+      message,
+      messageId: result.sid
+    })
+
     return {
       success: true,
+      message: 'Message sent successfully',
       messageId: result.sid,
-      status: result.status
+      status: result.status,
+      details: {
+        to,
+        message,
+        timestamp: new Date().toISOString()
+      }
     }
   } catch (error: any) {
-    console.error('Failed to send SMS:', error)
-    throw createError({
-      statusCode: error.status || 500,
-      message: error.message || 'Failed to send SMS'
+    console.error('❌ SMS Send Error:', {
+      timestamp: new Date().toISOString(),
+      error: error.message,
+      stack: error.stack
     })
+
+    return {
+      success: false,
+      message: error.message || 'Failed to send SMS',
+      details: {
+        error: error.message,
+        timestamp: new Date().toISOString()
+      }
+    }
   }
 })
