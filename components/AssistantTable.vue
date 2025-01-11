@@ -1,6 +1,16 @@
 <template>
   <div>
-    <div class="flex justify-end px-4 py-3.5 border-b border-[var(--ui-border-accented)]">
+    <div class="flex items-center justify-between px-4 py-3.5 border-b border-[var(--ui-border-accented)]">
+      <!-- Filter Section -->
+      <UInput
+        :model-value="table?.tableApi?.getColumn('name')?.getFilterValue() as string"
+        class="max-w-sm"
+        placeholder="Filter by name..."
+        icon="i-lucide-search"
+        @update:model-value="table?.tableApi?.getColumn('name')?.setFilterValue($event)"
+      />
+      
+      <!-- Column Visibility Dropdown -->
       <UDropdownMenu :items="table?.tableApi
         ?.getAllColumns()
         .filter((column) => ['id', 'voice', 'model'].includes(column.id))
@@ -18,10 +28,18 @@
         <UButton label="Columns" color="neutral" variant="outline" trailing-icon="i-lucide-chevron-down" />
       </UDropdownMenu>
     </div>
-    <UTable ref="table" v-model:column-visibility="columnVisibility" :data="data" :columns="columns"
-      :loading="isLoading" class="flex-1" :ui="{
+    <UTable 
+      ref="table" 
+      v-model:column-visibility="columnVisibility" 
+      v-model:column-filters="columnFilters"
+      :data="data" 
+      :columns="columns"
+      :loading="isLoading" 
+      class="flex-1" 
+      :ui="{
         tr: 'cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors'
-      }" @row-select="openEditSlideover">
+      }" 
+      @row-select="openEditSlideover">
       <template #loading-state>
         <div class="flex items-center justify-center h-32">
           <UIcon name="i-lucide-loader-2" class="animate-spin" />
@@ -52,6 +70,7 @@ const UPopover = resolveComponent('UPopover')
 const UInput = resolveComponent('UInput')
 const UForm = resolveComponent('UForm')
 const UFormField = resolveComponent('UFormField')
+const USelect = resolveComponent('USelect')
 
 const toast = useToast()
 const { t } = useI18n()
@@ -88,6 +107,13 @@ const columnVisibility = ref({
   model: false
 })
 
+const columnFilters = ref([
+  {
+    id: 'name',
+    value: ''
+  }
+])
+
 const columns: TableColumn<Assistant>[] = [
   {
     accessorKey: 'id',
@@ -116,6 +142,8 @@ const columns: TableColumn<Assistant>[] = [
   {
     accessorKey: 'name',
     header: () => t('assistant.name'),
+    enableColumnFilter: true,
+    filterFn: 'includesString',
     cell: ({ row }) => h('div', { class: 'flex items-center gap-2' }, [
       h('span', row.original.name),
       h(UButton, {

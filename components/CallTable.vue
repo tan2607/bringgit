@@ -2,13 +2,12 @@
   <div>
     <div class="flex items-center justify-between px-4 py-3.5 border-b border-[var(--ui-border-accented)]">
       <div class="flex items-center gap-4">
-        <USelectMenu
-          v-model="selectedAssistant"
-          :items="uniqueAssistants"
-          :placeholder="t('table.filterAssistant')"
+        <UInput
+          :model-value="table?.tableApi?.getColumn('assistant')?.getFilterValue() as string"
           class="w-64"
-          clearable
-          @update:model-value="table?.tableApi?.getColumn('assistant')?.setFilterValue($event || '')"
+          placeholder="Filter by assistant..."
+          icon="i-lucide-search"
+          @update:model-value="table?.tableApi?.getColumn('assistant')?.setFilterValue($event)"
         />
       </div>
       <UDropdownMenu
@@ -39,6 +38,7 @@
     <UTable 
       ref="table"
       v-model:column-visibility="columnVisibility"
+      v-model:column-filters="columnFilters"
       :data="data" 
       :columns="columns"
       :loading="isLoading"
@@ -76,6 +76,7 @@ const UButton = resolveComponent('UButton')
 const UBadge = resolveComponent('UBadge')
 const UDropdownMenu = resolveComponent('UDropdownMenu')
 const USelectMenu = resolveComponent('USelectMenu')
+const UInput = resolveComponent('UInput')
 const toast = useToast();
 const slideover = useSlideover()
 
@@ -115,6 +116,13 @@ const columnVisibility = ref({
   id: true
 })
 
+const columnFilters = ref([
+  {
+    id: 'assistant',
+    value: ''
+  }
+])
+
 const uniqueAssistants = computed(() => {
   const assistants = new Set(props.data?.map(call => call.assistant) || [])
   return Array.from(assistants).sort()
@@ -125,6 +133,8 @@ const columns = computed(() => {
     {
       accessorKey: "assistant",
       header: () => t('table.assistant'),
+      enableColumnFilter: true,
+      filterFn: 'includesString',
       cell: (row) => row.getValue("assistant")
     },
     {
