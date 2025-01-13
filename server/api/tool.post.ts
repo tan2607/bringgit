@@ -16,6 +16,8 @@ export default defineEventHandler(async (event) => {
     }
 
     const body = await readBody(event)
+
+    console.log(body);
     
     // Validate message exists
     if (!body.message) {
@@ -57,7 +59,7 @@ export default defineEventHandler(async (event) => {
         // Handle different tools
         switch (name) {
           case 'sendSMS': {
-            const customerNumber = message.customer?.number || message.call?.customer?.number
+            const customerNumber = message.customer?.number || message.call?.customer?.number || parameters.to
 
             if (!customerNumber) {
               throw createError({
@@ -102,11 +104,8 @@ export default defineEventHandler(async (event) => {
               result = "No clinics found in the specified location."
             } else {
               const clinics = response.data
-              result = clinics.map((clinic: any, index: number) => 
-                `${index + 1}. ${clinic.name}\n` +
-                `   Address: ${clinic.address}\n` +
-                `   Distance: ${clinic.distance}km\n` +
-                `   Phone: ${clinic.phone}`
+              result = "Here are the nearest clinic locations.\n\n" + clinics.map((clinic: any) => 
+                `${clinic.description}\n${clinic.name}`
               ).join('\n\n')
             }
             break

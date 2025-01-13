@@ -1,9 +1,35 @@
 <template>
   <UCard>
     <template #header>
-      <div class="flex items-center gap-2">
-        <UIcon name="i-lucide-message-square" class="text-primary" />
-        <h3 class="font-medium">SMS Sender</h3>
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <UIcon name="i-lucide-message-square" class="text-primary" />
+          <h3 class="font-medium">SMS Sender</h3>
+        </div>
+
+
+        <!-- Help Documentation Modal -->
+        <USlideover v-model="helpModal">
+
+          <UButton variant="ghost" color="neutral" icon="i-lucide-help-circle" size="sm"
+            class="text-sm flex items-center gap-1" @click="helpModal = true">
+            Help
+          </UButton>
+          <template #content>
+
+            <UCard class="w-full overflow-auto">
+              <template #header>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <UIcon name="i-lucide-book-open" class="text-primary" />
+                    <h3 class="font-medium">SMS Messaging</h3>
+                  </div>
+                </div>
+              </template>
+              <ContentRenderer :value="helpContent" class="prose dark:prose-invert max-w-none" />
+            </UCard>
+          </template>
+        </USlideover>
       </div>
     </template>
 
@@ -35,12 +61,7 @@
                 <!-- AI Generation Section -->
                 <UCard>
                   <UCollapsible>
-                    <UButton
-                      block
-                      color="primary"
-                      variant="ghost"
-                      class="justify-between"
-                    >
+                    <UButton block color="primary" variant="ghost" class="justify-between">
                       <div class="flex items-center gap-2">
                         <UIcon name="i-lucide-sparkles" />
                         <span>SMS Template Generator</span>
@@ -53,54 +74,29 @@
                         <UForm @submit="generateTemplate" :state="generateAiTemplateState">
                           <div class="space-y-4">
                             <UFormField label="Purpose" required>
-                              <UTextarea
-                                required
-                                v-model="aiForm.purpose"
-                                class="w-full"
-                                autoresize
-                                :rows="2"
-                                placeholder="Describe what you want to communicate..."
-                              />
+                              <UTextarea required v-model="aiForm.purpose" class="w-full" autoresize :rows="2"
+                                placeholder="Describe what you want to communicate..." />
                             </UFormField>
                             <div class="grid grid-cols-2 gap-4">
                               <UFormField label="Language">
-                                <USelect
-                                  v-model="aiForm.language"
-                                  :items="languages"
-                                  placeholder="Select language"
-                                  icon="i-lucide-languages"
-                                />
+                                <USelect v-model="aiForm.language" :items="languages" placeholder="Select language"
+                                  icon="i-lucide-languages" />
                               </UFormField>
                               <UFormField label="Tone">
-                                <USelect
-                                  v-model="aiForm.tone"
-                                  :items="tones"
-                                  placeholder="Select tone"
-                                  icon="i-lucide-message-square"
-                                />
+                                <USelect v-model="aiForm.tone" :items="tones" placeholder="Select tone"
+                                  icon="i-lucide-message-square" />
                               </UFormField>
                             </div>
                             <UFormField label="Max Length">
                               <div class="flex items-center gap-2">
-                                <USlider
-                                  v-model="aiForm.maxLength"
-                                  :min="50"
-                                  :max="320"
-                                  :step="10"
-                                  class="flex-1"
-                                />
+                                <USlider v-model="aiForm.maxLength" :min="50" :max="320" :step="10" class="flex-1" />
                                 <span class="text-sm text-gray-500 w-16 text-right">
                                   {{ aiForm.maxLength }} chars
                                 </span>
                               </div>
                             </UFormField>
                             <div class="flex justify-end">
-                              <UButton
-                                type="submit"
-                                color="primary"
-                                :loading="isGenerating"
-                                icon="i-lucide-sparkles"
-                              >
+                              <UButton type="submit" color="primary" :loading="isGenerating" icon="i-lucide-sparkles">
                                 Generate
                               </UButton>
                             </div>
@@ -157,7 +153,7 @@
         </UModal>
         <UTextarea v-model="formState.message" :rows="4" placeholder="Enter your message here..." class="w-full" />
         <span class="text-xs text-gray-500 mt-1">{{ messageCount }} characters</span>
-        
+
         <!-- Template Slots Section -->
         <div v-if="messageSlots.length > 0" class="mt-4 space-y-3 border rounded-lg p-4 bg-gray-50 dark:bg-gray-900">
           <div class="flex items-center gap-2">
@@ -165,36 +161,20 @@
             <span class="font-medium">Fill in the template details</span>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <UFormField 
-              v-for="slot in messageSlots" 
-              :key="slot"
-              :label="formatSlotLabel(slot)"
-              required
-            >
+            <UFormField v-for="slot in messageSlots" :key="slot" :label="formatSlotLabel(slot)" required>
               <template v-if="slot === 'date'">
                 <UPopover>
-                  <UButton
-                    block
-                    color="primary"
-                    variant="soft"
-                    :icon="slotValues[slot] ? undefined : 'i-lucide-calendar'"
-                  >
+                  <UButton block color="primary" variant="soft"
+                    :icon="slotValues[slot] ? undefined : 'i-lucide-calendar'">
                     {{ slotValues[slot] ? formatDate(slotValues[slot] as DateValue) : 'Select date' }}
                   </UButton>
                   <template #content>
-                    <UCalendar
-                      v-model="slotValues[slot]"
-                      @update:model-value="updateMessageWithSlots"
-                    />
+                    <UCalendar v-model="slotValues[slot]" @update:model-value="updateMessageWithSlots" />
                   </template>
                 </UPopover>
               </template>
-              <UInput
-                v-else
-                v-model="slotValues[slot]"
-                :placeholder="'Enter ' + formatSlotLabel(slot).toLowerCase()"
-                @input="updateMessageWithSlots"
-              />
+              <UInput v-else v-model="slotValues[slot]" :placeholder="'Enter ' + formatSlotLabel(slot).toLowerCase()"
+                @input="updateMessageWithSlots" />
             </UFormField>
           </div>
         </div>
@@ -215,8 +195,7 @@
     <template v-if="lastResult" #footer>
       <div class="space-y-2">
         <div class="flex items-center gap-2">
-          <UIcon
-            :name="lastResult.success ? 'i-lucide-check-circle' : 'i-lucide-alert-triangle'"
+          <UIcon :name="lastResult.success ? 'i-lucide-check-circle' : 'i-lucide-alert-triangle'"
             :class="lastResult.success ? 'text-success' : 'text-error'" />
           <span :class="lastResult.success ? 'text-success' : 'text-error'">
             {{ lastResult.message }}
@@ -235,6 +214,13 @@ import { smsTemplates, categories, getTemplateIcon, getTemplateColor, generateAi
 import type { DateValue } from '@internationalized/date'
 
 const toast = useToast()
+const helpModal = ref(false)
+
+const { data: helpContent } = await useAsyncData('sms-docs', async () => {
+  const doc = await queryCollection('docs').all()
+  console.log('Available docs:', doc)
+  return doc.find(d => d.title === 'SMS Messaging')
+})
 
 interface Props {
   templateId?: string
@@ -363,10 +349,10 @@ const areSlotsValid = computed(() => {
 
 // Update isValid to include slot validation
 const isValid = computed(() => {
-  return formState.value.countryCode && 
-         formState.value.phoneNumber && 
-         formState.value.message && 
-         areSlotsValid.value
+  return formState.value.countryCode &&
+    formState.value.phoneNumber &&
+    formState.value.message &&
+    areSlotsValid.value
 })
 
 // Load initial template if templateId is provided
@@ -467,7 +453,7 @@ async function sendMessage() {
     }
   } catch (error: any) {
     const errorMessage = error.data?.message || error.message || 'Failed to send SMS'
-    
+
     toast.add({
       title: 'Error',
       description: errorMessage,

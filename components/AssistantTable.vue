@@ -62,15 +62,10 @@ import PromptSlideover from './PromptSlideover.vue'
 import CallSlideover from './CallSlideover.vue'
 
 const UButton = resolveComponent('UButton')
-const UBadge = resolveComponent('UBadge')
 const UDropdownMenu = resolveComponent('UDropdownMenu')
 const UIcon = resolveComponent('UIcon')
 const UTooltip = resolveComponent('UTooltip')
-const UPopover = resolveComponent('UPopover')
 const UInput = resolveComponent('UInput')
-const UForm = resolveComponent('UForm')
-const UFormField = resolveComponent('UFormField')
-const USelect = resolveComponent('USelect')
 
 const toast = useToast()
 const { t } = useI18n()

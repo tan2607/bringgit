@@ -82,6 +82,12 @@ const items = computed(() => [
         to: localeRoute('/scheduling')?.path
     },
     {
+        label: 'Phone Numbers',
+        icon: 'i-lucide-phone',
+        description: 'Manage phone numbers',
+        to: localeRoute('/numbers')?.path
+    },
+    {
         label: 'Demo',
         icon: 'i-lucide-layout-template',
         description: 'View demo pages',
@@ -144,13 +150,7 @@ const items = computed(() => [
                 icon: 'i-lucide-settings',
                 description: t('configure-preferences'),
                 to: localeRoute('/settings')?.path
-            }
-        ]
-    },
-    {
-        label: t('dev-tools'),
-        icon: 'i-lucide-wrench',
-        children: [
+            },
             {
                 label: t('view-api'),
                 icon: 'i-lucide-file-json',

@@ -22,10 +22,10 @@ export const usePhoneNumbers = () => {
     
     try {
       isLoading.value = true
-      const { data: response } = await useFetch<{ success: boolean, numbers: PhoneNumber[] }>('/api/numbers')
+      const { success, numbers: fetchedNumbers } = await $fetch<{ success: boolean, numbers: PhoneNumber[] }>('/api/numbers')
       
-      if (response.value?.success) {
-        numbers.value = response.value.numbers.filter(n => n.status !== 'inactive')
+      if (success) {
+        numbers.value = fetchedNumbers.filter(n => n.status !== 'inactive')
         lastFetchTime.value = Date.now()
       } else {
         throw new Error('Failed to fetch phone numbers')
