@@ -21,7 +21,7 @@
                 </UFormField>
 
                 <UFormField :label="t('assistant.language')" class="w-full" required>
-                  <USelect v-model="assistant.language" :items="languageOptions" option-attribute="value" class="w-full" />
+                  <USelect v-model="assistant.transcriber?.language" :items="languageOptions" option-attribute="value" class="w-full" />
                   <template #help>
                     {{ t('assistant.language-help') }}
                   </template>
@@ -35,28 +35,28 @@
                 </UFormField>
 
                 <UFormField :label="t('assistant.systemPrompt')" required>
-                  <UTextarea v-model="assistant.systemPrompt" :rows="5" />
+                  <UTextarea v-model="assistant.model?.messages?.[0]?.content" :rows="5" />
                   <template #help>
                     {{ t('assistant.systemPrompt-help') }}
                   </template>
                 </UFormField>
 
                 <UFormField :label="t('assistant.llm')">
-                  <USelect v-model="assistant.llm" :items="llmOptions" option-attribute="value" />
+                  <USelect v-model="assistant.model?.provider" :items="llmOptions" option-attribute="value" />
                   <template #help>
                     {{ t('assistant.llm-help') }}
                   </template>
                 </UFormField>
 
                 <UFormField :label="t('assistant.temperature')">
-                  <UInput type="range" v-model="assistant.temperature" :min="0" :max="2" :step="0.1" />
+                  <UInput type="range" v-model="assistant.model?.temperature" :min="0" :max="2" :step="0.1" />
                   <template #help>
                     {{ t('assistant.temperature-help') }}
                   </template>
                 </UFormField>
 
                 <UFormField :label="t('assistant.tokenLimit')">
-                  <UInput v-model="assistant.tokenLimit" type="number" placeholder="-1" />
+                  <UInput v-model="assistant.model?.maxTokens" type="number" placeholder="-1" />
                   <template #help>
                     {{ t('assistant.tokenLimit-help') }}
                   </template>
@@ -64,7 +64,7 @@
 
                 <div class="flex justify-end gap-2">
                   <UButton color="neutral" variant="outline" :label="t('assistant.cancel')" @click="close" />
-                  <UButton color="black" variant="solid" :label="t('assistant.save')" @click="save" />
+                  <UButton color="primary" variant="solid" :label="t('assistant.save')" @click="save" />
                 </div>
               </div>
 
@@ -74,7 +74,7 @@
                 <div class="space-y-4">
                   <div class="flex items-center justify-between">
                     <h3 class="text-lg font-medium">{{ t('analysis.evaluation-criteria') }}</h3>
-                    <UButton color="black" variant="solid" :label="t('analysis.add-criteria')"
+                    <UButton color="primary" variant="solid" :label="t('analysis.add-criteria')"
                       @click="$emit('add-criteria')" />
                   </div>
 
@@ -100,7 +100,7 @@
                 <div class="space-y-4">
                   <div class="flex items-center justify-between">
                     <h3 class="text-lg font-medium">{{ t('analysis.data-collection') }}</h3>
-                    <UButton color="black" variant="solid" :label="t('analysis.add-data-item')"
+                    <UButton color="primary" variant="solid" :label="t('analysis.add-data-item')"
                       @click="$emit('add-data-item')" />
                   </div>
 
@@ -131,8 +131,8 @@
       </div>
     </template>
     <template #footer>
-      <div class="flex justify-end gap-2">
-        <UButton color="black" variant="outline" :label="t('assistant.test')" @click="$emit('test')" />
+      <div class="flex w-full justify-end gap-2">
+        <UButton color="primary" variant="outline" :label="t('assistant.test')" @click="$emit('test')" />
       </div>
     </template>
   </USlideover>

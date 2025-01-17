@@ -6,7 +6,12 @@ export interface Job {
   progress: number
   totalCalls: number
   completedCalls: number
+  failedCalls: number
+  failedNumbers: string[]
   phoneNumbers: string[]
+  assistantId: string
+  phoneNumberId: string
+  lastProcessedAt?: Date
   notes?: string
 }
 
@@ -45,39 +50,88 @@ export const useJobState = () => {
     }
   }))
 
-  const startJobProgress = (jobId: string) => {
-    const interval = setInterval(() => {
-      const jobIndex = state.value.jobs.findIndex(j => j.id === jobId)
-      if (jobIndex === -1 || state.value.jobs[jobIndex].status !== 'running') {
-        clearInterval(interval)
-        return
+  // Subscribe to job updates
+  const { jobUpdates } = useJobUpdates()
+  watch(jobUpdates, (updates) => {
+    updates.forEach(update => {
+      const jobIndex = state.value.jobs.findIndex(j => j.id === update.jobId)
+      if (jobIndex !== -1) {
+        state.value.jobs[jobIndex] = {
+          ...state.value.jobs[jobIndex],
+          ...update.status
+        }
+      }
+    })
+  })
+
+  const startJob = async (jobId: string) => {
+    state.value.loadingJobId = jobId
+    try {
+      const job = state.value.jobs.find(j => j.id === jobId)
+      if (!job) return false
+
+      // Validate phone numbers before starting
+      const response = await $fetch('/api/queue/jobs', {
+        method: 'POST',
+        body: {
+          jobId,
+          phoneNumbers: job.phoneNumbers,
+          assistantId: job.assistantId,
+          phoneNumberId: job.phoneNumberId
+        }
+      })
+
+      if (response.success) {
+        const jobIndex = state.value.jobs.findIndex(j => j.id === jobId)
+        if (jobIndex !== -1) {
+          state.value.jobs[jobIndex] = {
+            ...state.value.jobs[jobIndex],
+            status: 'running',
+            lastProcessedAt: new Date()
+          }
+        }
+        return true
+      }
+
+      // Handle validation errors
+      if (response.error) {
+        const jobIndex = state.value.jobs.findIndex(j => j.id === jobId)
+        if (jobIndex !== -1) {
+          state.value.jobs[jobIndex] = {
+            ...state.value.jobs[jobIndex],
+            status: 'failed',
+            failedNumbers: response.failedNumbers || [],
+            notes: response.error
+          }
+        }
       }
       
-      const job = state.value.jobs[jobIndex]
-      if (job.completedCalls < job.totalCalls) {
-        job.completedCalls++
-        job.progress = Math.round((job.completedCalls / job.totalCalls) * 100)
-        state.value.jobs[jobIndex] = { ...job }
-      } else {
-        job.status = 'completed'
-        job.progress = 100
-        state.value.jobs[jobIndex] = { ...job }
-        clearInterval(interval)
-      }
-    }, 1000)
+      return false
+    } catch (error) {
+      console.error('Error starting job:', error)
+      return false
+    } finally {
+      state.value.loadingJobId = null
+    }
   }
 
   const pauseJob = async (jobId: string) => {
     state.value.loadingJobId = jobId
     try {
-      const jobIndex = state.value.jobs.findIndex(job => job.id === jobId)
-      if (jobIndex !== -1) {
-        state.value.jobs[jobIndex] = {
-          ...state.value.jobs[jobIndex],
-          status: 'paused'
+      const response = await $fetch(`/api/jobs/${jobId}/pause`, { method: 'POST' })
+      
+      if (response.success) {
+        const jobIndex = state.value.jobs.findIndex(job => job.id === jobId)
+        if (jobIndex !== -1) {
+          state.value.jobs[jobIndex] = {
+            ...state.value.jobs[jobIndex],
+            status: 'paused',
+            lastProcessedAt: new Date()
+          }
         }
+        return true
       }
-      return true
+      return false
     } catch (error) {
       console.error('Error pausing job:', error)
       return false
@@ -89,15 +143,20 @@ export const useJobState = () => {
   const resumeJob = async (jobId: string) => {
     state.value.loadingJobId = jobId
     try {
-      const jobIndex = state.value.jobs.findIndex(job => job.id === jobId)
-      if (jobIndex !== -1) {
-        state.value.jobs[jobIndex] = {
-          ...state.value.jobs[jobIndex],
-          status: 'running'
+      const response = await $fetch(`/api/jobs/${jobId}/resume`, { method: 'POST' })
+      
+      if (response.success) {
+        const jobIndex = state.value.jobs.findIndex(job => job.id === jobId)
+        if (jobIndex !== -1) {
+          state.value.jobs[jobIndex] = {
+            ...state.value.jobs[jobIndex],
+            status: 'running',
+            lastProcessedAt: new Date()
+          }
         }
-        startJobProgress(jobId)
+        return true
       }
-      return true
+      return false
     } catch (error) {
       console.error('Error resuming job:', error)
       return false
@@ -109,16 +168,22 @@ export const useJobState = () => {
   const stopJob = async (jobId: string) => {
     state.value.loadingJobId = jobId
     try {
-      const jobIndex = state.value.jobs.findIndex(job => job.id === jobId)
-      if (jobIndex !== -1) {
-        state.value.jobs[jobIndex] = {
-          ...state.value.jobs[jobIndex],
-          status: 'completed',
-          progress: 100,
-          completedCalls: state.value.jobs[jobIndex].totalCalls
+      const response = await $fetch(`/api/jobs/${jobId}/stop`, { method: 'POST' })
+      
+      if (response.success) {
+        const jobIndex = state.value.jobs.findIndex(job => job.id === jobId)
+        if (jobIndex !== -1) {
+          state.value.jobs[jobIndex] = {
+            ...state.value.jobs[jobIndex],
+            status: 'completed',
+            progress: 100,
+            completedCalls: state.value.jobs[jobIndex].totalCalls,
+            lastProcessedAt: new Date()
+          }
         }
+        return true
       }
-      return true
+      return false
     } catch (error) {
       console.error('Error stopping job:', error)
       return false
@@ -127,27 +192,38 @@ export const useJobState = () => {
     }
   }
 
-  const createJob = async (jobData: Omit<Job, 'id' | 'status' | 'progress' | 'completedCalls'>) => {
+  const createJob = async (jobData: Omit<Job, 'id' | 'status' | 'progress' | 'completedCalls' | 'failedCalls' | 'failedNumbers' | 'lastProcessedAt'>) => {
     try {
       const newJob: Job = {
         id: crypto.randomUUID(),
         ...jobData,
         status: 'pending',
         progress: 0,
-        completedCalls: 0
+        completedCalls: 0,
+        failedCalls: 0,
+        failedNumbers: [],
+        lastProcessedAt: new Date()
       }
       
-      state.value.jobs.push(newJob)
-      newJob.status = 'running'
-      startJobProgress(newJob.id)
-      
-      // Reset state
-      state.value.phoneNumbers = []
-      state.value.isFileUploaded = false
-      state.value.uploadStatus = 'No file uploaded'
-      state.value.openScheduleModal = false
-      
-      return true
+      // Save job to database first
+      const response = await $fetch('/api/jobs', {
+        method: 'POST',
+        body: newJob
+      })
+
+      if (response.success) {
+        state.value.jobs.push(newJob)
+        await startJob(newJob.id)
+        
+        // Reset state
+        state.value.phoneNumbers = []
+        state.value.isFileUploaded = false
+        state.value.uploadStatus = 'No file uploaded'
+        state.value.openScheduleModal = false
+        
+        return true
+      }
+      return false
     } catch (error) {
       console.error('Error creating job:', error)
       return false
@@ -156,7 +232,7 @@ export const useJobState = () => {
 
   return {
     state,
-    startJobProgress,
+    startJob,
     pauseJob,
     resumeJob,
     stopJob,

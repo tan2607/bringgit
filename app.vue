@@ -79,7 +79,26 @@ const items = computed(() => [
         label: t('scheduling'),
         icon: 'i-lucide-calendar',
         description: t('manage-schedule'),
-        to: localeRoute('/scheduling')?.path
+        children: [
+            {
+                label: 'Jobs',
+                icon: 'i-lucide-briefcase',
+                description: 'Manage scheduled jobs',
+                to: localeRoute('/scheduling')?.path
+            },
+            {
+                label: 'Reports',
+                icon: 'i-lucide-bar-chart',
+                description: 'View job reports and analytics',
+                to: localeRoute('/scheduling/reports')?.path
+            },
+            {
+                label: 'Settings',
+                icon: 'i-lucide-settings',
+                description: 'Configure scheduling settings',
+                to: localeRoute('/scheduling/settings')?.path
+            }
+        ]
     },
     {
         label: 'Phone Numbers',

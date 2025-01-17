@@ -17,25 +17,31 @@
               <!-- Agent Tab -->
               <div v-if="item.value === 'agent'" class="space-y-4">
                 <UFormField :label="t('assistant.name')" required>
-                  <UInput v-model="assistant.name" />
+                  <UInput class="w-full" v-model="assistant.name" />
                 </UFormField>
 
-                <UFormField :label="t('assistant.language')" required>
-                  <USelect v-model="assistant.language" :items="languageOptions" option-attribute="label" />
+                <UFormField :label="t('assistant.transcriber.language')" required>
+                  <USelect 
+                  class="w-full"
+                  v-model="assistant.transcriber.language" :items="languageOptions" option-attribute="label" />
                   <template #help>
                     {{ t('assistant.language-help') }}
                   </template>
                 </UFormField>
 
                 <UFormField :label="t('assistant.firstMessage')" required>
-                  <UTextarea v-model="assistant.firstMessage" :rows="3" />
+                  <UTextarea 
+                  class="w-full"
+                  v-model="assistant.firstMessage" :rows="2" />
                   <template #help>
                     {{ t('assistant.firstMessage-help') }}
                   </template>
                 </UFormField>
 
                 <UFormField :label="t('assistant.systemPrompt')" required>
-                  <UTextarea v-model="assistant.systemPrompt" :rows="5" />
+                  <UTextarea 
+                  class="w-full"
+                  v-model="assistant.model.messages[0].content" :rows="10" autoresize :maxrows="30" />
                   <template #help>
                     {{ t('assistant.systemPrompt-help') }}
                   </template>
@@ -61,7 +67,7 @@
                           <h4 class="font-medium">{{ criterion.name }}</h4>
                           <p class="text-sm text-gray-500">{{ criterion.description }}</p>
                         </div>
-                        <UButton color="red" variant="ghost" icon="i-lucide-trash-2" size="xs"
+                        <UButton color="error" variant="ghost" icon="i-lucide-trash-2" size="xs"
                           @click="deleteCriterion(criterion.id)" />
                       </div>
                     </UCard>
@@ -78,8 +84,8 @@
     </template>
 
     <template #footer>
-      <div class="flex justify-end gap-2">
-        <UButton color="gray" variant="soft" @click="close">
+      <div class="flex w-full justify-end gap-2">
+        <UButton color="neutral" variant="soft" @click="close">
           {{ t('cancel') }}
         </UButton>
         <UButton color="primary" :loading="isLoading" :disabled="!isValid" @click="save">
@@ -95,23 +101,18 @@ import { useI18n } from 'vue-i18n'
 import { useAssistantState } from '@/composables/useAssistantState'
 import TestSlideover from './assistant/TestSlideover.vue'
 import CriteriaSlideover from './assistant/CriteriaSlideover.vue'
-import type { Assistant } from '@/types'
+import { Vapi } from '@vapi-ai/server-sdk'
+import { languages } from '~/i18n/languages'
 
 const { t } = useI18n()
 const slideover = useSlideover()
 const assistantState = useAssistantState()
 
 const props = defineProps<{
-  assistant?: Assistant
+  assistant?: Vapi.Assistant
 }>()
 
-const assistant = ref<Assistant>(props.assistant || {
-  name: '',
-  language: 'en',
-  firstMessage: '',
-  systemPrompt: '',
-  criteria: []
-})
+const assistant = ref<Vapi.Assistant>(props.assistant)
 
 const isLoading = ref(false)
 
@@ -128,17 +129,16 @@ const tabs = computed(() => [
   }
 ])
 
-const languageOptions = [
-  { value: 'en', label: 'English' },
-  { value: 'es', label: 'Spanish' },
-  { value: 'fr', label: 'French' }
-]
+const languageOptions = computed(() => languages.map(lang => ({
+  value: lang.code,
+  label: lang.name
+})))
 
 const isValid = computed(() => {
   return assistant.value.name &&
-    assistant.value.language &&
+    assistant.value.transcriber?.language &&
     assistant.value.firstMessage &&
-    assistant.value.systemPrompt
+    assistant.value.model?.messages?.[0]?.content
 })
 
 const close = () => {

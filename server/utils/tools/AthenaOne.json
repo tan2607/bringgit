@@ -1,0 +1,405 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "AthenaHealth API",
+      "version": "1.0.0",
+      "description": "API for accessing AthenaHealth services including access token retrieval, departments, providers, appointment reasons, slots, patients, and booking appointments."
+    },
+    "servers": [
+      {
+        "url": "https://api.preview.platform.athenahealth.com"
+      }
+    ],
+    "paths": {
+      "/v1/{practiceid}/departments": {
+        "get": {
+          "summary": "Fetch List of Departments",
+          "operationId": "getDepartments",
+          "parameters": [
+            {
+              "name": "practiceid",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "List of departments",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      },
+      "/v1/{practiceid}/providers": {
+        "get": {
+          "summary": "Fetch List of Providers",
+          "operationId": "getProviders",
+          "parameters": [
+            {
+              "name": "practiceid",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "departmentid",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "List of providers",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      },
+      "/v1/{practiceid}/patientappointmentreasons": {
+        "get": {
+          "summary": "Fetch list of appointment reasons",
+          "operationId": "getAppointmentReasons",
+          "parameters": [
+            {
+              "name": "practiceid",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "providerid",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "departmentid",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "List of appointment reasons",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "reason": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      },
+      "/v1/{practiceid}/appointments/open": {
+        "get": {
+          "summary": "Fetch Available Appointment Slots",
+          "operationId": "getAvailableAppointmentSlots",
+          "parameters": [
+            {
+              "name": "practiceid",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "departmentid",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "providerid",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "reasonid",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "List of available appointment slots",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "appointmentid": {
+                          "type": "string"
+                        },
+                        "date": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "time": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      },
+      "/v1/{practiceid}/patients": {
+        "get": {
+          "summary": "Search for Existing Patient",
+          "operationId": "searchPatient",
+          "parameters": [
+            {
+              "name": "practiceid",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "firstname",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "lastname",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "dob",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "date",
+                "example": "MM/DD/YYYY"
+              }
+            },          {
+              "name": "mobilephone",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Patient search results",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "patientid": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "dob": {
+                          "type": "string",
+                          "format": "date"
+                        },
+                        "phone": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      },
+      "/v1/{practiceid}/appointments/{appointmentid}": {
+        "put": {
+          "summary": "Book an Appointment for a Patient",
+          "operationId": "bookAppointment",
+          "parameters": [
+            {
+              "name": "practiceid",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "appointmentid",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "patientid": {
+                      "type": "string"
+                    },
+                    "reasonid": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["patientid", "reasonid"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Appointment successfully booked",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "appointmentid": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      }
+    },
+    "components": {
+      "securitySchemes": {
+        "bearerAuth": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT",
+          "description": "Authorization using Bearer token"
+        }
+      }
+    }
+  }

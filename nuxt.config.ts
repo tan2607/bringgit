@@ -27,6 +27,14 @@ export default defineNuxtConfig({
     authJs: {
       secret: process.env.NEXTAUTH_SECRET,
     },
+    cloudflare: {
+      queueName: 'call-queue',
+      queueRegion: 'apac', // or your preferred region
+      consumerConfig: {
+        maxBatchSize: 1,
+        maxBatchTimeout: 30
+      }
+    },
     public: {
       googleApiKey: process.env.GOOGLE_API_KEY,
       authJs: {

@@ -9,7 +9,7 @@
     "dev": "nuxt dev",
     "preview": "nuxt preview",
     "cleanup": "nuxt cleanup",
-    "upgrade": "npx nuxi@latest upgrade --force"
+    "upgrade": "bun x nuxi@latest upgrade --force"
   },
   "dependencies": {
     "@auth/core": "0.37.4",
@@ -23,7 +23,7 @@
     "@internationalized/date": "^3.6.0",
     "@nuxt/content": "next",
     "@nuxt/icon": "latest",
-    "@nuxt/ui-pro": "https://pkg.pr.new/@nuxt/ui-pro@364cc97",
+    "@nuxt/ui-pro": "3.0.0-alpha.11",
     "@nuxthub/core": "latest",
     "@nuxtjs/i18n": "latest",
     "@nuxtjs/mdc": "latest",

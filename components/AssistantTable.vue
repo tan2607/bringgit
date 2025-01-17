@@ -60,6 +60,7 @@ import { upperFirst } from 'scule'
 import AssistantSlideover from './AssistantSlideover.vue'
 import PromptSlideover from './PromptSlideover.vue'
 import CallSlideover from './CallSlideover.vue'
+import type { Vapi } from '@vapi-ai/server-sdk'
 
 const UButton = resolveComponent('UButton')
 const UDropdownMenu = resolveComponent('UDropdownMenu')
@@ -71,22 +72,23 @@ const toast = useToast()
 const { t } = useI18n()
 const slideover = useSlideover()
 
-interface Assistant {
-  id: string
-  name: string
-  firstMessage: string
-  prompt: string
-  model: {
-    model: string
-    provider: string
-  }
-  voice: {
-    provider: string
-    voiceId: string
-  }
-  createdAt: string
-  instructions: string
-}
+type Assistant = Vapi.Assistant
+// interface Assistant {
+//   id: string
+//   name: string
+//   firstMessage: string
+//   prompt: string
+//   model: {
+//     model: string
+//     provider: string
+//   }
+//   voice: {
+//     provider: string
+//     voiceId: string
+//   }
+//   createdAt: string
+//   instructions: string
+// }
 
 const props = defineProps<{
   data: Assistant[]
@@ -151,20 +153,35 @@ const columns: TableColumn<Assistant>[] = [
             assistant: row.original
           })
         }
-      })
+      }),
+      h(UButton, {
+        color: 'primary',
+        variant: 'ghost',
+        size: 'xs',
+        href: `https://vai.keyreply.com/${row.original.name}`,
+        target: '_blank',
+        rel: 'noopener noreferrer',
+        class: 'text-primary hover:text-primary-600',
+        title: 'Open Web Link'
+      }, [
+        h(resolveComponent('UIcon'), {
+          name: 'i-lucide-globe',
+          size: 'sm'
+        })
+      ])        
     ])
   },
   {
     accessorKey: 'model',
     header: () => t('model'),
     cell: ({ row }) => {
-      const model = row.getValue('model')
+      const model = row.getValue('model') as Vapi.Assistant['model']
       return h('div', { class: 'flex items-center gap-2' }, [
         h(UIcon, {
-          name: model.provider === 'openai' ? 'i-lucide-bot' : 'i-lucide-cpu',
+          name: model?.provider === 'openai' ? 'i-lucide-bot' : 'i-lucide-cpu',
           class: 'w-4 h-4'
         }),
-        h('span', {}, model.model)
+        h('span', {}, model?.model)
       ])
     }
   },
@@ -173,13 +190,13 @@ const columns: TableColumn<Assistant>[] = [
     accessorKey: 'voice',
     header: () => t('voice'),
     cell: ({ row }) => {
-      const voice = row.getValue('voice')
+      const voice = row.getValue('voice') as Vapi.Assistant['voice']
       return h('div', { class: 'flex items-center gap-2' }, [
         h(UIcon, {
-          name: voice.provider === 'elevenlabs' ? 'i-lucide-mic-2' : 'i-lucide-mic',
+          name: voice?.provider === '11labs' ? 'i-lucide-mic-2' : 'i-lucide-mic',
           class: 'w-4 h-4'
         }),
-        h('span', {}, voice.provider + ' / ' + voice.voiceId)
+        h('span', {}, voice?.provider + ' / ' + voice?.voiceId)
       ])
     }
   },
@@ -282,9 +299,7 @@ function getRowItems(row: Row<Assistant>) {
 function openEditSlideover(row: Row<Assistant>) {
   slideover.open(AssistantSlideover, {
     title: t('assistant.edit'),
-    props: {
-      assistant: row.original
-    }
+    assistant: row.original
   })
 }
 

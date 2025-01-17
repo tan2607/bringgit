@@ -99,8 +99,14 @@
                         class="w-full"
                         v-model="form.port"
                         type="number"
+                        min="1"
+                        max="65535"
                         placeholder="Enter port (default: 5060)"
+                        @input="validatePort"
                       />
+                      <template #help>
+                        <span class="text-xs text-gray-500">Valid port range: 1-65535</span>
+                      </template>
                     </UFormField>
 
                     <UFormField
@@ -190,7 +196,7 @@ const form = ref({
   name: '',
   phoneNumber: '',
   domain: '',
-  port: '5060',
+  port: 5060,
   protocol: 'tcp',
   username: '',
   password: '',
@@ -200,7 +206,10 @@ const schema = z.object({
   name: z.string().min(1, 'Name is required'),
   phoneNumber: z.string().min(1, 'Phone number is required'),
   domain: z.string().min(1, 'Domain is required'),
-  port: z.string().regex(/^\d+$/, 'Port must be a number').transform(Number),
+  port: z.number()
+    .min(1, 'Port must be at least 1')
+    .max(65535, 'Port cannot exceed 65535')
+    .default(5060),
   protocol: z.enum(['tcp', 'udp']),
   username: z.string(),
   password: z.string(),
@@ -241,12 +250,31 @@ const filteredNumbers = computed(() => {
   )
 })
 
+const validatePort = (event: Event) => {
+  const input = event.target as HTMLInputElement
+  const value = parseInt(input.value)
+  
+  // Ensure the value is within valid port range
+  if (value < 1) {
+    form.value.port = 1
+  } else if (value > 65535) {
+    form.value.port = 65535
+  } else if (isNaN(value)) {
+    form.value.port = 5060
+  } else {
+    form.value.port = value
+  }
+}
+
 const handleSubmit = async (event: any) => {
   try {
     isSubmitting.value = true
     const response = await $fetch('/api/numbers', {
       method: 'POST',
-      body: form.value
+      body: {
+        ...form.value,
+        port: parseInt(form.value.port)
+      }
     })
 
     if (response.success) {
