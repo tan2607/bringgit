@@ -175,7 +175,6 @@ export default defineNuxtConfig({
   },
   alias: {
     "process/": "process",
-    "string_decoder": "string_decoder/",
     cookie: "cookie",
   }
 })
