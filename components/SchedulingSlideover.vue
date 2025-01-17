@@ -80,8 +80,6 @@
             <UFormField label="Select Outbound Phone Number">
               <PhoneNumberSelect v-model="selectedNumber" class="w-full" />
             </UFormField>
-
-
           </div>
 
           <div class="flex items-center justify-between">
@@ -148,19 +146,127 @@
       <UProgress :value="completedPercentage" :color="isPaused ? 'gray' : 'primary'" size="sm" />
     </div>
   </USlideover>
+
+  <USlideover v-model="isOpen" title="Create Job">
+    <template #header>
+      <div class="space-y-4">
+        <UFormGroup label="Job Name" required>
+          <UInput v-model="state.jobName" placeholder="Enter job name" />
+        </UFormGroup>
+
+        <UFormGroup label="Assistant" required>
+          <USelect 
+            v-model="state.selectedAssistant"
+            :items="assistants.map(assistant => ({ value: assistant.id, label: assistant.name }))"
+            placeholder="Select Assistant" 
+            option-attribute="name" 
+            value-attribute="id"
+          />
+        </UFormGroup>
+
+        <UFormGroup label="Phone Number" required>
+          <PhoneNumberSelect v-model="state.selectedNumber" />
+        </UFormGroup>
+
+        <UFormGroup label="Call List" required>
+          <div class="border-2 border-dashed border-gray-200 rounded-lg p-4">
+            <input
+              type="file"
+              accept=".csv,.xlsx,.xls"
+              @change="handleFileUpload"
+              class="hidden"
+              ref="fileInput"
+            />
+            <div class="text-center space-y-2">
+              <UIcon name="i-lucide-upload" class="text-3xl text-gray-400" />
+              <div>
+                <UButton color="gray" variant="ghost" @click="() => fileInput?.click()">
+                  Choose File
+                </UButton>
+                <p class="text-sm text-gray-500 mt-1">or drag and drop</p>
+              </div>
+              <p class="text-xs text-gray-400">Supported formats: CSV, Excel (XLSX, XLS)</p>
+            </div>
+          </div>
+        </UFormGroup>
+
+        <div class="flex justify-end gap-2">
+          <UButton color="gray" variant="ghost" @click="slideover.close()">
+            Cancel
+          </UButton>
+          <UButton 
+            color="primary" 
+            :disabled="!state.jobName || !state.selectedAssistant || !state.selectedNumber"
+            :loading="state.isSubmitting"
+            @click="handleCreateJob"
+          >
+            Create Job
+          </UButton>
+        </div>
+      </div>
+    </template>
+  </USlideover>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useCallScheduler, CallStatus } from '@/composables/useCallScheduler'
 import { useAssistants } from '@/composables/useAssistants'
+import { useJobState } from '@/composables/useJobState'
 import TranscriptSlideover from '@/components/TranscriptSlideover.vue'
 import PhoneNumberSelect from '@/components/PhoneNumberSelect.vue'
 import * as XLSX from 'xlsx'
 
 const toast = useToast()
-
 const isOpen = defineModel('modelValue', { type: Boolean })
+const slideover = useSlideover()
+
+const state = useState('schedulingSlideover', () => ({
+  jobName: '',
+  selectedAssistant: null,
+  selectedNumber: null,
+  contacts: null,
+  isSubmitting: false
+}))
+
+const { createJob } = useJobState()
+const { assistants } = useAssistants()
+
+async function handleCreateJob() {
+  if (state.value.isSubmitting) return
+  
+  state.value.isSubmitting = true
+  try {
+    await createJob({
+      name: state.value.jobName,
+      assistantId: state.value.selectedAssistant,
+      phoneNumbers: [state.value.selectedNumber],
+      contacts: state.value.contacts,
+    })
+    slideover.close()
+    toast.add({
+      title: 'Success',
+      description: 'Job created successfully',
+      color: 'success'
+    })
+  } catch (error) {
+    console.error('Failed to create job:', error)
+    toast.add({
+      title: 'Error',
+      description: 'Failed to create job',
+      color: 'error'
+    })
+  } finally {
+    state.value.isSubmitting = false
+  }
+}
+
+function handleFileUpload(event: Event) {
+  const file = (event.target as HTMLInputElement).files?.[0]
+  if (file) {
+    state.value.contacts = file
+  }
+}
 
 const { 
   scheduledCalls,
@@ -315,7 +421,6 @@ const {
   simulationConfig,
 } = useCallScheduler()
 
-const slideover = useSlideover();
 const openTranscript = (call: any) => {
   const { selectedCall } = useCalls()
   selectedCall.value = call

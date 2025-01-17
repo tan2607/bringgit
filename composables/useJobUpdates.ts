@@ -44,12 +44,13 @@ export const useJobUpdates = () => {
       console.error('Job updates error:', error)
       connected.value = false
       
-      // Attempt to reconnect after 5 seconds
+      // Attempt to reconnect after 30 seconds
+      eventSource?.close()
+      eventSource = null
+
       setTimeout(() => {
-        eventSource?.close()
-        eventSource = null
         connect()
-      }, 5000)
+      }, 30000)
     }
   }
 
