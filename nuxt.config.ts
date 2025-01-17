@@ -27,14 +27,6 @@ export default defineNuxtConfig({
     authJs: {
       secret: process.env.NEXTAUTH_SECRET,
     },
-    cloudflare: {
-      queueName: 'call-queue',
-      queueRegion: 'apac', // or your preferred region
-      consumerConfig: {
-        maxBatchSize: 1,
-        maxBatchTimeout: 30
-      }
-    },
     public: {
       googleApiKey: process.env.GOOGLE_API_KEY,
       authJs: {
@@ -64,7 +56,7 @@ export default defineNuxtConfig({
   future: {
     compatibilityVersion: 4,
   },
-  compatibilityDate: '2024-09-02',
+  compatibilityDate: '2024-04-03',
   vite: {
     resolve: {
       alias: {
@@ -175,7 +167,6 @@ export default defineNuxtConfig({
   },
   alias: {
     "process/": "process",
-    "string_decoder/": "string_decoder",
     cookie: "cookie",
   }
 })
