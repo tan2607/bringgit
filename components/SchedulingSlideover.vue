@@ -68,6 +68,10 @@
         <div class="flex flex-col gap-4 mb-6">
 
           <div class="flex items-center gap-4">
+            <UFormField label="Job Name" required>
+              <UInput v-model="state.jobName" placeholder="Enter job name" />
+            </UFormField>
+            
             <UFormField label="Working Hours">
               <USelect v-model="selectedTimeWindow" :items="timeWindowOptions" class="w-48" />
             </UFormField>
@@ -96,11 +100,17 @@
             </div>
 
             <div class="flex justify-end space-x-2 mt-4">
+              <!-- handleCreateJob -->
+              <!-- <UButton v-if="scheduledCalls.length && !isSimulating" color="primary"
+                :disabled="!selectedAssistant || !selectedNumber" @click="handleCreateJob">
+                {{ !selectedAssistant || !selectedNumber ? 'Select Assistant & Phone Number' : 'Run Job' }}
+              </UButton> -->
+              
               <UButton v-if="scheduledCalls.length && !isSimulating" color="primary"
                 :disabled="!selectedAssistant || !selectedNumber" @click="runSimulation">
                 {{ !selectedAssistant || !selectedNumber ? 'Select Assistant & Phone Number' : 'Run Job' }}
               </UButton>
-              <UButton v-if="isSimulating" :color="isPaused ? 'primary' : 'yellow'"
+              <UButton v-if="isSimulating" :color="isPaused ? 'primary' : 'warning'"
                 @click="isPaused ? runSimulation() : pauseJob()">
                 {{ isPaused ? 'Resume Job' : 'Pause Job' }}
               </UButton>
@@ -139,73 +149,14 @@
           <UIcon v-if="!isPaused" name="i-heroicons-arrow-path" class="animate-spin" />
           <span>{{ completedCalls }} of {{ totalCalls }} calls completed</span>
         </div>
-        <UButton :color="isPaused ? 'primary' : 'yellow'" @click="isPaused ? runSimulation() : pauseJob()">
+        <UButton :color="isPaused ? 'primary' : 'warning'" @click="isPaused ? runSimulation() : pauseJob()">
           {{ isPaused ? 'Resume Job' : 'Pause Job' }}
         </UButton>
       </div>
-      <UProgress :value="completedPercentage" :color="isPaused ? 'gray' : 'primary'" size="sm" />
+      <UProgress :value="completedPercentage" :color="isPaused ? 'neutral' : 'primary'" size="sm" />
     </div>
   </USlideover>
 
-  <USlideover v-model="isOpen" title="Create Job">
-    <template #header>
-      <div class="space-y-4">
-        <UFormGroup label="Job Name" required>
-          <UInput v-model="state.jobName" placeholder="Enter job name" />
-        </UFormGroup>
-
-        <UFormGroup label="Assistant" required>
-          <USelect 
-            v-model="state.selectedAssistant"
-            :items="assistants.map(assistant => ({ value: assistant.id, label: assistant.name }))"
-            placeholder="Select Assistant" 
-            option-attribute="name" 
-            value-attribute="id"
-          />
-        </UFormGroup>
-
-        <UFormGroup label="Phone Number" required>
-          <PhoneNumberSelect v-model="state.selectedNumber" />
-        </UFormGroup>
-
-        <UFormGroup label="Call List" required>
-          <div class="border-2 border-dashed border-gray-200 rounded-lg p-4">
-            <input
-              type="file"
-              accept=".csv,.xlsx,.xls"
-              @change="handleFileUpload"
-              class="hidden"
-              ref="fileInput"
-            />
-            <div class="text-center space-y-2">
-              <UIcon name="i-lucide-upload" class="text-3xl text-gray-400" />
-              <div>
-                <UButton color="gray" variant="ghost" @click="() => fileInput?.click()">
-                  Choose File
-                </UButton>
-                <p class="text-sm text-gray-500 mt-1">or drag and drop</p>
-              </div>
-              <p class="text-xs text-gray-400">Supported formats: CSV, Excel (XLSX, XLS)</p>
-            </div>
-          </div>
-        </UFormGroup>
-
-        <div class="flex justify-end gap-2">
-          <UButton color="gray" variant="ghost" @click="slideover.close()">
-            Cancel
-          </UButton>
-          <UButton 
-            color="primary" 
-            :disabled="!state.jobName || !state.selectedAssistant || !state.selectedNumber"
-            :loading="state.isSubmitting"
-            @click="handleCreateJob"
-          >
-            Create Job
-          </UButton>
-        </div>
-      </div>
-    </template>
-  </USlideover>
 </template>
 
 <script setup lang="ts">
@@ -220,6 +171,7 @@ import * as XLSX from 'xlsx'
 const toast = useToast()
 const isOpen = defineModel('modelValue', { type: Boolean })
 const slideover = useSlideover()
+const fileInput = ref<HTMLInputElement | null>(null)
 
 const state = useState('schedulingSlideover', () => ({
   jobName: '',
@@ -229,8 +181,13 @@ const state = useState('schedulingSlideover', () => ({
   isSubmitting: false
 }))
 
-const { createJob } = useJobState()
-const { assistants } = useAssistants()
+const { createJob, pauseJob } = useJobState()
+const { assistants, fetchAssistants } = useAssistants()
+
+// Fetch assistants on mount
+onMounted(async () => {
+  await fetchAssistants()
+})
 
 async function handleCreateJob() {
   if (state.value.isSubmitting) return
@@ -273,7 +230,6 @@ const {
   isSimulating,
   generateMockData,
   runSimulation,
-  pauseJob,
   clearCalls
 } = useCallScheduler()
 
@@ -336,9 +292,6 @@ onBeforeUnmount(() => {
   stopStatusPolling()
 })
 
-const fileInput = ref<HTMLInputElement | null>(null)
-
-const { assistants, fetchAssistants } = useAssistants()
 const selectedAssistant = ref('')
 const selectedNumber = ref('')
 const numbers = ref([])
