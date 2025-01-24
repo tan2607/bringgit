@@ -101,18 +101,19 @@ import { useI18n } from 'vue-i18n'
 import { useAssistantState } from '@/composables/useAssistantState'
 import TestSlideover from './assistant/TestSlideover.vue'
 import CriteriaSlideover from './assistant/CriteriaSlideover.vue'
-import { Vapi } from '@vapi-ai/server-sdk'
+
 import { languages } from '~/i18n/languages'
+import type { Assistant } from '~/types/assistant'
 
 const { t } = useI18n()
 const slideover = useSlideover()
 const assistantState = useAssistantState()
 
 const props = defineProps<{
-  assistant?: Vapi.Assistant
+  assistant: Assistant
 }>()
 
-const assistant = ref<Vapi.Assistant>(props.assistant)
+const assistant = ref<Assistant>(props.assistant)
 
 const isLoading = ref(false)
 

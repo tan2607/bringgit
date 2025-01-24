@@ -54,8 +54,8 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { Vapi } from '@vapi-ai/server-sdk'
 import { defaultAssistant } from '~/types/assistant'
+import type { Assistant } from '~/types/assistant'
 import { useAssistant } from '~/composables/useAssistant'
 
 interface Props {
@@ -70,7 +70,7 @@ const slideover = useSlideover()
 const { templates, applyTemplate } = useAssistant()
 
 const selectedTemplate = ref('')
-const newAgent = reactive<Vapi.Assistant>({ ...defaultAssistant })
+const newAgent = reactive<Assistant>({ ...defaultAssistant })
 
 const isCreating = ref(false)
 const isValid = computed(() => newAgent.name && selectedTemplate.value)

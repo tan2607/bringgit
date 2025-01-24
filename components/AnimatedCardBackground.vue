@@ -123,11 +123,6 @@ const wavePathD = computed(() => {
   return `M-363.852,${baseY}c0,0,236.988-${amplitude},505.475,0s371.981,${offset1},575.971,0s293.985-${offset2},505.474,5.859s493.475,${offset3},716.963-${peakY}v560.106H-363.852V${baseY}z`
 })
 
-// Log state changes
-watch(() => props.isActive, (newValue) => {
-  console.log('AnimatedCardBackground isActive:', newValue)
-})
-
 // Seeded random number generator
 function seededRandom(seed: string, index: number = 0) {
   let hash = 0

@@ -140,12 +140,12 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { Vapi } from '@vapi-ai/server-sdk'
+import type { Assistant } from '~/types/assistant'
 import { languageOptions, llmOptions } from '~/types/assistant'
 
 interface Props {
   modelValue: boolean
-  assistant: Vapi.Assistant
+  assistant: Assistant
 }
 
 const props = defineProps<Props>()

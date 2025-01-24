@@ -1,4 +1,5 @@
 import { Vapi } from '@vapi-ai/server-sdk'
+import type { Assistant } from '~/types/assistant'
 
 interface AssistantTemplate {
   id: string
@@ -120,7 +121,7 @@ export function useAssistant() {
     return assistantTemplates.find(t => t.id === id)
   }
 
-  function applyTemplate(assistant: Vapi.Assistant, templateId: string): Vapi.Assistant {
+  function applyTemplate(assistant: Assistant, templateId: string): Assistant {
     const template = getTemplateById(templateId)
     if (template) {
       assistant.firstMessage = template.template.firstMessage

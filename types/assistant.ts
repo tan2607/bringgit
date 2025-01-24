@@ -1,5 +1,7 @@
 import { Vapi } from '@vapi-ai/server-sdk'
 
+export type Assistant = Vapi.Assistant & { meta?: any, prompt?: string }
+
 export interface Criterion {
   id: string
   name: string
@@ -34,7 +36,7 @@ export const llmOptions = [
   { value: 'claude-2', label: 'Claude 2' },
 ]
 
-export const defaultAssistant: Vapi.Assistant = {
+export const defaultAssistant: Assistant = {
   id: '',
   orgId: '',
   name: '',
@@ -63,3 +65,4 @@ export const defaultAssistant: Vapi.Assistant = {
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString()
 }
+

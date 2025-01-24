@@ -9,14 +9,14 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import CallForm from './CallForm.vue'
-import type { Vapi } from '@vapi-ai/server-sdk'
+import type { Assistant } from '~/types/assistant'
 
 const { t } = useI18n()
 const slideover = useSlideover()
 const toast = useToast()
 
 const props = defineProps<{
-  assistant?: Vapi.Assistant
+  assistant?: Assistant
 }>()
 
 const handleSuccess = (message: string) => {

@@ -61,10 +61,13 @@
     <div v-else class="p-4">
       <UBlogPosts class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <UBlogPost
-          v-for="assistant in assistantsWithMeta"
+          v-for="assistant in filteredData"
           :key="assistant.id"
-          :title="assistant.name"
           :description="assistant.firstMessage"
+          :authors="[{
+            name: assistant.name,
+            description: formatTimeAgo(new Date(assistant.createdAt))
+          }]"
           class="card-hover-effect"
         >
           <template #header>
@@ -81,6 +84,7 @@
           <template #badge>
             <div class="flex flex-col gap-3 justify-center w-full">
               <!-- Metadata Badges -->
+               {{assistant.meta}}
               <div v-if="assistant.meta" class="flex flex-wrap gap-2">
                 <UBadge
                   v-for="(value, key) in assistant.meta"
@@ -177,12 +181,12 @@ import { formatTimeAgo } from '@vueuse/core'
 import { useAssistants } from '@/composables/useAssistants'
 import { useI18n } from 'vue-i18n'
 import { upperFirst } from 'scule'
-import matter from 'gray-matter'
+
 import AssistantSlideover from './AssistantSlideover.vue'
 import PromptSlideover from './PromptSlideover.vue'
 import CallSlideover from './CallSlideover.vue'
 import AnimatedCardBackground from './AnimatedCardBackground.vue'
-import type { Vapi } from '@vapi-ai/server-sdk'
+import type { Assistant } from '~/types/assistant'
 
 const UButton = resolveComponent('UButton')
 const UDropdownMenu = resolveComponent('UDropdownMenu')
@@ -199,7 +203,6 @@ const toast = useToast()
 const { t } = useI18n()
 const slideover = useSlideover()
 
-type Assistant = Vapi.Assistant
 // interface Assistant {
 //   id: string
 //   name: string
@@ -245,19 +248,11 @@ const searchFilter = ref('')
 const hoveredAssistantId = ref<string | null>(null)
 
 const handleMouseEnter = (assistant: any) => {
-  console.log('Mouse enter event triggered')
-  console.log('Assistant:', assistant)
-  console.log('Current hovered ID:', hoveredAssistantId.value)
   hoveredAssistantId.value = assistant.id
-  console.log('New hovered ID:', hoveredAssistantId.value)
 }
 
-const handleMouseLeave = (assistant: any) => {
-  console.log('Mouse leave event triggered')
-  console.log('Assistant:', assistant)
-  console.log('Current hovered ID:', hoveredAssistantId.value)
+const handleMouseLeave = () => {
   hoveredAssistantId.value = null
-  console.log('New hovered ID:', hoveredAssistantId.value)
 }
 
 watch(searchFilter, (newValue) => {
@@ -280,28 +275,22 @@ const filteredData = computed(() => {
   )
 })
 
-const assistantsWithMeta = computed(() => {
-  return filteredData.value.map(assistant => {
-    const frontmatter = getAssistantFrontmatter(assistant?.prompt)
-
-    if (frontmatter != null) console.log(frontmatter)
-
-    return {
-      ...assistant,
-      meta: frontmatter
-    }
-  })
-})
-
 const getAssistantFrontmatter = (prompt: string) => { 
   try {
-    if (prompt.startsWith('---')) console.log('prompt has frontmatter');
-    console.log(prompt);
+    if (prompt.startsWith('---')) {
+      console.log('prompt has frontmatter');
+      console.log(prompt);
 
     const { data } = matter(prompt || '')
 
     console.log(data);
     return data
+          
+    } else {
+      return null
+    }
+    
+
   } catch (e) {
     return null
   }
@@ -361,7 +350,7 @@ const columns: TableColumn<Assistant>[] = [
     accessorKey: 'model',
     header: () => t('model'),
     cell: ({ row }) => {
-      const model = row.getValue('model') as Vapi.Assistant['model']
+      const model = row.getValue('model') as Assistant['model']
       return h('div', { class: 'flex items-center gap-2' }, [
         h(UIcon, {
           name: model?.provider === 'openai' ? 'i-lucide-bot' : 'i-lucide-cpu',
@@ -376,7 +365,7 @@ const columns: TableColumn<Assistant>[] = [
     accessorKey: 'voice',
     header: () => t('voice'),
     cell: ({ row }) => {
-      const voice = row.getValue('voice') as Vapi.Assistant['voice']
+      const voice = row.getValue('voice') as Assistant['voice']
       return h('div', { class: 'flex items-center gap-2' }, [
         h(UIcon, {
           name: voice?.provider === '11labs' ? 'i-lucide-mic-2' : 'i-lucide-mic',
