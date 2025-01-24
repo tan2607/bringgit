@@ -3,12 +3,7 @@
     <div class="flex items-center justify-between px-4 py-3.5 border-b border-[var(--ui-border-accented)]">
       <div>
         <!-- Filter Section -->
-      <UInput
-          v-model="searchFilter"
-          class="max-w-sm mr-4"
-          placeholder="Filter by name..."
-          icon="i-lucide-search"
-        />
+        <UInput v-model="searchFilter" class="max-w-sm mr-4" placeholder="Filter by name..." icon="i-lucide-search" />
 
         <!-- Column Visibility Dropdown -->
         <UDropdownMenu v-if="viewMode === 'table'" :items="table?.tableApi
@@ -30,26 +25,19 @@
 
       </div>
 
-        <!-- View Mode Toggle -->
-        <URadioGroup class="float-right" v-model="viewMode" :items="[
-          { label: 'Cards', value: 'cards'},
-          { label: 'Table', value: 'table'},
-        ]" />
+      <!-- View Mode Toggle -->
+      <URadioGroup class="float-right" v-model="viewMode" :items="[
+        { label: 'Cards', value: 'cards' },
+        { label: 'Table', value: 'table' },
+      ]" />
     </div>
 
     <!-- Table View -->
-    <UTable v-if="viewMode === 'table'"
-      ref="table" 
-      v-model:column-visibility="columnVisibility" 
-      v-model:column-filters="columnFilters"
-      :data="filteredData" 
-      :columns="columns"
-      :loading="isLoading" 
-      class="flex-1" 
+    <UTable v-if="viewMode === 'table'" ref="table" v-model:column-visibility="columnVisibility"
+      v-model:column-filters="columnFilters" :data="filteredData" :columns="columns" :loading="isLoading" class="flex-1"
       :ui="{
         tr: 'cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors'
-      }" 
-      @row-select="(row: any) => openEditSlideover(row.original)">
+      }" @row-select="(row: any) => openEditSlideover(row.original)">
       <template #loading-state>
         <div class="flex items-center justify-center h-32">
           <UIcon name="i-lucide-loader-2" class="animate-spin" />
@@ -60,106 +48,48 @@
     <!-- Card View -->
     <div v-else class="p-4">
       <UBlogPosts class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <UBlogPost
-          v-for="assistant in filteredData"
-          :key="assistant.id"
-          :description="assistant.firstMessage"
-          :authors="[{
-            name: assistant.name,
+        <UBlogPost v-for="assistant in filteredData" :key="assistant.id"
+          :description="assistant.meta?.description || assistant.firstMessage" :authors="[{
+            name: assistant.meta?.name || assistant.name,
             description: formatTimeAgo(new Date(assistant.createdAt))
-          }]"
-          class="card-hover-effect"
-        >
+          }]" class="card-hover-effect">
           <template #header>
-            <AnimatedCardBackground 
-              :assistant-id="assistant.id"
-              :is-active="hoveredAssistantId === assistant.id"
-              class="cursor-pointer"
-              @mouseenter="handleMouseEnter(assistant)"
-              @mouseleave="handleMouseLeave(assistant)"
-            >
-              {{ assistant.name?.replaceAll(/[\-_]/g, " ").toUpperCase() }}
+            <AnimatedCardBackground :assistant-id="assistant.id" :is-active="hoveredAssistantId === assistant.id"
+              class="cursor-pointer" @mouseenter="hoveredAssistantId = assistant.id"
+              @mouseleave="hoveredAssistantId = null">
+              {{ assistant.meta?.title || assistant.name?.replaceAll(/[\-_]/g, " ") }}
             </AnimatedCardBackground>
           </template>
           <template #badge>
-            <div class="flex flex-col gap-3 justify-center w-full">
-              <!-- Metadata Badges -->
-               {{assistant.meta}}
-              <div v-if="assistant.meta" class="flex flex-wrap gap-2">
-                <UBadge
-                  v-for="(value, key) in assistant.meta"
-                  :key="key"
-                  :label="`${key}: ${value}`"
-                  color="gray"
-                  variant="subtle"
-                  size="sm"
-                />
-              </div>
+            <UBadge v-if="assistant.meta?.language" variant="outline" :icon="getLanguageIcon(assistant.meta.language)"
+              :label="getLanguageTag(assistant)" />
 
+            <div class="flex flex-col gap-3 justify-end w-full">
               <!-- Action Buttons -->
-              <UButtonGroup class="justify-center w-full">
-                <UButton
-                  color="primary"
-                  variant="ghost"
-                   icon="i-lucide-message-square"
-                  @click="openEditSlideover(assistant)"
-                />
-                <UButton
-                  color="primary"
-                  variant="ghost"
-                  icon="i-lucide-edit"
-                  @click="openEditSlideover(assistant, true)"
-                />
-                <UButton
-                  color="primary"
-                  variant="ghost"
-                  icon="i-lucide-phone"
-                  @click="openCallSlideover(assistant)"
-                />
-                <UButton
-                  color="primary"
-                  variant="ghost"
-                  icon="i-lucide-globe"
-                  :href="`https://vai.keyreply.com/${assistant.name}`"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title="Open Web Link"
-                />
+              <UButtonGroup class="justify-end w-full">
+                <UButton color="primary" variant="ghost" icon="i-lucide-message-square"
+                  @click="openEditSlideover(assistant)" />
+                <UButton color="primary" variant="ghost" icon="i-lucide-edit"
+                  @click="openEditSlideover(assistant, true)" />
+                <UButton color="primary" variant="ghost" icon="i-lucide-phone" @click="openCallSlideover(assistant)" />
+                <UButton color="primary" variant="ghost" icon="i-lucide-globe"
+                  :href="`https://vai.keyreply.com/${assistant.name}`" target="_blank" rel="noopener noreferrer"
+                  title="Open Web Link" />
                 <UPopover arrow :content="{
-                    side: 'top',
-                  }">
-                  <UButton
-                    color="primary"
-                    variant="ghost"
-                    icon="i-lucide-more-horizontal"
-                  />
+                  side: 'top',
+                }">
+                  <UButton color="primary" variant="ghost" icon="i-lucide-more-horizontal" />
                   <template #content>
                     <div class="flex flex-col gap-1 p-2">
 
-                      <UButton
-                        color="primary"
-                        variant="ghost"
-                        icon="i-lucide-copy"
-                        :label="t('assistant.copy-id')"
-                        @click="() => copyAssistantId(assistant.id)"
-                      />
+                      <UButton color="primary" variant="ghost" icon="i-lucide-copy" :label="t('assistant.copy-id')"
+                        @click="() => copyAssistantId(assistant.id)" />
 
-                      <UButton
-                        color="primary"
-                        variant="ghost"
-                        icon="i-lucide-copy-plus"
-                        :label="t('assistant.duplicate')"
-                        @click="duplicateAssistant(assistant)"
-                      />
+                      <UButton color="primary" variant="ghost" icon="i-lucide-copy-plus"
+                        :label="t('assistant.duplicate')" @click="duplicateAssistant(assistant)" />
 
-                      <UButton
-                        block
-                        color="error"
-                        variant="ghost"
-                        icon="i-lucide-trash-2"
-                        :label="t('assistant.delete')"
-                        @click="deleteAssistant(assistant.id)"
-                      />
+                      <UButton block color="error" variant="ghost" icon="i-lucide-trash-2"
+                        :label="t('assistant.delete')" @click="deleteAssistant(assistant.id)" />
 
                     </div>
                   </template>
@@ -187,6 +117,7 @@ import PromptSlideover from './PromptSlideover.vue'
 import CallSlideover from './CallSlideover.vue'
 import AnimatedCardBackground from './AnimatedCardBackground.vue'
 import type { Assistant } from '~/types/assistant'
+import { languages, getLanguageIcon } from '~/i18n/languages'
 
 const UButton = resolveComponent('UButton')
 const UDropdownMenu = resolveComponent('UDropdownMenu')
@@ -247,14 +178,6 @@ const searchFilter = ref('')
 
 const hoveredAssistantId = ref<string | null>(null)
 
-const handleMouseEnter = (assistant: any) => {
-  hoveredAssistantId.value = assistant.id
-}
-
-const handleMouseLeave = () => {
-  hoveredAssistantId.value = null
-}
-
 watch(searchFilter, (newValue) => {
   if (table.value?.tableApi) {
     table.value.tableApi.getColumn('name')?.setFilterValue(newValue)
@@ -269,32 +192,11 @@ watch(() => table.value?.tableApi?.getColumn('name')?.getFilterValue(), (newValu
 
 const filteredData = computed(() => {
   if (!searchFilter.value) return props.data
-  
-  return props.data.filter(assistant => 
+
+  return props.data.filter(assistant =>
     assistant?.name?.toLowerCase().includes(searchFilter.value.toLowerCase())
   )
 })
-
-const getAssistantFrontmatter = (prompt: string) => { 
-  try {
-    if (prompt.startsWith('---')) {
-      console.log('prompt has frontmatter');
-      console.log(prompt);
-
-    const { data } = matter(prompt || '')
-
-    console.log(data);
-    return data
-          
-    } else {
-      return null
-    }
-    
-
-  } catch (e) {
-    return null
-  }
-}
 
 const columns: TableColumn<Assistant>[] = [
   {
@@ -343,7 +245,7 @@ const columns: TableColumn<Assistant>[] = [
           name: 'i-lucide-globe',
           size: 'sm'
         })
-      ])        
+      ])
     ])
   },
   {
@@ -464,15 +366,26 @@ function getRowItems(row: Row<Assistant>) {
 function openEditSlideover(assistant: Assistant, advanced: boolean = false) {
   if (advanced) {
     slideover.open(AssistantSlideover, {
-    title: t('assistant.edit'),
-    assistant
-  })
+      title: t('assistant.edit'),
+      assistant
+    })
   } else {
     slideover.open(PromptSlideover, {
       title: t('assistant.edit'),
       assistant
     })
   }
+}
+
+function getLanguageTag(assistant: Assistant) {
+  const language = languages.find(lang => lang.code === assistant.meta?.language)
+  let label = language ? language.name : assistant.meta?.language
+
+  if (assistant.meta?.accent) {
+    label += ` (${assistant.meta.accent})`
+  }
+
+  return label
 }
 
 function openCallSlideover(assistant: Assistant) {

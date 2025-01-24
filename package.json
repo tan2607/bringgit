@@ -33,7 +33,6 @@
     "@vueuse/motion": "latest",
     "bufferutil": "^4.0.9",
     "drizzle-orm": "latest",
-    "gray-matter": "^4.0.3",
     "groq-sdk": "latest",
     "h3-formidable": "^1.0.0",
     "ical-generator": "^8.0.1",

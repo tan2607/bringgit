@@ -31,5 +31,6 @@ export const getLanguageIcon = (code: string): string => {
     'zh_hant': 'i-circle-flags-tw',
     'hi': 'i-circle-flags-in'
   }
-  return iconMap[code] || 'i-circle-flags-un'
+  
+  return iconMap[code] || iconMap[languages.find(lang => lang.name.toLowerCase().includes(code.toLowerCase()))?.code || 'unknown'] || 'i-circle-flags-un'
 }
