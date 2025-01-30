@@ -1,6 +1,5 @@
 import { VoiceProvider, VoiceConfig, TTSOptions } from '../types';
-import { CartesiaClient } from "@cartesia/cartesia-js";
-
+import { Cartesia, CartesiaClient } from "@cartesia/cartesia-js";
 export class CartesiaProvider implements VoiceProvider {
   private static instance: CartesiaProvider;
   private client: CartesiaClient;
@@ -50,31 +49,31 @@ export class CartesiaProvider implements VoiceProvider {
     const outputFormat = options.format || "raw";
     const outputFormats = {
       mp3: {
-        container: "mp3",
-        bit_rate: 128000,
-        sample_rate: 44100
+        container: Cartesia.OutputFormatContainer.Mp3,
+        bitRate: 128000,
+        sampleRate: 44100
       },
       raw: {
-        container: "raw",
+        container: Cartesia.OutputFormatContainer.Raw,
         encoding: "pcm_f32le",
-        sample_rate: 24000
+        sampleRate: 24000
       },
       wav: {
-        container: "wav",
+        container: Cartesia.OutputFormatContainer.Wav,
         encoding: "pcm_f32le",
-        sample_rate: 44100
+        sampleRate: 44100
       }
     }
 
     const requestOptions = {
-      model_id: modelId,
+      modelId: modelId,
       voice: {
         mode: "id" as const,
         id: options.voice,
       },
-      output_format: outputFormats[outputFormat],
+      outputFormat: outputFormats[outputFormat],
       transcript: sanitizedText,
-      language: options.language || "en",
+      language: options.language || "en" as Cartesia.SupportedLanguage,
     };
 
     console.log('[Cartesia TTS] Request:', JSON.stringify(requestOptions, null, 2));

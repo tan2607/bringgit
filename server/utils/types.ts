@@ -1,3 +1,4 @@
+import { Cartesia } from "@cartesia/cartesia-js";
 import OpenAI from "openai";
 
 // Types for voice service configuration
@@ -18,7 +19,7 @@ export interface TTSOptions {
   format: 'raw' | 'mp3' | 'wav';
   text: string;
   modelId?: string;
-  language?: string;
+  language?: Cartesia.SupportedLanguage;
   voice?: string;
   speed?: number;
   pitch?: number;

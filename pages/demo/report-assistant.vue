@@ -95,6 +95,9 @@
           <div class="space-y-6">
             <div v-if="filePreview" class="space-y-4">
               <UCard>
+                <div class="flex justify-between items-center mb-4">
+                  <h2 class="text-xl font-semibold">Report Assistant</h2>
+                </div>
                 <div class="flex items-center justify-between mb-4">
                   <div class="flex items-center gap-2">
                     <UIcon name="i-lucide-table" class="text-primary" />
@@ -134,12 +137,21 @@
 
               <div class="space-y-4">
                 <UFormField label="Ask a question about your data">
-                  <UTextarea
-                    v-model="question"
-                    :rows="3"
-                    class="w-full"
-                    placeholder="e.g., What is the total revenue from Sleep Services? Which location has the highest patient satisfaction?"
-                  />
+                  <div class="flex gap-2">
+                    <UTextarea
+                      v-model="question"
+                      :rows="3"
+                      class="w-full"
+                      placeholder="e.g., What is the total revenue from Sleep Services? Which location has the highest patient satisfaction?"
+                    />
+                    <UButton
+                      icon="i-lucide-mic"
+                      :color="isRecording ? 'primary' : 'neutral'"
+                      :variant="isRecording ? 'solid' : 'ghost'"
+                      :loading="isTranscribing"
+                      @click="handleMicClick"
+                    />
+                  </div>
                   <template #help>
                     <div class="flex items-center gap-1 text-xs text-neutral-500">
                       <UIcon name="i-lucide-lightbulb" class="text-warning" />
@@ -212,7 +224,7 @@
                   </div>
 
                   <div class="space-y-2">
-                    <div class="font-medium text-sm">Final Answer</div>
+                    <div class="font-medium">Final Answer</div>
                     <MDC :value="answer" />
                   </div>
                 </div>
@@ -243,6 +255,16 @@ const answer = ref('')
 const thinking = ref('')
 const showThinking = ref(false)
 const rawData = ref('')
+const isRecording = ref(false)
+const isTranscribing = ref(false)
+const mediaRecorder = ref<MediaRecorder | null>(null)
+const toast = useToast()
+
+// Voice input settings
+const quality = ref<'fast' | 'standard' | 'high'>('standard')
+const formality = ref<'formal' | 'informal'>('formal')
+const temperature = ref(0.2)
+const selectedLanguage = ref('en')
 
 const exampleQuestions = [
   "What's the revenue breakdown by product category?",
@@ -343,15 +365,31 @@ async function processFile(file: File) {
   }
 }
 
-function parseAnswer(fullAnswer: string) {
-  const thinkMatch = fullAnswer.match(/<think>([\s\S]*?)<\/think>/);
-  if (thinkMatch) {
-    thinking.value = thinkMatch[1].trim();
-    answer.value = fullAnswer.replace(/<think>[\s\S]*?<\/think>/, '').trim();
+async function parseAnswer(response: string) {
+  let answerText = ''
+  
+  // First look for Final Answer section
+  const finalAnswerMatch = response.match(/Final Answer:(.+)/s)
+  if (finalAnswerMatch) {
+    // Everything before "Final Answer" goes into thinking
+    const [beforeFinal, finalAnswer] = response.split('Final Answer:')
+    thinking.value = beforeFinal.trim()
+    answerText = finalAnswer.trim()
   } else {
-    thinking.value = '';
-    answer.value = fullAnswer;
+    // If no Final Answer, extract thinking tags and use remaining text
+    const thinkingMatch = response.match(/<think>(.*?)<\/think>/s)
+    if (thinkingMatch) {
+      thinking.value = thinkingMatch[1].trim()
+      // Use any text outside of think tags as the answer
+      answerText = response.replace(/<think>.*?<\/think>/s, '').trim()
+    } else {
+      // No think tags or Final Answer, use whole response
+      answerText = response.trim()
+    }
   }
+
+  // Set the answer
+  answer.value = answerText
 }
 
 async function askQuestion() {
@@ -383,6 +421,112 @@ async function askQuestion() {
     answer.value = 'Sorry, there was an error processing your question. Please try again.'
   } finally {
     isQuerying.value = false
+  }
+}
+
+async function handleMicClick() {
+  if (!navigator.mediaDevices?.getUserMedia) {
+    console.error('Media devices not supported')
+    toast.add({
+      title: 'Error',
+      description: 'Your browser does not support voice recording',
+      color: 'error'
+    })
+    return
+  }
+
+  if (isRecording.value) {
+    // Stop recording
+    isRecording.value = false
+    if (mediaRecorder.value?.state === 'recording') {
+      mediaRecorder.value.stop()
+    }
+  } else {
+    // Start recording
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      const chunks: Blob[] = []
+
+      const recorder = new MediaRecorder(stream)
+      mediaRecorder.value = recorder
+
+      recorder.ondataavailable = (e) => {
+        if (e.data.size > 0) {
+          chunks.push(e.data)
+        }
+      }
+
+      recorder.onstop = async () => {
+        const audioBlob = new Blob(chunks, { type: 'audio/wav' })
+        stream.getTracks().forEach(track => track.stop())
+        await handleTranscription(audioBlob)
+      }
+
+      recorder.start()
+      isRecording.value = true
+
+      // Auto-stop after 10 seconds
+      setTimeout(() => {
+        if (recorder.state === 'recording') {
+          recorder.stop()
+          isRecording.value = false
+        }
+      }, 10000)
+    } catch (error) {
+      console.error('Error accessing microphone:', error)
+      toast.add({
+        title: 'Error',
+        description: 'Could not access microphone',
+        color: 'error'
+      })
+      isRecording.value = false
+    }
+  }
+}
+
+async function handleTranscription(audioBlob: Blob) {
+  isTranscribing.value = true
+  try {
+    const audioFormData = new FormData()
+    audioFormData.append('audio', audioBlob, 'recording.wav')
+    const options = {
+      targetLanguage: 'en',
+      sourceLanguage: selectedLanguage.value,
+      quality: quality.value,
+      temperature: temperature.value,
+      prompt: 'Translate medical terminology accurately and maintain formal tone',
+      formality: formality.value
+    }
+    audioFormData.append('options', JSON.stringify(options))
+    audioFormData.append('provider', 'whisper')
+
+    const response = await fetch('/api/voice/translation', {
+      method: 'POST',
+      body: audioFormData
+    })
+
+    if (!response.ok) {
+      throw new Error(response.statusText)
+    }
+
+    const data = await response.json()
+
+    if (data.error) {
+      throw new Error(data.error)
+    }
+
+    if (data.translatedText) {
+      question.value = data.translatedText
+    }
+  } catch (error) {
+    console.error('Transcription error:', error)
+    toast.add({
+      title: 'Error',
+      description: error instanceof Error ? error.message : 'Failed to transcribe audio',
+      color: 'error'
+    })
+  } finally {
+    isTranscribing.value = false
   }
 }
 </script>
