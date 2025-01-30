@@ -60,3 +60,9 @@ The voice translation feature allows users to:
 - Transcription: Multiple languages supported via Groq's Whisper model
 - Translation: Powered by Groq's language models
 - Text-to-Speech: Supports multiple languages via Cartesia
+
+### Private models that are small and high performance
+- Computer use: UI-TAR 7B/72B (ByteDance) + Midscene.js
+- Phi-4 (14b)
+- Reasoning (Deepseek r1)
+- OCR (Gemini 2 Flash)

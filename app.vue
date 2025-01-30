@@ -152,6 +152,12 @@ const items = computed(() => [
               description: 'Home Sleep Study Workflow',
               to: localeRoute('/demo/workflow')?.path
             },
+            {
+              label: 'Report Assistant',
+              icon: 'i-lucide-table',
+              description: 'Ask questions about your reports',
+              to: localeRoute('/demo/report-assistant')?.path
+            },
         ]
     },
     {

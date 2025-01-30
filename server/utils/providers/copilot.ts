@@ -117,6 +117,28 @@ export class PromptEnhancer {
     return invite;
   }
 
+  async analyzeData(question: string, data: string): Promise<string> {
+    const response = await this.client.chat.completions.create({
+      model: "deepseek-r1-distill-llama-70b",
+      messages: [
+        {
+          role: "system",
+          content: `You are a data analysis expert. Your task is to analyze CSV data and answer questions about it accurately and concisely. 
+          Always show your reasoning process and calculations. Format numerical values appropriately (e.g., currency with 2 decimal places).
+          If the question cannot be answered with the given data, explain why.`
+        },
+        {
+          role: "user",
+          content: `CSV Data:\n${data}\n\nQuestion: ${question}\n\nPlease analyze the data and answer the question.`
+        }
+      ],
+      temperature: 0.6,
+      max_tokens: 2048,
+    });
+
+    return response.choices[0].message.content || "Sorry, I couldn't analyze the data.";
+  }
+
   async formatToMarkdown(text: string): Promise<string> {
     const response = await this.client.chat.completions.create({
       model: "llama-3.3-70b-versatile",

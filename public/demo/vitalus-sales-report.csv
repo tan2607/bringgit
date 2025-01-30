@@ -1,0 +1,16 @@
+Date,Location,Product,Category,Sales,Units,Insurance Type,Patient Satisfaction
+2024-01-01,Houston TX,CPAP Device Pro,Sleep Therapy,1299.99,3,Medicare,4.8
+2024-01-02,Dallas TX,BiPAP Machine,Sleep Therapy,1899.99,2,Private Insurance,4.7
+2024-01-03,Austin TX,Oxygen Concentrator,Respiratory Care,899.99,4,Medicaid,4.9
+2024-01-04,San Antonio TX,CPAP Mask Ultra,Sleep Accessories,129.99,15,Medicare,4.6
+2024-01-05,Houston TX,Sleep Study Basic,Sleep Services,799.99,5,Private Insurance,4.8
+2024-01-06,Dallas TX,Sleep Study Advanced,Sleep Services,1299.99,3,Medicare,4.9
+2024-01-07,Austin TX,Nebulizer System,Respiratory Care,199.99,8,Medicaid,4.7
+2024-01-08,San Antonio TX,CPAP Filters Pack,Sleep Accessories,49.99,30,Out of Pocket,4.5
+2024-01-09,Houston TX,Home Sleep Test,Sleep Services,399.99,6,Private Insurance,4.8
+2024-01-10,Dallas TX,Portable Oxygen,Respiratory Care,599.99,4,Medicare,4.9
+2024-01-11,Austin TX,CPAP Cleaning System,Sleep Accessories,299.99,7,Private Insurance,4.7
+2024-01-12,San Antonio TX,BiPAP Mask Pro,Sleep Accessories,179.99,10,Medicare,4.6
+2024-01-13,Houston TX,Sleep Consultation,Sleep Services,199.99,12,Out of Pocket,4.8
+2024-01-14,Dallas TX,CPAP Device Basic,Sleep Therapy,899.99,5,Medicaid,4.5
+2024-01-15,Austin TX,Sleep Study Premium,Sleep Services,1499.99,2,Private Insurance,5.0

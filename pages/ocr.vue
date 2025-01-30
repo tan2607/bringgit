@@ -66,7 +66,7 @@
 
             <UAlert
               v-if="error"
-              color="red"
+              color="error"
               variant="soft"
               icon="i-lucide-alert-triangle"
               :title="error"
