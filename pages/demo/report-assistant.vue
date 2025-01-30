@@ -219,7 +219,7 @@
                       v-if="showThinking"
                       class="text-sm bg-white bg-opacity-10 rounded-lg p-4 whitespace-pre-wrap"
                     >
-                      {{ thinking }}
+                      <MDC :value="thinking" />
                     </div>
                   </div>
 
@@ -369,17 +369,21 @@ async function parseAnswer(response: string) {
   let answerText = ''
   
   // First look for Final Answer section
-  const finalAnswerMatch = response.match(/Final Answer:(.+)/s)
+  const finalAnswerMatch = response.match(/Answer:(.+)/s)
   if (finalAnswerMatch) {
     // Everything before "Final Answer" goes into thinking
-    const [beforeFinal, finalAnswer] = response.split('Final Answer:')
+    const [beforeFinal, finalAnswer] = response.split('Answer:')
     thinking.value = beforeFinal.trim()
     answerText = finalAnswer.trim()
   } else {
     // If no Final Answer, extract thinking tags and use remaining text
     const thinkingMatch = response.match(/<think>(.*?)<\/think>/s)
     if (thinkingMatch) {
-      thinking.value = thinkingMatch[1].trim()
+      let thinkingText = thinkingMatch[1]?.trim() || ''
+      // Remove tags from thinkingText, keep the content
+      thinkingText = thinkingText.replace(/<[^>]*>/g, '').trim()
+      thinking.value = thinkingText
+
       // Use any text outside of think tags as the answer
       answerText = response.replace(/<think>.*?<\/think>/s, '').trim()
     } else {
