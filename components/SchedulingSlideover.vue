@@ -1,6 +1,6 @@
 <template>
   <USlideover title="Schedule Calls">
-    <template #header>
+    <template #header> 
       <div class="flex items-center justify-between">
         <div>
           <h3 class="text-xl font-semibold">Call Schedule Plan</h3>
