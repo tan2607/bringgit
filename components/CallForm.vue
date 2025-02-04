@@ -1,5 +1,5 @@
 <template>
-  <UForm @submit="makeCall">
+  <UForm :state="state" :validate="validateForm" @submit="makeCall">
     <UCard class="bg-gray-50 dark:bg-gray-800/50">
       <template #header>
         <div class="flex items-center gap-2">
@@ -9,13 +9,12 @@
       </template>
 
       <div class="space-y-4">
-        <UFormField label="From" name="from" required :error="errors.from">
-          <PhoneNumberSelect v-model="fromNumber" @update:model-value="errors.from = ''" class="w-full" />
+        <UFormField label="From" name="from" required>
+          <PhoneNumberSelect v-model="state.from" class="w-full" />
         </UFormField>
 
-        <UFormField label="To" name="to" required :error="errors.to">
-          <UInput v-model="toNumber" placeholder="+65 1234 5678" icon="i-lucide-phone" type="tel"
-            @update:model-value="errors.to = ''" class="w-full" />
+        <UFormField label="To" name="to" required>
+          <UInput v-model="state.to" placeholder="+6512345678" icon="i-lucide-phone" type="tel" class="w-full" />
           <template #help>
             <span class="text-xs text-gray-500">Enter phone number with country code</span>
           </template>
@@ -27,7 +26,7 @@
           <UButton type="button" color="neutral" variant="soft" icon="i-lucide-x" @click="resetForm">
             Cancel
           </UButton>
-          <UButton type="submit" color="primary" :loading="isLoading" :disabled="!isValid" icon="i-lucide-phone-call">
+          <UButton type="submit" color="primary" :loading="isLoading" icon="i-lucide-phone-call">
             Make Call
           </UButton>
         </div>
@@ -48,41 +47,36 @@ const emit = defineEmits<{
   cancel: []
 }>()
 
-const fromNumber = ref('')
-const toNumber = ref('')
 const isLoading = ref(false)
-const errors = reactive({
+
+const state = reactive({
   from: '',
   to: ''
 })
 
-const isValid = computed(() => {
-  return fromNumber.value && toNumber.value && !errors.from && !errors.to
-})
-
-const validateForm = () => {
-  let isValid = true
-  errors.from = !fromNumber.value ? 'Please select a phone number' : ''
-  errors.to = !toNumber.value ? 'Please enter a phone number' : ''
-
-  if (!toNumber.value?.match(/^\+?[1-9]\d{1,14}$/)) {
-    errors.to = 'Please enter a valid phone number'
-    isValid = false
+const validateForm = (state: any): FormError[] => {
+  const errors: FormError[] = []
+  
+  if (!state.from) {
+    errors.push({ path: 'from', message: 'Please select a phone number' })
   }
-
-  return isValid
+  
+  if (!state.to) {
+    errors.push({ path: 'to', message: 'Please enter a phone number' })
+  } else if (!state.to.match(/^\+?[1-9]\d{1,14}$/)) {
+    errors.push({ path: 'to', message: 'Please enter a valid phone number' })
+  }
+  
+  return errors
 }
 
 const resetForm = () => {
-  fromNumber.value = ''
-  toNumber.value = ''
-  errors.from = ''
-  errors.to = ''
+  state.from = ''
+  state.to = ''
   emit('cancel')
 }
 
-const makeCall = async () => {
-  if (!validateForm()) return
+const makeCall = async (event: FormSubmitEvent<any>) => {
 
   try {
     isLoading.value = true
@@ -90,13 +84,13 @@ const makeCall = async () => {
       method: 'POST',
       body: {
         assistantId: props.assistantId,
-        phoneNumberId: fromNumber.value,
-        phoneNumber: toNumber.value
+        phoneNumberId: state.from,
+        phoneNumber: state.to
       }
     })
 
     if (response.value?.success) {
-      emit('success', `Call initiated to ${toNumber.value}`)
+      emit('success', `Call initiated to ${state.to}`)
       resetForm()
     } else {
       throw new Error(response.value?.message || 'Failed to initiate call')

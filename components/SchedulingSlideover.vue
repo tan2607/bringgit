@@ -77,12 +77,12 @@
             </UFormField>
 
             <UFormField label="Choose Assistant">
-              <USelect v-model="selectedAssistant"
+              <USelect v-model="state.selectedAssistant"
                 :items="assistants.map(assistant => ({ value: assistant.id, label: assistant.name }))"
                 placeholder="Select Assistant" class="w-48" option-attribute="name" value-attribute="id" required />
             </UFormField>
             <UFormField label="Select Outbound Phone Number">
-              <PhoneNumberSelect v-model="selectedNumber" class="w-full" />
+              <PhoneNumberSelect v-model="state.selectedNumber" class="w-full" />
             </UFormField>
           </div>
 
@@ -107,8 +107,8 @@
               </UButton> -->
               
               <UButton v-if="scheduledCalls.length && !isSimulating" color="primary"
-                :disabled="!selectedAssistant || !selectedNumber" @click="runSimulation">
-                {{ !selectedAssistant || !selectedNumber ? 'Select Assistant & Phone Number' : 'Run Job' }}
+                :disabled="!state.selectedAssistant || !state.selectedNumber" @click="runSimulation">
+                {{ !state.selectedAssistant || !state.selectedNumber ? 'Select Assistant & Phone Number' : 'Run Job' }}
               </UButton>
               <UButton v-if="isSimulating" :color="isPaused ? 'primary' : 'warning'"
                 @click="isPaused ? runSimulation() : pauseJob()">
@@ -173,16 +173,26 @@ const isOpen = defineModel('modelValue', { type: Boolean })
 const slideover = useSlideover()
 const fileInput = ref<HTMLInputElement | null>(null)
 
-const state = useState('schedulingSlideover', () => ({
-  jobName: '',
-  selectedAssistant: null,
-  selectedNumber: null,
-  contacts: null,
-  isSubmitting: false
-}))
-
 const { createJob, pauseJob } = useJobState()
 const { assistants, fetchAssistants } = useAssistants()
+
+const { 
+  scheduledCalls,
+  isSimulating,
+  generateMockData,
+  selectedAssistant,
+  selectedNumber,
+  runSimulation,
+  clearCalls
+} = useCallScheduler()
+
+const state = reactive({
+  jobName: '',
+  selectedAssistant: selectedAssistant,
+  selectedNumber: selectedNumber,
+  contacts: null,
+  isSubmitting: false
+})
 
 // Fetch assistants on mount
 onMounted(async () => {
@@ -190,15 +200,15 @@ onMounted(async () => {
 })
 
 async function handleCreateJob() {
-  if (state.value.isSubmitting) return
+  if (state.isSubmitting) return
   
-  state.value.isSubmitting = true
+  state.isSubmitting = true
   try {
     await createJob({
-      name: state.value.jobName,
-      assistantId: state.value.selectedAssistant,
-      phoneNumbers: [state.value.selectedNumber],
-      contacts: state.value.contacts,
+      name: state.jobName,
+      assistantId: state.selectedAssistant,
+      phoneNumbers: [state.selectedNumber],
+      contacts: state.contacts,
     })
     slideover.close()
     toast.add({
@@ -214,24 +224,18 @@ async function handleCreateJob() {
       color: 'error'
     })
   } finally {
-    state.value.isSubmitting = false
+    state.isSubmitting = false
   }
 }
 
 function handleFileUpload(event: Event) {
   const file = (event.target as HTMLInputElement).files?.[0]
   if (file) {
-    state.value.contacts = file
+    state.contacts = file
   }
 }
 
-const { 
-  scheduledCalls,
-  isSimulating,
-  generateMockData,
-  runSimulation,
-  clearCalls
-} = useCallScheduler()
+
 
 const isPaused = ref(false)
 const numberOfCalls = ref<number>(10)
@@ -292,8 +296,6 @@ onBeforeUnmount(() => {
   stopStatusPolling()
 })
 
-const selectedAssistant = ref('')
-const selectedNumber = ref('')
 const numbers = ref([])
 
 // Fetch phone numbers
@@ -349,7 +351,7 @@ async function processFile(file: File) {
     // Process the rows
     scheduledCalls.value = rows.map((row: any) => ({
       id: crypto.randomUUID(),
-      phone: row.phone_number,
+      phone: `+${row.phone_number}`,
       estimatedDuration: Math.floor(Math.random() * (simulationConfig.value.callDurationRange.max - simulationConfig.value.callDurationRange.min + 1)) + simulationConfig.value.callDurationRange.min,
       status: CallStatus.Queued,
       scheduledTime: new Date(),
@@ -442,8 +444,10 @@ function formatTime(date: Date | number) {
   }).format(new Date(date))
 }
 
+
+
 const getSelectedAssistantName = computed(() => {
-  const assistant = assistants.value.find(a => a.id === selectedAssistant.value)
+  const assistant = assistants.value.find(a => a.id === state.selectedAssistant)
   return assistant?.name || 'Unknown'
 })
 
@@ -493,9 +497,9 @@ function getStatusIconColor(status: string) {
 function downloadTemplate() {
   const headers = ['phone_number', 'name', 'notes']
   const sampleData = [
-    ['12345678901', 'John Doe', 'Follow up on previous conversation'],
-    ['98765432109', 'Jane Smith', 'Discuss new requirements'],
-    ['55544433322', 'Bob Johnson', 'Regular check-in call']
+    ['6582888399', 'Max', 'Follow up on previous conversation'],
+    ['6583508503', 'John', 'Discuss new requirements'],
+    ['6597599995', 'Jacky', 'Regular check-in call']
   ]
 
   const csvContent = [
