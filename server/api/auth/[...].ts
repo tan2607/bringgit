@@ -1,5 +1,6 @@
 import MicrosoftEntraID from '@auth/core/providers/microsoft-entra-id'
 import Auth0Provider from '@auth/core/providers/auth0'
+import Google from '@auth/core/providers/google'
 import type { AuthConfig } from "@auth/core/types"
 import { NuxtAuthHandler } from '#auth'
 import Credentials from '@auth/core/providers/credentials'
@@ -61,6 +62,18 @@ const authConfig: AuthConfig = {
           prompt: "login"
         }
       }
+    }),
+    // Google Workspace provider
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      authorization: {
+        params: {
+          prompt: "select_account", // Forces Google to show the account selection screen every time
+          access_type: "offline", // Allows app to refresh the access token without user intervention
+          response_type: "code"
+        }
+      }
     })
   ],
   callbacks: {
@@ -74,6 +87,24 @@ const authConfig: AuthConfig = {
       // For Auth0, allow any verified email
       if (account?.provider === 'auth0') {
         return !!user.email
+      }
+
+      // For Google, check allowed domains from environment variable
+      if (account?.provider === 'google') {
+        if (!user.email) {
+          console.warn('Google login rejected: No email provided. User: ' + user)
+          return false
+        }
+        
+        const emailDomain = user.email.split('@')[1]
+        if (!emailDomain) {
+          console.warn('Google login rejected: Invalid email format: ' + user.email)
+          return false
+        }
+
+        const domainsStr = process.env.ALLOWED_GOOGLE_DOMAINS || 'keyreply.com'
+        const allowedDomains = domainsStr.split(',').map(domain => domain.trim().toLowerCase())
+        return allowedDomains.includes(emailDomain.toLowerCase())
       }
 
       // For development credentials

@@ -26,6 +26,17 @@
         >
           Sign in with Auth0
         </UButton>
+
+        <UButton
+          v-if="isGoogleEnabled"
+          block
+          color="white"
+          class="border flex items-center justify-center gap-2 mt-3 cursor-pointer hover:bg-gray-100"
+          @click="handleSignIn('google')"
+          :loading="loading"
+        >
+          Sign in with Google
+        </UButton>
       </div>
 
       <template v-if="isDevelopment">
@@ -76,6 +87,9 @@
 <script setup type="ts">
 const { signIn } = useAuth()
 definePageMeta({ middleware: "guest-only", auth: { authenticatedRedirectTo: "/" } })
+
+const runtimeConfig = useRuntimeConfig()
+const isGoogleEnabled = computed(() => runtimeConfig.public.googleAuth?.enabled)
 
 const loading = ref(false)
 const form = ref({
