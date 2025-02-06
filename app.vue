@@ -203,6 +203,7 @@ const items = computed(() => [
                 icon: 'i-lucide-log-out',
                 description: t('sign-out'),
                 onSelect: () => signOut({ redirect: true, callbackUrl: '/auth/login' }),
+                class: "cursor-pointer",
             }
         ] : [
             {

@@ -9,12 +9,22 @@
         <UButton
           block
           color="white"
-          class="border flex items-center justify-center gap-2"
-          @click="signIn('microsoft-entra-id')"
+          class="border flex items-center justify-center gap-2 cursor-pointer hover:bg-gray-100"
+          @click="handleSignIn('microsoft-entra-id')"
           :loading="loading"
         >
           <!-- <img src="/microsoft-logo.svg" alt="Microsoft" class="w-5 h-5" /> -->
           Sign in with Microsoft
+        </UButton>
+
+        <UButton
+          block
+          color="white"
+          class="border flex items-center justify-center gap-2 mt-3 cursor-pointer hover:bg-gray-100"
+          @click="handleSignIn('auth0')"
+          :loading="loading"
+        >
+          Sign in with Auth0
         </UButton>
       </div>
 
@@ -73,6 +83,11 @@ const form = ref({
   password: 'password'
 })
 const isDevelopment = process.env.NODE_ENV === 'development'
+
+function handleSignIn(provider) {
+  loading.value = true
+  signIn(provider)
+}
 
 async function login(event) {
   loading.value = true
