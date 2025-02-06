@@ -81,10 +81,12 @@ const openSlideover = () => {
 
 const { startJob, pauseJob, resumeJob, stopJob } = useJobState()
 
+const currentDate = new Date()
+
 const state = useState('scheduling', () => ({
   jobs: [] as Job[],
   statusFilter: '',
-  selectedDate: new CalendarDate(2025, 1, 1),
+  selectedDate: new CalendarDate(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate()),
   loadingJobId: null as string | null,
 }))
 
