@@ -141,6 +141,7 @@ export const useCallScheduler = () => {
         const result = await $fetch('/api/call', {
           method: 'POST',
           body: {
+            simulate: window.location.hostname === 'localhost',
             phoneNumber: call.phone,
             assistantId: selectedAssistant.value,
             phoneNumberId: selectedNumber.value

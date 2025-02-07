@@ -158,6 +158,12 @@ const items = computed(() => [
               description: 'Ask questions about your reports',
               to: localeRoute('/demo/report-assistant')?.path
             },
+            {
+              label: 'Claims Assistant',
+              icon: 'i-lucide-table',
+              description: 'Ask questions about denied claims',
+              to: localeRoute('/demo/claims-assistant')?.path
+            },
         ]
     },
     {

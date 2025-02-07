@@ -4,6 +4,12 @@
       <div class="mb-6">
         <h1 class="text-2xl font-bold">Job Management</h1>
         <p class="text-gray-500">Create and manage scheduled jobs</p>
+
+        <a href="/scheduling/jobs" class="inline-block">
+          <UButton icon="i-lucide-plus" color="success">
+            Schedule Calling Job
+          </UButton>
+        </a>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -17,7 +23,13 @@
               </UButton>
             </div>
           </template>
-          <UCalendar v-model="state.selectedDate" :events="calendarEvents" class="w-full" @change="handleDateChange" />
+          <UCalendar 
+            v-model="selectedDate" 
+            :events="calendarEvents" 
+            :is-date-disabled="isDateDisabled"
+            class="w-full" 
+            @change="handleDateChange" 
+          />
         </UCard>
 
         <!-- Job List Section -->
@@ -25,7 +37,7 @@
           <template #header>
             <div class="flex items-center justify-between">
               <h2 class="text-lg font-semibold">Jobs</h2>
-              <USelect v-model="state.statusFilter" :items="statusOptions" placeholder="All Status" size="sm" />
+              <USelect v-model="jobState.selectedStatus" :items="statusOptions" placeholder="All Status" size="sm" />
             </div>
           </template>
 
@@ -50,14 +62,14 @@
                 <span class="text-sm text-gray-600">{{ job.completedCalls }}/{{ job.totalCalls }} calls</span>
                 <div class="flex gap-1">
                   <UButton v-if="job.status === 'running'" color="warning" variant="soft" icon="i-lucide-pause"
-                    size="xs" @click="pauseJob(job.id)" :loading="job.id === state.loadingJobId" />
+                    size="xs" @click="pauseJob(job.id)" :loading="job.id === jobState.loadingJobId" />
                   <UButton v-if="job.status === 'paused'" color="success" variant="soft" icon="i-lucide-play" size="xs"
-                    @click="resumeJob(job.id)" :loading="job.id === state.loadingJobId" />
+                    @click="resumeJob(job.id)" :loading="job.id === jobState.loadingJobId" />
                   <UButton v-if="['running', 'paused'].includes(job.status)" color="error" variant="soft"
-                    icon="i-lucide-stop" size="xs" @click="stopJob(job.id)" :loading="job.id === state.loadingJobId" />
-                  <UDropdown :items="getJobActions(job)" :popper="{ placement: 'bottom-end' }">
+                    icon="i-lucide-stop" size="xs" @click="stopJob(job.id)" :loading="job.id === jobState.loadingJobId" />
+                  <UDropdownMenu :items="getJobActions(job)" :popper="{ placement: 'bottom-end' }">
                     <UButton color="gray" variant="ghost" icon="i-lucide-more-vertical" size="xs" />
-                  </UDropdown>
+                  </UDropdownMenu>
                 </div>
               </div>
             </div>
@@ -69,8 +81,12 @@
 </template>
 
 <script setup lang="ts">
-import { CalendarDate } from '@internationalized/date'
-import type { Job } from "@/composables/useJobState"
+import { ref, computed, watch } from 'vue'
+import { CalendarDate, today } from '@internationalized/date'
+import type { Matcher } from '#ui/types'
+import { useJobState } from '@/composables/useJobState'
+import type { Job } from '@/composables/useJobState'
+import { useState } from '#app'
 import SchedulingSlideover from '~/components/SchedulingSlideover.vue'
 
 const slideover = useSlideover()
@@ -79,15 +95,19 @@ const openSlideover = () => {
   slideover.open(SchedulingSlideover)
 }
 
-const { startJob, pauseJob, resumeJob, stopJob } = useJobState()
+const { jobState, startJob, pauseJob, resumeJob, stopJob } = useJobState()
 
-const state = useState('scheduling', () => ({
-  jobs: [] as Job[],
-  statusFilter: '',
-  selectedDate: new CalendarDate(2025, 1, 1),
-  loadingJobId: null as string | null,
-}))
+const currentDate = today()
+const selectedDate = ref(currentDate)
 
+const isDateDisabled: Matcher = (date) => {
+  return date.compare(currentDate) < 0
+}
+
+// Update jobState when selectedDate changes
+watch(selectedDate, (newDate) => {
+  jobState.value.selectedDate = new Date(newDate.year, newDate.month - 1, newDate.day)
+})
 const statusOptions = [
   { label: 'All', value: null },
   { label: 'Running', value: 'running' },
@@ -97,7 +117,7 @@ const statusOptions = [
 ]
 
 const calendarEvents = computed(() =>
-  state.value.jobs.map(job => ({
+  jobState.value.jobs.map(job => ({
     date: job.schedule,
     title: job.name,
     color: getStatusColor(job.status)
@@ -105,9 +125,9 @@ const calendarEvents = computed(() =>
 )
 
 const filteredJobs = computed(() => {
-  let jobs = state.value.jobs
-  if (state.value.statusFilter) {
-    jobs = jobs.filter(job => job.status === state.value.statusFilter)
+  let jobs = [...jobState.value.jobs]
+  if (jobState.value.selectedStatus) {
+    jobs = jobs.filter(job => job.status === jobState.value.selectedStatus)
   }
   return jobs
 })
@@ -144,8 +164,8 @@ function getJobActions(job: Job) {
 }
 
 function handleDateChange(date: CalendarDate) {
-  state.value.selectedDate = date
-  // Fetch jobs for the selected date
+  selectedDate.value = date
+  // Update jobState.selectedDate is handled by the watcher
 }
 
 function showJobDetails(job: Job) {

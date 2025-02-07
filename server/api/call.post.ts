@@ -17,6 +17,11 @@ export default defineEventHandler(async (event) => {
       throw new Error('Phone number is required')
     }
 
+    if (body.simulate) {
+      console.log('Simulating call to number:', phoneNumber)
+      return { success: true }
+    }
+
     const vapi = VapiProvider.getInstance()
 
     // throw new Error('Phone number must be in E.164 format (e.g., +6597599995)')
