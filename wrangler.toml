@@ -1,0 +1,14 @@
+name = "keyreply-voice"
+type = "javascript"
+
+account_id = "2e25a3c929c0317b8c569a9e7491cf78"
+workers_dev = true
+compatibility_date = "2025-02-10"
+
+[build]
+command = "bun run build"
+upload.format = "modules"
+
+[dev]
+command = "bun run dev"
+port = 8787
