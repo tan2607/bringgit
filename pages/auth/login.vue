@@ -9,12 +9,33 @@
         <UButton
           block
           color="white"
-          class="border flex items-center justify-center gap-2"
-          @click="signIn('microsoft-entra-id')"
+          class="border flex items-center justify-center gap-2 cursor-pointer hover:bg-gray-100"
+          @click="handleSignIn('microsoft-entra-id')"
           :loading="loading"
         >
           <!-- <img src="/microsoft-logo.svg" alt="Microsoft" class="w-5 h-5" /> -->
           Sign in with Microsoft
+        </UButton>
+
+        <UButton
+          block
+          color="white"
+          class="border flex items-center justify-center gap-2 mt-3 cursor-pointer hover:bg-gray-100"
+          @click="handleSignIn('auth0')"
+          :loading="loading"
+        >
+          Sign in with Auth0
+        </UButton>
+
+        <UButton
+          v-if="isGoogleEnabled"
+          block
+          color="white"
+          class="border flex items-center justify-center gap-2 mt-3 cursor-pointer hover:bg-gray-100"
+          @click="handleSignIn('google')"
+          :loading="loading"
+        >
+          Sign in with Google
         </UButton>
       </div>
 
@@ -67,12 +88,20 @@
 const { signIn } = useAuth()
 definePageMeta({ middleware: "guest-only", auth: { authenticatedRedirectTo: "/" } })
 
+const runtimeConfig = useRuntimeConfig()
+const isGoogleEnabled = computed(() => runtimeConfig.public.googleAuth?.enabled)
+
 const loading = ref(false)
 const form = ref({
   email: 'dev@keyreply.com',
   password: 'password'
 })
 const isDevelopment = process.env.NODE_ENV === 'development'
+
+function handleSignIn(provider) {
+  loading.value = true
+  signIn(provider)
+}
 
 async function login(event) {
   loading.value = true

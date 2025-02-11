@@ -29,6 +29,11 @@ export default defineNuxtConfig({
     },
     public: {
       googleApiKey: process.env.GOOGLE_API_KEY,
+      googleAuth: {
+        enabled: !!process.env.GOOGLE_CLIENT_ID && 
+                !!process.env.GOOGLE_CLIENT_SECRET && 
+                !!process.env.ALLOWED_GOOGLE_DOMAINS
+      },
       authJs: {
         baseUrl: "https://next.keyreply.com",
         guestRedirectTo: "/auth/login",
