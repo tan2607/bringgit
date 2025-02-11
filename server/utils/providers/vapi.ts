@@ -112,6 +112,12 @@ export class VapiProvider {
         return `${minutes}m ${seconds}s`;
       })();
 
+      const structuredData: Record<string, any> =
+        call.analysis && call.analysis.structuredData ? call.analysis.structuredData : {}
+      const tagList = Object.keys(structuredData)
+        .filter((key) => typeof structuredData[key] !== 'object')
+        .map((key) => `${key}: ${structuredData[key]}`)
+
       return {
         id: call.id,
         assistant: assistants.find((assistant) =>
@@ -126,6 +132,8 @@ export class VapiProvider {
         transcript: (call as any).transcript ?? '',
         summary: (call as any).summary ?? '',
         recordingUrl: (call as any).recordingUrl ?? '',
+        structuredData,
+        tags: tagList
       };
     });
   }

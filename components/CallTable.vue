@@ -13,7 +13,7 @@
       <UDropdownMenu
         :items="table?.tableApi
           ?.getAllColumns()
-          .filter((column) => ['duration', 'status'].includes(column.id))
+          .filter((column) => ['duration', 'status', 'tags'].includes(column.id))
           .map((column) => ({
             label: upperFirst(column.id),
             type: 'checkbox' as const,
@@ -228,6 +228,23 @@ const columns = computed(() => {
         return h(UBadge, { class: 'capitalize', variant: 'subtle' }, () =>
           row.getValue('status')
         )
+      }
+    })
+
+    baseColumns.push({
+      accessorKey: "tags",
+      header: () => "Tags",
+      cell: (row) => {
+        const tags = row.getValue('tags');
+        return h(
+          'div', 
+          { class: 'flex flex-wrap gap-2' }, 
+          tags.map((tag: string) => h(
+            UBadge, 
+            { class: 'capitalize', variant: 'subtle', key: tag, color: 'info' }, 
+            () => tag
+          ))
+        );
       }
     })
 
