@@ -11,9 +11,6 @@
     "cleanup": "nuxt cleanup",
     "upgrade": "npx nuxi@latest upgrade --force"
   },
-  "engines": {
-    "node": "18"
-  },
   "dependencies": {
     "@auth/core": "0.37.4",
     "@browserbasehq/sdk": "^2.0.0",
