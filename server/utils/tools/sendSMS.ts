@@ -39,6 +39,6 @@ export const sendSMSTool = {
   },
   async: false,
   server: {
-    url: "https://next.keyreply.com/api/tool"
+    url: (process.env.CF_PAGES_URL || process.env.NUXT_NEXTAUTH_URL || "https://galaxy.voice.keyreply.com") + "/api/tool"
   }
 }

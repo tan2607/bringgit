@@ -8,10 +8,14 @@ export default defineEventHandler((event) => {
   const origin = getHeader(event, 'origin')
   const isDevelopment = process.env.NODE_ENV === 'development'
 
-  // Allow requests from next.keyreply.com or in development mode
+  // Get the host from environment URL
+  const baseUrl = process.env.CF_PAGES_URL || process.env.NUXT_NEXTAUTH_URL || "https://galaxy.voice.keyreply.com"
+  const trustedHost = new URL(baseUrl).host
+
+  // Allow requests from trusted domain or in development mode
   const isFromTrustedDomain = 
-    (referer && referer.includes('next.keyreply.com')) || 
-    (origin && origin.includes('next.keyreply.com')) ||
+    (referer && referer.includes(trustedHost)) || 
+    (origin && origin.includes(trustedHost)) ||
     isDevelopment
 
   if (isFromTrustedDomain) {
