@@ -140,6 +140,13 @@ export default defineNuxtConfig({
     compatibilityDate: '2024-09-02',
     experimental: {
       openAPI: true,
+      database: true
+    },
+    database: {
+      default: {
+        connector: 'sqlite',
+        options: { name: 'claims' }
+      },
     },
     openAPI: {
       meta: {
