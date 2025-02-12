@@ -30,7 +30,7 @@ export default defineNuxtConfig({
     public: {
       googleApiKey: process.env.GOOGLE_API_KEY,
       authJs: {
-        baseUrl: "https://next.keyreply.com",
+        baseUrl: process.env.CF_PAGES_URL || process.env.NUXT_NEXTAUTH_URL || "https://galaxy.voice.keyreply.com",
         guestRedirectTo: "/auth/login",
         authenticatedRedirectTo: "/analytics",
         verifyClientOnEveryRequest: true,

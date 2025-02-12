@@ -208,7 +208,8 @@ const items = computed(() => [
                 label: t('logout'),
                 icon: 'i-lucide-log-out',
                 description: t('sign-out'),
-                onClick: () => signOut({ redirect: true, callbackUrl: '/auth/login' })
+                onSelect: () => signOut({ redirect: true, callbackUrl: '/auth/login' }),
+                class: "cursor-pointer",
             }
         ] : [
             {
@@ -259,15 +260,18 @@ useHead({
 
 <template>
   <UApp :locale="locales[locale as string]">
-    <UHeader>
-      <template #left></template>
-      <template #right>
-        <UColorModeButton />
-      </template>
+    <template v-if="!$route.path.startsWith('/auth')">
+      <UHeader>
+        <template #left></template>
+        <template #right>
+          <UColorModeButton />
+        </template>
 
-      <UNavigationMenu orientation="horizontal" variant="pill" arrow highlight :items="items" class="z-50">
-      </UNavigationMenu>
-    </UHeader>
+        <UNavigationMenu orientation="horizontal" variant="pill" arrow highlight :items="items" class="z-50">
+        </UNavigationMenu>
+      </UHeader>
+    </template>
+    
     <NuxtLoadingIndicator />
     <UMain>
       <NuxtLayout>
@@ -278,6 +282,6 @@ useHead({
       </NuxtLayout>
     </UMain>
 
-    <UFooter />
+    <UFooter/>
   </UApp>
 </template>

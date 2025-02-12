@@ -100,9 +100,19 @@ const { jobState, startJob, pauseJob, resumeJob, stopJob } = useJobState()
 const currentDate = today()
 const selectedDate = ref(currentDate)
 
+const currentDate = new Date()
+
+const state = useState('scheduling', () => ({
+  jobs: [] as Job[],
+  statusFilter: '',
+  selectedDate: new CalendarDate(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate()),
+  loadingJobId: null as string | null,
+}))
+
 const isDateDisabled: Matcher = (date) => {
   return date.compare(currentDate) < 0
 }
+
 
 // Update jobState when selectedDate changes
 watch(selectedDate, (newDate) => {
