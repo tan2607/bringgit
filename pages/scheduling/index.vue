@@ -97,10 +97,8 @@ const openSlideover = () => {
 
 const { jobState, startJob, pauseJob, resumeJob, stopJob } = useJobState()
 
-const currentDate = today()
-const selectedDate = ref(currentDate)
-
 const currentDate = new Date()
+const selectedDate = ref(currentDate)
 
 const state = useState('scheduling', () => ({
   jobs: [] as Job[],
