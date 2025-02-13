@@ -1,4 +1,6 @@
 import { sqliteTable, text, integer, real } from 'drizzle-orm/sqlite-core'
+import { relations, sql } from 'drizzle-orm'
+
 
 export const users = sqliteTable('users', {
   id: integer('id').primaryKey({ autoIncrement: true }),
@@ -46,3 +48,50 @@ export const scheduledCalls = sqliteTable('scheduled_calls', {
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`CURRENT_TIMESTAMP`),
   updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().default(sql`CURRENT_TIMESTAMP`)
 })
+
+export const jobs = sqliteTable('jobs', {
+  id: text('id').primaryKey(),
+  name: text('name'),
+  schedule: text('schedule').notNull(),
+  status: text('status', { enum: ['pending', 'running', 'paused', 'completed', 'failed'] }),
+  progress: integer('progress'),
+  totalCalls: integer('total_calls'),
+  completedCalls: integer('completed_calls'),
+  failedCalls: integer('failed_calls'),
+  failedNumbers: text('failed_numbers'),
+  phoneNumbers: text('phone_numbers'),
+  assistantId: text('assistant_id'),
+  phoneNumberId: text('phone_number_id'),
+  lastProcessedAt: text('last_processed_at'),
+  notes: text('notes'),
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(strftime('%s', 'now'))`),
+  updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().default(sql`(strftime('%s', 'now'))`)
+})
+
+export const jobQueue = sqliteTable('job_queue', {
+  id: text('id').primaryKey(),
+  jobId: text('job_id').references(() => jobs.id),
+  phoneNumber: text('phone_number').notNull(),
+  assistantId: text('assistant_id'),
+  phoneNumberId: text('phone_number_id'),
+  retryCount: integer('retry_count'),
+  priority: integer('priority'),
+  status: text('status', { enum: ['pending', 'running', 'completed', 'failed'] }).notNull().default('pending'),
+  delay: integer('delay'),
+  scheduledAt: text('scheduled_at'),
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(strftime('%s', 'now'))`),
+  updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().default(sql`(strftime('%s', 'now'))`)
+})
+
+export const jobsRelations = relations(jobs, ({ many }) => ({
+  jobQueues: many(jobQueue),
+}));
+
+
+export const jobQueueRelations = relations(jobQueue, ({ one }) => ({
+  job: one(jobs, {
+    fields: [jobQueue.jobId],
+    references: [jobs.id],
+  }),
+}));
+

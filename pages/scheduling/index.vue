@@ -92,10 +92,12 @@ import SchedulingSlideover from '~/components/SchedulingSlideover.vue'
 const slideover = useSlideover()
 
 const openSlideover = () => {
-  slideover.open(SchedulingSlideover)
+  slideover.open(SchedulingSlideover, {
+    selectedDate: state.value.selectedDate
+  })
 }
 
-const { jobState, startJob, pauseJob, resumeJob, stopJob } = useJobState()
+const { jobState, startJob, pauseJob, resumeJob, stopJob, getJobs } = useJobState()
 
 const currentDate = new Date()
 const selectedDate = ref(currentDate)
@@ -141,6 +143,7 @@ function getStatusColor(status: string): string {
     case 'running': return 'success'
     case 'paused': return 'warning'
     case 'failed': return 'error'
+    case 'completed': return 'success'
     default: return 'neutral'
   }
 }
@@ -149,7 +152,7 @@ function formatDate(date: Date): string {
   return new Intl.DateTimeFormat('en-US', {
     dateStyle: 'medium',
     timeStyle: 'short'
-  }).format(date)
+  }).format(new Date(date))
 }
 
 function getJobActions(job: Job) {
@@ -182,4 +185,9 @@ function handleFileUpload(event: Event) {
     state.value.contacts = file
   }
 }
+onMounted(async () => {
+  const jobs = await getJobs()
+  state.value.jobs = jobs
+
+})
 </script>

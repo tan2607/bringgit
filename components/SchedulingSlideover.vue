@@ -101,15 +101,14 @@
 
             <div class="flex justify-end space-x-2 mt-4">
               <!-- handleCreateJob -->
-              <!-- <UButton v-if="scheduledCalls.length && !isSimulating" color="primary"
+              <UButton v-if="scheduledCalls.length && !isSimulating" color="primary"
                 :disabled="!selectedAssistant || !selectedNumber" @click="handleCreateJob">
                 {{ !selectedAssistant || !selectedNumber ? 'Select Assistant & Phone Number' : 'Run Job' }}
-              </UButton> -->
-              
-              <UButton v-if="scheduledCalls.length && !isSimulating" color="primary"
+              </UButton>
+              <!-- <UButton v-if="scheduledCalls.length && !isSimulating" color="primary"
                 :disabled="!state.selectedAssistant || !state.selectedNumber" @click="runSimulation">
                 {{ !state.selectedAssistant || !state.selectedNumber ? 'Select Assistant & Phone Number' : 'Run Job' }}
-              </UButton>
+              </UButton> -->
               <UButton v-if="isSimulating" :color="isPaused ? 'primary' : 'warning'"
                 @click="isPaused ? runSimulation() : pauseJob()">
                 {{ isPaused ? 'Resume Job' : 'Pause Job' }}
@@ -194,6 +193,8 @@ const state = reactive({
   isSubmitting: false
 })
 
+const selectedDate = defineModel('selectedDate', { type: Object })
+
 // Fetch assistants on mount
 onMounted(async () => {
   await fetchAssistants()
@@ -207,8 +208,10 @@ async function handleCreateJob() {
     await createJob({
       name: state.jobName,
       assistantId: state.selectedAssistant,
-      phoneNumbers: [state.selectedNumber],
-      contacts: state.contacts,
+      phoneNumbers: scheduledCalls.value.map((call: any) => call.phone),
+      schedule: new Date(selectedDate.value.year, selectedDate.value.month - 1, selectedDate.value.day),
+      totalCalls: scheduledCalls.value.length,
+      phoneNumberId: state.selectedNumber
     })
     slideover.close()
     toast.add({

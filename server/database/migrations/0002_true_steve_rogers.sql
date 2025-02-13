@@ -1,0 +1,1 @@
+ALTER TABLE `job_queue` ADD `scheduled_at` integer;
