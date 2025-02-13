@@ -47,7 +47,7 @@
             Select Template
           </UButton>
           <template #content>
-            <UCard class="h-full">
+            <UCard class="overflow-y-auto">
               <template #header>
                 <div class="flex items-center justify-between">
                   <div class="flex items-center gap-2">
