@@ -77,15 +77,20 @@ export const useJobState = () => {
           jobId,
           phoneNumbers: job.phoneNumbers,
           assistantId: job.assistantId,
-          phoneNumberId: job.phoneNumberId
+          phoneNumberId: job.phoneNumberId,
+          scheduledAt: job.schedule
         }
       })
 
       if (response.success) {
         const jobIndex = jobState.value.jobs.findIndex(j => j.id === jobId)
-        if (jobIndex !== -1) {
+        const job = jobState.value.jobs[jobIndex]
+
+        const isSameDate = job?.schedule.toDateString() === new Date().toDateString();
+
+        if (jobIndex !== -1 && isSameDate) {
           jobState.value.jobs[jobIndex] = {
-            ...jobState.value.jobs[jobIndex],
+            ...job,
             status: 'running',
             lastProcessedAt: new Date()
           }
@@ -230,12 +235,20 @@ export const useJobState = () => {
     }
   }
 
+  const getJobs = async () => {
+    const jobsData = await $fetch('/api/jobs')
+    state.value.jobs = jobsData
+    return state.value.jobs
+
+  }
+
   return {
     jobState,
     startJob,
     pauseJob,
     resumeJob,
     stopJob,
-    createJob
+    createJob,
+    getJobs
   }
 }

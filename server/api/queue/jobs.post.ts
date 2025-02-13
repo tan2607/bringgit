@@ -1,10 +1,12 @@
+import { jobs } from '~/server/database/schema';
 import { CallQueueHandler, CallMessage } from '../../utils/queue'
 
 export default defineEventHandler(async (event) => {
   try {
     const config = useRuntimeConfig()
     const body = await readBody(event)
-    const { jobId, phoneNumbers, assistantId, phoneNumberId } = body
+    const db = useDrizzle();
+    const { jobId, phoneNumbers, assistantId, phoneNumberId, scheduledAt } = body
 
     if (!jobId || !phoneNumbers || !assistantId || !phoneNumberId) {
       throw new Error('Missing required fields')
@@ -21,12 +23,19 @@ export default defineEventHandler(async (event) => {
       phoneNumber,
       assistantId,
       phoneNumberId,
-      retryCount: 0
+      retryCount: 0,
+      scheduledAt
     }))
 
     // Enqueue all messages
     await queueHandler.enqueueJobBatch(messages)
 
+    // Update job status to running
+    const isSameDate = scheduledAt.toDateString() === new Date().toDateString();
+    if(isSameDate) {
+      await db.update(jobs).set({ status: "running" }).where(eq(jobs.id, jobId))
+    }
+    
     return {
       success: true,
       message: `Enqueued ${phoneNumbers.length} calls for job ${jobId}`

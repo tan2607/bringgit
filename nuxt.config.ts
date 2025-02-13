@@ -138,11 +138,16 @@ export default defineNuxtConfig({
   },
   ssr: false,
   devtools: { enabled: true },
-  nitro: {
+  nitro: {    
+  
+    scheduledTasks: {
+      '* * * * *': ['jobs:schedule']
+    },
     preset: 'cloudflare_pages',
     compatibilityDate: '2024-09-02',
     experimental: {
       openAPI: true,
+      tasks: true,
       database: true
     },
     database: {
