@@ -107,10 +107,6 @@ const state = useState('scheduling', () => ({
   loadingJobId: null as string | null,
 }))
 
-const isDateDisabled: Matcher = (date) => {
-  return date.compare(currentDate) < 0
-}
-
 
 // Update jobState when selectedDate changes
 watch(selectedDate, (newDate) => {

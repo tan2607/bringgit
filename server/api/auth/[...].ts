@@ -5,6 +5,15 @@ import { NuxtAuthHandler } from '#auth'
 const runtimeConfig = useRuntimeConfig()
 
 const authConfig: AuthConfig = {
+  logger: {
+    error(code, ...message) {
+      console.error('[AUTH] Error. Runtime Config:', {
+        baseUrl: runtimeConfig.public.baseUrl,
+        authJs: runtimeConfig.public.authJs
+      })
+      console.error(code, ...message)
+    }
+  },
   secret: runtimeConfig.authJs.secret,
   jwt: {
     encode: ({ secret, token }) => {

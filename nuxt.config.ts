@@ -1,4 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+const baseUrl = process.env.NUXT_PUBLIC_BASE_URL || process.env.CF_PAGES_URL || "https://galaxy.voice.keyreply.com"
+
 export default defineNuxtConfig({
   debug: false,
   icon: {
@@ -28,9 +30,10 @@ export default defineNuxtConfig({
       secret: process.env.NEXTAUTH_SECRET,
     },
     public: {
+      baseUrl,
       googleApiKey: process.env.GOOGLE_API_KEY,
       authJs: {
-        baseUrl: process.env.CF_PAGES_URL || process.env.NUXT_NEXTAUTH_URL || "https://galaxy.voice.keyreply.com",
+        baseUrl,
         guestRedirectTo: "/auth/login",
         authenticatedRedirectTo: "/analytics",
         verifyClientOnEveryRequest: true,

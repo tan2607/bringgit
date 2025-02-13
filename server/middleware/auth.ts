@@ -9,7 +9,7 @@ export default defineEventHandler((event) => {
   const isDevelopment = process.env.NODE_ENV === 'development'
 
   // Get the host from environment URL
-  const baseUrl = process.env.CF_PAGES_URL || process.env.NUXT_NEXTAUTH_URL || "https://galaxy.voice.keyreply.com"
+  const baseUrl = useRuntimeConfig().public?.baseUrl as string
   const trustedHost = new URL(baseUrl).host
 
   // Allow requests from trusted domain or in development mode
