@@ -13,8 +13,8 @@ export default defineEventHandler(async (event) => {
     }
 
     const queueHandler = new CallQueueHandler(
+      config.vapiApiKey,
       event.context.cloudflare.queue,
-      config.vapiApiKey
     )
 
     // Create messages for each phone number
