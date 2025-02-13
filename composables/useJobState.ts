@@ -86,7 +86,7 @@ export const useJobState = () => {
         const jobIndex = jobState.value.jobs.findIndex(j => j.id === jobId)
         const job = jobState.value.jobs[jobIndex]
 
-        const isSameDate = job?.schedule.toDateString() === new Date().toDateString();
+        const isSameDate = new Date(job?.schedule).toDateString() === new Date().toDateString();
 
         if (jobIndex !== -1 && isSameDate) {
           jobState.value.jobs[jobIndex] = {
@@ -237,8 +237,8 @@ export const useJobState = () => {
 
   const getJobs = async () => {
     const jobsData = await $fetch('/api/jobs')
-    state.value.jobs = jobsData
-    return state.value.jobs
+    jobState.value.jobs = jobsData
+    return jobState.value.jobs
 
   }
 

@@ -24,7 +24,7 @@
             </div>
           </template>
           <UCalendar 
-            v-model="selectedDate" 
+            v-model="state.selectedDate" 
             :events="calendarEvents" 
             :is-date-disabled="isDateDisabled"
             class="w-full" 
@@ -100,12 +100,13 @@ const openSlideover = () => {
 const { jobState, startJob, pauseJob, resumeJob, stopJob, getJobs } = useJobState()
 
 const currentDate = new Date()
-const selectedDate = ref(currentDate)
+const currentDateCalendar = new CalendarDate(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate())
+const selectedDate = ref(currentDateCalendar)
 
 const state = useState('scheduling', () => ({
   jobs: [] as Job[],
   statusFilter: '',
-  selectedDate: new CalendarDate(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate()),
+  selectedDate: currentDateCalendar,
   loadingJobId: null as string | null,
 }))
 
