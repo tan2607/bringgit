@@ -86,9 +86,9 @@ export const useJobState = () => {
         const jobIndex = jobState.value.jobs.findIndex(j => j.id === jobId)
         const job = jobState.value.jobs[jobIndex]
 
-        const isSameDate = new Date(job?.schedule).toDateString() === new Date().toDateString();
+        const shouldRun = job?.schedule && new Date(job.schedule).getTime() < Date.now()
 
-        if (jobIndex !== -1 && isSameDate) {
+        if (jobIndex !== -1 && shouldRun) {
           jobState.value.jobs[jobIndex] = {
             ...job,
             status: 'running',
