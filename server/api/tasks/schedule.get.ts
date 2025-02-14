@@ -20,6 +20,7 @@ export default defineEventHandler(async (event) => {
 		await queueHandler.processBatch(jobQueues);
 		return {
 			result: "success",
+			jobs: jobQueues,
 		};
 	} catch (error) {
 		console.error("[Schedule] Error scheduling job queues", error);
