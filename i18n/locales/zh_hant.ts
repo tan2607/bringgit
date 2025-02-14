@@ -272,4 +272,29 @@ export default {
     temperature: '溫度',
     'temperature-help': '較高的值會產生更有創意的回應。較低的值會產生更一致的回應。',
   },
+
+  // subnav
+  'jobs': '工作',
+  'reports': '報告',
+  'patient-intake-demo': '病人接收',
+  'sms-demo': '短信',
+  'location-search-demo': '位置搜索',
+  'ocr-demo': 'OCR演示',
+  'rpa-demo': 'RPA演示',
+  'workflow-demo': '工作流程',
+  'report-assistant': '報告助手',
+  'claims-assistant': '索賠助手',
+
+  // subnav descriptions
+  'manage-scheduled-jobs': '管理計劃的工作',
+  'view-job-reports': '查看工作報告和分析',
+  'configure-scheduling-settings': '配置計劃設置',
+  'translation-demo-description': '翻譯演示',
+  'patient-intake-demo-description': '病人接收表單演示',
+  'sms-demo-description': '短信發送演示',
+  'location-search-demo-description': '診所位置搜索演示',
+  'rpa-demo-description': 'RPA',
+  'workflow-demo-description': '家庭睡眠研究工作流程',
+  'report-assistant-description': '詢問關於您的報告的問題',
+  'claims-assistant-description': '詢問關於被拒絕的索賠的問題',
 }

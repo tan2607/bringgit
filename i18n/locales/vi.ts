@@ -296,5 +296,31 @@ export default {
     'crawled-content': 'Nội dung đã quét',
     'crawling-failed': 'Quét trang web không thành công',
     'content-imported': 'Đã nhập nội dung thành công',
-  }
+  },
+
+  // subnav
+  'jobs': 'Công việc',
+  'reports': 'Báo cáo',
+  'translation-demo': 'Dịch',
+  'patient-intake-demo': 'Tiếp nhận bệnh nhân',
+  'sms-demo': 'SMS',
+  'location-search-demo': 'Tìm kiếm vị trí',
+  'ocr-demo': 'Demo OCR',
+  'rpa-demo': 'Demo RPA',
+  'workflow-demo': 'Quy trình làm việc',
+  'report-assistant': 'Trợ lý báo cáo',
+  'claims-assistant': 'Trợ lý yêu cầu',
+
+  // subnav descriptions
+  'manage-scheduled-jobs': 'Quản lý công việc đã lên lịch',
+  'view-job-reports': 'Xem báo cáo công việc và phân tích',
+  'configure-scheduling-settings': 'Cấu hình cài đặt lịch trình',
+  'translation-demo-description': 'Demo dịch',
+  'patient-intake-demo-description': 'Demo biểu mẫu tiếp nhận bệnh nhân',
+  'sms-demo-description': 'Demo gửi SMS',
+  'location-search-demo-description': 'Demo tìm kiếm vị trí phòng khám',
+  'rpa-demo-description': 'RPA',
+  'workflow-demo-description': 'Quy trình làm việc nghiên cứu giấc ngủ tại nhà',
+  'report-assistant-description': 'Đặt câu hỏi về báo cáo của bạn',
+  'claims-assistant-description': 'Đặt câu hỏi về yêu cầu bị từ chối',
 }

@@ -284,4 +284,29 @@ export default {
       temperature: '온도',
       'temperature-help': '높은 값은 더 창의적인 응답을 생성합니다. 낮은 값은 일관된 응답을 생성합니다.'
     },
-  }
+
+    // subnav
+    'jobs': '작업',
+    'reports': '보고서',
+    'patient-intake-demo': '환자 접수',
+    'sms-demo': 'SMS',
+    'location-search-demo': '위치 검색',
+    'ocr-demo': 'OCR 데모',
+    'rpa-demo': 'RPA 데모',
+    'workflow-demo': '워크플로우',
+    'report-assistant': '보고서 도우미',
+    'claims-assistant': '클레임 도우미',
+
+    // subnav descriptions
+    'manage-scheduled-jobs': '예정된 작업 관리',
+    'view-job-reports': '작업 보고서 및 분석 보기',
+    'configure-scheduling-settings': '일정 설정 구성',
+    'translation-demo-description': '번역 데모',
+    'patient-intake-demo-description': '환자 접수 양식 데모',
+    'sms-demo-description': 'SMS 발신 데모',
+    'location-search-demo-description': '클리닉 위치 검색 데모',
+    'rpa-demo-description': 'RPA',
+    'workflow-demo-description': '홈 수면 연구 워크플로우',
+    'report-assistant-description': '보고서에 대한 질문하기',
+    'claims-assistant-description': '거부된 청구에 대한 질문하기',
+}

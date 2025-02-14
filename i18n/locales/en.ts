@@ -376,4 +376,30 @@ export default {
     activity: 'Physical Activity',
     submit: 'Submit Form'
   },
+
+  // subnav
+  'jobs': 'Jobs',
+  'reports': 'Reports',
+  'translation-demo': 'Translation',
+  'patient-intake-demo': 'Patient Intake',
+  'sms-demo': 'SMS',
+  'location-search-demo': 'Location Search',
+  'ocr-demo': 'OCR Demo',
+  'rpa-demo': 'RPA Demo',
+  'workflow-demo': 'Workflow Demo',
+  'report-assistant': 'Report Assistant',
+  'claims-assistant': 'Claims Assistant',
+
+  // subnav descriptions
+  'manage-scheduled-jobs': 'Manage scheduled jobs',
+  'view-job-reports': 'View job reports and analytics',
+  'configure-scheduling-settings': 'Configure scheduling settings',
+  'translation-demo-description': 'Translation demo',
+  'patient-intake-demo-description': 'Patient intake form demo',
+  'sms-demo-description': 'SMS sender demo',
+  'location-search-demo-description': 'Clinic location search demo',
+  'rpa-demo-description': 'RPA',
+  'workflow-demo-description': 'Home Sleep Study Workflow',
+  'report-assistant-description': 'Ask questions about your reports',
+  'claims-assistant-description': 'Ask questions about denied claims',
 }

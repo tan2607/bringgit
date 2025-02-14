@@ -286,4 +286,29 @@ export default {
     temperature: 'อุณหภูมิ',
     'temperature-help': 'ค่าที่สูงขึ้นจะสร้างการตอบสนองที่สร้างสรรค์มากขึ้น ค่าที่ต่ำลงจะสร้างการตอบสนองที่สอดคล้องกัน',
   },
+
+  // subnav
+  'jobs': 'งาน',
+  'reports': 'รายงาน',
+  'patient-intake-demo': 'การรับผู้ป่วย',
+  'sms-demo': 'SMS',
+  'location-search-demo': 'ค้นหาตำแหน่ง',
+  'ocr-demo': 'การสาธิต OCR',
+  'rpa-demo': 'การสาธิต RPA',
+  'workflow-demo': 'เวิร์กโฟลว์',
+  'report-assistant': 'ผู้ช่วยรายงาน',
+  'claims-assistant': 'ผู้ช่วยการเรียกร้อง',
+
+  // subnav descriptions
+  'manage-scheduled-jobs': 'จัดการงานที่กำหนดเวลาไว้',
+  'view-job-reports': 'ดูรายงานงานและการวิเคราะห์',
+  'configure-scheduling-settings': 'กำหนดค่าการตั้งค่าเวลา',
+  'translation-demo-description': 'การสาธิตการแปล',
+  'patient-intake-demo-description': 'การสาธิตแบบฟอร์มการรับผู้ป่วย',
+  'sms-demo-description': 'การสาธิตการส่ง SMS',
+  'location-search-demo-description': 'การสาธิตการค้นหาตำแหน่งคลินิก',
+  'rpa-demo-description': 'RPA',
+  'workflow-demo-description': 'เวิร์กโฟลว์การศึกษาการนอนหลับที่บ้าน',
+  'report-assistant-description': 'ถามคำถามเกี่ยวกับรายงานของคุณ',
+  'claims-assistant-description': 'ถามคำถามเกี่ยวกับการเรียกร้องที่ถูกปฏิเสธ',
 }

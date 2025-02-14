@@ -213,4 +213,29 @@ export default {
     activity: 'Aktiviti Fizikal',
     submit: 'Hantar Borang'
   },
+
+  // subnav
+  'jobs': 'Pekerjaan',
+  'reports': 'Laporan',
+  'patient-intake-demo': 'Penerimaan Pesakit',
+  'sms-demo': 'SMS',
+  'location-search-demo': 'Carian Lokasi',
+  'ocr-demo': 'Demo OCR',
+  'rpa-demo': 'Demo RPA',
+  'workflow-demo': 'Aliran Kerja',
+  'report-assistant': 'Pembantu Laporan',
+  'claims-assistant': 'Pembantu Tuntutan',
+
+  // subnav descriptions
+  'manage-scheduled-jobs': 'Urus pekerjaan yang dijadualkan',
+  'view-job-reports': 'Lihat laporan pekerjaan dan analisis',
+  'configure-scheduling-settings': 'Konfigurasikan tetapan penjadualan',
+  'translation-demo-description': 'Demo terjemahan',
+  'patient-intake-demo-description': 'Demo borang penerimaan pesakit',
+  'sms-demo-description': 'Demo penghantar SMS',
+  'location-search-demo-description': 'Demo carian lokasi klinik',
+  'rpa-demo-description': 'RPA',
+  'workflow-demo-description': 'Aliran Kerja Kajian Tidur di Rumah',
+  'report-assistant-description': 'Tanya soalan tentang laporan anda',
+  'claims-assistant-description': 'Tanya soalan tentang tuntutan yang ditolak',
 }

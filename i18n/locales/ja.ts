@@ -293,4 +293,29 @@ export default {
     temperature: '温度',
     'temperature-help': '値が高いほど、より創造的な応答になります。低い値は一貫性のある応答を生成します。',
   },
+
+  // subnav
+  'jobs': 'ジョブ',
+  'reports': 'レポート',
+  'patient-intake-demo': '患者受付',
+  'sms-demo': 'SMS',
+  'location-search-demo': 'ロケーション検索',
+  'ocr-demo': 'OCRデモ',
+  'rpa-demo': 'RPAデモ',
+  'workflow-demo': 'ワークフロー',
+  'report-assistant': 'レポートアシスタント',
+  'claims-assistant': 'クレームアシスタント',
+
+  // subnav descriptions
+  'manage-scheduled-jobs': 'スケジュールされたジョブを管理する',
+  'view-job-reports': 'ジョブレポートと分析を表示する',
+  'configure-scheduling-settings': 'スケジューリング設定を構成する',
+  'translation-demo-description': '翻訳デモ',
+  'patient-intake-demo-description': '患者受付フォームデモ',
+  'sms-demo-description': 'SMS送信デモ',
+  'location-search-demo-description': 'クリニックの場所検索デモ',
+  'rpa-demo-description': 'RPA',
+  'workflow-demo-description': '在宅睡眠研究ワークフロー',
+  'report-assistant-description': 'レポートについて質問する',
+  'claims-assistant-description': '拒否されたクレームについて質問する',
 }

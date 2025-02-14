@@ -244,4 +244,29 @@ export default {
     'crawling-failed': 'Gagal menjelajahi situs web',
     'content-imported': 'Konten berhasil diimpor',
   },
+
+  // Subnav
+  'jobs': 'Pekerjaan',
+  'reports': 'Laporan',
+  'patient-intake-demo': 'Penerimaan Pasien',
+  'sms-demo': 'SMS',
+  'location-search-demo': 'Pencarian Lokasi',
+  'ocr-demo': 'OCR Demo',
+  'rpa-demo': 'RPA Demo',
+  'workflow-demo': 'Alur Kerja',
+  'report-assistant': 'Asisten Laporan',
+  'claims-assistant': 'Asisten Klaim',
+
+  // Subnav descriptions
+  'manage-scheduled-jobs': 'Kelola pekerjaan terjadwal',
+  'view-job-reports': 'Lihat laporan pekerjaan dan analitik',
+  'configure-scheduling-settings': 'Konfigurasi pengaturan penjadwalan',
+  'translation-demo-description': 'Demo terjemahan',
+  'patient-intake-demo-description': 'Demo formulir penerimaan pasien',
+  'sms-demo-description': 'Demo pengirim SMS',
+  'location-search-demo-description': 'Demo pencarian lokasi klinik',
+  'rpa-demo-description': 'RPA',
+  'workflow-demo-description': 'Alur Kerja Studi Tidur di Rumah',
+  'report-assistant-description': 'Ajukan pertanyaan tentang laporan Anda',
+  'claims-assistant-description': 'Ajukan pertanyaan tentang klaim yang ditolak',
 }
