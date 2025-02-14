@@ -21,7 +21,6 @@ export default {
     smoking: 'Thói quen hút thuốc',
     alcohol: 'Thói quen uống rượu',
     activity: 'Hoạt động thể chất',
-    phoneNumbers: 'Số điện thoại',
     submit: 'Gửi biểu mẫu'
   },
 
@@ -33,6 +32,7 @@ export default {
   welcome: 'Chào mừng',
   analytics: 'Phân tích',
   scheduling: 'Lịch trình',
+  phoneNumbers: 'Số điện thoại',
   settings: 'Cài đặt',
   'dev-tools': 'Công cụ phát triển',
   profile: 'Hồ sơ',

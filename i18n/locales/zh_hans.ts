@@ -7,6 +7,7 @@ export default {
   welcome: '欢迎',
   analytics: '分析',
   scheduling: '日程安排',
+  phoneNumbers: '电话号码',
   settings: '设置',
   'dev-tools': '开发者工具',
   profile: '个人资料',
@@ -279,5 +280,4 @@ export default {
     temperature: '温度',
     'temperature-help': '较高的值会产生更有创意的回应。较低的值会产生更一致的回应。',
   },
-  phoneNumbers: '电话号码',
 }

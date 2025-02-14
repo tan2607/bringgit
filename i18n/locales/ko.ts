@@ -7,6 +7,7 @@ export default {
     welcome: '환영합니다',
     analytics: '분석',
     scheduling: '일정',
+    phoneNumbers: '전화번호',
     settings: '설정',
     'dev-tools': '개발자 도구',
     profile: '프로필',
@@ -281,5 +282,4 @@ export default {
       temperature: '온도',
       'temperature-help': '높은 값은 더 창의적인 응답을 생성합니다. 낮은 값은 일관된 응답을 생성합니다.'
     },
-    phoneNumbers: '전화번호',
   }

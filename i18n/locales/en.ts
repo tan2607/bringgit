@@ -7,6 +7,7 @@ export default {
   welcome: 'Welcome',
   analytics: 'Analytics',
   scheduling: 'Scheduling',
+  phoneNumbers: 'Phone Numbers',
   settings: 'Settings',
   'dev-tools': 'Developer',
   profile: 'Profile',
@@ -374,5 +375,4 @@ export default {
     activity: 'Physical Activity',
     submit: 'Submit Form'
   },
-  phoneNumbers: 'Phone Numbers',
 }

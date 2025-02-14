@@ -7,6 +7,7 @@ export default {
   welcome: 'مرحباً',
   analytics: 'التحليلات',
   scheduling: 'الجدولة',
+  phoneNumbers: 'أرقام الهواتف',
   settings: 'الإعدادات',
   'dev-tools': 'أدوات المطور',
   profile: 'الملف الشخصي',
@@ -261,5 +262,4 @@ export default {
     'crawling-failed': 'فشل تصفح الموقع',
     'content-imported': 'تم استيراد المحتوى بنجاح',
   },
-  phoneNumbers: 'أرقام الهواتف',
 }

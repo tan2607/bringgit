@@ -7,6 +7,7 @@ export default {
   welcome: 'Selamat Datang',
   analytics: 'Analitik',
   scheduling: 'Penjadwalan',
+  phoneNumbers: 'Nomor Telepon',
   settings: 'Pengaturan',
   'dev-tools': 'Pengembang',
   profile: 'Profil',
@@ -241,5 +242,4 @@ export default {
     'crawling-failed': 'Gagal menjelajahi situs web',
     'content-imported': 'Konten berhasil diimpor',
   },
-  phoneNumbers: 'Nomor Telepon',
 }
