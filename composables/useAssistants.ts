@@ -20,6 +20,7 @@ export const useAssistants = () => {
     try {
       const { data } = await useFetch('/api/assistants')
       assistants.value = (await Promise.all(data.value!.map(attachMeta))).filter(Boolean)
+      return assistants.value;
     } finally {
       isLoading.value = false
     }

@@ -9,6 +9,7 @@ export interface Job {
   failedCalls: number
   failedNumbers: string[]
   phoneNumbers: string[]
+  names: string[]
   assistantId: string
   phoneNumberId: string
   lastProcessedAt?: Date
@@ -76,6 +77,7 @@ export const useJobState = () => {
         body: {
           jobId,
           phoneNumbers: job.phoneNumbers,
+          names: job.names,
           assistantId: job.assistantId,
           phoneNumberId: job.phoneNumberId,
           scheduledAt: job.schedule
@@ -231,6 +233,24 @@ export const useJobState = () => {
       return false
     } catch (error) {
       console.error('Error creating job:', error)
+      return false
+    }
+  }
+
+  const editJob = async (jobData: Job) => {
+    try {
+      const response = await $fetch(`/api/jobs/${jobData.id}`, {
+        method: 'PUT',
+        body: jobData
+      })
+
+      if (response.success) {
+        await startJob(jobData.id)
+        return true
+      }
+      return false
+    } catch (error) {
+      console.error('Error editing job:', error)
       return false
     }
   }

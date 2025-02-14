@@ -16,7 +16,7 @@ export default {
 
   // Descriptions
   'manage-calls': 'Urus panggilan dan mesyuarat',
-  'manage-assistants': 'Urus pembantu AI',
+  'manage-assistants': 'Buat dan ubah pembantu',
   'review-statistics': 'Lihat statistik terperinci',
   'manage-schedule': 'Urus jadual panggilan',
   'configure-preferences': 'Konfigurasi keutamaan',
@@ -24,6 +24,7 @@ export default {
   'view-api': 'Lihat spesifikasi API',
   'manage-phone-numbers': 'Urus nombor telefon',
   'view-demo': 'Lihat halaman demo',
+  'view-assistants': 'Lihat Pembantu',
 
   // Auth
   login: 'Log Masuk',

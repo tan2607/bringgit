@@ -22,7 +22,7 @@ export default {
 
   // Descriptions
   'manage-calls': 'จัดการการโทรและการประชุม',
-  'manage-assistants': 'จัดการผู้ช่วย AI',
+  'manage-assistants': 'สร้างและแก้ไขผู้ช่วย',
   'review-statistics': 'ดูสถิติโดยละเอียด',
   'manage-schedule': 'จัดการตารางการโทร',
   'configure-preferences': 'กำหนดค่าการตั้งค่า',
@@ -30,6 +30,7 @@ export default {
   'view-api': 'ดูข้อกำหนด API',
   'manage-phone-numbers': 'จัดการหมายเลขโทรศัพท์',
   'view-demo': 'ดูหน้าสาธิต',
+  'view-assistants': 'ดูผู้ช่วย',
 
   // Auth
   login: 'เข้าสู่ระบบ',

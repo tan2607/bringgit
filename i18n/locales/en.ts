@@ -21,13 +21,14 @@ export default {
 
   // Descriptions
   'manage-calls': 'Manage calls and meetings',
-  'manage-assistants': 'Manage AI assistants',
+  'manage-assistants': 'Create and modify assistants',
   'review-statistics': 'View detailed statistics',
   'manage-schedule': 'Manage call schedules',
   'configure-preferences': 'Configure preferences',
   'get-help': 'Get help and support',
   'view-api': 'View API specifications',
   'view-demo': 'View demo page',
+
 
   // Auth
   login: 'Login',
@@ -189,6 +190,7 @@ export default {
   'voice': 'Voice',
   'created-at': 'Created At',
   'call-assistant': 'Call',
+  'view-assistants': 'View Assistants',
 
   // Scheduling
   'call-scheduling': 'Call Scheduling',

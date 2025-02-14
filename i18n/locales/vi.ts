@@ -48,7 +48,7 @@ export default {
 
   // Descriptions
   'manage-calls': 'Quản lý cuộc gọi và họp',
-  'manage-assistants': 'Quản lý trợ lý AI',
+  'manage-assistants': 'Tạo và sửa đổi trợ lý',
   'review-statistics': 'Xem thống kê chi tiết',
   'manage-schedule': 'Quản lý lịch gọi',
   'configure-preferences': 'Cấu hình tùy chọn',
@@ -56,6 +56,7 @@ export default {
   'view-api': 'Xem thông số kỹ thuật API',
   'manage-phone-numbers': 'Quản lý số điện thoại',
   'view-demo': 'Xem trang demo',
+  'view-assistants': 'Xem trợ lý',
 
   // Auth
   login: 'Đăng nhập',

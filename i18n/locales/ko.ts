@@ -22,7 +22,7 @@ export default {
 
     // Descriptions
     'manage-calls': '통화 및 회의 관리',
-    'manage-assistants': 'AI 어시스턴트 관리',
+    'manage-assistants': '통화 일정 관리',
     'review-statistics': '상세 통계 보기',
     'manage-schedule': '통화 일정 관리',
     'configure-preferences': '환경설정 구성',
@@ -148,6 +148,7 @@ export default {
     'model': '모델',
     'voice': '음성',
     'created-at': '생성일',
+    'view-assistants': '어시스턴트 보기',
 
     // Form Fields
     'subject': '제목',

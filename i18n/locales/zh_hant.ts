@@ -25,7 +25,7 @@ export default {
 
   // Descriptions
   'manage-calls': '管理通話和會議',
-  'manage-assistants': '管理AI助手',
+  'manage-assistants': '建立和修改助手',
   'review-statistics': '查看詳細統計數據',
   'manage-schedule': '管理通話日程',
   'configure-preferences': '配置偏好設定',
@@ -34,6 +34,7 @@ export default {
   'explore-demos': '探索我們的AI示範',
   'manage-phone-numbers': '管理電話號碼',
   'view-demo': '查看演示頁面',
+  'view-assistants': '查看助手',
 
   // Auth
   login: '登入',

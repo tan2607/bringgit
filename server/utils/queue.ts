@@ -10,6 +10,7 @@ export interface CallMessage {
   id?: string
   jobId: string
   phoneNumber: string
+  name: string
   assistantId: string
   phoneNumberId: string
   retryCount?: number
@@ -116,7 +117,7 @@ export class CallQueueHandler {
   }
 
   async processMessage(message: QueueMessage<CallMessage>) {
-    const { jobId, phoneNumber, assistantId, phoneNumberId, retryCount = 0, id: queueId, delay, scheduledAt } = message;
+    const { jobId, phoneNumber, assistantId, phoneNumberId, retryCount = 0, id: queueId, delay, scheduledAt, name } = message;
     const db = useDrizzle();
     // Check if we should process this message now
     if(scheduledAt) {
@@ -150,7 +151,20 @@ export class CallQueueHandler {
     }
 
     try {
-      console.log(`Processing call for job ${jobId} to number ${phoneNumber}`)
+      // @todo: find a way to do it via vapi {{now}} or separate greeting logic
+      const hour = parseInt(new Date().toLocaleString('en-US', { timeZone: 'Asia/Singapore', hour: '2-digit', hour12: false }));
+      let greeting;
+      if (hour < 12) {
+        greeting = "Good Morning";
+      } else if (hour < 18) {
+        greeting = "Good Afternoon";
+      } else if (hour < 21) {
+        greeting = "Good Evening";
+      } else {
+        greeting = "Good Night";
+      }
+      
+      console.log(`Processing call for job ${jobId} to number ${phoneNumber} with variables:`, {name, greeting})
       
       const call = await this.vapi.client.calls.create({
         assistantId,
@@ -158,6 +172,12 @@ export class CallQueueHandler {
         customer: {
           number: phoneNumber,
           numberE164CheckEnabled: false
+        },
+        assistantOverrides: {
+          variableValues: {
+            name,
+            greeting
+          }
         }
       })
 
@@ -267,6 +287,7 @@ export class CallQueueHandler {
       phoneNumber: message.phoneNumber,
       assistantId: message.assistantId,
       phoneNumberId: message.phoneNumberId,
+      name: message.name,
       retryCount: message.retryCount,
       priority: message.priority,
       id: crypto.randomUUID(),

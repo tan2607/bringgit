@@ -29,6 +29,13 @@
       "when": 1739412913702,
       "tag": "0003_powerful_molten_man",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1739518745394,
+      "tag": "0004_big_magneto",
+      "breakpoints": true
     }
   ]
 }
