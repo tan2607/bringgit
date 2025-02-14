@@ -261,4 +261,5 @@ export default {
     'crawling-failed': 'فشل تصفح الموقع',
     'content-imported': 'تم استيراد المحتوى بنجاح',
   },
+  phoneNumbers: 'أرقام الهواتف',
 }

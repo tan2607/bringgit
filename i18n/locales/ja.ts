@@ -290,4 +290,5 @@ export default {
     temperature: '温度',
     'temperature-help': '値が高いほど、より創造的な応答になります。低い値は一貫性のある応答を生成します。',
   },
+  phoneNumbers: '電話番号',
 }

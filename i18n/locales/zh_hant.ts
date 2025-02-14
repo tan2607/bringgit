@@ -269,4 +269,5 @@ export default {
     temperature: '溫度',
     'temperature-help': '較高的值會產生更有創意的回應。較低的值會產生更一致的回應。',
   },
+  phoneNumbers: '電話號碼',
 }

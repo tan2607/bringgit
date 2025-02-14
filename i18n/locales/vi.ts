@@ -21,6 +21,7 @@ export default {
     smoking: 'Thói quen hút thuốc',
     alcohol: 'Thói quen uống rượu',
     activity: 'Hoạt động thể chất',
+    phoneNumbers: 'Số điện thoại',
     submit: 'Gửi biểu mẫu'
   },
 

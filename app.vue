@@ -101,7 +101,7 @@ const items = computed(() => [
         ]
     },
     {
-        label: 'Phone Numbers',
+        label: t('phoneNumbers'),
         icon: 'i-lucide-phone',
         description: 'Manage phone numbers',
         to: localeRoute('/numbers')?.path

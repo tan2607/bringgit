@@ -278,5 +278,6 @@ export default {
     'llm-help': '选择要使用的语言模型',
     temperature: '温度',
     'temperature-help': '较高的值会产生更有创意的回应。较低的值会产生更一致的回应。',
-  }
+  },
+  phoneNumbers: '电话号码',
 }

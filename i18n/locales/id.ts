@@ -241,4 +241,5 @@ export default {
     'crawling-failed': 'Gagal menjelajahi situs web',
     'content-imported': 'Konten berhasil diimpor',
   },
+  phoneNumbers: 'Nomor Telepon',
 }

@@ -374,4 +374,5 @@ export default {
     activity: 'Physical Activity',
     submit: 'Submit Form'
   },
+  phoneNumbers: 'Phone Numbers',
 }

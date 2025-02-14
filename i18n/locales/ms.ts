@@ -210,4 +210,5 @@ export default {
     activity: 'Aktiviti Fizikal',
     submit: 'Hantar Borang'
   },
+  phoneNumbers: 'Nomor Telefon',
 }

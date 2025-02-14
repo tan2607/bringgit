@@ -280,5 +280,6 @@ export default {
       'llm-help': '사용할 언어 모델을 선택하세요',
       temperature: '온도',
       'temperature-help': '높은 값은 더 창의적인 응답을 생성합니다. 낮은 값은 일관된 응답을 생성합니다.'
-    }
+    },
+    phoneNumbers: '전화번호',
   }
