@@ -237,6 +237,24 @@ export const useJobState = () => {
     }
   }
 
+  const editJob = async (jobData: Job) => {
+    try {
+      const response = await $fetch(`/api/jobs/${jobData.id}`, {
+        method: 'PUT',
+        body: jobData
+      })
+
+      if (response.success) {
+        await startJob(jobData.id)
+        return true
+      }
+      return false
+    } catch (error) {
+      console.error('Error editing job:', error)
+      return false
+    }
+  }
+
   const getJobs = async () => {
     const jobsData = await $fetch('/api/jobs')
     jobState.value.jobs = jobsData

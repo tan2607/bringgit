@@ -10,9 +10,9 @@
     "preview": "nuxt preview",
     "cleanup": "nuxt cleanup",
     "upgrade": "npx nuxi@latest upgrade --force",
-    "drizzle:generate": "drizzle-kit generate",
-    "drizzle:migrate": "drizzle-kit migrate",
-    "drizzle:studio": "drizzle-kit studio"
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@auth/core": "0.37.4",

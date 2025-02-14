@@ -64,7 +64,7 @@
     </UCard> -->
 
     <!-- Jobs Table -->
-    <UTable :rows="filteredJobs" :columns="columns" :sort="sort" @update:sort="sort = $event"
+    <UTable :data="filteredJobs" :columns="columns" :sort="sort" @update:sort="sort = $event"
       v-model:selected="jobState.selectedJobs" :loading="isLoading"
       :empty-jobState="{ icon: 'i-heroicons-clipboard', label: 'No jobs found' }" selectable>
       <!-- Name Column -->
@@ -117,14 +117,12 @@
     </UTable>
 
     <!-- Create/Edit Job Modal -->
-    <JobFormModal v-model="showCreateModal" :editing-job="editingJob" :assistant-options="assistantOptions"
-      :phone-number-options="phoneNumberOptions" @submit="handleJobSubmit" />
+    <JobFormModal v-model="showCreateModal" :editing-job="editingJob" :assistantOptions="assistants"
+      :phone-number-options="numbers" @submit="handleJobSubmit" />
 
     <!-- Quick View Drawer -->
-    <USlideover v-model="showQuickView">
+    <USlideover v-model:open="showQuickView" side="right">
       <template #content>
-
-
         <UCard class="h-full">
           <template #header>
             <div class="flex items-center justify-between">
@@ -139,7 +137,7 @@
             <!-- Progress Section -->
             <div class="space-y-2">
               <h4 class="font-medium">Progress</h4>
-              <UProgress :value="quickViewJob.progress" :color="getProgressColor(quickViewJob)" size="lg" />
+              <UProgress :value="quickViewJob.progress" :color="getProgressColor(quickViewJob)" size="lg" :animation="quickViewJob.status === 'completed' ? 'pulse' : 'carousel'"/>
               <div class="grid grid-cols-3 gap-4 mt-2">
                 <div>
                   <div class="text-sm text-gray-500">Total</div>
@@ -175,11 +173,17 @@
                 <UCard v-for="activity in getJobActivity(quickViewJob)" :key="activity.id" class="flex gap-3 p-3">
                   <UIcon :name="activity.icon" class="h-5 w-5 text-gray-400" />
                   <div class="flex-1 space-y-1">
-                    <p class="text-sm">{{ activity.message }}</p>
-                    <p class="text-xs text-gray-500">{{ formatDate(activity.timestamp) }}</p>
+                    <p class="text-sm">{{ activity.title }}</p>
+                    <!-- <p class="text-xs text-gray-500">{{ formatDate(activity.timestamp) }}</p> -->
                   </div>
                 </UCard>
               </div>
+            </div>
+
+            <!-- Phone Numbers -->
+            <div>
+              <h4 class="font-medium mb-2">Phone Numbers</h4>
+              <UTable :data="quickViewJob.jobQueues" :columns="jobQueueColumns" />
             </div>
           </div>
         </UCard>
@@ -197,6 +201,10 @@ import { useJobState } from '@/composables/useJobState'
 import JobFormModal from './JobFormModal.vue'
 import JobDetailsSlideover from './JobDetailsSlideover.vue'
 
+
+const UButton = resolveComponent('UButton')
+const UBadge = resolveComponent('UBadge')
+const UDropdownMenu = resolveComponent('UDropdownMenu')
 // Form validation schema
 const jobFormSchema = z.object({
   name: z.string().min(1, 'Job name is required'),
@@ -208,7 +216,10 @@ const jobFormSchema = z.object({
 
 type JobFormSchema = z.output<typeof jobFormSchema>
 
-const { jobState, createJob, pauseJob, resumeJob, stopJob } = useJobState()
+const { jobState, createJob, pauseJob, resumeJob, stopJob, getJobs } = useJobState()
+const { assistants, fetchAssistants } = useAssistants()
+const { numbers, fetchNumbers } = usePhoneNumbers()
+
 
 // Local UI jobState
 const localState = useState('jobManagerUI', () => ({
@@ -243,15 +254,6 @@ const jobForm = ref({
 })
 
 // Mock data (replace with real data)
-const assistantOptions = [
-  { label: 'Sales Assistant', value: 'sales-1' },
-  { label: 'Support Assistant', value: 'support-1' }
-]
-
-const phoneNumberOptions = [
-  { label: '+1 (555) 0123', value: 'number-1' },
-  { label: '+1 (555) 0124', value: 'number-2' }
-]
 
 const savedViews = [
   { label: 'All Active Jobs', key: 'active' },
@@ -259,12 +261,47 @@ const savedViews = [
   { label: 'Today\'s Jobs', key: 'today' }
 ]
 
+
+
 // Table configuration
 const columns = [
   { accessorKey: 'name', header: 'Name', sortable: true },
   { accessorKey: 'progress', header: 'Progress', sortable: true },
   { accessorKey: 'status', header: 'Status', sortable: true },
-  { accessorKey: 'actions', header: '' }
+  { id: 'actions',  cell: ({ row }) => {
+      return h(
+        'div',
+        { class: 'text-right' },
+        h(
+          UDropdownMenu,
+          {
+            content: {
+              align: 'end'
+            },
+            items: getJobActions(row)
+          },
+          () =>
+            h(UButton, {
+              icon: 'i-lucide-ellipsis-vertical',
+              color: 'neutral',
+              variant: 'ghost',
+              class: 'ml-auto'
+            })
+        )
+      )
+    } }
+]
+
+const jobQueueColumns = [
+  { accessorKey: 'name', header: 'Name', cell: ({ row }) => {
+    return h('div', { class: 'text-sm text-gray-500' }, row.original.name || "N/A")
+  } },
+  { accessorKey: 'phoneNumber', header: 'Phone Number' },
+  { accessorKey: 'retryCount', header: 'Retry Count' },
+  { accessorKey: 'scheduledAt', header: 'Schedule At', cell: ({ row }) => {
+    return h('div', { class: 'text-sm text-gray-500' }, new Date(row.original.scheduledAt).toLocaleString())
+  }  },
+  { accessorKey: 'status', header: 'Status' },
 ]
 
 const statusOptions = [
@@ -285,6 +322,10 @@ const filteredJobs = computed(() => {
     jobs = jobs.filter(job =>
       job.name.toLowerCase().includes(localState.value.searchQuery.toLowerCase())
     )
+  }
+
+  if (jobState.value.selectedStatus === 'all') {
+    return jobs
   }
 
   // Apply status filter
@@ -379,14 +420,16 @@ const getJobActions = (job: Job) => {
 const handleJobAction = async (action: string, job: Job) => {
   switch (action) {
     case 'view':
-      quickViewJob.value = job
+      quickViewJob.value = filteredJobs.value[job.id]
       showQuickView.value = true
       break
     case 'edit':
-      editingJob.value = job
+      const jobDetails = filteredJobs.value[job.id]
+      console.log(jobDetails.phoneNumbers)
+      editingJob.value = jobDetails
       jobForm.value = {
-        ...job,
-        phoneNumbers: job.phoneNumbers.join('\n')
+        ...jobDetails,
+        phoneNumbers: JSON.parse(jobDetails.phoneNumbers)
       }
       showCreateModal.value = true
       break
@@ -402,20 +445,12 @@ const handleJobAction = async (action: string, job: Job) => {
   }
 }
 
-const handleJobSubmit = async (event: FormSubmitEvent<JobFormSchema>) => {
+const handleJobSubmit = async (jobData: Job) => {
   isSubmitting.value = true
   try {
-    const phoneNumbers = event.data.phoneNumbers
-      .split('\n')
-      .map(n => n.trim())
-      .filter(Boolean)
-
-    const jobData = {
-      ...event.data,
-      phoneNumbers
-    }
-
     if (editingJob.value) {
+      console.log(jobData);
+      
       // Implement edit
     } else {
       await createJob(jobData)
@@ -468,15 +503,25 @@ const getJobActivity = (job: Job) => {
       icon: getJobIcon(job.status)
     },
     {
-      title: `${job.completedCalls} calls completed`,
+      title: `${job.completedCalls || 0} calls completed`,
       date: new Date(),
       icon: 'i-lucide-phone'
     },
     {
-      title: `${job.failedCalls} calls failed`,
+      title: `${job.failedCalls || 0} calls failed`,
       date: new Date(),
       icon: 'i-lucide-phone-off'
     }
   ]
 }
+
+function getJobPhoneNumbers(job: Job) {
+  return JSON.parse(job.phoneNumbers)
+}
+
+onMounted(async () => {
+  await getJobs()
+  await fetchAssistants()
+  await fetchNumbers()
+})
 </script>
