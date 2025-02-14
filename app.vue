@@ -107,7 +107,7 @@ const items = computed(() => [
         to: localeRoute('/numbers')?.path
     },
     {
-        label: 'Demo',
+        label: t('demos'),
         icon: 'i-lucide-layout-template',
         description: 'View demo pages',
         children: [
