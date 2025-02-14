@@ -21,6 +21,7 @@ export default defineEventHandler(async (event) => {
 		return {
 			result: "success",
 			jobs: jobQueues,
+			scheduledAt: new Date(),
 		};
 	} catch (error) {
 		console.error("[Schedule] Error scheduling job queues", error);
