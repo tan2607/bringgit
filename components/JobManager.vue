@@ -123,7 +123,7 @@
     <!-- Quick View Drawer -->
     <USlideover v-model:open="showQuickView" side="right">
       <template #content>
-        <UCard class="h-full">
+        <UCard class="h-full overflow-y-auto">
           <template #header>
             <div class="flex items-center justify-between">
               <h3 class="text-lg font-semibold">

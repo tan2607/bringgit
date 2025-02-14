@@ -59,7 +59,7 @@
               </div>
 
               <div class="flex items-center gap-2 mb-2">
-                <UProgress :value="job.progress" :color="getStatusColor(job.status)" :indeterminate="job.status === 'running'" size="xs" class="flex-1" :animation="job.status === 'completed' ? 'pulse' : 'carousel'"/>
+                <UProgress :value="job.progress" :color="getStatusColor(job.status)" size="xs" class="flex-1" :animation="job.status === 'completed' ? 'pulse' : 'carousel'"/>
                 <span class="text-sm text-gray-600">{{ job.progress }}%</span>
               </div>
 
