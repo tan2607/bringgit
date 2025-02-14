@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
 			orderBy: [desc(jobQueue.createdAt)],
 		});
 	
-		const config = useRuntimeConfig()
+	const config = useRuntimeConfig()
 		const queueHandler = new CallQueueHandler(
 			config.vapiApiKey,
 			event.context.cloudflare.queue
