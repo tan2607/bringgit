@@ -125,15 +125,15 @@ export class CallQueueHandler {
         return;
       }
     }
-    const validation = this.scheduler.validateSchedule(new Date())
-    if (!validation.isValid) {
-      // Requeue for next available time
-      const nextTime = this.scheduler.getNextAvailableTime()
-      const delay = nextTime.getTime() - Date.now()
-      await this.sendToQueue(message, { delay: Math.max(0, delay / 1000) })
-      // await message.ack()
-      return
-    }
+    // const validation = this.scheduler.validateSchedule(new Date())
+    // if (!validation.isValid) {
+    //   // Requeue for next available time
+    //   const nextTime = this.scheduler.getNextAvailableTime()
+    //   const delay = nextTime.getTime() - Date.now()
+    //   await this.sendToQueue(message, { delay: Math.max(0, delay / 1000) })
+    //   // await message.ack()
+    //   return
+    // }
 
     // Try to acquire a slot for this job
     if (!await this.rateLimiter.acquireJobSlot(jobId)) {
