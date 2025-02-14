@@ -46,12 +46,13 @@ export default {
 
   // Descriptions
   'manage-calls': 'Quản lý cuộc gọi và họp',
-  'manage-assistants': 'Quản lý trợ lý AI',
+  'manage-assistants': 'Tạo và sửa đổi trợ lý',
   'review-statistics': 'Xem thống kê chi tiết',
   'manage-schedule': 'Quản lý lịch gọi',
   'configure-preferences': 'Cấu hình tùy chọn',
   'get-help': 'Nhận trợ giúp và hỗ trợ',
   'view-api': 'Xem thông số kỹ thuật API',
+  'view-assistants': 'Xem trợ lý',
 
   // Auth
   login: 'Đăng nhập',

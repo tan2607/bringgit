@@ -20,7 +20,7 @@ export default {
 
   // Descriptions
   'manage-calls': '通話と会議の管理',
-  'manage-assistants': 'AIアシスタントの管理',
+  'manage-assistants': '助手を作成および変更',
   'review-statistics': '詳細な統計を表示',
   'manage-schedule': '通話スケジュールを管理',
   'configure-preferences': '設定を構成',
@@ -143,6 +143,7 @@ export default {
   'model': 'モデル',
   'voice': '音声',
   'created-at': '作成日時',
+  'view-assistants': '助手を表示',
 
   // Form Fields
   subject: '件名',

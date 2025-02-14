@@ -21,7 +21,7 @@ export default {
 
   // Descriptions
   'manage-calls': 'إدارة المكالمات والاجتماعات',
-  'manage-assistants': 'إدارة مساعدي الذكاء الاصطناعي',
+  'manage-assistants': 'إنشاء وتعديل المساعدين',
   'review-statistics': 'عرض الإحصائيات التفصيلية',
   'manage-schedule': 'إدارة جدول المكالمات',
   'configure-preferences': 'تكوين التفضيلات',
@@ -95,6 +95,7 @@ export default {
   'model': 'النموذج',
   'voice': 'الصوت',
   'created-at': 'تاريخ الإنشاء',
+  'view-assistants': 'عرض المساعدين',
 
   table: {
     callReceived: 'تم استلام المكالمة',
