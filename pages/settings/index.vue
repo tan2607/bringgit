@@ -104,7 +104,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Module } from "~/server/utils/settings";
+import { modules, type Module } from "~/server/utils/settings";
 import { useSettingStore } from "~/stores/useSettingStore";
 
 definePageMeta({ middleware: "auth" })
@@ -173,7 +173,12 @@ watch(() => appForm.value.theme, (newTheme) => {
 onMounted(async () => {
   const response = await fetch('api/settings/module');
   const data = await response.json();
-  moduleSettings.value = data.modules;
+  if(data.success) {
+    moduleSettings.value = data.modules;
+  } else {
+    moduleSettings.value = modules;
+  }
+  
 })
 
 async function saveProfile() {

@@ -264,31 +264,37 @@ const items = computed(() => [
 async function setHeaderMenu() {
   const response = await fetch('api/settings/module');
   const data = await response.json();
-  const modules = data.modules;
 
   filteredItems.value = [];
-  
-  items.value.forEach(item => {
-    if (item.key) {
-      const mdl = modules.find((m: any) => m.key == item.key)
-      if (mdl && mdl.enable) {
-        if (item.children && mdl.sub) {
-          const filteredChildren = item.children.filter(child => {
-            const sub = mdl.sub.find((s: any) => s.key == child.key)
-            return sub && sub.enable
-          })
+  if (data.success) {
+    const modules = data.modules;
 
-          if(filteredChildren.length > 0) {
-            filteredItems.value.push({ ...item, children: filteredChildren })
+    items.value.forEach(item => {
+      if (item.key) {
+        const mdl = modules.find((m: any) => m.key == item.key)
+        if (mdl && mdl.enable) {
+          if (item.children && mdl.sub) {
+            const filteredChildren = item.children.filter(child => {
+              const sub = mdl.sub.find((s: any) => s.key == child.key)
+              return sub && sub.enable
+            })
+
+            if (filteredChildren.length > 0) {
+              filteredItems.value.push({ ...item, children: filteredChildren })
+            }
+          } else {
+            filteredItems.value.push(item)
           }
-        } else {
-          filteredItems.value.push(item)
         }
+      } else {
+        filteredItems.value.push(item);
       }
-    } else {
+    })
+  } else {
+    items.value.forEach(item => {
       filteredItems.value.push(item);
-    }
-  })
+    })
+  }
 
   settingStore.finishReload()
 }
