@@ -21,7 +21,6 @@ a[aria-label="Nuxt UI Pro"] {
 </style>
 
 <script setup lang="ts">
-import module from '@formkit/nuxt'
 import { availableLocales, getLocaleIcon } from '~/i18n/config'
 
 const { locale, locales, setLocale, t } = useI18n()
@@ -53,7 +52,7 @@ const localeDropdown = computed(() => {
 })
 
 // Navigation items
-const filteredItems = shallowRef([]);
+const filteredItems = ref<any[]>([]);
 
 const items = computed(() => [
   {
@@ -276,7 +275,29 @@ onMounted(async () => {
   }
 
   const response = await fetch('api/settings/module');
-  const modules = await response.json();
+  const data = await response.json();
+  const modules = data.modules;
+
+  items.value.forEach(item => {
+    if(item.key) {
+      const mdl = modules.find((m: any) => m.key == item.key)
+      if (mdl && mdl.enable) {
+        if(item.children && mdl.sub) {
+          const children: any[] = [];
+          item.children.forEach(child => {
+            const sub = mdl.sub.find((s: any) => s.key == child.key)
+            if(sub && sub.enable) {
+              children.push(child)
+            }
+          })
+          item.children = children;
+        }
+        filteredItems.value.push(item);
+      }
+    } else {
+      filteredItems.value.push(item);
+    }
+  })
 })
 
 useHead({
@@ -302,8 +323,7 @@ useHead({
         <template #right>
           <UColorModeButton />
         </template>
-
-        <UNavigationMenu orientation="horizontal" variant="pill" arrow highlight :items="items" class="z-50">
+        <UNavigationMenu orientation="horizontal" variant="pill" arrow highlight :items="filteredItems" class="z-50">
         </UNavigationMenu>
       </UHeader>
     </template>
