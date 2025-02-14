@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig()
     const body = await readBody(event)
     const db = useDrizzle();
-    const { jobId, phoneNumbers, assistantId, phoneNumberId, scheduledAt } = body
+    const { jobId, phoneNumbers, names, assistantId, phoneNumberId, scheduledAt } = body
 
     if (!jobId || !phoneNumbers || !assistantId || !phoneNumberId) {
       throw new Error('Missing required fields')
@@ -18,9 +18,10 @@ export default defineEventHandler(async (event) => {
     )
 
     // Create messages for each phone number
-    const messages: CallMessage[] = phoneNumbers.map(phoneNumber => ({
+    const messages: CallMessage[] = phoneNumbers.map((phoneNumber, index) => ({
       jobId,
       phoneNumber,
+      name: names?.[index],
       assistantId,
       phoneNumberId,
       retryCount: 0,
