@@ -48,20 +48,12 @@
         </template>
         <UForm :state="integrationForm" class="space-y-4" @submit="saveIntegrations">
           <UFormField label="API Key">
-            <UInput 
-              v-model="integrationForm.apiKey" 
-              type="password" 
-              placeholder="Enter API Key"
-              icon="i-heroicons-key" 
-            />
+            <UInput v-model="integrationForm.apiKey" type="password" placeholder="Enter API Key"
+              icon="i-heroicons-key" />
           </UFormField>
           <UFormField label="Webhook URL">
-            <UInput 
-              v-model="integrationForm.webhookUrl" 
-              type="url" 
-              placeholder="https://your-webhook.com"
-              icon="i-heroicons-link" 
-            />
+            <UInput v-model="integrationForm.webhookUrl" type="url" placeholder="https://your-webhook.com"
+              icon="i-heroicons-link" />
           </UFormField>
           <UButton type="submit" color="primary" :loading="loading.integrations">Save Integration</UButton>
         </UForm>
@@ -74,23 +66,12 @@
         </template>
         <UForm :state="appForm" class="space-y-4" @submit="saveAppSettings">
           <UFormField label="Theme">
-            <URadioGroup
-              v-model="appForm.theme"
-              orientation="horizontal"
-              :items="themeOptions"
-              class="flex gap-4"
-              size="lg"
-            />
+            <URadioGroup v-model="appForm.theme" orientation="horizontal" :items="themeOptions" class="flex gap-4"
+              size="lg" />
           </UFormField>
           <UFormField label="Data Retention">
-            <USelect
-              v-model="appForm.retention"
-              :items="retentionOptions"
-              placeholder="Select retention period"
-              class="w-full"
-              option-attribute="label"
-              value-attribute="value"
-            />
+            <USelect v-model="appForm.retention" :items="retentionOptions" placeholder="Select retention period"
+              class="w-full" option-attribute="label" value-attribute="value" />
           </UFormField>
           <UButton type="submit" color="primary" :loading="loading.app">Save Settings</UButton>
         </UForm>
@@ -102,18 +83,15 @@
           <h2 class="text-xl font-semibold">Module Settings</h2>
         </template>
 
-        <div v-for="module in moduleSettings" :key="module.key">
-          <label class="flex items-center space-x-2">
-            <input type="checkbox" v-model="module.enable" @change="toggleEnable(module)" />
-            <span>{{ module.title }}</span>
-          </label>
+        <div class="mb-2">
+          <div v-for="module in moduleSettings" :key="module.key">
+            <UCheckbox class="mb-2" v-model="module.enable" @change="toggleEnable(module)" :label="module.title" />
 
-          <!-- Recursive rendering for submodules -->
-          <div v-if="module.sub" class="ml-6 mt-2 space-y-2">
-            <label v-for="sub in module.sub" :key="sub.key" class="flex items-center space-x-2">
-              <input type="checkbox" v-model="sub.enable" />
-              <span>{{ sub.title }}</span>
-            </label>
+            <div v-if="module.sub" class="ml-6">
+              <div v-for="sub in module.sub" :key="sub.key">
+                <UCheckbox class="mb-2" v-model="sub.enable" @change="toggleEnableSub(sub, module)" :label="sub.title" />
+              </div>
+            </div>
           </div>
         </div>
 
@@ -127,6 +105,7 @@
 
 <script setup lang="ts">
 import type { Module } from "~/server/utils/settings";
+import { useSettingStore } from "~/stores/useSettingStore";
 
 definePageMeta({ middleware: "auth" })
 
@@ -172,13 +151,20 @@ const appForm = ref({
 })
 
 const moduleSettings = ref<Module[]>([]);
+const settingStore = useSettingStore();
 
-const toggleEnable = (module: Module) => {  
+const toggleEnable = (module: Module) => {
   // If a parent module is unchecked, uncheck all submodules
   if (!module.enable && module.sub) {
     module.sub.forEach(subModule => (subModule.enable = false));
   }
 };
+
+const toggleEnableSub = (sub: Module, module:Module) => {
+  if(sub.enable) {
+    module.enable = true;
+  }
+}
 
 watch(() => appForm.value.theme, (newTheme) => {
   colorMode.preference = newTheme
@@ -228,10 +214,10 @@ async function saveAppSettings() {
   try {
     colorMode.preference = appForm.value.theme
     await new Promise(resolve => setTimeout(resolve, 1000))
-    useToast().add({ 
-      title: 'Theme updated', 
+    useToast().add({
+      title: 'Theme updated',
       description: `Switched to ${appForm.value.theme} mode`,
-      color: 'success' 
+      color: 'success'
     })
   } finally {
     loading.value.app = false
@@ -248,11 +234,12 @@ async function saveModuleSettings() {
       }
     })
     useToast().add({ title: 'Module settings saved', color: 'success' })
-  } catch(error) {
+  } catch (error) {
     useToast().add({ title: 'Error saving module settings', color: 'error' })
   } finally {
     loading.value.module = false
+    settingStore.startReload()
   }
-  
+
 }
 </script>

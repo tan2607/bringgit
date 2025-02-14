@@ -12,11 +12,11 @@ export default defineEventHandler(async (event) => {
       const list = JSON.parse(moduleSettings.value)
       if (Array.isArray(list)) {
         modules.forEach((module) => {
-          const item = list.find((item: any) => item.key === module.key)
+          const item = list.find((itm: any) => itm.key === module.key)
           module.enable = item.enable
           if (module.sub) {
             module.sub.forEach((sub: any) => {
-              const subItem = item.sub.find((subItem: any) => subItem.key === sub.key)
+              const subItem = item.sub.find((s: any) => s.key === sub.key)
               sub.enable = subItem.enable
             })
           }

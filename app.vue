@@ -22,6 +22,7 @@ a[aria-label="Nuxt UI Pro"] {
 
 <script setup lang="ts">
 import { availableLocales, getLocaleIcon } from '~/i18n/config'
+import { useSettingStore } from '~/stores/useSettingStore';
 
 const { locale, locales, setLocale, t } = useI18n()
 const { status, signOut, session } = useAuth()
@@ -39,6 +40,8 @@ const availableLocaleItems = computed(() =>
         selected: l.code === locale.value
     }))
 )
+
+const settingStore = useSettingStore();
 
 // Locale dropdown
 const localeDropdown = computed(() => {
@@ -258,7 +261,45 @@ const items = computed(() => [
   }
 ])
 
-onMounted(async () => {
+async function setHeaderMenu() {
+  const response = await fetch('api/settings/module');
+  const data = await response.json();
+  const modules = data.modules;
+
+  filteredItems.value = [];
+  
+  items.value.forEach(item => {
+    if (item.key) {
+      const mdl = modules.find((m: any) => m.key == item.key)
+      if (mdl && mdl.enable) {
+        if (item.children && mdl.sub) {
+          const filteredChildren = item.children.filter(child => {
+            const sub = mdl.sub.find((s: any) => s.key == child.key)
+            return sub && sub.enable
+          })
+
+          if(filteredChildren.length > 0) {
+            filteredItems.value.push({ ...item, children: filteredChildren })
+          }
+        } else {
+          filteredItems.value.push(item)
+        }
+      }
+    } else {
+      filteredItems.value.push(item);
+    }
+  })
+
+  settingStore.finishReload()
+}
+
+watch(() => settingStore.reload, (newValue, oldValue) => {
+  if (newValue) {
+    setHeaderMenu();
+  }
+});
+
+onMounted(() => {
   const browserLocale = locale.value;
   const supportedLocales = ['ar', 'en', 'id', 'vi', 'ja', 'ko', 'ms', 'th', 'zh_hans', 'zh_hant']
   
@@ -274,30 +315,7 @@ onMounted(async () => {
     locale.value = baseLocale
   }
 
-  const response = await fetch('api/settings/module');
-  const data = await response.json();
-  const modules = data.modules;
-
-  items.value.forEach(item => {
-    if(item.key) {
-      const mdl = modules.find((m: any) => m.key == item.key)
-      if (mdl && mdl.enable) {
-        if(item.children && mdl.sub) {
-          const children: any[] = [];
-          item.children.forEach(child => {
-            const sub = mdl.sub.find((s: any) => s.key == child.key)
-            if(sub && sub.enable) {
-              children.push(child)
-            }
-          })
-          item.children = children;
-        }
-        filteredItems.value.push(item);
-      }
-    } else {
-      filteredItems.value.push(item);
-    }
-  })
+  setHeaderMenu()
 })
 
 useHead({
