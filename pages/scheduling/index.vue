@@ -5,11 +5,11 @@
         <h1 class="text-2xl font-bold">Job Management</h1>
         <p class="text-gray-500">Create and manage scheduled jobs</p>
 
-        <a href="/scheduling/jobs" class="inline-block">
+        <!-- <a href="/scheduling/jobs" class="inline-block">
           <UButton icon="i-lucide-plus" color="success">
             Schedule Calling Job
           </UButton>
-        </a>
+        </a> -->
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">

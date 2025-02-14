@@ -15,6 +15,8 @@ export default defineTask({
 			orderBy: [desc(jobQueue.createdAt)],
 		});
 
+		console.log(`[Schedule] Scheduling ${jobQueues.length} jobs`);
+
 		await $fetch("/api/queue/consumer", {
 			method: "POST",
 			body: {
