@@ -1,7 +1,9 @@
 import { jobQueue } from "~/server/database/schema";
+import { CallQueueHandler } from "~/server/utils/queue";
 
 export default defineEventHandler(async (event) => {
 	try {
+		console.log("[Schedule] Job queues scheduled");
 		const db = useDrizzle();
 		const jobQueues = await db.query.jobQueue.findMany({
 			limit: 10,
@@ -9,15 +11,13 @@ export default defineEventHandler(async (event) => {
 			orderBy: [desc(jobQueue.createdAt)],
 		});
 	
-		await $fetch("/api/queue/consumer", {
-			method: "POST",
-			body: {
-				messages: jobQueues,
-			},
-		});
-	
-		console.log("[Schedule] Job queues scheduled");
-	
+		const config = useRuntimeConfig()
+		const queueHandler = new CallQueueHandler(
+			config.vapiApiKey,
+			event.context.cloudflare.queue
+		)
+
+		await queueHandler.processBatch(jobQueues);
 		return {
 			result: "success",
 		};
