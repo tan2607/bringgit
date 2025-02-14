@@ -99,7 +99,17 @@ watch(dateRange, async (newRange) => {
 }, { immediate: true, deep: true })
 
 onMounted(async () => {
-  await fetchCalls()
+  if (!dateRange.value.start || !dateRange.value.end) return
+
+  const startDateTime = dateRange.value.start.toDate(getLocalTimeZone())
+  startDateTime.setHours(0, 0, 0, 0)
+  
+  const endDateTime = dateRange.value.end.toDate(getLocalTimeZone())
+  endDateTime.setHours(23, 59, 59, 999)
+  
+  const startDate = startDateTime.toISOString()
+  const endDate = endDateTime.toISOString()
+  await fetchCalls(startDate, endDate)
 })
 
 onBeforeUnmount(() => {

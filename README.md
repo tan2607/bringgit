@@ -67,4 +67,3 @@ The voice translation feature allows users to:
 - Reasoning (Deepseek r1)
 - OCR (Gemini 2 Flash)
 
-- test
