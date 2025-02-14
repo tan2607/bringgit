@@ -28,6 +28,7 @@ export default {
   'get-help': 'ヘルプとサポートを取得',
   'view-api': 'API仕様を表示',
   'manage-phone-numbers': '電話番号を管理',
+  'view-demo': 'デモページを見る',
 
   // Auth
   login: 'ログイン',

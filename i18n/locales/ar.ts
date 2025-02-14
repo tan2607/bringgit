@@ -29,6 +29,7 @@ export default {
   'get-help': 'الحصول على المساعدة والدعم',
   'view-api': 'عرض مواصفات API',
   'manage-phone-numbers': 'إدارة أرقام الهواتف',
+  'view-demo': 'عرض صفحة العرض التوضيحي',
 
   // Auth
   login: 'تسجيل الدخول',

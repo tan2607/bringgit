@@ -54,6 +54,7 @@ export default {
   'get-help': 'Nhận trợ giúp và hỗ trợ',
   'view-api': 'Xem thông số kỹ thuật API',
   'manage-phone-numbers': 'Quản lý số điện thoại',
+  'view-demo': 'Xem trang demo',
 
   // Auth
   login: 'Đăng nhập',

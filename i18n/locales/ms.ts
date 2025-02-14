@@ -22,6 +22,7 @@ export default {
   'get-help': 'Dapatkan bantuan dan sokongan',
   'view-api': 'Lihat spesifikasi API',
   'manage-phone-numbers': 'Urus nombor telefon',
+  'view-demo': 'Lihat halaman demo',
 
   // Auth
   login: 'Log Masuk',

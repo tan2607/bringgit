@@ -109,7 +109,7 @@ const items = computed(() => [
     {
         label: t('demos'),
         icon: 'i-lucide-layout-template',
-        description: 'View demo pages',
+        description: t('view-demo'),
         children: [
             {
                 label: 'Translation',

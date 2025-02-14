@@ -33,6 +33,7 @@ export default {
   'view-api': '查看API規範',
   'explore-demos': '探索我們的AI示範',
   'manage-phone-numbers': '管理電話號碼',
+  'view-demo': '查看演示頁面',
 
   // Auth
   login: '登入',

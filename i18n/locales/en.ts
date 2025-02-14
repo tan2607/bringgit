@@ -27,6 +27,7 @@ export default {
   'configure-preferences': 'Configure preferences',
   'get-help': 'Get help and support',
   'view-api': 'View API specifications',
+  'view-demo': 'View demo page',
 
   // Auth
   login: 'Login',

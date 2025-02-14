@@ -29,6 +29,7 @@ export default {
     'get-help': '도움말 및 지원',
     'view-api': 'API 사양 보기',
     'manage-phone-numbers': '전화번호 관리',
+    'view-demo': '데모 페이지 보기',
 
     // Auth
     login: '로그인',

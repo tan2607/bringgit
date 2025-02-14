@@ -30,6 +30,7 @@ export default {
   'get-help': '获取帮助和支持',
   'view-api': '查看API规范',
   'manage-phone-numbers': '管理电话号码',
+  'view-demo': '查看演示页面',
 
   // Auth
   login: '登录',
