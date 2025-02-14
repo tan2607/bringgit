@@ -21,7 +21,7 @@ export default {
 
   // Descriptions
   'manage-calls': 'Kelola panggilan dan rapat',
-  'manage-assistants': 'Kelola asisten AI',
+  'manage-assistants': 'Buat dan ubah pembantu',
   'review-statistics': 'Lihat statistik detail',
   'manage-schedule': 'Kelola jadwal panggilan',
   'configure-preferences': 'Konfigurasi preferensi',
@@ -145,6 +145,7 @@ export default {
   'model': 'Model',
   'voice': 'Suara',
   'created-at': 'Dibuat Pada',
+  'view-assistants': 'Lihat Asisten',
 
   // Table
   table: {

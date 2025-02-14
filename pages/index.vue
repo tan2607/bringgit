@@ -59,12 +59,12 @@
 
         <UCard>
           <template #header>
-            <h3 class="font-medium">{{ t('analytics') }}</h3>
+            <h3 class="font-medium">{{ t('assistants') }}</h3>
           </template>
-          <p class="text-sm text-gray-600">{{ t('review-statistics') }}</p>
+          <p class="text-sm text-gray-600">{{ t('manage-assistants') }}</p>
           <template #footer>
-            <UButton block variant="soft" to="/analytics">
-              {{ t('view-analytics') }}
+            <UButton block variant="soft" to="/assistants">
+              {{ t('view-assistants') }}
             </UButton>
           </template>
         </UCard>

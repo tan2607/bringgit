@@ -22,12 +22,13 @@ export default {
 
   // Descriptions
   'manage-calls': '管理通话和会议',
-  'manage-assistants': '管理AI助手',
+  'manage-assistants': '创建和修改助手',
   'review-statistics': '查看详细统计',
   'manage-schedule': '管理通话日程',
   'configure-preferences': '配置偏好设置',
   'get-help': '获取帮助和支持',
   'view-api': '查看API规范',
+  'view-assistants': '查看助手',
 
   // Auth
   login: '登录',

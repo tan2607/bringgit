@@ -5,9 +5,9 @@ export const useAnalytics = () => {
   }))
   const stats = useState('analyticsStats', () => [
     { label: 'Total Calls', value: '', change: 0 },
-    { label: 'Total Cost', value: '', change: 5 },
     { label: 'Average Duration', value: '', change: -2 },
-    { label: 'Average Cost', value: '', change: 8 }
+    { label: 'Total Assistants', value: '', change: 5 },
+    { label: 'Total Jobs', value: '', change: 8 }
   ])
   const callsOverTimeData = useState('callsOverTimeData', () => ({
     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
@@ -73,16 +73,25 @@ export const useAnalytics = () => {
       const response = await useFetch('/api/analytics', {lazy: true})
       if (response.data.value) {
         let [calls] = response.data.value.calls?.result || []
-        timeRangeInfo.value = response.data.value.calls?.timeRange!
-        
-        stats.value[0].value = calls.countId
-        stats.value[1].value = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(calls.sumCost)
 
-        const totalSeconds = Math.floor(calls.avgDuration * 60)
-        const minutes = Math.floor(totalSeconds / 60)
-        const seconds = totalSeconds % 60
-        stats.value[2].value = `${minutes}m ${seconds}s`
-        stats.value[3].value = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(calls.avgCost)
+        timeRangeInfo.value = response.data.value.calls?.timeRange!
+
+        // Total Calls
+        stats.value[0].value = calls?.countId || '';
+        
+        // Average Duration
+        const totalSeconds = Math.floor(calls?.avgDuration * 60 || 0);
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        stats.value[1].value = `${minutes}m ${seconds}s`;
+        
+        // Assistants
+        const { fetchAssistants } = useAssistants()
+        const assistants = await fetchAssistants()
+        stats.value[2].value = assistants.length;
+
+        // Jobs
+        stats.value[3].value = response.data.value.jobs;
       }
     } catch (e) {
       console.error('Failed to fetch analytics:', e)

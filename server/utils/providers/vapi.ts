@@ -1,4 +1,6 @@
 import { VapiClient } from "@vapi-ai/server-sdk";
+import { gte } from 'drizzle-orm';
+import { jobs } from '~/server/database/schema';
 
 export class VapiProvider {
   private static instance: VapiProvider;
@@ -167,10 +169,18 @@ export class VapiProvider {
       }],
     });
 
+    const db = useDrizzle();
+    // Find all and count jobs for last 7 days
+    const allJobs = await db.query.jobs.findMany({
+      where: and(gte(jobs.createdAt, new Date(Date.now() - 7 * 24 * 60 * 60 * 1000))),
+    });
+
     const calls = analytics.find((a) => a.name === "calls");
+
     return {
       calls,
-      timeRange: calls?.timeRange!
+      timeRange: calls?.timeRange!,
+      jobs: allJobs.length,
     };
   }
 }
