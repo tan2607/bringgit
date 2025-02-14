@@ -23,13 +23,14 @@
               </UButton>
             </div>
           </template>
-          <UCalendar 
-            v-model="state.selectedDate" 
-            :events="calendarEvents" 
-            :is-date-disabled="isDateDisabled"
-            class="w-full" 
-            @change="handleDateChange" 
-          />
+          <div class="keyreply-calendar">
+            <UCalendar 
+              v-model="state.selectedDate" 
+              :events="calendarEvents" 
+              :is-date-disabled="isDateDisabled"
+              class="w-full" 
+              @change="handleDateChange" 
+          /></div>
         </UCard>
 
         <!-- Job List Section -->
@@ -37,7 +38,7 @@
           <template #header>
             <div class="flex items-center justify-between">
               <h2 class="text-lg font-semibold">Jobs</h2>
-              <USelect v-model="jobState.selectedStatus" :items="statusOptions" placeholder="All Status" size="sm" />
+              <USelect v-model="jobState.selectedStatus" :items="statusOptions" placeholder="All Status" size="sm"  class="min-w-[100px]"/>
             </div>
           </template>
 
@@ -192,3 +193,17 @@ onMounted(async () => {
 
 })
 </script>
+
+
+<style>
+ .keyreply-calendar th {
+  text-align: center;
+ }
+
+ .keyreply-calendar td {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ }
+</style>
