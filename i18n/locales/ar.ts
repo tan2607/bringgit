@@ -289,4 +289,32 @@ export default {
   'workflow-demo-description': 'تدفق العمل لدراسة النوم في المنزل',
   'report-assistant-description': 'طرح الأسئلة حول تقاريرك',
   'claims-assistant-description': 'طرح الأسئلة حول المطالبات المرفوضة',
+  
+  // Phone Numbers Page
+  'newNumber': 'رقم جديد',
+  'registerNewPhoneNumber': 'تسجيل رقم هاتف جديد',
+  'phoneForm': {
+    'name': 'الاسم',
+    'nameDesc': 'أدخل اسمًا لرقم الهاتف',
+    'phoneNumber': 'رقم الهاتف',
+    'phoneNumberDesc': 'أدخل رقم الهاتف',
+    'username': 'اسم المستخدم',
+    'usernameDesc': 'أدخل اسم مستخدم لرقم الهاتف',
+    'passwordOptional': 'كلمة المرور (اختياري)',
+    'passwordDesc': 'أدخل كلمة المرور',
+    'domain': 'النطاق / عنوان IP',
+    'domainDesc': 'أدخل النطاق أو عنوان IP',
+    'port': 'المنفذ',
+    'portDesc': 'أدخل رقم المنفذ (الافتراضي: 5060)',
+    'portHelperText': 'نطاق المنفذ الصالح هو 1-65535',
+    'protocol': 'البروتوكول',
+    'protocolDesc': 'اختر البروتوكول لرقم الهاتف',
+    'register': 'تسجيل',
+  },
+  'filterPlaceholder': 'تصفية حسب الاسم أو الرقم...',
+  'phoneTable': {
+    'name': 'الاسم',
+    'number': 'الرقم',
+    'actions': 'الإجراءات',
+  },
 }

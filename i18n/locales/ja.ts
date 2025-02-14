@@ -318,4 +318,32 @@ export default {
   'workflow-demo-description': '在宅睡眠研究ワークフロー',
   'report-assistant-description': 'レポートについて質問する',
   'claims-assistant-description': '拒否されたクレームについて質問する',
+  
+  // Phone Numbers Page
+  'newNumber': '新しい番号',
+  'registerNewPhoneNumber': '新しい電話番号を登録',
+  'phoneForm': {
+    'name': '名前',
+    'nameDesc': '電話番号の名前を入力してください',
+    'phoneNumber': '電話番号',
+    'phoneNumberDesc': '電話番号を入力してください',
+    'username': 'ユーザー名',
+    'usernameDesc': '電話番号のユーザー名を入力してください',
+    'passwordOptional': 'パスワード（オプション）',
+    'passwordDesc': 'パスワードを入力してください',
+    'domain': 'ドメイン / IP',
+    'domainDesc': 'ドメインまたはIPアドレスを入力してください',
+    'port': 'ポート',
+    'portDesc': 'ポート番号を入力してください（デフォルト：5060）',
+    'portHelperText': '有効なポート範囲は1-65535です',
+    'protocol': 'プロトコル',
+    'protocolDesc': '電話番号のプロトコルを選択してください',
+    'register': '登録',
+  },
+  'filterPlaceholder': '名前または番号でフィルタ...',
+  'phoneTable': {
+    'name': '名前',
+    'number': '番号',
+    'actions': 'アクション',
+  },
 }

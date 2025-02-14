@@ -402,4 +402,32 @@ export default {
   'workflow-demo-description': 'Home Sleep Study Workflow',
   'report-assistant-description': 'Ask questions about your reports',
   'claims-assistant-description': 'Ask questions about denied claims',
+
+  // Phone Numbers Page
+  'registerNewPhoneNumber': 'Register New Phone Number',
+  'newNumber': 'New Number',
+  'phoneForm': {
+    'name': 'Name',
+    'nameDesc': 'Enter a name for the phone number',
+    'phoneNumber': 'Phone Number',
+    'phoneNumberDesc': 'Enter the phone number',
+    'username': 'Username',
+    'usernameDesc': 'Enter a username for the phone number',
+    'passwordOptional': 'Password (optional)',
+    'passwordDesc': 'Enter the password',
+    'domain': 'Domain / IP',
+    'domainDesc': 'Enter the domain or IP address',
+    'port': 'Port',
+    'portDesc': 'Enter the port number (default: 5060)',
+    'portHelperText': 'Valid port range is 1-65535',
+    'protocol': 'Protocol',
+    'protocolDesc': 'Select the protocol for the phone number',
+    'register': 'Register',
+  },
+  'filterPlaceholder': 'Filter by name or number...',
+  'phoneTable': {
+    'name': 'Name',
+    'number': 'Number',
+    'actions': 'Actions',
+  },
 }

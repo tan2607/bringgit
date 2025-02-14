@@ -295,4 +295,32 @@ export default {
     failedToTranslate: 'Gagal Menterjemah',
     failedToPlayAudio: 'Gagal Mainkan Audio',
   },
+
+  // Phone Numbers Page
+  'registerNewPhoneNumber': 'Daftarkan Nomor Telepon Baru',
+  'newNumber': 'Nomor Baru',
+  'phoneForm': {
+    'name': 'Nama',
+    'nameDesc': 'Masukkan nama untuk nomor telepon',
+    'phoneNumber': 'Nomor Telepon',
+    'phoneNumberDesc': 'Masukkan nomor telepon',
+    'username': 'Nama Pengguna',
+    'usernameDesc': 'Masukkan nama pengguna untuk nomor telepon',
+    'passwordOptional': 'Kata Sandi (opsional)',
+    'passwordDesc': 'Masukkan kata sandi',
+    'domain': 'Domain / IP',
+    'domainDesc': 'Masukkan domain atau alamat IP',
+    'port': 'Port',
+    'portDesc': 'Masukkan nomor port (default: 5060)',
+    'portHelperText': 'Rentang port yang valid adalah 1-65535',
+    'protocol': 'Protokol',
+    'protocolDesc': 'Pilih protokol untuk nomor telepon',
+    'register': 'Daftar',
+  },
+  'filterPlaceholder': 'Filter berdasarkan nama atau nomor...',
+  'phoneTable': {
+    'name': 'Nama',
+    'number': 'Nomor',
+    'actions': 'Tindakan',
+  },
 }
