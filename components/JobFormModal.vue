@@ -1,8 +1,8 @@
 <!-- components/JobFormModal.vue -->
 <template>
-  <UModal :open="modelValue" @update:open="$emit('update:modelValue', $event)" :ui="{ width: 'sm:max-w-lg' }">
+  <UModal :open="modelValue" @update:open="$emit('update:modelValue', $event)" :ui="{ width: 'sm:max-w-lg', margin: 'my-0' }">
     <template #content>
-    <UCard>
+    <UCard class="overflow-y-auto max-h-[80vh]">
       <template #header>
         <div class="flex items-center gap-2">
           <UIcon
@@ -62,9 +62,11 @@
         >
           <USelect
             v-model="jobForm.assistantId"
-            :options="assistantOptions"
+            :items="assistantOptions"
             placeholder="Select an assistant"
             class="w-full"
+            value-key="id"
+            label-key="name"
           />
         </UFormField>
 
@@ -74,7 +76,7 @@
         >
           <USelect
             v-model="jobForm.phoneNumberId"
-            :options="phoneNumberOptions"
+            :items="formattedPhoneNumber"
             placeholder="Select a phone number"
             class="w-full"
           />
@@ -109,18 +111,19 @@ import type { FormSubmitEvent } from '#ui/types'
 import { z } from 'zod'
 import { CalendarDate, today } from '@internationalized/date'
 import type { Matcher } from '#ui/types'
-
+import type { Assistant } from '~/types/assistant'
 const props = defineProps<{
   modelValue: boolean
   editingJob?: Job | null
-  assistantOptions: Array<{ label: string; value: string }>
-  phoneNumberOptions: Array<{ label: string; value: string }>
 }>()
 
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
   'submit': [jobData: any]
 }>()
+
+const assistantOptions = defineModel<Assistant[]>('assistantOptions', { required: true })
+const phoneNumberOptions = defineModel<any[]>('phoneNumberOptions', { required: true })
 
 // Form validation schema
 const jobFormSchema = z.object({
@@ -135,8 +138,7 @@ type JobFormSchema = z.output<typeof jobFormSchema>
 
 // Form state
 const isSubmitting = ref(false)
-const currentDate = today()
-const scheduleDate = ref(currentDate)
+const currentDate = today();
 
 const isDateDisabled: Matcher = (date) => {
   return date.compare(currentDate) < 0
@@ -149,7 +151,7 @@ const jobForm = ref({
   assistantId: '',
   phoneNumberId: ''
 })
-
+const scheduleDate = ref(currentDate);
 // Update jobForm.schedule when scheduleDate changes
 watch(scheduleDate, (newDate) => {
   jobForm.value.schedule = new Date(newDate.year, newDate.month - 1, newDate.day)
@@ -173,9 +175,8 @@ const handleSubmit = async (event: FormSubmitEvent<JobFormSchema>) => {
 
     const jobData = {
       ...event.data,
-      phoneNumbers
+      phoneNumbers,
     }
-
     emit('submit', jobData)
     emit('update:modelValue', false)
   } catch (error) {
@@ -185,13 +186,24 @@ const handleSubmit = async (event: FormSubmitEvent<JobFormSchema>) => {
   }
 }
 
+const formattedPhoneNumber = computed(() => {
+  return phoneNumberOptions.value.map(phone => {
+    return {
+      label: `${phone.number} (${phone.name})`,
+      value: phone.id
+    }
+  })
+})
+
 // Watch for editingJob changes to update form
 watch(() => props.editingJob, (job) => {
   if (job) {
     jobForm.value = {
       ...job,
-      phoneNumbers: job.phoneNumbers.join('\n')
+      phoneNumbers: JSON.parse(job.phoneNumbers).join('\n'),
     }
+    const schedule = new Date(job.schedule)
+    scheduleDate.value = new CalendarDate(schedule.getFullYear(), schedule.getMonth() + 1, schedule.getDate());
   } else {
     jobForm.value = {
       name: '',
