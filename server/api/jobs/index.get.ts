@@ -1,9 +1,15 @@
-import { jobs } from '~/server/database/schema'
+import { jobs, jobQueue } from '~/server/database/schema'
 
 export default defineEventHandler(async (event) => {
   try {
     const db = useDrizzle()
-    const jobsData = await db.select().from(jobs).all();
+    // get all jobs include related job_queues
+    const jobsData = await db.query.jobs.findMany({
+      with: {
+        jobQueues: true
+      }
+    })
+
     return jobsData;
   } catch (error) {
     console.error(error)

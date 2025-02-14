@@ -37,7 +37,11 @@
         <UCard class="lg:col-span-1">
           <template #header>
             <div class="flex items-center justify-between">
-              <h2 class="text-lg font-semibold">Jobs</h2>
+              <h2 class="text-lg font-semibold hover:underline hover:text-blue-500">
+                <a href="/scheduling/jobs">
+                  Jobs
+                </a>
+              </h2>
               <USelect v-model="jobState.selectedStatus" :items="statusOptions" placeholder="All Status" size="sm"  class="min-w-[100px]"/>
             </div>
           </template>
@@ -55,7 +59,7 @@
               </div>
 
               <div class="flex items-center gap-2 mb-2">
-                <UProgress :value="job.progress" :color="getStatusColor(job.status)" :indeterminate="job.status === 'running'" size="xs" class="flex-1" />
+                <UProgress :value="job.progress" :color="getStatusColor(job.status)" :indeterminate="job.status === 'running'" size="xs" class="flex-1" :animation="job.status === 'completed' ? 'pulse' : 'carousel'"/>
                 <span class="text-sm text-gray-600">{{ job.progress }}%</span>
               </div>
 
@@ -188,7 +192,7 @@ function handleFileUpload(event: Event) {
   }
 }
 onMounted(async () => {
-  const jobs = await getJobs()
+  const { jobs } = await getJobs()
   state.value.jobs = jobs
 
 })
