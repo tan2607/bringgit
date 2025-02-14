@@ -48,6 +48,7 @@ export default {
   'passwords-not-match': 'Kata sandi tidak cocok',
   'account-created': 'Akun berhasil dibuat',
   'reset-password-description': 'Masukkan alamat email Anda dan kami akan mengirimkan tautan untuk mengatur ulang kata sandi.',
+  'sign-out': 'Keluar',
 
   // Settings
   'profile-settings': 'Pengaturan Profil',

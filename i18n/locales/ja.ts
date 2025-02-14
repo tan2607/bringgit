@@ -47,6 +47,7 @@ export default {
   'passwords-not-match': 'パスワードが一致しません',
   'account-created': 'アカウントが作成されました',
   'reset-password-description': 'メールアドレスを入力してください。パスワードリセットのリンクを送信します。',
+  'sign-out': 'サインアウト',
 
   // Settings
   'profile-settings': 'プロフィール設定',

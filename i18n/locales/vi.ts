@@ -44,6 +44,7 @@ export default {
   security: 'Bảo mật',
   widget: 'Widget',
   copied: 'Đã sao chép',
+  'sign-out': 'Đăng xuất',
 
   // Descriptions
   'manage-calls': 'Quản lý cuộc gọi và họp',

@@ -48,6 +48,7 @@ export default {
   'passwords-not-match': 'كلمات المرور غير متطابقة',
   'account-created': 'تم إنشاء الحساب بنجاح',
   'reset-password-description': 'أدخل عنوان بريدك الإلكتروني وسنرسل لك رابطاً لإعادة تعيين كلمة المرور.',
+  'sign-out': 'تسجيل الخروج',
 
   // Settings
   'profile-settings': 'إعدادات الملف الشخصي',

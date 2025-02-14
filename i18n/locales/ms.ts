@@ -12,6 +12,7 @@ export default {
   'dev-tools': 'Alat Pembangun',
   profile: 'Profil',
   support: 'Sokongan',
+  'sign-out': 'Log Keluar',
 
   // Descriptions
   'manage-calls': 'Urus panggilan dan mesyuarat',

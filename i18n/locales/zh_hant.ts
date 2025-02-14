@@ -52,6 +52,7 @@ export default {
   'passwords-not-match': '密碼不符',
   'account-created': '帳戶建立成功',
   'reset-password-description': '輸入您的電子郵件地址，我們將向您發送重設密碼的連結。',
+  'sign-out': '登出',
 
   // Settings
   'profile-settings': '個人資料設定',

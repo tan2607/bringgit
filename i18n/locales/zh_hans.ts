@@ -20,6 +20,7 @@ export default {
   copied: '已复制',
   success: '成功',
   'patient-intake.form-submitted': '患者登记表提交成功',
+  'sign-out': '登出',
 
   // Descriptions
   'manage-calls': '管理通话和会议',
