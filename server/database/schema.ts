@@ -95,3 +95,12 @@ export const jobQueueRelations = relations(jobQueue, ({ one }) => ({
     references: [jobs.id],
   }),
 }));
+
+export const settings = sqliteTable('settings', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  key: text('key').notNull(),
+  value: text('value').notNull(),
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(strftime('%s', 'now'))`),
+  updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().default(sql`(strftime('%s', 'now'))`)
+})
+
