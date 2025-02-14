@@ -7,6 +7,7 @@ export default {
   welcome: 'ยินดีต้อนรับ',
   analytics: 'การวิเคราะห์',
   scheduling: 'การจัดตารางเวลา',
+  phoneNumbers: 'หมายเลขโทรศัพท์',
   settings: 'การตั้งค่า',
   'dev-tools': 'เครื่องมือนักพัฒนา',
   profile: 'โปรไฟล์',
@@ -27,6 +28,8 @@ export default {
   'configure-preferences': 'กำหนดค่าการตั้งค่า',
   'get-help': 'รับความช่วยเหลือและการสนับสนุน',
   'view-api': 'ดูข้อกำหนด API',
+  'manage-phone-numbers': 'จัดการหมายเลขโทรศัพท์',
+  'view-demo': 'ดูหน้าสาธิต',
   'view-assistants': 'ดูผู้ช่วย',
 
   // Auth
@@ -46,6 +49,7 @@ export default {
   'passwords-not-match': 'รหัสผ่านไม่ตรงกัน',
   'account-created': 'สร้างบัญชีสำเร็จ',
   'reset-password-description': 'ป้อนที่อยู่อีเมลของคุณ และเราจะส่งลิงก์สำหรับรีเซ็ตรหัสผ่านให้คุณ',
+  'sign-out': 'ออกจากระบบ',
 
   // Settings
   'profile-settings': 'การตั้งค่าโปรไฟล์',
@@ -283,5 +287,64 @@ export default {
     'llm-help': 'เลือกโมเดลภาษาที่ต้องการใช้',
     temperature: 'อุณหภูมิ',
     'temperature-help': 'ค่าที่สูงขึ้นจะสร้างการตอบสนองที่สร้างสรรค์มากขึ้น ค่าที่ต่ำลงจะสร้างการตอบสนองที่สอดคล้องกัน',
-  }
+  },
+
+  // subnav
+  'jobs': 'งาน',
+  'reports': 'รายงาน',
+  'patient-intake-demo': 'การรับผู้ป่วย',
+  'sms-demo': 'SMS',
+  'location-search-demo': 'ค้นหาตำแหน่ง',
+  'ocr-demo': 'การสาธิต OCR',
+  'rpa-demo': 'การสาธิต RPA',
+  'workflow-demo': 'เวิร์กโฟลว์',
+  'report-assistant': 'ผู้ช่วยรายงาน',
+  'claims-assistant': 'ผู้ช่วยการเรียกร้อง',
+
+  // subnav descriptions
+  'manage-scheduled-jobs': 'จัดการงานที่กำหนดเวลาไว้',
+  'view-job-reports': 'ดูรายงานงานและการวิเคราะห์',
+  'configure-scheduling-settings': 'กำหนดค่าการตั้งค่าเวลา',
+  'translation-demo-description': 'การสาธิตการแปล',
+  'patient-intake-demo-description': 'การสาธิตแบบฟอร์มการรับผู้ป่วย',
+  'sms-demo-description': 'การสาธิตการส่ง SMS',
+  'location-search-demo-description': 'การสาธิตการค้นหาตำแหน่งคลินิก',
+  'rpa-demo-description': 'RPA',
+  'workflow-demo-description': 'เวิร์กโฟลว์การศึกษาการนอนหลับที่บ้าน',
+  'report-assistant-description': 'ถามคำถามเกี่ยวกับรายงานของคุณ',
+  'claims-assistant-description': 'ถามคำถามเกี่ยวกับการเรียกร้องที่ถูกปฏิเสธ',
+
+  // Phone Numbers Page
+  'registerNewPhoneNumber': 'ลงทะเบียนหมายเลขโทรศัพท์ใหม่',
+  'newNumber': 'หมายเลขใหม่',
+  'phoneForm': {
+    'name': 'ชื่อ',
+    'nameDesc': 'ป้อนชื่อสำหรับหมายเลขโทรศัพท์',
+    'phoneNumber': 'หมายเลขโทรศัพท์',
+    'phoneNumberDesc': 'ป้อนหมายเลขโทรศัพท์',
+    'username': 'ชื่อผู้ใช้',
+    'usernameDesc': 'ป้อนชื่อผู้ใช้สำหรับหมายเลขโทรศัพท์',
+    'passwordOptional': 'รหัสผ่าน (ตัวเลือก)',
+    'passwordDesc': 'ป้อนรหัสผ่าน',
+    'domain': 'โดเมน / IP',
+    'domainDesc': 'ป้อนโดเมนหรือที่อยู่ IP',
+    'port': 'พอร์ต',
+    'portDesc': 'ป้อนหมายเลขพอร์ต (ค่าเริ่มต้น: 5060)',
+    'portHelperText': 'ช่วงพอร์ตที่ถูกต้องคือ 1-65535',
+    'protocol': 'โปรโตคอล',
+    'protocolDesc': 'เลือกโปรโตคอลสำหรับหมายเลขโทรศัพท์',
+    'register': 'ลงทะเบียน',
+    'sipServer': 'เซิร์ฟเวอร์ SIP',
+    'sipServerDesc': 'ป้อนเซิร์ฟเวอร์ SIP สำหรับหมายเลขโทรศัพท์',
+    'sipUsername': 'ชื่อผู้ใช้ SIP',
+    'sipUsernameDesc': 'ป้อนชื่อผู้ใช้ SIP สำหรับหมายเลขโทรศัพท์',
+    'sipPassword': 'รหัสผ่าน SIP',
+    'sipPasswordDesc': 'ป้อนรหัสผ่าน SIP สำหรับหมายเลขโทรศัพท์',
+  },
+  'filterPlaceholder': 'กรองตามชื่อหรือหมายเลข...',
+  'phoneTable': {
+    'name': 'ชื่อ',
+    'number': 'หมายเลข',
+    'actions': 'การกระทำ',
+  },
 }

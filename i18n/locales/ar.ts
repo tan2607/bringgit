@@ -7,6 +7,7 @@ export default {
   welcome: 'مرحباً',
   analytics: 'التحليلات',
   scheduling: 'الجدولة',
+  phoneNumbers: 'أرقام الهواتف',
   settings: 'الإعدادات',
   'dev-tools': 'أدوات المطور',
   profile: 'الملف الشخصي',
@@ -27,6 +28,8 @@ export default {
   'configure-preferences': 'تكوين التفضيلات',
   'get-help': 'الحصول على المساعدة والدعم',
   'view-api': 'عرض مواصفات API',
+  'manage-phone-numbers': 'إدارة أرقام الهواتف',
+  'view-demo': 'عرض صفحة العرض التوضيحي',
 
   // Auth
   login: 'تسجيل الدخول',
@@ -45,6 +48,7 @@ export default {
   'passwords-not-match': 'كلمات المرور غير متطابقة',
   'account-created': 'تم إنشاء الحساب بنجاح',
   'reset-password-description': 'أدخل عنوان بريدك الإلكتروني وسنرسل لك رابطاً لإعادة تعيين كلمة المرور.',
+  'sign-out': 'تسجيل الخروج',
 
   // Settings
   'profile-settings': 'إعدادات الملف الشخصي',
@@ -261,5 +265,58 @@ export default {
     'crawled-content': 'المحتوى المستخرج',
     'crawling-failed': 'فشل تصفح الموقع',
     'content-imported': 'تم استيراد المحتوى بنجاح',
+  },
+
+  // subnav
+  'jobs': 'وظائف',
+  'reports': 'تقارير',
+  'patient-intake-demo': 'استقبال المرضى',
+  'sms-demo': 'رسائل نصية',
+  'location-search-demo': 'بحث الموقع',
+  'ocr-demo': 'التعرف الضوئي على الحروف',
+  'rpa-demo': 'أتمتة العمليات الروبوتية',
+  'workflow-demo': 'تدفق العمل',
+  'report-assistant': 'مساعد التقارير',
+  'claims-assistant': 'مساعد المطالبات',
+
+  // subnav descriptions
+  'manage-scheduled-jobs': 'إدارة الوظائف المجدولة',
+  'view-job-reports': 'عرض تقارير الوظائف وتحليلاتها',
+  'configure-scheduling-settings': 'تكوين إعدادات الجدولة',
+  'translation-demo-description': 'عرض الترجمة',
+  'patient-intake-demo-description': 'عرض نموذج استقبال المرضى',
+  'sms-demo-description': 'عرض إرسال الرسائل النصية',
+  'location-search-demo-description': 'عرض بحث الموقع',
+  'rpa-demo-description': 'أتمتة العمليات الروبوتية',
+  'workflow-demo-description': 'تدفق العمل لدراسة النوم في المنزل',
+  'report-assistant-description': 'طرح الأسئلة حول تقاريرك',
+  'claims-assistant-description': 'طرح الأسئلة حول المطالبات المرفوضة',
+  
+  // Phone Numbers Page
+  'newNumber': 'رقم جديد',
+  'registerNewPhoneNumber': 'تسجيل رقم هاتف جديد',
+  'phoneForm': {
+    'name': 'الاسم',
+    'nameDesc': 'أدخل اسمًا لرقم الهاتف',
+    'phoneNumber': 'رقم الهاتف',
+    'phoneNumberDesc': 'أدخل رقم الهاتف',
+    'username': 'اسم المستخدم',
+    'usernameDesc': 'أدخل اسم مستخدم لرقم الهاتف',
+    'passwordOptional': 'كلمة المرور (اختياري)',
+    'passwordDesc': 'أدخل كلمة المرور',
+    'domain': 'النطاق / عنوان IP',
+    'domainDesc': 'أدخل النطاق أو عنوان IP',
+    'port': 'المنفذ',
+    'portDesc': 'أدخل رقم المنفذ (الافتراضي: 5060)',
+    'portHelperText': 'نطاق المنفذ الصالح هو 1-65535',
+    'protocol': 'البروتوكول',
+    'protocolDesc': 'اختر البروتوكول لرقم الهاتف',
+    'register': 'تسجيل',
+  },
+  'filterPlaceholder': 'تصفية حسب الاسم أو الرقم...',
+  'phoneTable': {
+    'name': 'الاسم',
+    'number': 'الرقم',
+    'actions': 'الإجراءات',
   },
 }
