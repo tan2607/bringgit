@@ -31,8 +31,8 @@ export default defineEventHandler(async (event) => {
     await queueHandler.enqueueJobBatch(messages)
 
     // Update job status to running
-    const isSameDate = new Date(scheduledAt).toDateString() === new Date().toDateString();
-    if(isSameDate) {
+    const shouldRun = scheduledAt && new Date(scheduledAt).getTime() < Date.now() 
+    if(shouldRun) {
       await db.update(jobs).set({ status: "running" }).where(eq(jobs.id, jobId))
     }
     
