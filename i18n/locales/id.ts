@@ -28,6 +28,7 @@ export default {
   'configure-preferences': 'Konfigurasi preferensi',
   'get-help': 'Dapatkan bantuan dan dukungan',
   'view-api': 'Lihat spesifikasi API',
+  'manage-phone-numbers': 'Kelola nomor telepon',
 
   // Auth
   login: 'Masuk',

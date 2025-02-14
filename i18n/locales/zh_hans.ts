@@ -29,6 +29,7 @@ export default {
   'configure-preferences': '配置偏好设置',
   'get-help': '获取帮助和支持',
   'view-api': '查看API规范',
+  'manage-phone-numbers': '管理电话号码',
 
   // Auth
   login: '登录',

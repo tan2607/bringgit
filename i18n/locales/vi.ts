@@ -53,6 +53,7 @@ export default {
   'configure-preferences': 'Cấu hình tùy chọn',
   'get-help': 'Nhận trợ giúp và hỗ trợ',
   'view-api': 'Xem thông số kỹ thuật API',
+  'manage-phone-numbers': 'Quản lý số điện thoại',
 
   // Auth
   login: 'Đăng nhập',

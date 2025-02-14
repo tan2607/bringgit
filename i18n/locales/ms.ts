@@ -7,7 +7,7 @@ export default {
   welcome: 'Selamat Datang',
   analytics: 'Analitik',
   scheduling: 'Penjadualan',
-  phoneNumbers: 'Nomor Telefon',
+  phoneNumbers: 'Nombor Telefon',
   settings: 'Tetapan',
   'dev-tools': 'Alat Pembangun',
   profile: 'Profil',
@@ -21,6 +21,7 @@ export default {
   'configure-preferences': 'Konfigurasi keutamaan',
   'get-help': 'Dapatkan bantuan dan sokongan',
   'view-api': 'Lihat spesifikasi API',
+  'manage-phone-numbers': 'Urus nombor telefon',
 
   // Auth
   login: 'Log Masuk',

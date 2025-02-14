@@ -27,6 +27,7 @@ export default {
   'configure-preferences': '設定を構成',
   'get-help': 'ヘルプとサポートを取得',
   'view-api': 'API仕様を表示',
+  'manage-phone-numbers': '電話番号を管理',
 
   // Auth
   login: 'ログイン',

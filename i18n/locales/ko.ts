@@ -28,6 +28,7 @@ export default {
     'configure-preferences': '환경설정 구성',
     'get-help': '도움말 및 지원',
     'view-api': 'API 사양 보기',
+    'manage-phone-numbers': '전화번호 관리',
 
     // Auth
     login: '로그인',

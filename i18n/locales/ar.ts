@@ -28,6 +28,7 @@ export default {
   'configure-preferences': 'تكوين التفضيلات',
   'get-help': 'الحصول على المساعدة والدعم',
   'view-api': 'عرض مواصفات API',
+  'manage-phone-numbers': 'إدارة أرقام الهواتف',
 
   // Auth
   login: 'تسجيل الدخول',
