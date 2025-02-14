@@ -121,8 +121,7 @@ export class CallQueueHandler {
     // Check if we should process this message now
     if(scheduledAt) {
       const scheduledAtDate = new Date(scheduledAt);
-      const isSameDate = scheduledAtDate.toDateString() === new Date().toDateString();
-      if(!isSameDate) {
+      if(scheduledAtDate.getTime() > Date.now()) {
         return;
       }
     }

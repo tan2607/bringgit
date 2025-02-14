@@ -209,7 +209,7 @@ async function handleCreateJob() {
       name: state.jobName,
       assistantId: state.selectedAssistant,
       phoneNumbers: scheduledCalls.value.map((call: any) => call.phone),
-      schedule: new Date(selectedDate.value.year, selectedDate.value.month - 1, selectedDate.value.day),
+      schedule: new Date(selectedDate.value.year, selectedDate.value.month - 1, selectedDate.value.day, selectedTimeWindow.value.start, 0, 0, 0),
       totalCalls: scheduledCalls.value.length,
       phoneNumberId: state.selectedNumber
     })
