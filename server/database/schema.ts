@@ -60,6 +60,7 @@ export const jobs = sqliteTable('jobs', {
   failedCalls: integer('failed_calls'),
   failedNumbers: text('failed_numbers'),
   phoneNumbers: text('phone_numbers'),
+  names: text('names'),
   assistantId: text('assistant_id'),
   phoneNumberId: text('phone_number_id'),
   lastProcessedAt: text('last_processed_at'),
@@ -72,6 +73,7 @@ export const jobQueue = sqliteTable('job_queue', {
   id: text('id').primaryKey(),
   jobId: text('job_id').references(() => jobs.id),
   phoneNumber: text('phone_number').notNull(),
+  name: text('name'),
   assistantId: text('assistant_id'),
   phoneNumberId: text('phone_number_id'),
   retryCount: integer('retry_count'),
@@ -87,11 +89,9 @@ export const jobsRelations = relations(jobs, ({ many }) => ({
   jobQueues: many(jobQueue),
 }));
 
-
 export const jobQueueRelations = relations(jobQueue, ({ one }) => ({
   job: one(jobs, {
     fields: [jobQueue.jobId],
     references: [jobs.id],
   }),
 }));
-

@@ -9,6 +9,7 @@ export interface Job {
   failedCalls: number
   failedNumbers: string[]
   phoneNumbers: string[]
+  names: string[]
   assistantId: string
   phoneNumberId: string
   lastProcessedAt?: Date
@@ -76,6 +77,7 @@ export const useJobState = () => {
         body: {
           jobId,
           phoneNumbers: job.phoneNumbers,
+          names: job.names,
           assistantId: job.assistantId,
           phoneNumberId: job.phoneNumberId,
           scheduledAt: job.schedule
