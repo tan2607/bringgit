@@ -48,12 +48,20 @@
         </template>
         <UForm :state="integrationForm" class="space-y-4" @submit="saveIntegrations">
           <UFormField label="API Key">
-            <UInput v-model="integrationForm.apiKey" type="password" placeholder="Enter API Key"
-              icon="i-heroicons-key" />
+            <UInput 
+              v-model="integrationForm.apiKey" 
+              type="password" 
+              placeholder="Enter API Key"
+              icon="i-heroicons-key" 
+            />
           </UFormField>
           <UFormField label="Webhook URL">
-            <UInput v-model="integrationForm.webhookUrl" type="url" placeholder="https://your-webhook.com"
-              icon="i-heroicons-link" />
+            <UInput 
+              v-model="integrationForm.webhookUrl" 
+              type="url" 
+              placeholder="https://your-webhook.com"
+              icon="i-heroicons-link" 
+            />
           </UFormField>
           <UButton type="submit" color="primary" :loading="loading.integrations">Save Integration</UButton>
         </UForm>
@@ -66,12 +74,23 @@
         </template>
         <UForm :state="appForm" class="space-y-4" @submit="saveAppSettings">
           <UFormField label="Theme">
-            <URadioGroup v-model="appForm.theme" orientation="horizontal" :items="themeOptions" class="flex gap-4"
-              size="lg" />
+            <URadioGroup
+              v-model="appForm.theme"
+              orientation="horizontal"
+              :items="themeOptions"
+              class="flex gap-4"
+              size="lg"
+            />
           </UFormField>
           <UFormField label="Data Retention">
-            <USelect v-model="appForm.retention" :items="retentionOptions" placeholder="Select retention period"
-              class="w-full" option-attribute="label" value-attribute="value" />
+            <USelect
+              v-model="appForm.retention"
+              :items="retentionOptions"
+              placeholder="Select retention period"
+              class="w-full"
+              option-attribute="label"
+              value-attribute="value"
+            />
           </UFormField>
           <UButton type="submit" color="primary" :loading="loading.app">Save Settings</UButton>
         </UForm>
