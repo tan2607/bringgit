@@ -1,0 +1,1 @@
+Merge the documents into one file following the sequence of Intro, Persona, Workflow, FAQ. Output merged document as `merged.md`

@@ -1,0 +1,37 @@
+Transcriber: Nova 3
+LLM: Gemini Flash 2.0
+Languages:
+    - English: 
+        - Australian: 
+            - Male: Nigel (PlayDialog)
+            - Female: Ruby (PlayDialog) / Adelaide (PlayDialog)
+        - New Zealand: 
+            - Male: 
+            - Female: Ruby (PlayDialog)
+        - Singapore:
+            - Male: 
+            - Female: KeyReply Hellen (PlayDialog) 
+        - US:
+            - Male: 
+            - Female: Nia (PlayDialog)
+    - Arabic:
+        - Male: 
+        - Female: Maryem Conversational (PlayDialog)
+    - Portuguese:
+        - Male: None
+        - Female: Caroline Conversational (PlayDialog)
+    - Spanish:
+        - Male: None
+        - Female: None
+    - French:
+        - Male: None
+        - Female: None
+    - German:
+        - Male: 
+        - Female: 
+    - Italian:
+        - Male: 
+        - Female: 
+    - Japanese:
+        - Male: 
+        - Female:
