@@ -36,6 +36,13 @@
       "when": 1739518745394,
       "tag": "0004_big_magneto",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1739622406747,
+      "tag": "0005_clear_cloak",
+      "breakpoints": true
     }
   ]
 }

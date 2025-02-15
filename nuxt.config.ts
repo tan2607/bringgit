@@ -89,7 +89,8 @@ export default defineNuxtConfig({
     '@nuxtjs/mdc',
     '@nuxt/icon',
     '@nuxt/scripts',
-    '@formkit/nuxt'
+    '@formkit/nuxt',
+    '@pinia/nuxt'
   ],
   hub: {
     database: true
