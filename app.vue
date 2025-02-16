@@ -262,7 +262,7 @@ const items = computed(() => [
 ])
 
 async function setHeaderMenu() {
-  const response = await fetch('api/settings/module');
+  const response = await fetch('/api/settings/module');
   const data = await response.json();
 
   filteredItems.value = [];
