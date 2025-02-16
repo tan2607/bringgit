@@ -7,6 +7,7 @@ export default {
   welcome: '歡迎',
   analytics: '分析',
   scheduling: '日程安排',
+  phoneNumbers: '電話號碼',
   settings: '設定',
   'dev-tools': '開發者工具',
   profile: '個人資料',
@@ -31,6 +32,8 @@ export default {
   'get-help': '獲取幫助和支援',
   'view-api': '查看API規範',
   'explore-demos': '探索我們的AI示範',
+  'manage-phone-numbers': '管理電話號碼',
+  'view-demo': '查看演示頁面',
   'view-assistants': '查看助手',
 
   // Auth
@@ -50,6 +53,7 @@ export default {
   'passwords-not-match': '密碼不符',
   'account-created': '帳戶建立成功',
   'reset-password-description': '輸入您的電子郵件地址，我們將向您發送重設密碼的連結。',
+  'sign-out': '登出',
 
   // Settings
   'profile-settings': '個人資料設定',
@@ -269,5 +273,58 @@ export default {
     'llm-help': '選擇要使用的語言模型',
     temperature: '溫度',
     'temperature-help': '較高的值會產生更有創意的回應。較低的值會產生更一致的回應。',
+  },
+
+  // subnav
+  'jobs': '工作',
+  'reports': '報告',
+  'patient-intake-demo': '病人接收',
+  'sms-demo': '短信',
+  'location-search-demo': '位置搜索',
+  'ocr-demo': 'OCR演示',
+  'rpa-demo': 'RPA演示',
+  'workflow-demo': '工作流程',
+  'report-assistant': '報告助手',
+  'claims-assistant': '索賠助手',
+
+  // subnav descriptions
+  'manage-scheduled-jobs': '管理計劃的工作',
+  'view-job-reports': '查看工作報告和分析',
+  'configure-scheduling-settings': '配置計劃設置',
+  'translation-demo-description': '翻譯演示',
+  'patient-intake-demo-description': '病人接收表單演示',
+  'sms-demo-description': '短信發送演示',
+  'location-search-demo-description': '診所位置搜索演示',
+  'rpa-demo-description': 'RPA',
+  'workflow-demo-description': '家庭睡眠研究工作流程',
+  'report-assistant-description': '詢問關於您的報告的問題',
+  'claims-assistant-description': '詢問關於被拒絕的索賠的問題',
+
+  // Phone Numbers Page
+  'registerNewPhoneNumber': '註冊新電話號碼',
+  'newNumber': '新號碼',
+  'phoneForm': {
+    'name': '名稱',
+    'nameDesc': '輸入電話號碼的名稱',
+    'phoneNumber': '電話號碼',
+    'phoneNumberDesc': '輸入電話號碼',
+    'username': '用戶名',
+    'usernameDesc': '輸入電話號碼的用戶名',
+    'passwordOptional': '密碼（可選）',
+    'passwordDesc': '輸入密碼',
+    'domain': '域名 / IP',
+    'domainDesc': '輸入域名或IP地址',
+    'port': '端口',
+    'portDesc': '輸入端口號（默認：5060）',
+    'portHelperText': '有效端口範圍是1-65535',
+    'protocol': '協議',
+    'protocolDesc': '選擇電話號碼的協議',
+    'register': '註冊',
+  },
+  'filterPlaceholder': '按名稱或號碼過濾...',
+  'phoneTable': {
+    'name': '名稱',
+    'number': '號碼',
+    'actions': '操作',
   },
 }

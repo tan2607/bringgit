@@ -4,19 +4,19 @@
     <UCard>
       <template #header>
         <div class="flex items-center justify-between">
-          <h3 class="text-lg font-semibold">Phone Numbers</h3>
+          <h3 class="text-lg font-semibold">{{t('phoneNumbers')}}</h3>
           <div class="flex gap-2">
             <UPopover :popper="{ placement: 'bottom-end' }" mode="click">
               <UButton
                 color="primary"
                 icon="i-lucide-plus"
-                label="New Number"
+                :label="t('newNumber')"
               />
               
               <template #content="{ close }">
                 <div class="p-4 w-[400px]">
                   <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-lg font-semibold">Register New Phone Number</h3>
+                    <h3 class="text-lg font-semibold">{{ t('registerNewPhoneNumber') }}</h3>
                     <UButton
                       color="neutral"
                       variant="ghost"
@@ -32,66 +32,66 @@
                     class="space-y-4"
                   >
                     <UFormField 
-                      label="Name" 
+                      :label="t('phoneForm.name')" 
                       name="name"
                       required
                     >
                       <UInput
                         class="w-full"
                         v-model="form.name"
-                        placeholder="Enter name"
+                        :placeholder="t('phoneForm.nameDesc')"
                       />
                     </UFormField>
 
                     <UFormField 
-                      label="Phone Number" 
+                      :label="t('phoneForm.phoneNumber')" 
                       name="phoneNumber"
                       required
                     >
                       <UInput
                         class="w-full"
                         v-model="form.phoneNumber"
-                        placeholder="Enter phone number"
+                        :placeholder="t('phoneForm.phoneNumberDesc')"
                       />
                     </UFormField>
 
                     <UFormField 
-                      label="Username (Optional)" 
+                      :label="t('phoneForm.username')" 
                       name="username"
                     >
                       <UInput
                         class="w-full"
                         v-model="form.username"
-                        placeholder="Enter username"
+                        :placeholder="t('phoneForm.usernameDesc')"
                       />
                     </UFormField>
 
                     <UFormField 
-                      label="Password (Optional)" 
+                      :label="t('phoneForm.passwordOptional')" 
                       name="password"
                     >
                       <UInput
                         class="w-full"
                         v-model="form.password"
                         type="password"
-                        placeholder="Enter password"
+                        :placeholder="t('phoneForm.passwordDesc')"
                       />
                     </UFormField>
 
                     <UFormField 
-                      label="Domain / IP" 
+                      :label="t('phoneForm.domain')" 
                       name="domain"
                       required
                     >
                       <UInput
                         class="w-full"
                         v-model="form.domain"
-                        placeholder="Enter domain or IP address"
+                        :placeholder="t('phoneForm.domainDesc')"
                       />
                     </UFormField>
 
                     <UFormField
-                      label="Port"
+                      :label="t('phoneForm.port')" 
                       name="port"
                       required
                     >
@@ -101,16 +101,16 @@
                         type="number"
                         min="1"
                         max="65535"
-                        placeholder="Enter port (default: 5060)"
+                        :placeholder="t('phoneForm.portDesc')"
                         @input="validatePort"
                       />
                       <template #help>
-                        <span class="text-xs text-gray-500">Valid port range: 1-65535</span>
+                        <span class="text-xs text-gray-500">{{ t('phoneForm.portHelperText') }}</span>
                       </template>
                     </UFormField>
 
                     <UFormField
-                      label="Protocol"
+                      :label="t('phoneForm.protocol')" 
                       name="protocol"
                       required
                     >
@@ -131,7 +131,7 @@
                         color="primary"
                         :loading="isSubmitting"
                       >
-                        Register
+                        {{ t('phoneForm.register') }}
                       </UButton>
                     </div>
                   </UForm>
@@ -155,7 +155,7 @@
           <UInput
             v-model="searchQuery"
             class="max-w-sm"
-            placeholder="Filter by name or number..."
+            :placeholder="t('filterPlaceholder')"
             icon="i-lucide-search"
           />
         </div>
@@ -179,6 +179,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { z } from 'zod'
+const { t } = useI18n()
 
 const { numbers, isLoading, fetchNumbers } = usePhoneNumbers()
 const toast = useToast()
@@ -218,16 +219,16 @@ const schema = z.object({
 const columns = [
   {
     accessorKey: 'name',
-    header: () => 'Name',
+    header: () => t('phoneTable.name'),
     enableColumnFilter: true
   },
   {
     accessorKey: 'number',
-    header: () => 'Number'
+    header: () => t('phoneTable.number'),
   },
   {
     accessorKey: 'id',
-    header: () => 'Actions',
+    header: () => t('phoneTable.actions'),
     sortable: false,
     width: 100,
     cell: ({ row }) => h(UButton, {

@@ -32,6 +32,7 @@ export default {
   welcome: 'Chào mừng',
   analytics: 'Phân tích',
   scheduling: 'Lịch trình',
+  phoneNumbers: 'Số điện thoại',
   settings: 'Cài đặt',
   'dev-tools': 'Công cụ phát triển',
   profile: 'Hồ sơ',
@@ -43,6 +44,7 @@ export default {
   security: 'Bảo mật',
   widget: 'Widget',
   copied: 'Đã sao chép',
+  'sign-out': 'Đăng xuất',
 
   // Descriptions
   'manage-calls': 'Quản lý cuộc gọi và họp',
@@ -52,6 +54,8 @@ export default {
   'configure-preferences': 'Cấu hình tùy chọn',
   'get-help': 'Nhận trợ giúp và hỗ trợ',
   'view-api': 'Xem thông số kỹ thuật API',
+  'manage-phone-numbers': 'Quản lý số điện thoại',
+  'view-demo': 'Xem trang demo',
   'view-assistants': 'Xem trợ lý',
 
   // Auth
@@ -294,5 +298,65 @@ export default {
     'crawled-content': 'Nội dung đã quét',
     'crawling-failed': 'Quét trang web không thành công',
     'content-imported': 'Đã nhập nội dung thành công',
-  }
+  },
+
+  // subnav
+  'jobs': 'Công việc',
+  'reports': 'Báo cáo',
+  'translation-demo': 'Dịch',
+  'patient-intake-demo': 'Tiếp nhận bệnh nhân',
+  'sms-demo': 'SMS',
+  'location-search-demo': 'Tìm kiếm vị trí',
+  'ocr-demo': 'Demo OCR',
+  'rpa-demo': 'Demo RPA',
+  'workflow-demo': 'Quy trình làm việc',
+  'report-assistant': 'Trợ lý báo cáo',
+  'claims-assistant': 'Trợ lý yêu cầu',
+
+  // subnav descriptions
+  'manage-scheduled-jobs': 'Quản lý công việc đã lên lịch',
+  'view-job-reports': 'Xem báo cáo công việc và phân tích',
+  'configure-scheduling-settings': 'Cấu hình cài đặt lịch trình',
+  'translation-demo-description': 'Demo dịch',
+  'patient-intake-demo-description': 'Demo biểu mẫu tiếp nhận bệnh nhân',
+  'sms-demo-description': 'Demo gửi SMS',
+  'location-search-demo-description': 'Demo tìm kiếm vị trí phòng khám',
+  'rpa-demo-description': 'RPA',
+  'workflow-demo-description': 'Quy trình làm việc nghiên cứu giấc ngủ tại nhà',
+  'report-assistant-description': 'Đặt câu hỏi về báo cáo của bạn',
+  'claims-assistant-description': 'Đặt câu hỏi về yêu cầu bị từ chối',
+
+  // Phone Numbers Page
+  'registerNewPhoneNumber': 'Đăng ký số điện thoại mới',
+  'newNumber': 'Số Mới',
+  'phoneForm': {
+    'name': 'Tên',
+    'nameDesc': 'Nhập tên cho số điện thoại',
+    'phoneNumber': 'Số điện thoại',
+    'phoneNumberDesc': 'Nhập số điện thoại',
+    'username': 'Tên người dùng',
+    'usernameDesc': 'Nhập tên người dùng cho số điện thoại',
+    'passwordOptional': 'Mật khẩu (tùy chọn)',
+    'passwordDesc': 'Nhập mật khẩu',
+    'domain': 'Miền / IP',
+    'domainDesc': 'Nhập miền hoặc địa chỉ IP',
+    'port': 'Cổng',
+    'portDesc': 'Nhập số cổng (mặc định: 5060)',
+    'portHelperText': 'Phạm vi cổng hợp lệ là 1-65535',
+    'protocol': 'Giao thức',
+    'protocolDesc': 'Chọn giao thức cho số điện thoại',
+    'register': 'Đăng ký',
+    'sip': 'SIP',
+    'sipDesc': 'Nhập SIP cho số điện thoại',
+    'sipServer': 'Máy chủ SIP',
+    'sipServerDesc': 'Nhập máy chủ SIP cho số điện thoại',
+    'sipPort': 'Cổng SIP',
+    'sipPortDesc': 'Nhập cổng SIP cho số điện thoại',
+  },
+  'filterPlaceholder': 'Lọc theo tên hoặc số...',
+  'phoneTable': {
+    'name': 'Tên',
+    'number': 'Số',
+    'actions': 'Hành động',
+  },
 }

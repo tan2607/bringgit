@@ -7,6 +7,7 @@ export default {
   welcome: 'ようこそ',
   analytics: '分析',
   scheduling: 'スケジュール',
+  phoneNumbers: '電話番号',
   settings: '設定',
   'dev-tools': '開発者ツール',
   profile: 'プロフィール',
@@ -26,6 +27,8 @@ export default {
   'configure-preferences': '設定を構成',
   'get-help': 'ヘルプとサポートを取得',
   'view-api': 'API仕様を表示',
+  'manage-phone-numbers': '電話番号を管理',
+  'view-demo': 'デモページを見る',
 
   // Auth
   login: 'ログイン',
@@ -44,6 +47,7 @@ export default {
   'passwords-not-match': 'パスワードが一致しません',
   'account-created': 'アカウントが作成されました',
   'reset-password-description': 'メールアドレスを入力してください。パスワードリセットのリンクを送信します。',
+  'sign-out': 'サインアウト',
 
   // Settings
   'profile-settings': 'プロフィール設定',
@@ -290,5 +294,58 @@ export default {
     'llm-help': '使用する言語モデルを選択してください',
     temperature: '温度',
     'temperature-help': '値が高いほど、より創造的な応答になります。低い値は一貫性のある応答を生成します。',
+  },
+
+  // subnav
+  'jobs': 'ジョブ',
+  'reports': 'レポート',
+  'patient-intake-demo': '患者受付',
+  'sms-demo': 'SMS',
+  'location-search-demo': 'ロケーション検索',
+  'ocr-demo': 'OCRデモ',
+  'rpa-demo': 'RPAデモ',
+  'workflow-demo': 'ワークフロー',
+  'report-assistant': 'レポートアシスタント',
+  'claims-assistant': 'クレームアシスタント',
+
+  // subnav descriptions
+  'manage-scheduled-jobs': 'スケジュールされたジョブを管理する',
+  'view-job-reports': 'ジョブレポートと分析を表示する',
+  'configure-scheduling-settings': 'スケジューリング設定を構成する',
+  'translation-demo-description': '翻訳デモ',
+  'patient-intake-demo-description': '患者受付フォームデモ',
+  'sms-demo-description': 'SMS送信デモ',
+  'location-search-demo-description': 'クリニックの場所検索デモ',
+  'rpa-demo-description': 'RPA',
+  'workflow-demo-description': '在宅睡眠研究ワークフロー',
+  'report-assistant-description': 'レポートについて質問する',
+  'claims-assistant-description': '拒否されたクレームについて質問する',
+  
+  // Phone Numbers Page
+  'newNumber': '新しい番号',
+  'registerNewPhoneNumber': '新しい電話番号を登録',
+  'phoneForm': {
+    'name': '名前',
+    'nameDesc': '電話番号の名前を入力してください',
+    'phoneNumber': '電話番号',
+    'phoneNumberDesc': '電話番号を入力してください',
+    'username': 'ユーザー名',
+    'usernameDesc': '電話番号のユーザー名を入力してください',
+    'passwordOptional': 'パスワード（オプション）',
+    'passwordDesc': 'パスワードを入力してください',
+    'domain': 'ドメイン / IP',
+    'domainDesc': 'ドメインまたはIPアドレスを入力してください',
+    'port': 'ポート',
+    'portDesc': 'ポート番号を入力してください（デフォルト：5060）',
+    'portHelperText': '有効なポート範囲は1-65535です',
+    'protocol': 'プロトコル',
+    'protocolDesc': '電話番号のプロトコルを選択してください',
+    'register': '登録',
+  },
+  'filterPlaceholder': '名前または番号でフィルタ...',
+  'phoneTable': {
+    'name': '名前',
+    'number': '番号',
+    'actions': 'アクション',
   },
 }
