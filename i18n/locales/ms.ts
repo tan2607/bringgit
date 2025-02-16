@@ -7,10 +7,12 @@ export default {
   welcome: 'Selamat Datang',
   analytics: 'Analitik',
   scheduling: 'Penjadualan',
+  phoneNumbers: 'Nombor Telefon',
   settings: 'Tetapan',
   'dev-tools': 'Alat Pembangun',
   profile: 'Profil',
   support: 'Sokongan',
+  'sign-out': 'Log Keluar',
 
   // Descriptions
   'manage-calls': 'Urus panggilan dan mesyuarat',
@@ -20,6 +22,8 @@ export default {
   'configure-preferences': 'Konfigurasi keutamaan',
   'get-help': 'Dapatkan bantuan dan sokongan',
   'view-api': 'Lihat spesifikasi API',
+  'manage-phone-numbers': 'Urus nombor telefon',
+  'view-demo': 'Lihat halaman demo',
   'view-assistants': 'Lihat Pembantu',
 
   // Auth
@@ -210,5 +214,61 @@ export default {
     alcohol: 'Pengambilan Alkohol',
     activity: 'Aktiviti Fizikal',
     submit: 'Hantar Borang'
+  },
+
+  // subnav
+  'jobs': 'Pekerjaan',
+  'reports': 'Laporan',
+  'patient-intake-demo': 'Penerimaan Pesakit',
+  'sms-demo': 'SMS',
+  'location-search-demo': 'Carian Lokasi',
+  'ocr-demo': 'Demo OCR',
+  'rpa-demo': 'Demo RPA',
+  'workflow-demo': 'Aliran Kerja',
+  'report-assistant': 'Pembantu Laporan',
+  'claims-assistant': 'Pembantu Tuntutan',
+
+  // subnav descriptions
+  'manage-scheduled-jobs': 'Urus pekerjaan yang dijadualkan',
+  'view-job-reports': 'Lihat laporan pekerjaan dan analisis',
+  'configure-scheduling-settings': 'Konfigurasikan tetapan penjadualan',
+  'translation-demo-description': 'Demo terjemahan',
+  'patient-intake-demo-description': 'Demo borang penerimaan pesakit',
+  'sms-demo-description': 'Demo penghantar SMS',
+  'location-search-demo-description': 'Demo carian lokasi klinik',
+  'rpa-demo-description': 'RPA',
+  'workflow-demo-description': 'Aliran Kerja Kajian Tidur di Rumah',
+  'report-assistant-description': 'Tanya soalan tentang laporan anda',
+  'claims-assistant-description': 'Tanya soalan tentang tuntutan yang ditolak',
+
+  // Phone Numbers Page
+  'registerNewPhoneNumber': 'Daftar Nombor Telefon Baru',
+  'newNumber': 'Nombor Baru',
+  'phoneForm': {
+    'name': 'Nama',
+    'nameDesc': 'Masukkan nama untuk nombor telefon',
+    'phoneNumber': 'Nombor Telefon',
+    'phoneNumberDesc': 'Masukkan nombor telefon',
+    'username': 'Nama Pengguna',
+    'usernameDesc': 'Masukkan nama pengguna untuk nombor telefon',
+    'passwordOptional': 'Kata Laluan (pilihan)',
+    'passwordDesc': 'Masukkan kata laluan',
+    'domain': 'Domain / IP',
+    'domainDesc': 'Masukkan domain atau alamat IP',
+    'port': 'Port',
+    'portDesc': 'Masukkan nombor port (default: 5060)',
+    'portHelperText': 'Julat port yang sah adalah 1-65535',
+    'protocol': 'Protokol',
+    'protocolDesc': 'Pilih protokol untuk nombor telefon',
+    'register': 'Daftar',
+    'verificationCode': 'Kod Pengesahan',
+    'verificationCodeDesc': 'Masukkan kod pengesahan yang dihantar ke nombor telefon',
+    'verify': 'Sahkan',
+  },
+  'filterPlaceholder': 'Tapis mengikut nama atau nombor...',
+  'phoneTable': {
+    'name': 'Nama',
+    'number': 'Nombor',
+    'actions': 'Tindakan',
   },
 }

@@ -7,6 +7,7 @@ export default {
   welcome: '欢迎',
   analytics: '分析',
   scheduling: '日程安排',
+  phoneNumbers: '电话号码',
   settings: '设置',
   'dev-tools': '开发者工具',
   profile: '个人资料',
@@ -19,6 +20,7 @@ export default {
   copied: '已复制',
   success: '成功',
   'patient-intake.form-submitted': '患者登记表提交成功',
+  'sign-out': '登出',
 
   // Descriptions
   'manage-calls': '管理通话和会议',
@@ -28,6 +30,8 @@ export default {
   'configure-preferences': '配置偏好设置',
   'get-help': '获取帮助和支持',
   'view-api': '查看API规范',
+  'manage-phone-numbers': '管理电话号码',
+  'view-demo': '查看演示页面',
   'view-assistants': '查看助手',
 
   // Auth
@@ -279,5 +283,60 @@ export default {
     'llm-help': '选择要使用的语言模型',
     temperature: '温度',
     'temperature-help': '较高的值会产生更有创意的回应。较低的值会产生更一致的回应。',
-  }
+  },
+
+  // subnav
+  'jobs': '工作',
+  'reports': '报告',
+  'patient-intake-demo': '病人接收',
+  'sms-demo': '短信',
+  'location-search-demo': '位置搜索',
+  'ocr-demo': 'OCR演示',
+  'rpa-demo': 'RPA演示',
+  'workflow-demo': '工作流程',
+  'report-assistant': '报告助手',
+  'claims-assistant': '索赔助手',
+
+  // subnav descriptions
+  'manage-scheduled-jobs': '管理计划的工作',
+  'view-job-reports': '查看工作报告和分析',
+  'configure-scheduling-settings': '配置计划设置',
+  'translation-demo-description': '翻译演示',
+  'patient-intake-demo-description': '病人接收表单演示',
+  'sms-demo-description': '短信发送演示',
+  'location-search-demo-description': '诊所位置搜索演示',
+  'rpa-demo-description': 'RPA',
+  'workflow-demo-description': '家庭睡眠研究工作流程',
+  'report-assistant-description': '询问关于您的报告的问题',
+  'claims-assistant-description': '询问关于被拒绝的索赔的问题',
+
+  // Phone Numbers Page
+  'registerNewPhoneNumber': '注册新电话号码',
+  'newNumber': '新号码',
+  'phoneForm': {
+    'name': '名称',
+    'nameDesc': '输入电话号码的名称',
+    'phoneNumber': '电话号码',
+    'phoneNumberDesc': '输入电话号码',
+    'username': '用户名',
+    'usernameDesc': '输入电话号码的用户名',
+    'passwordOptional': '密码（可选）',
+    'passwordDesc': '输入密码',
+    'domain': '域名 / IP',
+    'domainDesc': '输入域名或IP地址',
+    'port': '端口',
+    'portDesc': '输入端口号（默认：5060）',
+    'portHelperText': '有效端口范围是1-65535',
+    'protocol': '协议',
+    'protocolDesc': '选择电话号码的协议',
+    'register': '注册',
+    'newProperty': '新属性',
+    'newPropertyDesc': '输入新属性的描述',
+  },
+  'filterPlaceholder': '按名称或号码过滤...',
+  'phoneTable': {
+    'name': '名称',
+    'number': '号码',
+    'actions': '操作',
+  },
 }

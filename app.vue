@@ -93,100 +93,100 @@ const items = computed(() => [
     children: [
       {
         key: 'scheduling-jobs',
-        label: 'Jobs',
+        label: t('jobs'),
         icon: 'i-lucide-briefcase',
-        description: 'Manage scheduled jobs',
+        description: t('manage-scheduled-jobs'),
         to: localeRoute('/scheduling')?.path
       },
       {
         key: 'scheduling-reports',
-        label: 'Reports',
+        label: t('reports'),
         icon: 'i-lucide-bar-chart',
-        description: 'View job reports and analytics',
+        description: t('view-job-reports'),
         to: localeRoute('/scheduling/reports')?.path
       },
       {
         key: 'scheduling-settings',
-        label: 'Settings',
+        label: t('settings'),
         icon: 'i-lucide-settings',
-        description: 'Configure scheduling settings',
+        description: t('configure-scheduling-settings'),
         to: localeRoute('/scheduling/settings')?.path
       }
     ]
   },
   {
     key: 'phone-numbers',
-    label: 'Phone Numbers',
+    label: t('phoneNumbers'),
     icon: 'i-lucide-phone',
-    description: 'Manage phone numbers',
+    description: t('manage-phone-numbers'),
     to: localeRoute('/numbers')?.path
   },
   {
     key: 'demo',
-    label: 'Demo',
+    label: t('demos'),
     icon: 'i-lucide-layout-template',
-    description: 'View demo pages',
+    description: t('view-demo'),
     children: [
       {
         key: 'demo-translation',
-        label: 'Translation',
+        label: t('translation-demo'),
         icon: 'i-lucide-languages',
-        description: 'Translation demo',
+        description: t('translation-demo-description'),
         to: localeRoute('/demo/translation')?.path
       },
       {
         key: 'demo-patient-intake',
-        label: 'Patient Intake',
+        label: t('patient-intake-demo'),
         icon: 'i-lucide-clipboard-list',
-        description: 'Patient intake form demo',
+        description: t('patient-intake-demo-description'),
         to: localeRoute('/demo/patient-intake-form')?.path
       },
       {
         key: 'demo-sms',
-        label: 'SMS',
+        label: t('sms-demo'),
         icon: 'i-lucide-message-square',
-        description: 'SMS sender demo',
+        description: t('sms-demo-description'),
         to: localeRoute('/demo/sms')?.path
       },
       {
         key: 'demo-location-search',
-        label: 'Location Search',
+        label: t('location-search-demo'),
         icon: 'i-lucide-map-pin',
-        description: 'Clinic location search demo',
+        description: t('location-search-demo-description'),
         to: localeRoute('/demo/location')?.path
       },
       {
         key: 'demo-ocr',
-        label: 'OCR Demo',
+        label: t('ocr-demo'),
         icon: 'i-lucide-file-scan',
         to: localeRoute('/ocr')
       },
       {
         key: 'demo-rpa',
-        label: 'RPA Demo',
+        label: t('rpa-demo'),
         icon: 'i-lucide-cpu',
-        description: 'RPA',
+        description: t('rpa-demo-description'),
         to: localeRoute('/demo/rpa')?.path
       },
       {
         key: 'demo-workflow',
-        label: 'Workflow Demo',
+        label: t('workflow-demo'),
         icon: 'i-lucide-workflow',
-        description: 'Home Sleep Study Workflow',
+        description: t('workflow-demo-description'),
         to: localeRoute('/demo/workflow')?.path
       },
       {
         key: 'demo-report-assistant',
-        label: 'Report Assistant',
+        label: t('report-assistant'),
         icon: 'i-lucide-table',
-        description: 'Ask questions about your reports',
+        description: t('report-assistant-description'),
         to: localeRoute('/demo/report-assistant')?.path
       },
       {
         key: 'demo-claims-assistant',
-        label: 'Claims Assistant',
+        label: t('claims-assistant'),
         icon: 'i-lucide-table',
-        description: 'Ask questions about denied claims',
+        description: t('claims-assistant-description'),
         to: localeRoute('/demo/claims-assistant')?.path
       }
     ]
