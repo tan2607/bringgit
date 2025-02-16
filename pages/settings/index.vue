@@ -95,18 +95,45 @@
           <UButton type="submit" color="primary" :loading="loading.app">Save Settings</UButton>
         </UForm>
       </UCard>
+
+      <!-- Module Settings -->
+      <UCard>
+        <template #header>
+          <h2 class="text-xl font-semibold">Module Settings</h2>
+        </template>
+
+        <div class="mb-2">
+          <div v-for="module in moduleSettings" :key="module.key">
+            <UCheckbox class="mb-2" v-model="module.enable" @change="toggleEnable(module)" :label="module.title" />
+
+            <div v-if="module.sub" class="ml-6">
+              <div v-for="sub in module.sub" :key="sub.key">
+                <UCheckbox class="mb-2" v-model="sub.enable" @change="toggleEnableSub(sub, module)" :label="sub.title" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <UButton @click="saveModuleSettings" class="mt-2" color="primary" :loading="loading.module">
+          Save Settings
+        </UButton>
+      </UCard>
     </div>
   </UContainer>
 </template>
 
 <script setup lang="ts">
+import { modules, type Module } from "~/server/utils/settings";
+import { useSettingStore } from "~/stores/useSettingStore";
+
 definePageMeta({ middleware: "auth" })
 
 const loading = ref({
   profile: false,
   notifications: false,
   integrations: false,
-  app: false
+  app: false,
+  module: false
 })
 
 const profileForm = ref({
@@ -142,8 +169,35 @@ const appForm = ref({
   retention: 30
 })
 
+const moduleSettings = ref<Module[]>([]);
+const settingStore = useSettingStore();
+
+const toggleEnable = (module: Module) => {
+  // If a parent module is unchecked, uncheck all submodules
+  if (!module.enable && module.sub) {
+    module.sub.forEach(subModule => (subModule.enable = false));
+  }
+};
+
+const toggleEnableSub = (sub: Module, module:Module) => {
+  if(sub.enable) {
+    module.enable = true;
+  }
+}
+
 watch(() => appForm.value.theme, (newTheme) => {
   colorMode.preference = newTheme
+})
+
+onMounted(async () => {
+  const response = await fetch('api/settings/module');
+  const data = await response.json();
+  if(data.success) {
+    moduleSettings.value = data.modules;
+  } else {
+    moduleSettings.value = modules;
+  }
+  
 })
 
 async function saveProfile() {
@@ -184,13 +238,32 @@ async function saveAppSettings() {
   try {
     colorMode.preference = appForm.value.theme
     await new Promise(resolve => setTimeout(resolve, 1000))
-    useToast().add({ 
-      title: 'Theme updated', 
+    useToast().add({
+      title: 'Theme updated',
       description: `Switched to ${appForm.value.theme} mode`,
-      color: 'green' 
+      color: 'success'
     })
   } finally {
     loading.value.app = false
   }
+}
+
+async function saveModuleSettings() {
+  loading.value.module = true
+  try {
+    const response = await $fetch('/api/settings/module', {
+      method: 'POST',
+      body: {
+        modules: moduleSettings.value
+      }
+    })
+    useToast().add({ title: 'Module settings saved', color: 'success' })
+  } catch (error) {
+    useToast().add({ title: 'Error saving module settings', color: 'error' })
+  } finally {
+    loading.value.module = false
+    settingStore.startReload()
+  }
+
 }
 </script>

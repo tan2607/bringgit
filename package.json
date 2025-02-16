@@ -30,6 +30,7 @@
     "@nuxthub/core": "latest",
     "@nuxtjs/i18n": "latest",
     "@nuxtjs/mdc": "latest",
+    "@pinia/nuxt": "^0.10.1",
     "@sendgrid/mail": "^8.1.4",
     "@vapi-ai/server-sdk": "^0.1.0",
     "@vueuse/core": "^12.4.0",
