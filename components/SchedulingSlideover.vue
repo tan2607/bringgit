@@ -206,16 +206,17 @@ async function handleCreateJob() {
   state.isSubmitting = true
   try {
     let currentHour = new Date().getHours()
+    let currentMinute = new Date().getMinutes()
 
     if(currentHour < selectedTimeWindow.value.start || currentHour > selectedTimeWindow.value.end) {
       currentHour = selectedTimeWindow.value.start;
-     }
+    }
     await createJob({
       name: state.jobName,
       assistantId: state.selectedAssistant,
       phoneNumbers: scheduledCalls.value.map((call: any) => call.phone),
       names: scheduledCalls.value.map((call: any) => call.name),
-      schedule: new Date(selectedDate.value.year, selectedDate.value.month - 1, selectedDate.value.day, currentHour, 0, 0, 0),
+      schedule: new Date(selectedDate.value.year, selectedDate.value.month - 1, selectedDate.value.day, currentHour, currentMinute, 0, 0),
       totalCalls: scheduledCalls.value.length,
       phoneNumberId: state.selectedNumber
     })

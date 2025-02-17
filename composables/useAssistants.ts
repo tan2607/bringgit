@@ -26,10 +26,15 @@ export const useAssistants = () => {
     }
   }
 
+  const getAssistantById = (id: string) => {
+    return assistants.value.find((assistant) => assistant.id === id)
+  }
+
   return {
     assistants,
     selectedAssistant,
     isLoading,
     fetchAssistants,
+    getAssistantById
   }
 }

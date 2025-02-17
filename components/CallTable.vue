@@ -40,8 +40,8 @@
       v-model:column-visibility="columnVisibility"
       v-model:column-filters="columnFilters"
       :data="data" 
-      :columns="columns"
-      :loading="isLoading"
+      :columns="props.quickView ? quickViewColumns : columns"
+      :loading="props.isLoadingTable || isLoading"
     >
       <template #status-data="{ row }">
         <UBadge :color="row.status === 'ended' ? 'success' : 'info'">
@@ -96,6 +96,14 @@ const props = defineProps({
     required: true
   },
   compact: {
+    type: Boolean,
+    default: false
+  },
+  quickView: {
+    type: Boolean,
+    default: false
+  },
+  isLoadingTable: {
     type: Boolean,
     default: false
   }
@@ -209,7 +217,13 @@ const columns = computed(() => {
     {
       accessorKey: "duration",
       header: () => t('table.duration'),
-      cell: (row) => row.getValue("duration")
+      cell: (row) => {
+        const duration = row.getValue('duration')
+        if(!duration) {
+          return "N/A"
+        }
+        return duration
+      }
     }
   ]
 
@@ -269,6 +283,184 @@ const columns = computed(() => {
         ])
       }
     })
+  }
+
+  return baseColumns
+})
+
+const quickViewColumns = computed(() => {
+  const baseColumns = [  
+  { accessorKey: 'name', header: 'Name', cell: ({ row }) => {
+    return h('div', { class: 'text-sm text-gray-500' }, row.original.name || "N/A")
+  } },
+  { accessorKey: 'phoneNumber', header: 'Phone Number' },
+  {
+      accessorKey: "assistant",
+      header: () => t('table.assistant'),
+      enableColumnFilter: true,
+      filterFn: 'includesString',
+      cell: (row) => {
+        const assistant = row.getValue('assistant')
+        if(!assistant) {
+          return "N/A"
+        }
+        return assistant
+      }
+  },
+  { accessorKey: 'retryCount', header: 'Retry Count' },
+  { accessorKey: 'scheduledAt', header: 'Job Scheduled At', cell: ({ row }) => {
+    const time = new Date(row.getValue('scheduledAt'));
+    const timeAgo = formatTimeAgo(time)
+    return time.toLocaleString('en-US', {
+      day: 'numeric',
+      month: 'short',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+          }) + ` (${timeAgo})`
+    }
+  },
+  {
+      accessorKey: "status",
+      header: () => t('table.status'),
+      cell: (row) => {
+        return h(UBadge, { class: 'capitalize', variant: 'subtle' }, () =>
+          row.getValue('status')
+        )
+      }
+  },
+  {
+      accessorKey: 'startedAt',
+      header: () => t('table.callReceived'),
+      sortable: true,
+      cell: (row) => {
+        const startedAt = row.getValue('startedAt')
+        if(!startedAt) {
+          return "N/A"
+        }
+        const time = new Date(startedAt);
+        const timeAgo = formatTimeAgo(time)
+        return time.toLocaleString('en-US', {
+          day: 'numeric',
+          month: 'short',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false
+        }) + ` (${timeAgo})`
+      }
+    },
+    {
+      accessorKey: "recordingUrl",
+      header: () => t('table.recording'),
+      cell: (row) => {
+        const recordingUrl = row.getValue('recordingUrl')
+        if(!recordingUrl) {
+          return "N/A"
+        }
+        const isPlaying = computed(() => currentPlayingId.value === row.getValue('id'))
+        const proxyUrl = transformRecordingUrl(recordingUrl)
+        return h('div', { class: 'flex gap-2' }, [
+          h(UButton, {
+            icon: isPlaying.value ? 'i-lucide-pause-circle' : 'i-lucide-play-circle',
+            size: 'sm',
+            color: isPlaying.value ? 'error' : 'primary',
+            variant: isPlaying.value ? 'solid' : 'ghost',
+            class: 'hover:scale-110 transition-transform',
+            onClick: () => togglePlayAudio(proxyUrl, row.getValue('id'))
+          }),
+          h(UButton, {
+            icon: 'i-lucide-share-2',
+            size: 'sm',
+            color: 'primary',
+            variant: 'ghost',
+            class: 'hover:scale-110 transition-transform',
+            onClick: () => {
+              copy(proxyUrl)
+              toast.add({
+                title: 'URL Copied',
+                duration: 1500,
+                description: 'File URL copied to clipboard!',
+                color: 'success', // or another appropriate color
+                icon: 'i-lucide-check' // optional icon
+              })
+            }
+          }),
+          h(UButton, {
+            icon: 'i-lucide-download',
+            size: 'sm',
+            color: 'primary',
+            variant: 'ghost',
+            class: 'hover:scale-110 transition-transform',
+            onClick: () => {
+              const link = document.createElement('a')
+              link.href = proxyUrl
+              link.download = `recording-${row.getValue('id')}.mp3`
+              link.click()
+            }
+          })
+        ])
+      }
+    },
+    {
+      accessorKey: "duration",
+      header: () => t('table.duration'),
+      cell: (row) => {
+        const duration = row.getValue("duration")
+        if(!duration) {
+          return "N/A"
+        }
+        return duration
+      }
+    }
+]
+
+  if (!props.compact) {
+
+      baseColumns.push({
+        accessorKey: "tags",
+        header: () => "Tags",
+        cell: (row) => {
+          const tags = row.getValue('tags');
+          if(!tags) {
+            return "N/A"
+          }
+          return h(
+            'div', 
+            { class: 'flex flex-wrap gap-2' }, 
+            tags.map((tag: string) => h(
+              UBadge, 
+              { class: 'capitalize', variant: 'subtle', key: tag, color: 'info' }, 
+              () => tag
+            ))
+          );
+        }
+      })
+
+      baseColumns.push({
+        accessorKey: "vapiId",
+        header: () => t('table.actions'),
+        cell: (row) => {
+          const vapiId = row.getValue('vapiId')
+          console.log(vapiId);
+          if(!vapiId) {
+            return "N/A"
+          }
+          return h('div', { class: 'flex gap-2' }, [
+            h(UButton, {
+              icon: 'i-lucide-file-text',
+              label: 'View Transcript',
+              size: 'sm',
+              color: 'primary',
+              variant: 'ghost',
+              onClick: () => {
+                const call = props.data.find(call => call.vapiId === vapiId)
+                selectedCall.value = call
+                slideover.open(TranscriptSlideover)
+              }
+            })
+          ])
+        }
+      })
   }
 
   return baseColumns

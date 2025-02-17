@@ -148,9 +148,12 @@ const jobFormSchema = z.object({
 
 type JobFormSchema = z.output<typeof jobFormSchema>
 
-const { jobState, createJob, pauseJob, resumeJob, stopJob, getJobs } = useJobState()
+const { jobState, createJob, pauseJob, resumeJob, stopJob, getJobs, deleteJob } = useJobState()
 const { assistants, fetchAssistants } = useAssistants()
 const { numbers, fetchNumbers } = usePhoneNumbers()
+const { confirm } = useConfirm()
+const toast = useToast()
+
 
 
 // Local UI jobState
@@ -361,6 +364,24 @@ const handleJobAction = async (action: string, job: Job) => {
       break
     case 'delete':
       // Implement delete
+      const targetJob = filteredJobs.value[job.id]
+      const confirming = await confirm(`Are you sure you want to delete this job? ${targetJob.name}`)
+      if(confirming) {
+        const response = await deleteJob(targetJob.id)
+        if(response) {
+          toast.add({
+            title: 'Job deleted',
+            description: 'Job deleted successfully',
+            color: 'success'
+          })
+        } else {
+          toast.add({
+            title: 'Job deletion failed',
+            description: 'Job deletion failed',
+            color: 'error'
+          })
+        }
+      }
       break
   }
 }
