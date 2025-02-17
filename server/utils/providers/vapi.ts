@@ -135,7 +135,8 @@ export class VapiProvider {
         summary: (call as any).summary ?? '',
         recordingUrl: (call as any).recordingUrl ?? '',
         structuredData,
-        tags: tagList
+        tags: tagList,
+        assistantOverrides: call.assistantOverrides
       };
     });
   }

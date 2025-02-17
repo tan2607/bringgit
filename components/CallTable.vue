@@ -143,6 +143,11 @@ const columns = computed(() => {
       cell: (row) => row.getValue("customer")?.number?.replace(/^(\+\d\d)?..../, '****')
     },
     {
+      accessorKey: "assistantOverrides.variableValues.name",
+      header: () => 'Name',
+      cell: (row) => row.getValue("assistantOverrides.variableValues.name")
+    },
+    {
       accessorKey: 'startedAt',
       header: () => t('table.callReceived'),
       sortable: true,
