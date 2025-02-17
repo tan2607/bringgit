@@ -43,6 +43,13 @@
       "when": 1739622406747,
       "tag": "0005_clear_cloak",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1739772575542,
+      "tag": "0006_round_domino",
+      "breakpoints": true
     }
   ]
 }

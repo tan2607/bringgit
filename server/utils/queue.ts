@@ -15,6 +15,10 @@ export interface CallMessage {
   phoneNumberId: string
   retryCount?: number
   priority?: number
+  status: string
+  delay: number
+  scheduledAt: string
+  vapiId: string
 }
 
 export class CallQueueHandler {
@@ -181,7 +185,7 @@ export class CallQueueHandler {
         }
       })
 
-      const updatedJob = await this.updateJobProgress(jobId, {
+      await this.updateJobProgress(jobId, {
         completedCalls: 1
       })
 
@@ -189,7 +193,8 @@ export class CallQueueHandler {
 
       await this.updateQueue({
         id: queueId,
-        status: "completed"
+        status: "completed",
+        vapiId: call.id
       })
       // await message.ack()
 
@@ -293,16 +298,18 @@ export class CallQueueHandler {
       id: crypto.randomUUID(),
       delay: options?.delay || 0,
       status: "pending",
-      scheduledAt: message.scheduledAt
+      scheduledAt: message.scheduledAt,
+      vapiId: null
     })
   }
 
 
-  private async updateQueue(message) {
+  private async updateQueue(message: CallMessage) {
     const db = useDrizzle();
     await db.update(jobQueue).set({
-      status: message.status,
-      delay: message.delay || 0
-    }).where(eq(jobQueue.id, message.id))
+      status: message.status as "pending" | "completed" | "failed" | "running" | undefined || "pending",
+      delay: message.delay || 0,
+      vapiId: message.vapiId || null
+    }).where(eq(jobQueue.id, message.id as string))
   }
 }

@@ -228,6 +228,8 @@ export const useJobState = () => {
         jobState.value.uploadStatus = 'No file uploaded'
         jobState.value.openScheduleModal = false
         
+
+        await getJobs();
         return true
       }
       return false

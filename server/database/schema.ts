@@ -72,6 +72,7 @@ export const jobs = sqliteTable('jobs', {
 export const jobQueue = sqliteTable('job_queue', {
   id: text('id').primaryKey(),
   jobId: text('job_id').references(() => jobs.id),
+  vapiId: text('vapi_id'),
   phoneNumber: text('phone_number').notNull(),
   name: text('name'),
   assistantId: text('assistant_id'),
