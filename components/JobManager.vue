@@ -113,7 +113,7 @@
       :phone-number-options="numbers" @submit="handleJobSubmit" />
 
     <!-- Quick View Drawer -->
-    <JobDetailsSlideover v-if="showQuickView" v-model:open="showQuickView" :job="quickViewJob" />
+    <JobDetailsSlideover />
   </div>
 </template>
 
@@ -146,6 +146,7 @@ const { numbers, fetchNumbers } = usePhoneNumbers()
 const { confirm } = useConfirm()
 const toast = useToast()
 
+const slideover = useSlideover()
 
 
 // Local UI jobState
@@ -336,7 +337,9 @@ const handleJobAction = async (action: string, job: Job) => {
   switch (action) {
     case 'view':
       quickViewJob.value = filteredJobs.value[job.id]
-      showQuickView.value = true
+      slideover.open(JobDetailsSlideover, {
+        job: quickViewJob.value
+      })
       break
     case 'edit':
       const jobDetails = filteredJobs.value[job.id]

@@ -72,9 +72,9 @@
                 <UButton color="primary" variant="ghost" icon="i-lucide-edit"
                   @click="openEditSlideover(assistant, true)" />
                 <UButton color="primary" variant="ghost" icon="i-lucide-phone" @click="openCallSlideover(assistant)" />
-                <UButton color="primary" variant="ghost" icon="i-lucide-globe"
+                <!-- <UButton color="primary" variant="ghost" icon="i-lucide-globe"
                   :href="`https://vai.keyreply.com/${assistant.name}`" target="_blank" rel="noopener noreferrer"
-                  title="Open Web Link" />
+                  title="Open Web Link" /> -->
                 <UPopover arrow :content="{
                   side: 'top',
                 }">
