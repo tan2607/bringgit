@@ -83,7 +83,7 @@
       </div>
     </UContainer>
 
-    <JobDetailsSlideover v-if="showQuickView" v-model:open="showQuickView" :job="quickViewJob" />
+    <JobDetailsSlideover />
   </div>
 </template>
 
@@ -190,7 +190,9 @@ function handleDateChange(date: CalendarDate) {
 
 function showJobDetails(job: Job) {
   quickViewJob.value = job
-  showQuickView.value = true
+  slideover.open(JobDetailsSlideover, {
+    job: quickViewJob.value
+  })
 }
 
 function handleFileUpload(event: Event) {
