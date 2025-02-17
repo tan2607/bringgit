@@ -1,149 +1,177 @@
 <!-- components/JobDetailsSlideover.vue -->
 <template>
-  <USlideover v-model="modelValue">
-    <template #header>
-      <div class="flex items-center gap-2">
-        <UIcon name="i-heroicons-document-text" class="h-5 w-5" />
-        <h3 class="text-lg font-semibold">Job Details</h3>
-      </div>
-    </template>
+	<USlideover v-model:open="showQuickView" side="right">
+		<template #content>
+			<UCard class="h-full overflow-y-auto">
+				<template #header>
+					<div class="flex items-center justify-between">
+						<h3 class="text-lg font-semibold">
+							{{ quickViewJob?.name }}
+						</h3>
+						<UButton
+							icon="i-lucide-x"
+							color="gray"
+							variant="ghost"
+							@click="showQuickView = false"
+						/>
+					</div>
+				</template>
 
-    <template #default>
-      <div v-if="job" class="space-y-6 p-4">
-        <!-- Job Info -->
-        <div class="space-y-4">
-          <div>
-            <h4 class="text-sm font-medium text-gray-500">Job Name</h4>
-            <p class="mt-1">{{ job.name }}</p>
-          </div>
+				<div v-if="quickViewJob" class="space-y-6">
+					<!-- Progress Section -->
+					<div class="space-y-2">
+						<h4 class="font-medium">Progress</h4>
+						<UProgress
+							:value="quickViewJob.progress"
+							:color="getProgressColor(quickViewJob)"
+							size="lg"
+							:animation="quickViewJob.status === 'completed' ? 'pulse' : 'carousel'"
+						/>
+						<div class="grid grid-cols-3 gap-4 mt-2">
+							<div>
+								<div class="text-sm text-gray-500">Total</div>
+								<div class="font-medium">{{ quickViewJob.totalCalls }}</div>
+							</div>
+							<div>
+								<div class="text-sm text-gray-500">Completed</div>
+								<div class="font-medium">{{ quickViewJob.completedCalls }}</div>
+							</div>
+							<div>
+								<div class="text-sm text-gray-500">Failed</div>
+								<div class="font-medium">{{ quickViewJob.failedCalls }}</div>
+							</div>
+						</div>
+					</div>
 
-          <div>
-            <h4 class="text-sm font-medium text-gray-500">Schedule</h4>
-            <p class="mt-1">{{ formatDate(job.schedule) }}</p>
-          </div>
+					<!-- Failed Numbers -->
+					<div v-if="quickViewJob.failedNumbers?.length > 0">
+						<h4 class="font-medium mb-2">Failed Numbers</h4>
+						<UCard class="bg-gray-50">
+							<div class="space-y-1">
+								<div v-for="number in quickViewJob.failedNumbers" :key="number" class="text-sm">
+									{{ number }}
+								</div>
+							</div>
+						</UCard>
+					</div>
 
-          <div>
-            <h4 class="text-sm font-medium text-gray-500">Status</h4>
-            <div class="mt-1 flex items-center gap-2">
-              <UBadge
-                :color="getStatusColor(job.status)"
-                :label="job.status"
-                :icon="getJobIcon(job.status)"
-              />
-            </div>
-          </div>
+					<!-- Recent Activity -->
+					<div>
+						<h4 class="font-medium mb-2">Recent Activity</h4>
+						<div class="space-y-3">
+							<UCard
+								v-for="activity in getJobActivity(quickViewJob)"
+								:key="activity.id"
+								class="flex gap-3 p-3"
+							>
+								<UIcon :name="activity.icon" class="h-5 w-5 text-gray-400" />
+								<div class="flex-1 space-y-1">
+									<p class="text-sm">{{ activity.title }}</p>
+									<!-- <p class="text-xs text-gray-500">{{ formatDate(activity.timestamp) }}</p> -->
+								</div>
+							</UCard>
+						</div>
+					</div>
 
-          <div>
-            <h4 class="text-sm font-medium text-gray-500">Progress</h4>
-            <div class="mt-1">
-              <UProgress
-                :value="job.progress"
-                :color="getProgressColor(job)"
-                size="sm"
-              />
-              <p class="mt-1 text-sm text-gray-500">
-                {{ job.progress }}% complete
-              </p>
-            </div>
-          </div>
-
-          <div>
-            <h4 class="text-sm font-medium text-gray-500">Phone Numbers</h4>
-            <div class="mt-1 space-y-1">
-              <p v-for="number in job.phoneNumbers" :key="number" class="text-sm">
-                {{ number }}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Activity -->
-        <div class="space-y-2">
-          <h4 class="font-medium">Activity</h4>
-          <div class="space-y-4">
-            <UCard v-for="activity in getJobActivity(job)" :key="activity.id" class="flex gap-3 p-3">
-              <UIcon :name="activity.icon" class="h-5 w-5 text-gray-400" />
-              <div class="flex-1 space-y-1">
-                <p class="text-sm">{{ activity.message }}</p>
-                <p class="text-xs text-gray-500">{{ formatDate(activity.timestamp) }}</p>
-              </div>
-            </UCard>
-          </div>
-        </div>
-      </div>
-    </template>
-  </USlideover>
+					<!-- Phone Numbers -->
+					<div>
+						<h4 class="font-medium mb-2">Phone Numbers</h4>
+						<UTable :data="quickViewJob.jobQueues" :columns="jobQueueColumns" />
+					</div>
+				</div>
+			</UCard>
+		</template>
+	</USlideover>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import type { Job } from '~/types'
+	import { ref } from "vue";
+	import type { Job } from "~/types";
 
-const props = defineProps<{
-  modelValue: boolean
-  job?: Job | null
-}>()
+	const props = defineProps<{
+		modelValue: boolean;
+		job?: Job | null;
+	}>();
 
-const emit = defineEmits<{
-  'update:modelValue': [value: boolean]
-}>()
+  const quickViewJob = defineModel<Job | null>('job', {
+    required: true
+  });
 
-// Utility functions
-const formatDate = (date: Date) => {
-  return new Date(date).toLocaleString()
-}
+	const emit = defineEmits<{
+		"update:modelValue": [value: boolean];
+	}>();
 
-const getJobIcon = (status: string) => {
-  switch (status) {
-    case 'running':
-      return 'i-heroicons-play'
-    case 'paused':
-      return 'i-heroicons-pause'
-    case 'completed':
-      return 'i-heroicons-check'
-    case 'failed':
-      return 'i-heroicons-x-circle'
-    default:
-      return 'i-heroicons-clock'
-  }
-}
+	// Utility functions
+	const formatDate = (date: Date) => {
+		return new Date(date).toLocaleString();
+	};
 
-const getStatusColor = (status: string) => {
-  switch (status) {
-    case 'running':
-      return 'primary'
-    case 'paused':
-      return 'yellow'
-    case 'completed':
-      return 'green'
-    case 'failed':
-      return 'red'
-    default:
-      return 'gray'
-  }
-}
+	const getJobIcon = (status: string) => {
+		switch (status) {
+			case "running":
+				return "i-heroicons-play";
+			case "paused":
+				return "i-heroicons-pause";
+			case "completed":
+				return "i-heroicons-check";
+			case "failed":
+				return "i-heroicons-x-circle";
+			default:
+				return "i-heroicons-clock";
+		}
+	};
 
-const getProgressColor = (job: Job) => {
-  if (job.status === 'failed') return 'red'
-  if (job.status === 'completed') return 'green'
-  return 'primary'
-}
+	const getStatusColor = (status: string) => {
+		switch (status) {
+			case "running":
+				return "primary";
+			case "paused":
+				return "yellow";
+			case "completed":
+				return "green";
+			case "failed":
+				return "red";
+			default:
+				return "gray";
+		}
+	};
 
-const getJobActivity = (job: Job) => {
-  // Mock activity data - replace with real data
+	const getProgressColor = (job: Job) => {
+		if (job.status === "failed") return "red";
+		if (job.status === "completed") return "green";
+		return "primary";
+	};
+
+  const getJobActivity = (job: Job) => {
   return [
     {
-      id: 1,
-      icon: 'i-heroicons-play',
-      message: 'Job started',
-      timestamp: new Date(Date.now() - 3600000)
+      title: `Job ${job.status}`,
+      date: job.lastProcessedAt,
+      icon: getJobIcon(job.status)
     },
     {
-      id: 2,
-      icon: 'i-heroicons-phone',
-      message: '5 calls completed',
-      timestamp: new Date(Date.now() - 1800000)
+      title: `${job.completedCalls || 0} calls completed`,
+      date: new Date(),
+      icon: 'i-lucide-phone'
+    },
+    {
+      title: `${job.failedCalls || 0} calls failed`,
+      date: new Date(),
+      icon: 'i-lucide-phone-off'
     }
   ]
 }
+
+
+const jobQueueColumns = [
+  { accessorKey: 'name', header: 'Name', cell: ({ row }) => {
+    return h('div', { class: 'text-sm text-gray-500' }, row.original.name || "N/A")
+  } },
+  { accessorKey: 'phoneNumber', header: 'Phone Number' },
+  { accessorKey: 'retryCount', header: 'Retry Count' },
+  { accessorKey: 'scheduledAt', header: 'Schedule At', cell: ({ row }) => {
+    return h('div', { class: 'text-sm text-gray-500' }, new Date(row.original.scheduledAt).toLocaleString())
+  }  },
+  { accessorKey: 'status', header: 'Status' },
+]
 </script>

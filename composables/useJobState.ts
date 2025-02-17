@@ -255,6 +255,21 @@ export const useJobState = () => {
     }
   }
 
+  const deleteJob = async (jobId: string) => {
+    const response = await $fetch(`/api/jobs/${jobId}`, { method: 'DELETE' })
+    if (response.success) {
+      jobState.value.jobs = jobState.value.jobs.filter(job => job.id !== jobId)
+      return {
+        success: true,
+        message: 'Job deleted successfully'
+      }
+    }
+    return {
+      success: false,
+      message: 'Failed to delete job'
+    }
+  }
+
   const getJobs = async () => {
     const jobsData = await $fetch('/api/jobs')
     jobState.value.jobs = jobsData
@@ -269,6 +284,7 @@ export const useJobState = () => {
     resumeJob,
     stopJob,
     createJob,
-    getJobs
+    getJobs,
+    deleteJob
   }
 }
