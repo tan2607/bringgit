@@ -363,5 +363,7 @@ useHead({
     </UMain>
 
     <UFooter/>
+
+    <ConfirmDialog />
   </UApp>
 </template>

@@ -72,7 +72,7 @@
                     @click="resumeJob(job.id)" :loading="job.id === jobState.loadingJobId" />
                   <UButton v-if="['running', 'paused'].includes(job.status)" color="error" variant="soft"
                     icon="i-lucide-stop" size="xs" @click="stopJob(job.id)" :loading="job.id === jobState.loadingJobId" />
-                  <UDropdownMenu :items="getJobActions(job)" :popper="{ placement: 'bottom-end' }">
+                  <UDropdownMenu :items="getJobActions(job)" :popper="{ placement: 'bottom-end' }" class="text-black">
                     <UButton color="gray" variant="ghost" icon="i-lucide-more-vertical" size="xs" />
                   </UDropdownMenu>
                 </div>
@@ -82,6 +82,8 @@
         </UCard>
       </div>
     </UContainer>
+
+    <JobDetailsSlideover v-if="showQuickView" v-model:open="showQuickView" :job="quickViewJob" />
   </div>
 </template>
 
@@ -93,7 +95,7 @@ import { useJobState } from '@/composables/useJobState'
 import type { Job } from '@/composables/useJobState'
 import { useState } from '#app'
 import SchedulingSlideover from '~/components/SchedulingSlideover.vue'
-
+import JobDetailsSlideover from '~/components/JobDetailsSlideover.vue'
 const slideover = useSlideover()
 
 const openSlideover = () => {
@@ -102,11 +104,17 @@ const openSlideover = () => {
   })
 }
 
-const { jobState, startJob, pauseJob, resumeJob, stopJob, getJobs } = useJobState()
+const { jobState, startJob, pauseJob, resumeJob, stopJob, getJobs, deleteJob } = useJobState()
+const { confirm } = useConfirm()
+const toast = useToast()
+
 
 const currentDate = new Date()
 const currentDateCalendar = new CalendarDate(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate())
 const selectedDate = ref(currentDateCalendar)
+const showQuickView = ref(false)
+const quickViewJob = ref<Job | null>(null)
+
 
 const state = useState('scheduling', () => ({
   jobs: [] as Job[],
@@ -166,23 +174,23 @@ function getJobActions(job: Job) {
     {
       label: 'View Details',
       icon: 'i-lucide-info',
-      click: () => showJobDetails(job)
+      onSelect: () => showJobDetails(job)
     },
     {
       label: 'Delete',
       icon: 'i-lucide-trash',
-      click: () => deleteJob(job.id)
+      onSelect: () => handleDeleteJob(job.id)
     }
   ]
 }
-
 function handleDateChange(date: CalendarDate) {
   selectedDate.value = date
   // Update jobState.selectedDate is handled by the watcher
 }
 
 function showJobDetails(job: Job) {
-  // Implement job details view
+  quickViewJob.value = job
+  showQuickView.value = true
 }
 
 function handleFileUpload(event: Event) {
@@ -191,6 +199,29 @@ function handleFileUpload(event: Event) {
     state.value.contacts = file
   }
 }
+
+async function handleDeleteJob(jobId: string) {
+  const confirming = await confirm("Are you sure you want to delete this job?");
+  if (confirming) {
+    const response = await deleteJob(jobId);
+    if (response.success) {
+      toast.add({
+        title: 'Success',
+        description: response.message,
+        color: 'success'
+      })
+    } else {
+      toast.add({
+        title: 'Error',
+        description: response.message,
+        color: 'error'
+      })
+    }
+  } else {
+    console.log('Canceled');
+  }
+}
+
 onMounted(async () => {
   const { jobs } = await getJobs()
   state.value.jobs = jobs
