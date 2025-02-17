@@ -6,14 +6,14 @@
         <div class="flex items-center justify-between">
           <h3 class="text-lg font-semibold">{{t('phoneNumbers')}}</h3>
           <div class="flex gap-2">
-            <UPopover :popper="{ placement: 'bottom-end' }" mode="click">
+            <UPopover v-model:open="isOpenRegisterNumberModal" :popper="{ placement: 'bottom-end' }" mode="click" :dismissible="false">
               <UButton
                 color="primary"
                 icon="i-lucide-plus"
                 :label="t('newNumber')"
               />
               
-              <template #content="{ close }">
+              <template #content>
                 <div class="p-4 w-[400px]">
                   <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-semibold">{{ t('registerNewPhoneNumber') }}</h3>
@@ -21,7 +21,8 @@
                       color="neutral"
                       variant="ghost"
                       icon="i-lucide-x"
-                      @click="close"
+                      @click="isOpenRegisterNumberModal = false"
+                      class="cursor-pointer"
                     />
                   </div>
 
@@ -187,6 +188,7 @@ const isSubmitting = ref(false)
 const isDeleting = ref(false)
 const searchQuery = ref('')
 const UButton = resolveComponent('UButton');
+const isOpenRegisterNumberModal = ref(false)
 
 // Fetch numbers on component mount
 onMounted(() => {
