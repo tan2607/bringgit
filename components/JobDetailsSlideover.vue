@@ -55,24 +55,6 @@
 						</UCard>
 					</div>
 
-					<!-- Recent Activity -->
-					<div>
-						<h4 class="font-medium mb-2">Recent Activity</h4>
-						<div class="space-y-3">
-							<UCard
-								v-for="activity in getJobActivity(quickViewJob)"
-								:key="activity.id"
-								class="flex gap-3 p-3"
-							>
-								<UIcon :name="activity.icon" class="h-5 w-5 text-gray-400" />
-								<div class="flex-1 space-y-1">
-									<p class="text-sm">{{ activity.title }}</p>
-									<!-- <p class="text-xs text-gray-500">{{ formatDate(activity.timestamp) }}</p> -->
-								</div>
-							</UCard>
-						</div>
-					</div>
-
 					<!-- Phone Numbers -->
 					<div>
 						<h4 class="font-medium mb-2">Phone Numbers</h4>
