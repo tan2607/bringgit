@@ -10,14 +10,6 @@
       </div>
 
       <div class="flex gap-2">
-        <UButton icon="i-heroicons-bookmark" @click="saveCurrentView" variant="soft" color="primary">
-          Save View
-        </UButton>
-        <UDropdownMenu :items="savedViewItems" :ui="{ content: 'w-48' }">
-          <UButton icon="i-heroicons-squares-2x2" variant="soft" color="gray">
-            Saved Views
-          </UButton>
-        </UDropdownMenu>
         <UButton icon="i-heroicons-plus" @click="showCreateModal = true" color="primary">
           New Job
         </UButton>
