@@ -58,7 +58,7 @@
     <!-- Jobs Table -->
     <UTable :data="filteredJobs" :columns="columns" :sort="sort" @update:sort="sort = $event"
       v-model:selected="jobState.selectedJobs" :loading="isLoading"
-      :empty-jobState="{ icon: 'i-heroicons-clipboard', label: 'No jobs found' }" selectable>
+      :empty-jobState="{ icon: 'i-heroicons-clipboard', label: 'No jobs found' }" @select="selectJob" selectable>
       <!-- Name Column -->
       <template #name-data="{ row }">
         <div class="flex items-center gap-2">
@@ -70,12 +70,17 @@
         </div>
       </template>
 
+      <template #schedule-data="{ row }">
+        <div>
+          {{ formatDate(row.schedule) }}
+        </div>
+      </template>
       <!-- Progress Column -->
       <template #progress-data="{ row }">
         <div class="w-full">
           <UProgress :value="row.progress" :color="getProgressColor(row)" class="w-32" size="sm" />
           <div class="text-xs text-gray-500 mt-1">
-            {{ row.completedCalls }}/{{ row.totalCalls }} calls
+            {{ row.progess }}%
           </div>
         </div>
       </template>
@@ -83,7 +88,7 @@
       <!-- Status Column -->
       <template #status-data="{ row }">
         <UBadge :color="getStatusColor(row.status)" size="sm" variant="soft">
-          {{ row.status }}
+          {{ row.status[0].toUpperCase() + row.status.slice(1) }}
         </UBadge>
       </template>
 
@@ -193,7 +198,11 @@ const savedViews = [
 
 // Table configuration
 const columns = [
-  { accessorKey: 'name', header: 'Name', sortable: true },
+  { accessorKey: 'name', header: 'Job Name', sortable: true },
+  { accessorKey: 'assistantName', header: 'Assistant Name', sortable: true },
+  { accessorKey: 'phoneNumberLabel', header: 'Outbound Number', sortable: true },
+  { accessorKey: 'schedule', header: 'Scheduled Date', sortable: true },
+  { accessorKey: 'totalCalls', header: 'Users Count', sortable: true },
   { accessorKey: 'progress', header: 'Progress', sortable: true },
   { accessorKey: 'status', header: 'Status', sortable: true },
   { id: 'actions',  cell: ({ row }) => {
@@ -246,7 +255,14 @@ const filteredJobs = computed(() => {
 
   // Apply status filter
   if (jobState.value.selectedStatus) {
-    jobs = jobs.filter(job => job.status === jobState.value.selectedStatus)
+    jobs = jobs.filter(job => job.status === jobState.value.selectedStatus).map(item => {
+      const phoneNumber = numbers.value.find(n => n.id === item.phoneNumberId);
+      const phoneNumberLabel = phoneNumber ? `${phoneNumber.number} (${phoneNumber.name})` : 'N/A';
+      const assistant = assistants.value.find(a => a.id === item.assistantId);
+      const assistantName = assistant ? assistant.name : 'N/A';
+      
+      return { ...item, phoneNumber, phoneNumberLabel, assistant, assistantName }
+    })
   }
 
   return jobs
@@ -434,6 +450,11 @@ const loadView = (view: any) => {
 
 function getJobPhoneNumbers(job: Job) {
   return JSON.parse(job.phoneNumbers)
+}
+
+function selectJob(job: Job) {
+  quickViewJob.value = filteredJobs.value[job.id]
+  showQuickView.value = true
 }
 
 onMounted(async () => {
