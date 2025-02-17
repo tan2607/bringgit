@@ -1,6 +1,6 @@
 <!-- components/JobDetailsSlideover.vue -->
 <template>
-	<USlideover v-model:open="showQuickView" side="right">
+	<USlideover side="right">
 		<template #content>
 			<UCard class="h-full overflow-y-auto">
 				<template #header>
@@ -12,7 +12,8 @@
 							icon="i-lucide-x"
 							color="gray"
 							variant="ghost"
-							@click="showQuickView = false"
+							class="cursor-pointer"
+							@click="slideover.close()"
 						/>
 					</div>
 				</template>
@@ -70,6 +71,7 @@
 	import { ref } from "vue";
 	import type { Job } from "~/types";
 	import { useCalls } from '@/composables/useCalls'
+	const slideover = useSlideover()
 
 	const props = defineProps<{
 		modelValue: boolean;

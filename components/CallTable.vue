@@ -148,7 +148,7 @@ const columns = computed(() => {
     {
       accessorKey: "customer",
       header: () => 'Phone Number',
-      cell: (row) => row.getValue("customer")?.number?.replace(/^(\+\d\d)?..../, '****')
+      cell: (row) => row.getValue("customer")?.number
     },
     {
       accessorKey: "assistantOverrides.variableValues.name",
