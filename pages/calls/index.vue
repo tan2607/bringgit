@@ -26,7 +26,7 @@
 
       <USelect 
         v-model="callStatus" 
-        class="w-20"
+        class="w-40"
         :items="[
         { label: t('queued'), value: 'queued' },
         { label: t('ringing'), value: 'ringing' },
