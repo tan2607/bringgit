@@ -54,16 +54,8 @@ export const useJobState = () => {
 
   // Subscribe to job updates
   const { jobUpdates } = useJobUpdates()
-  watch(jobUpdates, (updates) => {
-    updates.forEach(update => {
-      const jobIndex = jobState.value.jobs.findIndex(j => j.id === update.jobId)
-      if (jobIndex !== -1) {
-        jobState.value.jobs[jobIndex] = {
-          ...jobState.value.jobs[jobIndex],
-          ...update.status
-        }
-      }
-    })
+  watch(() => jobUpdates.value.jobs, (updates) => {
+      jobState.value.jobs = updates
   })
 
   const startJob = async (jobId: string) => {
