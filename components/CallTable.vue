@@ -2,13 +2,46 @@
   <div>
     <div class="flex items-center justify-between px-4 py-3.5 border-b border-[var(--ui-border-accented)]">
       <div class="flex items-center gap-4">
-        <UInput
-          :model-value="table?.tableApi?.getColumn('assistant')?.getFilterValue() as string"
-          class="w-64"
-          placeholder="Filter by assistant..."
-          icon="i-lucide-search"
-          @update:model-value="table?.tableApi?.getColumn('assistant')?.setFilterValue($event)"
-        />
+        <UInput :model-value="table?.tableApi?.getColumn('assistant')?.getFilterValue() as string" class="w-64"
+          placeholder="Filter by assistant..." icon="i-lucide-search"
+          @update:model-value="table?.tableApi?.getColumn('assistant')?.setFilterValue($event)" />
+        <div class="flex flex-col gap-4 w-64">
+          <!-- Dropdown: Tags Filter -->
+          <div class="relative">
+            <UPopover v-model:open="shouldShowTagsFilter">
+              <UButton color="neutral" variant="outline" trailing-icon="i-lucide-chevron-down">
+                Tags Filter
+              </UButton>
+              <template #content>
+                <div class="p-4 bg-neutral-900 border border-neutral-700 rounded-lg shadow-lg w-60">
+                  <div class="text-white font-semibold mb-2">Select a Category</div>
+                  <ul class="space-y-2">
+                    <li v-for="category in categories" :key="category">
+                      <UButton :color="selectedCategory === category ? 'success' : 'neutral'" variant="outline"
+                        class="w-full text-left cursor-pointer" @click="handleChooseCategory(category)">
+                        {{ category.charAt(0).toUpperCase() + category.slice(1) }}
+                      </UButton>
+                    </li>
+                  </ul>
+
+                  <!-- Second Dropdown: Select Value -->
+                  <div v-if="selectedCategory"
+                    class="mt-4 p-3 bg-neutral-800 border border-neutral-600 rounded-lg shadow-md">
+                    <div class="text-white font-semibold mb-2">Select a Value</div>
+                    <ul class="space-y-2">
+                      <li v-for="value in filteredOptions" :key="value">
+                        <UButton :color="selectedValue === value ? 'success' : 'neutral'" variant="outline"
+                          class="w-full text-left cursor-pointer" @click="handleChooseValue(value)">
+                          {{ value }}
+                        </UButton>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </template>
+            </UPopover>
+          </div>
+        </div>
       </div>
       <div class="flex items-center gap-2">
         <UButton
@@ -52,14 +85,9 @@
         </UDropdownMenu>
       </div>
     </div>
-    <UTable 
-      ref="table"
-      v-model:column-visibility="columnVisibility"
-      v-model:column-filters="columnFilters"
-      :data="data" 
-      :columns="props.quickView ? quickViewColumns : columns"
-      :loading="props.isLoadingTable || isLoading"
-    >
+    <UTable ref="table" v-model:column-visibility="columnVisibility" v-model:column-filters="columnFilters"
+      :data="filteredData" :columns="props.quickView ? quickViewColumns : columns"
+      :loading="props.isLoadingTable || isLoading">
       <template #status-data="{ row }">
         <UBadge :color="row.status === 'ended' ? 'success' : 'info'">
           {{ row.status }}
@@ -72,11 +100,8 @@
       </template>
     </UTable>
     <CallSlideover
-      v-model="isCallSlideoverOpen"
-      :assistant="selectedAssistant"
       @success="(message) => toast.add({ title: 'Success', description: message, color: 'success', icon: 'i-lucide-check-circle' })"
-      @error="(message) => toast.add({ title: 'Error', description: message, color: 'error', icon: 'i-lucide-alert-circle' })"
-    />
+      @error="(message) => toast.add({ title: 'Error', description: message, color: 'error', icon: 'i-lucide-alert-circle' })" />
   </div>
 </template>
 
@@ -141,6 +166,8 @@ const { copy } = useClipboard()
 
 const table = useTemplateRef('table')
 
+const shouldShowTagsFilter = ref(false)
+
 const columnVisibility = ref({
   duration: true,
   status: true,
@@ -158,6 +185,33 @@ const uniqueAssistants = computed(() => {
   const assistants = new Set(props.data?.map(call => call.assistant) || [])
   return Array.from(assistants).sort()
 })
+
+const uniqueTags = computed(() => {
+  const tags = new Set(
+    props.data
+      ?.flatMap((call: any) => call.tags || []) 
+      .map((tag: string) => tag.split(",")) 
+      .flat()
+      .map((tag: string) => tag.trim())
+  );
+  
+  return Array.from(tags).sort();
+});
+
+const categories = computed(() => {
+  return [...new Set(uniqueTags.value.map(tag => tag.split(":")[0]))].sort((a,b) => a.length - b.length);
+});
+
+const selectedCategory = ref(null);
+const selectedValue = ref(null);
+
+const filteredOptions = computed(() => {
+  return uniqueTags.value
+    .filter(tag => tag.startsWith(`${selectedCategory.value}:`))
+    .map(tag => tag.split(": ")[1]); 
+});
+
+
 
 const columns = computed(() => {
   const baseColumns = [
@@ -493,4 +547,35 @@ const quickViewColumns = computed(() => {
 
   return baseColumns
 })
+
+
+const handleChooseCategory = (category: string) => {
+  if(selectedCategory.value === category) {
+    selectedCategory.value = null
+    selectedValue.value = null
+    return
+  }
+  selectedCategory.value = category
+  selectedValue.value = null
+}
+
+const handleChooseValue = (value: string) => {
+  if(selectedValue.value === value) {
+    selectedValue.value = null
+    return
+  }
+  selectedValue.value = value
+}
+
+
+const filteredData = computed(() => {
+  if(!selectedCategory.value || !selectedValue.value) {
+    return props.data
+  } 
+
+  if(selectedCategory.value && selectedValue.value) {
+    return props.data.filter(call => call.tags.includes(`${selectedCategory.value}: ${selectedValue.value}`))
+  }
+})
+
 </script>
