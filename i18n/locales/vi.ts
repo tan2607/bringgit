@@ -44,6 +44,7 @@ export default {
   security: 'Bảo mật',
   widget: 'Widget',
   copied: 'Đã sao chép',
+  export: 'Xuất',
   'sign-out': 'Đăng xuất',
 
   // Descriptions

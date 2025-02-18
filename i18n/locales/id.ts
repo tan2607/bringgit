@@ -19,6 +19,7 @@ export default {
   security: 'Keamanan',
   widget: 'Widget',
   copied: 'Disalin',
+  export: 'Ekspor',
 
   // Descriptions
   'manage-calls': 'Kelola panggilan dan rapat',

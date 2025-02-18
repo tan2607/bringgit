@@ -10,30 +10,47 @@
           @update:model-value="table?.tableApi?.getColumn('assistant')?.setFilterValue($event)"
         />
       </div>
-      <UDropdownMenu
-        :items="table?.tableApi
-          ?.getAllColumns()
-          .filter((column) => ['duration', 'status', 'tags'].includes(column.id))
-          .map((column) => ({
-            label: upperFirst(column.id),
-            type: 'checkbox' as const,
-            checked: column.getIsVisible(),
-            onUpdateChecked(checked: boolean) {
-              table?.tableApi?.getColumn(column.id)?.toggleVisibility(!!checked)
-            },
-            onSelect(e?: Event) {
-              e?.preventDefault()
-            }
-          }))"
-        :content="{ align: 'end' }"
-      >
+      <div class="flex items-center gap-2">
         <UButton
-          label="Columns"
-          color="neutral"
-          variant="outline"
-          trailing-icon="i-lucide-chevron-down"
-        />
-      </UDropdownMenu>
+          v-if="props.exportButton"
+          color="primary"
+          variant="soft"
+          :disabled="props.isLoadingTable || isLoading || !props.data?.length"
+          class="group cursor-pointer"
+          @click="$emit('export')"
+        >
+          <div class="flex items-center gap-2">
+            <UIcon
+              name="i-lucide-download"
+            />
+            {{ t('export') }}
+          </div>
+        </UButton>
+        <UDropdownMenu
+          :items="table?.tableApi
+            ?.getAllColumns()
+            .filter((column) => ['duration', 'status', 'tags'].includes(column.id))
+            .map((column) => ({
+              label: upperFirst(column.id),
+              type: 'checkbox' as const,
+              checked: column.getIsVisible(),
+              onUpdateChecked(checked: boolean) {
+                table?.tableApi?.getColumn(column.id)?.toggleVisibility(!!checked)
+              },
+              onSelect(e?: Event) {
+                e?.preventDefault()
+              }
+            }))"
+          :content="{ align: 'end' }"
+        >
+          <UButton
+            label="Columns"
+            color="neutral"
+            variant="outline"
+            trailing-icon="i-lucide-chevron-down"
+          />
+        </UDropdownMenu>
+      </div>
     </div>
     <UTable 
       ref="table"
@@ -106,8 +123,14 @@ const props = defineProps({
   isLoadingTable: {
     type: Boolean,
     default: false
+  },
+  exportButton: {
+    type: Boolean,
+    default: false
   }
 })
+
+defineEmits(['export'])
 
 const { isLoading, currentPlayingId, togglePlayAudio, selectedCall } = useCalls()
 

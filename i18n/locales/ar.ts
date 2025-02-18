@@ -19,6 +19,7 @@ export default {
   security: 'الأمان',
   widget: 'الأداة',
   copied: 'تم النسخ',
+  export: 'تصدير',
 
   // Descriptions
   'manage-calls': 'إدارة المكالمات والاجتماعات',

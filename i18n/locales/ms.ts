@@ -13,6 +13,7 @@ export default {
   profile: 'Profil',
   support: 'Sokongan',
   'sign-out': 'Log Keluar',
+  export: 'Eksport',
 
   // Descriptions
   'manage-calls': 'Urus panggilan dan mesyuarat',
