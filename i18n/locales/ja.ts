@@ -18,6 +18,7 @@ export default {
   security: 'セキュリティ',
   widget: 'ウィジェット',
   copied: 'コピーしました',
+  export: 'エクスポート',
 
   // Descriptions
   'manage-calls': '通話と会議の管理',

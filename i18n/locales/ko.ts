@@ -19,6 +19,7 @@ export default {
     security: '보안',
     widget: '위젯',
     copied: '복사됨',
+    export: '내보내기',
 
     // Descriptions
     'manage-calls': '통화 및 회의 관리',

@@ -21,7 +21,8 @@ export default {
   copied: '已複製',
   demos: '示範',
   'voice-translation': '語音翻譯',
-  'multilingual-voice-translation': '多語言語音翻譯',
+  'multilingual-voice-translation': '多語言語音翻譯', 
+  export: '匯出',
 
   // Descriptions
   'manage-calls': '管理通話和會議',
