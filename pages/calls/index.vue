@@ -83,6 +83,9 @@ const filteredCalls = computed(() => {
   const start = dateRange.value.start.toDate(getLocalTimeZone())
   const end = dateRange.value.end.toDate(getLocalTimeZone())
   
+  start.setHours(0, 0, 0, 0)
+  end.setHours(23, 59, 59, 999)
+
   return calls.value.filter(call => {
     const callDate = new Date(call.startedAt)
     return (
