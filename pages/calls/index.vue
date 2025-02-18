@@ -26,7 +26,11 @@
 
       <USelect v-model="callStatus" :items="[
         { label: t('queued'), value: 'queued' },
-        { label: t('ended'), value: 'ended' }
+        { label: t('ringing'), value: 'ringing' },
+        { label: t('in-progress'), value: 'in-progress' },
+        { label: t('forwarding'), value: 'forwarding' },
+        { label: t('ended'), value: 'ended' },
+        { label: t('all'), value: 'all' }
       ]" />
     </div>
 
@@ -67,7 +71,7 @@ const dateRange = shallowRef({
   )
 })
 
-const callStatus = ref('ended')
+const callStatus = ref('all')
 
 const { calls, stopCurrentAudio, fetchCalls } = useCalls()
 const { transformRecordingUrl } = useRecordingUrl()
@@ -84,7 +88,7 @@ const filteredCalls = computed(() => {
     return (
       callDate >= start &&
       callDate <= end &&
-      call.status === callStatus.value
+      (callStatus.value === 'all' || call.status === callStatus.value)
     )
   })
 })

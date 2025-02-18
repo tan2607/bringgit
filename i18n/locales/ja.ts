@@ -82,7 +82,11 @@ export default {
   tags: 'タグ',
   recording: '録音',
   queued: 'キュー中',
+  ringing: '呼び出し中',
+  'in-progress': '通話中',
+  forwarding: '転送中',
   ended: '終了',
+  all: 'すべて',
 
   // Scheduling
   'call-scheduling': '通話スケジュール',
@@ -145,8 +149,8 @@ export default {
   // Assistant List
   'assistant-list': 'AIアシスタント一覧',
   'first-message': '最初のメッセージ',
-  'model': 'モデル',
-  'voice': '音声',
+  model: 'モデル',
+  voice: '音声',
   'created-at': '作成日時',
   'view-assistants': '助手を表示',
 

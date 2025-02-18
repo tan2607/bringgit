@@ -122,7 +122,11 @@ export default {
   'play-recording': 'Phát Bản ghi âm',
   'pause-recording': 'Tạm dừng Bản ghi âm',
   queued: 'Đang chờ',
+  ringing: 'Đang đổ chuông',
+  'in-progress': 'Đang diễn ra',
+  forwarding: 'Đang chuyển tiếp',
   ended: 'Đã kết thúc',
+  all: 'Tất cả',
 
   // Assistant List
   'assistant-list': 'Trợ lý AI',

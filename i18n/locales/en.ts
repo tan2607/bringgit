@@ -182,7 +182,11 @@ export default {
   tags: 'Tags',
   'download-recording': 'Download Recording',
   queued: 'Queued',
+  ringing: 'Ringing',
+  'in-progress': 'In Progress',
+  forwarding: 'Forwarding',
   ended: 'Ended',
+  all: 'All',
 
   // Assistant List
   'assistant-list': 'AI Assistants',
