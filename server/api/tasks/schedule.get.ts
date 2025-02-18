@@ -1,3 +1,4 @@
+import { gte, lt } from 'drizzle-orm';
 import { jobQueue } from "~/server/database/schema";
 import { CallQueueHandler } from "~/server/utils/queue";
 
@@ -5,9 +6,15 @@ export default defineEventHandler(async (event) => {
 	try {
 		console.log("[Schedule] Job queues scheduled");
 		const db = useDrizzle();
+		const today = new Date();
+		today.setHours(0, 0, 0, 0); // Set to start of the day
+
 		const jobQueues = await db.query.jobQueue.findMany({
-			limit: 10,
-			where: and(eq(jobQueue.status, "pending")),
+			where: and(
+				eq(jobQueue.status, "pending"),
+				gte(jobQueue.scheduledAt, today.toISOString()),
+				lt(jobQueue.scheduledAt, new Date(today.getTime() + 24 * 60 * 60 * 1000).toISOString()) // Less than start of next day
+			),
 			orderBy: [desc(jobQueue.createdAt)],
 		});
 	

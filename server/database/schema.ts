@@ -65,6 +65,7 @@ export const jobs = sqliteTable('jobs', {
   phoneNumberId: text('phone_number_id'),
   lastProcessedAt: text('last_processed_at'),
   notes: text('notes'),
+  selectedTimeWindow: text('selected_time_window'),
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(strftime('%s', 'now'))`),
   updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().default(sql`(strftime('%s', 'now'))`)
 })
@@ -82,6 +83,7 @@ export const jobQueue = sqliteTable('job_queue', {
   status: text('status', { enum: ['pending', 'running', 'completed', 'failed'] }).notNull().default('pending'),
   delay: integer('delay'),
   scheduledAt: text('scheduled_at'),
+  selectedTimeWindow: text('selected_time_window'),
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(strftime('%s', 'now'))`),
   updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().default(sql`(strftime('%s', 'now'))`)
 })

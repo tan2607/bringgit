@@ -205,20 +205,38 @@ async function handleCreateJob() {
   
   state.isSubmitting = true
   try {
-    let currentHour = new Date().getHours()
-    let currentMinute = new Date().getMinutes()
+    
+    const { year, month, day } = selectedDate.value;
+    const selectedDateObj = new Date(year, month - 1, day);
+    const currentDateObj = new Date();
 
-    if(currentHour < selectedTimeWindow.value.start || currentHour > selectedTimeWindow.value.end) {
+    let currentHour = currentDateObj.getHours();
+    let currentMinute = currentDateObj.getMinutes();
+
+    let selectedDay = day;
+    let selectedMonth = month;
+    let selectedYear = year;
+
+    
+    if (currentHour < selectedTimeWindow.value.start) {
       currentHour = selectedTimeWindow.value.start;
+    } else if (currentHour > selectedTimeWindow.value.end) {
+      currentHour = selectedTimeWindow.value.start;
+      if (currentDateObj.toLocaleDateString() === selectedDateObj.toLocaleDateString()) {
+        selectedDay += 1;
+      }
     }
+
+
     await createJob({
       name: state.jobName,
       assistantId: state.selectedAssistant,
       phoneNumbers: scheduledCalls.value.map((call: any) => call.phone),
       names: scheduledCalls.value.map((call: any) => call.name),
-      schedule: new Date(selectedDate.value.year, selectedDate.value.month - 1, selectedDate.value.day, currentHour, currentMinute, 0, 0),
+      schedule: new Date(selectedYear, selectedMonth - 1, selectedDay, currentHour, currentMinute, 0, 0),
       totalCalls: scheduledCalls.value.length,
-      phoneNumberId: state.selectedNumber
+      phoneNumberId: state.selectedNumber,
+      selectedTimeWindow: selectedTimeWindow.value
     })
     slideover.close()
     toast.add({
@@ -244,8 +262,6 @@ function handleFileUpload(event: Event) {
     state.contacts = file
   }
 }
-
-
 
 const isPaused = ref(false)
 const numberOfCalls = ref<number>(10)
@@ -402,7 +418,8 @@ const workingHours = computed(() => ({
 const timeWindowOptions = [
   { label: '9 AM - 5 PM', value: { start: 9, end: 17 } },
   { label: '8 AM - 4 PM', value: { start: 8, end: 16 } },
-  { label: '10 AM - 6 PM', value: { start: 10, end: 18 } }
+  { label: '10 AM - 6 PM', value: { start: 10, end: 18 } },
+  { label: "Anytime", value: { start: 0, end: 24 } }
 ]
 
 const selectedTimeWindow = ref(timeWindowOptions[0].value)
@@ -454,8 +471,6 @@ function formatTime(date: Date | number) {
     hour12: true
   }).format(new Date(date))
 }
-
-
 
 const getSelectedAssistantName = computed(() => {
   const assistant = assistants.value.find(a => a.id === state.selectedAssistant)
