@@ -65,16 +65,11 @@
           <UIcon :name="getJobIcon(row.status)" class="flex-shrink-0" />
           <div>
             <div class="font-medium">{{ row.name }}</div>
-            <div class="text-sm text-gray-500">{{ formatDate(row.schedule) }}</div>
+            <div class="text-sm text-gray-500">{{ formatDate(new Date(row.schedule)) }}</div>
           </div>
         </div>
       </template>
 
-      <template #schedule-data="{ row }">
-        <div>
-          {{ formatDate(row.schedule) }}
-        </div>
-      </template>
       <!-- Progress Column -->
       <template #progress-data="{ row }">
         <div class="w-full">
@@ -197,37 +192,81 @@ const savedViews = [
 
 
 // Table configuration
-const columns = [
-  { accessorKey: 'name', header: 'Job Name', sortable: true },
-  { accessorKey: 'assistantName', header: 'Assistant Name', sortable: true },
-  { accessorKey: 'phoneNumberLabel', header: 'Outbound Number', sortable: true },
-  { accessorKey: 'schedule', header: 'Scheduled Date', sortable: true },
-  { accessorKey: 'totalCalls', header: 'Users Count', sortable: true },
-  { accessorKey: 'progress', header: 'Progress', sortable: true },
-  { accessorKey: 'status', header: 'Status', sortable: true },
-  { id: 'actions',  cell: ({ row }) => {
-      return h(
-        'div',
-        { class: 'text-right' },
-        h(
-          UDropdownMenu,
-          {
-            content: {
-              align: 'end'
-            },
-            items: getJobActions(row)
-          },
-          () =>
-            h(UButton, {
-              icon: 'i-lucide-ellipsis-vertical',
-              color: 'neutral',
-              variant: 'ghost',
-              class: 'ml-auto'
-            })
+const columns = computed(() => {
+  const baseColumns = [
+    { accessorKey: 'name', header: 'Job Name', sortable: true },
+    {
+      accessorKey: 'assistantName',
+      header: 'Assistant Name',
+      sortable: true,
+      cell: ((row: any) => row.getValue('assistantName'))
+    },
+    {
+      accessorKey: 'phoneNumberLabel',
+      header: 'Outbound Number',
+      sortable: true,
+      cell: ((row: any) => row.getValue('phoneNumberLabel'))
+    },
+    {
+      accessorKey: 'schedule',
+      header: 'Scheduled Date',
+      sortable: true,
+      cell: ((row: any) => formatDate(new Date(row.getValue('schedule'))))
+    },
+    { accessorKey: 'totalCalls', header: 'Users Count', sortable: true },
+    { 
+      accessorKey: 'progress', 
+      header: 'Progress', 
+      sortable: true,
+      cell: (row: any) => {
+        return h(
+          UProgress, 
+          { value: row.getValue('progress'), color: getProgressColor(row), indicator: true }, 
+          () => row.getValue('progress') + '%'
         )
-      )
-    } }
-]
+      }
+    },
+    { 
+      accessorKey: 'status', 
+      header: 'Status', 
+      sortable: true,
+      cell: (row: any) => {
+        return h(
+          UBadge, 
+          { class: 'capitalize', variant: 'subtle', color: getStatusColor(row.getValue('status')) }, 
+          () => row.getValue('status')
+        )
+      }
+    },
+    {
+      id: 'actions', 
+      cell: (row: any) => {
+        return h(
+          'div',
+          { class: 'text-right' },
+          h(
+            UDropdownMenu,
+            {
+              content: {
+                align: 'end'
+              },
+              items: getJobActions(row)
+            },
+            () =>
+              h(UButton, {
+                icon: 'i-lucide-ellipsis-vertical',
+                color: 'neutral',
+                variant: 'ghost',
+                class: 'ml-auto'
+              })
+          )
+        )
+      }
+    }
+  ]
+
+  return baseColumns
+})
 
 const statusOptions = [
   { label: 'All', value: 'all' },
