@@ -222,7 +222,10 @@ const columns = computed(() => {
       accessorKey: "assistant",
       header: () => t('table.assistant'),
       enableColumnFilter: true,
-      filterFn: 'includesString',
+      filterFn: (row, columnId, filterValue) => {
+        const value = row.getValue(columnId) || ''
+        return value.toLowerCase().includes(filterValue.toLowerCase())
+      },
       cell: (row) => row.getValue("assistant")
     },
     {
@@ -386,7 +389,10 @@ const quickViewColumns = computed(() => {
       accessorKey: "assistant",
       header: () => t('table.assistant'),
       enableColumnFilter: true,
-      filterFn: 'includesString',
+      filterFn: (row, columnId, filterValue) => {
+        const value = row.getValue(columnId) || ''
+        return value.toLowerCase().includes(filterValue.toLowerCase())
+      },
       cell: (row) => {
         const assistant = row.getValue('assistant')
         if(!assistant) {
