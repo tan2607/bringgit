@@ -100,6 +100,7 @@
       </template>
     </UTable>
     <CallSlideover
+      :assistant="selectedAssistant"
       @success="(message) => toast.add({ title: 'Success', description: message, color: 'success', icon: 'i-lucide-check-circle' })"
       @error="(message) => toast.add({ title: 'Error', description: message, color: 'error', icon: 'i-lucide-alert-circle' })" />
   </div>
@@ -113,6 +114,7 @@ import CallSlideover from '@/components/CallSlideover.vue'
 import { upperFirst } from 'scule'
 import { useI18n } from 'vue-i18n'
 import { useRecordingUrl } from '@/composables/useRecordingUrl'
+import type { Assistant } from '~/types/assistant'
 
 const UButton = resolveComponent('UButton')
 const UBadge = resolveComponent('UBadge')
@@ -121,6 +123,7 @@ const USelectMenu = resolveComponent('USelectMenu')
 const UInput = resolveComponent('UInput')
 const toast = useToast();
 const slideover = useSlideover()
+const selectedAssistant = ref<Assistant | undefined>()
 
 interface TableData {
   id: string
@@ -228,9 +231,12 @@ const columns = computed(() => {
       cell: (row) => row.getValue("customer")?.number
     },
     {
-      accessorKey: "assistantOverrides.variableValues.name",
+      accessorKey: "assistantOverrides",
       header: () => 'Name',
-      cell: (row) => row.getValue("assistantOverrides.variableValues.name")
+      cell: (row) => {
+        const overrides = row.getValue("assistantOverrides")
+        return overrides?.variableValues?.name
+      }
     },
     {
       accessorKey: 'startedAt',
