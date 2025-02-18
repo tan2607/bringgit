@@ -13,6 +13,7 @@ export interface Job {
   assistantId: string
   phoneNumberId: string
   lastProcessedAt?: Date
+  selectedTimeWindow: string
   notes?: string
 }
 
@@ -80,7 +81,8 @@ export const useJobState = () => {
           names: job.names,
           assistantId: job.assistantId,
           phoneNumberId: job.phoneNumberId,
-          scheduledAt: job.schedule
+          scheduledAt: job.schedule,
+          selectedTimeWindow: job.selectedTimeWindow
         }
       })
 

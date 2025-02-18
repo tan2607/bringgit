@@ -2,7 +2,7 @@ import { jobs } from '~/server/database/schema'
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
-  const { id, name, schedule, phoneNumbers, names, assistantId, phoneNumberId, totalCalls } = body
+  const { id, name, schedule, phoneNumbers, names, assistantId, phoneNumberId, totalCalls, selectedTimeWindow } = body
 
   try {
     const db = useDrizzle();
@@ -17,7 +17,8 @@ export default defineEventHandler(async (event) => {
       status: 'pending',
       progress: 0,
       completedCalls: 0,
-      totalCalls
+      totalCalls,
+      selectedTimeWindow: JSON.stringify(selectedTimeWindow)
     })
 
     return {

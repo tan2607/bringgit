@@ -19,6 +19,7 @@ export interface CallMessage {
   delay: number
   scheduledAt: string
   vapiId: string
+  selectedTimeWindow: { start: string, end: string }
 }
 
 export class CallQueueHandler {
@@ -72,14 +73,26 @@ export class CallQueueHandler {
       })
       return false
     }
-    // Check if current time is valid for scheduling
-    const validation = this.scheduler.validateSchedule(new Date())
+
+    const scheduler = new Scheduler({
+      businessHours: {
+        daysOfWeek: [1, 2, 3, 4, 5],
+        startTime: message.selectedTimeWindow.start,
+        endTime: message.selectedTimeWindow.end,
+        timezone: 'Asia/Singapore'
+      },
+      blackoutPeriods: [],
+      priorityWindows: [],
+      defaultPriority: 3
+    })
+
+    const validation = scheduler.validateSchedule(new Date())
     if (!validation.isValid) {
-      // Schedule for next available time
-      const nextTime = this.scheduler.getNextAvailableTime()
-      const delay = nextTime.getTime() - Date.now()
-      
-      await this.sendToQueue(message, { delay: Math.max(0, delay / 1000) })
+      const nextTime = scheduler.getNextAvailableTime()
+      console.log(validation.reason);
+      console.log("Scheduling for next available time", nextTime)
+      message.scheduledAt = new Date(nextTime).toISOString();
+      await this.sendToQueue(message)
       return true
     }
 
@@ -123,22 +136,27 @@ export class CallQueueHandler {
   async processMessage(message: QueueMessage<CallMessage>) {
     const { jobId, phoneNumber, assistantId, phoneNumberId, retryCount = 0, id: queueId, delay, scheduledAt, name } = message;
     const db = useDrizzle();
-    // Check if we should process this message now
-    if(scheduledAt) {
-      const scheduledAtDate = new Date(scheduledAt);
-      if(scheduledAtDate.getTime() > Date.now()) {
-        return;
-      }
+    const selectedTimeWindow = JSON.parse(message.selectedTimeWindow);
+
+    const scheduler = new Scheduler({
+      businessHours: {
+        daysOfWeek: [1, 2, 3, 4, 5],
+        startTime: selectedTimeWindow.start,
+        endTime: selectedTimeWindow.end,
+        timezone: 'Asia/Singapore'
+      },
+      blackoutPeriods: [],
+      priorityWindows: [],
+      defaultPriority: 3
+    })
+
+    const validation = scheduler.validateSchedule(new Date())
+    if (!validation.isValid) {
+      const nextTime = scheduler.getNextAvailableTime()
+      message.scheduledAt = new Date(nextTime).toISOString();
+      await this.sendToQueue(message)
+      return
     }
-    // const validation = this.scheduler.validateSchedule(new Date())
-    // if (!validation.isValid) {
-    //   // Requeue for next available time
-    //   const nextTime = this.scheduler.getNextAvailableTime()
-    //   const delay = nextTime.getTime() - Date.now()
-    //   await this.sendToQueue(message, { delay: Math.max(0, delay / 1000) })
-    //   // await message.ack()
-    //   return
-    // }
 
     // Try to acquire a slot for this job
     if (!await this.rateLimiter.acquireJobSlot(jobId)) {
@@ -277,7 +295,6 @@ export class CallQueueHandler {
 
   private async sendToQueue(message: CallMessage, options?: { delay?: number }) {
     // Update the queue item if it already exists
-    console.log('Sending to queue', message)
     if(message.id) {
       message.status = "pending";
       message.delay = options?.delay || 0;
@@ -299,7 +316,8 @@ export class CallQueueHandler {
       delay: options?.delay || 0,
       status: "pending",
       scheduledAt: message.scheduledAt,
-      vapiId: null
+      vapiId: null,
+      selectedTimeWindow: JSON.stringify(message.selectedTimeWindow)
     })
   }
 
@@ -309,7 +327,8 @@ export class CallQueueHandler {
     await db.update(jobQueue).set({
       status: message.status as "pending" | "completed" | "failed" | "running" | undefined || "pending",
       delay: message.delay || 0,
-      vapiId: message.vapiId || null
+      vapiId: message.vapiId || null,
+      scheduledAt: message.scheduledAt || null
     }).where(eq(jobQueue.id, message.id as string))
   }
 }
