@@ -210,6 +210,7 @@ export class CallQueueHandler {
       console.log(`Successfully initiated call ${call.id} for job ${jobId}`)
 
       await this.updateQueue({
+        ...message,
         id: queueId,
         status: "completed",
         vapiId: call.id
