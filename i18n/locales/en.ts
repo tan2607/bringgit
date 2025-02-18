@@ -18,6 +18,7 @@ export default {
   security: 'Security',
   widget: 'Widget',
   copied: 'Copied',
+  export: 'Export',
 
   // Descriptions
   'manage-calls': 'Manage calls and meetings',

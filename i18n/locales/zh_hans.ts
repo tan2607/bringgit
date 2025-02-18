@@ -18,6 +18,7 @@ export default {
   security: '安全',
   widget: '小部件',
   copied: '已复制',
+  export: '导出',
   success: '成功',
   'patient-intake.form-submitted': '患者登记表提交成功',
   'sign-out': '登出',

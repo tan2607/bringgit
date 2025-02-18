@@ -19,6 +19,7 @@ export default {
   security: 'ความปลอดภัย',
   widget: 'วิดเจ็ต',
   copied: 'คัดลอกแล้ว',
+  export: 'ส่งออก',
 
   // Descriptions
   'manage-calls': 'จัดการการโทรและการประชุม',

@@ -30,16 +30,19 @@
       ]" />
     </div>
 
-    <CallTable :data="filteredCalls" />
+    <CallTable :data="filteredCalls" :export-button="true" @export="exportToExcelFile" />
   </UContainer>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { CalendarDate, DateFormatter, getLocalTimeZone } from '@internationalized/date'
+import { utils, writeFile } from 'xlsx'
 definePageMeta({ middleware: "auth" })
 import { useCalls } from '@/composables/useCalls'
 import CallTable from '@/components/CallTable.vue'
+import { useRecordingUrl } from '@/composables/useRecordingUrl'
+import { useExcel } from '@/composables/useExcel'
 
 const { t } = useI18n()
 
@@ -67,6 +70,8 @@ const dateRange = shallowRef({
 const callStatus = ref('ended')
 
 const { calls, stopCurrentAudio, fetchCalls } = useCalls()
+const { transformRecordingUrl } = useRecordingUrl()
+const { exportToExcel } = useExcel()
 
 const filteredCalls = computed(() => {
   if (!dateRange.value.start || !dateRange.value.end) return calls.value
@@ -83,6 +88,41 @@ const filteredCalls = computed(() => {
     )
   })
 })
+
+const exportToExcelFile = () => {
+  // Generate filename with date range
+  const startDate = dateRange.value.start.toDate(getLocalTimeZone()).toLocaleDateString()
+  const endDate = dateRange.value.end.toDate(getLocalTimeZone()).toLocaleDateString()
+  const filename = `calls_${startDate}_to_${endDate}.xlsx`
+
+  exportToExcel(filteredCalls.value, {
+    filename,
+    sheetName: 'Calls',
+    transformData: (call) => {
+      const startTime = new Date(call.startedAt)
+      const formattedStartTime = startTime.toLocaleString('en-US', {
+        year: 'numeric',
+        day: 'numeric',
+        month: 'short',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      })
+
+      return {
+        'ID': call.id || '',
+        'Assistant': call.assistant || '',
+        'Phone Number': call.customer?.number || '',
+        'Name': call.assistantOverrides?.variableValues?.name || '',
+        'Call Received': formattedStartTime,
+        'Recording URL': call.recordingUrl ? transformRecordingUrl(call.recordingUrl) : '',
+        'Duration': call.duration || '',
+        'Status': call.status || '',
+        'Tags': call.tags?.join(', ') || ''
+      }
+    }
+  })
+}
 
 watch(dateRange, async (newRange) => {
   if (!newRange.start || !newRange.end) return
