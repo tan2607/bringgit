@@ -24,14 +24,18 @@
         </template>
       </UPopover>
 
-      <USelect v-model="callStatus" :items="[
+      <USelect 
+        v-model="callStatus" 
+        class="w-20"
+        :items="[
         { label: t('queued'), value: 'queued' },
         { label: t('ringing'), value: 'ringing' },
         { label: t('in-progress'), value: 'in-progress' },
         { label: t('forwarding'), value: 'forwarding' },
         { label: t('ended'), value: 'ended' },
         { label: t('all'), value: 'all' }
-      ]" />
+        ]" 
+      />
     </div>
 
     <CallTable :data="filteredCalls" :export-button="true" @export="exportToExcelFile" />
