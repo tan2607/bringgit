@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig()
     const body = await readBody(event)
     const db = useDrizzle();
-    const { jobId, phoneNumbers, names, assistantId, phoneNumberId, scheduledAt } = body
+    const { jobId, phoneNumbers, names, assistantId, phoneNumberId, scheduledAt, selectedTimeWindow } = body
 
     if (!jobId || !phoneNumbers || !assistantId || !phoneNumberId) {
       throw new Error('Missing required fields')
@@ -25,7 +25,8 @@ export default defineEventHandler(async (event) => {
       assistantId,
       phoneNumberId,
       retryCount: 0,
-      scheduledAt
+      scheduledAt,
+      selectedTimeWindow
     }))
 
     // Enqueue all messages

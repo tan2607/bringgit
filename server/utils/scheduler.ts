@@ -42,28 +42,35 @@ export class Scheduler {
     })
   }
 
-  isBusinessHours(date: Date = new Date()): boolean {
-    // Convert to target timezone
+  isBusinessHours(date: Date): boolean {
+
     const targetDate = new Date(date.toLocaleString('en-US', {
       timeZone: this.config.businessHours.timezone
     }))
-    
+
     const dayOfWeek = targetDate.getDay()
+
     if (!this.config.businessHours.daysOfWeek.includes(dayOfWeek)) {
       return false
     }
 
-    const timeStr = this.formatTimeString(targetDate)
+    const targetDateHour = targetDate.getHours()
     const { startTime, endTime } = this.config.businessHours
+
+    console.log({targetDateHour, startTime, endTime});
     
-    return timeStr >= startTime && timeStr <= endTime
+    return targetDateHour >= parseInt(startTime) && targetDateHour <= parseInt(endTime)
   }
 
-  isBlackoutPeriod(date: Date = new Date()): BlackoutPeriod | null {
+  isBlackoutPeriod(date: Date): BlackoutPeriod | null {
     const targetDate = new Date(date.toLocaleString('en-US', {
       timeZone: this.config.businessHours.timezone
     }))
-    
+
+    if (this.config.blackoutPeriods.length === 0) {
+      return null
+    }
+
     for (const period of this.config.blackoutPeriods) {
       if (targetDate >= period.start && targetDate <= period.end) {
         return period
