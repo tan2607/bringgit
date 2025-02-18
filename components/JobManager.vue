@@ -58,8 +58,35 @@
     <!-- Jobs Table -->
     <UTable :data="filteredJobs" :columns="columns" :sort="sort" @update:sort="sort = $event"
       v-model:selected="jobState.selectedJobs" :loading="isLoading"
-      :empty-jobState="{ icon: 'i-heroicons-clipboard', label: 'No jobs found' }" @select="selectJob" selectable>
-      
+      :empty-jobState="{ icon: 'i-heroicons-clipboard', label: 'No jobs found' }" selectable>
+      <!-- Name Column -->
+      <template #name-data="{ row }">
+        <div class="flex items-center gap-2">
+          <UIcon :name="getJobIcon(row.status)" class="flex-shrink-0" />
+          <div>
+            <div class="font-medium">{{ row.name }}</div>
+            <div class="text-sm text-gray-500">{{ formatDate(row.schedule) }}</div>
+          </div>
+        </div>
+      </template>
+
+      <!-- Progress Column -->
+      <template #progress-data="{ row }">
+        <div class="w-full">
+          <UProgress :value="row.progress" :color="getProgressColor(row)" class="w-32" size="sm" />
+          <div class="text-xs text-gray-500 mt-1">
+            {{ row.completedCalls }}/{{ row.totalCalls }} calls
+          </div>
+        </div>
+      </template>
+
+      <!-- Status Column -->
+      <template #status-data="{ row }">
+        <UBadge :color="getStatusColor(row.status)" size="sm" variant="soft">
+          {{ row.status }}
+        </UBadge>
+      </template>
+
       <!-- Actions Column -->
       <template #actions-data="{ row }">
         <div class="flex gap-2">
@@ -102,7 +129,6 @@ import JobDetailsSlideover from './JobDetailsSlideover.vue'
 const UButton = resolveComponent('UButton')
 const UBadge = resolveComponent('UBadge')
 const UDropdownMenu = resolveComponent('UDropdownMenu')
-const UProgress = resolveComponent('UProgress')
 // Form validation schema
 const jobFormSchema = z.object({
   name: z.string().min(1, 'Job name is required'),
@@ -168,52 +194,48 @@ const columns = computed(() => {
   const baseColumns = [
     { accessorKey: 'name', header: 'Job Name', sortable: true },
     {
-      accessorKey: 'assistantName',
+      accessorKey: 'assistantId',
       header: 'Assistant Name',
-      sortable: true,
-      cell: ((row: any) =>{
+      cell: (row: any) => {
         const assistantId = row.getValue('assistantId');
         const assistant = assistants.value.find(a => a.id === assistantId);
         const assistantName = assistant ? assistant.name : 'N/A';
 
         return assistantName;
-      })
+      }
     },
     {
-      accessorKey: 'phoneNumberLabel',
+      accessorKey: 'phoneNumberId',
       header: 'Outbound Number',
-      sortable: true,
-      cell: ((row: any) => {
+      cell: (row: any) => {
         const phoneNumberId = row.getValue('phoneNumberId');
         const phoneNumber = numbers.value.find(n => n.id === phoneNumberId);
         const phoneNumberLabel = phoneNumber ? `${phoneNumber.number} (${phoneNumber.name})` : 'N/A';
 
         return phoneNumberLabel;
-      })
+      }
     },
     {
       accessorKey: 'schedule',
       header: 'Scheduled Date',
-      sortable: true,
-      cell: ((row: any) => formatDate(new Date(row.getValue('schedule'))))
+      cell: (row: any) => formatDate(new Date(row.getValue('schedule')))
     },
-    { accessorKey: 'totalCalls', header: 'Users Count', sortable: true },
+    { 
+      accessorKey: 'phoneNumbers', 
+      header: 'Users Count', 
+      cell: (row: any) => {
+        const list = JSON.parse(row.getValue('phoneNumbers'))
+        return list.length
+      }
+    },
     {
       accessorKey: 'progress',
       header: 'Progress',
-      sortable: true,
-      cell: (row: any) => {
-        return h(
-          UProgress,
-          { value: row.getValue('progress'), color: getProgressColor(row), indicator: true },
-          () => row.getValue('progress') + '%'
-        )
-      }
+      cell: (row: any) => `${row.getValue('progress')}%`
     },
     {
       accessorKey: 'status',
       header: 'Status',
-      sortable: true,
       cell: (row: any) => {
         return h(
           UBadge,
@@ -297,11 +319,12 @@ const getJobIcon = (status: string) => {
 
 const getStatusColor = (status: string) => {
   switch (status) {
+    case 'pending': return 'info'
     case 'running': return 'success'
     case 'paused': return 'warning'
     case 'completed': return 'success'
     case 'failed': return 'error'
-    default: return 'gray'
+    default: return 'neutral'
   }
 }
 
@@ -396,9 +419,9 @@ const handleJobAction = async (action: string, job: Job) => {
       // Implement delete
       const targetJob = filteredJobs.value[job.id]
       const confirming = await confirm(`Are you sure you want to delete this job? ${targetJob.name}`)
-      if (confirming) {
+      if(confirming) {
         const response = await deleteJob(targetJob.id)
-        if (response) {
+        if(response) {
           toast.add({
             title: 'Job deleted',
             description: 'Job deleted successfully',
@@ -421,7 +444,7 @@ const handleJobSubmit = async (jobData: Job) => {
   try {
     if (editingJob.value) {
       console.log(jobData);
-
+      
       // Implement edit
     } else {
       await createJob(jobData)
@@ -466,13 +489,9 @@ const loadView = (view: any) => {
   }
 }
 
+
 function getJobPhoneNumbers(job: Job) {
   return JSON.parse(job.phoneNumbers)
-}
-
-function selectJob(job: Job) {
-  quickViewJob.value = filteredJobs.value[job.id]
-  showQuickView.value = true
 }
 
 onMounted(async () => {
