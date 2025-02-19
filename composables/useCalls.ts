@@ -13,7 +13,7 @@ export const useCalls = () => {
       if (endDate) queryParams.append('endDate', endDate)
       
       const { data } = await useFetch(`/api/calls?${queryParams.toString()}`)
-      calls.value = data?.value?.filter(call => call.startedAt)
+      calls.value = data?.value
     } finally {
       isLoading.value = false
     }

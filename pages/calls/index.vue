@@ -82,21 +82,8 @@ const { transformRecordingUrl } = useRecordingUrl()
 const { exportToExcel } = useExcel()
 
 const filteredCalls = computed(() => {
-  if (!dateRange.value.start || !dateRange.value.end) return calls.value
-  
-  const start = dateRange.value.start.toDate(getLocalTimeZone())
-  const end = dateRange.value.end.toDate(getLocalTimeZone())
-  
-  start.setHours(0, 0, 0, 0)
-  end.setHours(23, 59, 59, 999)
-
   return calls.value.filter(call => {
-    const callDate = new Date(call.startedAt)
-    return (
-      callDate >= start &&
-      callDate <= end &&
-      (callStatus.value === 'all' || call.status === callStatus.value)
-    )
+    return callStatus.value === 'all' || call.status === callStatus.value
   })
 })
 
@@ -110,15 +97,15 @@ const exportToExcelFile = () => {
     filename,
     sheetName: 'Calls',
     transformData: (call) => {
-      const startTime = new Date(call.startedAt)
-      const formattedStartTime = startTime.toLocaleString('en-US', {
+      const startTime = call.startedAt ? new Date(call.startedAt) : undefined
+      const formattedStartTime = startTime ? startTime.toLocaleString('en-US', {
         year: 'numeric',
         day: 'numeric',
         month: 'short',
         hour: '2-digit',
         minute: '2-digit',
         hour12: false
-      })
+      }) : ''
 
       return {
         'ID': call.id || '',
@@ -129,6 +116,9 @@ const exportToExcelFile = () => {
         'Recording URL': call.recordingUrl ? transformRecordingUrl(call.recordingUrl) : '',
         'Duration': call.duration || '',
         'Status': call.status || '',
+        'Ended Reason': call.endedReason?.split('-')
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ') || '',
         'Tags': call.tags?.join(', ') || ''
       }
     }

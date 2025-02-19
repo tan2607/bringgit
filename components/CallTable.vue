@@ -246,6 +246,8 @@ const columns = computed(() => {
       header: () => t('table.callReceived'),
       sortable: true,
       cell: (row) => {
+        if (!row.getValue('startedAt')) return '';
+        
         const time = new Date(row.getValue('startedAt'));
         const timeAgo = formatTimeAgo(time)
         return time.toLocaleString('en-US', {
@@ -337,6 +339,27 @@ const columns = computed(() => {
     })
 
     baseColumns.push({
+      accessorKey: "endedReason",
+      header: () => "Ended Reason",
+      cell: (row) => {
+        const reason = row.getValue('endedReason')
+        if (!reason) return ''
+        
+        // Format the reason string
+        const formatted = reason
+          .split('-')
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ')
+        
+        return h(UBadge, { 
+          class: 'capitalize', 
+          variant: 'subtle',
+          color: 'warning'
+        }, () => formatted)
+      }
+    })
+
+    baseColumns.push({
       accessorKey: "tags",
       header: () => "Tags",
       cell: (row) => {
@@ -424,6 +447,26 @@ const quickViewColumns = computed(() => {
       }
   },
   {
+      accessorKey: "endedReason",
+      header: () => "Ended Reason",
+      cell: (row) => {
+        const reason = row.getValue('endedReason')
+        if (!reason) return ''
+        
+        // Format the reason string
+        const formatted = reason
+          .split('-')
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ')
+        
+        return h(UBadge, { 
+          class: 'capitalize', 
+          variant: 'subtle',
+          color: 'warning'
+        }, () => formatted)
+      }
+    },
+    {
       accessorKey: 'startedAt',
       header: () => t('table.callReceived'),
       sortable: true,
