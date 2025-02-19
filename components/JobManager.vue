@@ -57,8 +57,8 @@
 
     <!-- Jobs Table -->
     <UTable :data="filteredJobs" :columns="columns" :sort="sort" @update:sort="sort = $event"
-      v-model:selected="jobState.selectedJobs" :loading="isLoading"
-      :empty-jobState="{ icon: 'i-heroicons-clipboard', label: 'No jobs found' }" selectable>
+      v-model="selectedJobs" :loading="isLoading"
+      :empty-jobState="{ icon: 'i-heroicons-clipboard', label: 'No jobs found' }" @select="handleSelectJob">
       <!-- Name Column -->
       <template #name-data="{ row }">
         <div class="flex items-center gap-2">
@@ -171,6 +171,8 @@ const isSubmitting = ref(false)
 const editingJob = ref<Job | null>(null)
 const quickViewJob = ref<Job | null>(null)
 const sort = ref({ column: 'schedule', direction: 'desc' })
+const selectedJobs = ref<Job[]>([])
+const isLoading = ref<bool>(false)
 
 // Form jobState
 const jobForm = ref({
@@ -193,10 +195,59 @@ const savedViews = [
 
 // Table configuration
 const columns = [
-  { accessorKey: 'name', header: 'Name', sortable: true },
-  { accessorKey: 'progress', header: 'Progress', sortable: true },
-  { accessorKey: 'status', header: 'Status', sortable: true },
-  { id: 'actions',  cell: ({ row }) => {
+  { accessorKey: 'name', header: 'Job Name', sortable: true },
+  {
+    accessorKey: 'assistantId',
+    header: 'Assistant Name',
+    cell: ({ row }: { row:any }) => {
+      const assistantId = row.getValue('assistantId');
+      const assistant = assistants.value.find(a => a.id === assistantId);
+      const assistantName = assistant ? assistant.name : 'N/A';
+
+      return assistantName;
+    }
+  },
+  {
+    accessorKey: 'phoneNumberId',
+    header: 'Outbound Number',
+    cell: ({ row }: { row:any }) => {
+      const phoneNumberId = row.getValue('phoneNumberId');
+      const phoneNumber = numbers.value.find(n => n.id === phoneNumberId);
+      const phoneNumberLabel = phoneNumber ? `${phoneNumber.number} (${phoneNumber.name})` : 'N/A';
+
+      return phoneNumberLabel;
+    }
+  },
+  {
+    accessorKey: 'schedule',
+    header: 'Scheduled Date',
+    cell: ({ row }: { row:any }) => formatDate(new Date(row.getValue('schedule')))
+  },
+  { 
+    accessorKey: 'phoneNumbers', 
+    header: 'Users Count', 
+    cell: ({ row }: { row:any }) => {
+      const list = JSON.parse(row.getValue('phoneNumbers'))
+      return list.length
+    }
+  },
+  { 
+    accessorKey: 'progress', 
+    header: 'Progress', 
+    cell: ({ row }: { row:any }) => `${row.getValue('progress')}%` 
+  },
+  {
+    accessorKey: 'status',
+    header: 'Status',
+    cell: ({ row }: { row:any }) => {
+      return h(
+        UBadge,
+        { class: 'capitalize', variant: 'subtle', color: getStatusColor(row.getValue('status')) },
+        () => row.getValue('status')
+      )
+    }
+  },
+  { id: 'actions',  cell: ({ row }: { row:any }) => {
       return h(
         'div',
         { class: 'text-right' },
@@ -265,11 +316,12 @@ const getJobIcon = (status: string) => {
 
 const getStatusColor = (status: string) => {
   switch (status) {
+    case 'pending': return 'info'
     case 'running': return 'success'
     case 'paused': return 'warning'
     case 'completed': return 'success'
     case 'failed': return 'error'
-    default: return 'gray'
+    default: return 'neutral'
   }
 }
 
@@ -280,7 +332,10 @@ const getProgressColor = (job: Job) => {
 }
 
 const formatDate = (date: Date) => {
-  return DateTime.fromJSDate(date).toFormat('dd LLL yyyy HH:mm')
+  return new Intl.DateTimeFormat('en-US', {
+    dateStyle: 'medium',
+    timeStyle: 'short'
+  }).format(new Date(date))
 }
 
 const getPhoneNumberCount = () => {
@@ -396,6 +451,10 @@ const handleJobSubmit = async (jobData: Job) => {
   } finally {
     isSubmitting.value = false
   }
+}
+
+const handleSelectJob = (job : Job) => {
+  handleJobAction('view', job)
 }
 
 const bulkStart = async () => {
