@@ -75,12 +75,9 @@
 
 	const props = defineProps<{
 		modelValue: boolean;
-		job?: Job | null;
+		jobId: string;
 	}>();
 
-  const quickViewJob = defineModel<Job | null>('job', {
-    required: true
-  });
 
 	const emit = defineEmits<{
 		"update:modelValue": [value: boolean];
@@ -88,25 +85,10 @@
 
 	const { calls, fetchCalls } = useCalls()
 	const { assistants, fetchAssistants, getAssistantById } = useAssistants()
+	const { jobState } = useJobState()
 
 	const isLoadingTable = ref(false)
 
-	const job_queues = computed(() => {
-		return quickViewJob.value?.jobQueues
-	})
-
-	const jobQueueWithVapiDetails = computed(() => {
-		return job_queues.value?.map((job_queue) => {
-			const vapi_call = calls.value.find((call) => call.id === job_queue.vapiId);
-			const assistant = vapi_call?.assistant || getAssistantById(job_queue.assistantId)?.name || "N/A";
-
-			return {
-				...job_queue,
-				...vapi_call,
-				assistant
-			};
-		});
-	});
 
 	// Utility functions
 	const formatDate = (date: Date) => {
@@ -167,7 +149,31 @@
       icon: 'i-lucide-phone-off'
     }
   ]
-}
+	}
+
+	
+  const quickViewJob = computed(() => {
+    return jobState.value.jobs.find((job) => job.id === props.jobId)
+  })
+
+
+
+	const jobQueueWithVapiDetails = computed(() => {
+		return quickViewJob.value ? getJobQueueWithVapiDetails(quickViewJob.value) : [];
+	});
+
+	function getJobQueueWithVapiDetails(job: Job) {
+		return job.jobQueues?.map((job_queue: any) => {
+			const vapi_call = calls.value.find((call) => call.id === job_queue.vapiId);
+			const assistant = vapi_call?.assistant || getAssistantById(job_queue.assistantId)?.name || "N/A";
+
+			return {
+				...job_queue,
+				...vapi_call,
+				assistant
+			};
+		});
+	}
 
 onMounted(async () => {
 	isLoadingTable.value = true
