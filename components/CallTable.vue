@@ -100,6 +100,7 @@
       </template>
     </UTable>
     <CallSlideover
+      :assistant="selectedAssistant"
       @success="(message) => toast.add({ title: 'Success', description: message, color: 'success', icon: 'i-lucide-check-circle' })"
       @error="(message) => toast.add({ title: 'Error', description: message, color: 'error', icon: 'i-lucide-alert-circle' })" />
   </div>
@@ -113,6 +114,7 @@ import CallSlideover from '@/components/CallSlideover.vue'
 import { upperFirst } from 'scule'
 import { useI18n } from 'vue-i18n'
 import { useRecordingUrl } from '@/composables/useRecordingUrl'
+import type { Assistant } from '~/types/assistant'
 
 const UButton = resolveComponent('UButton')
 const UBadge = resolveComponent('UBadge')
@@ -121,6 +123,7 @@ const USelectMenu = resolveComponent('USelectMenu')
 const UInput = resolveComponent('UInput')
 const toast = useToast();
 const slideover = useSlideover()
+const selectedAssistant = ref<Assistant | undefined>()
 
 interface TableData {
   id: string
@@ -219,7 +222,10 @@ const columns = computed(() => {
       accessorKey: "assistant",
       header: () => t('table.assistant'),
       enableColumnFilter: true,
-      filterFn: 'includesString',
+      filterFn: (row, columnId, filterValue) => {
+        const value = row.getValue(columnId) || ''
+        return value.toLowerCase().includes(filterValue.toLowerCase())
+      },
       cell: (row) => row.getValue("assistant")
     },
     {
@@ -228,15 +234,20 @@ const columns = computed(() => {
       cell: (row) => row.getValue("customer")?.number
     },
     {
-      accessorKey: "assistantOverrides.variableValues.name",
+      accessorKey: "assistantOverrides",
       header: () => 'Name',
-      cell: (row) => row.getValue("assistantOverrides.variableValues.name")
+      cell: (row) => {
+        const overrides = row.getValue("assistantOverrides")
+        return overrides?.variableValues?.name
+      }
     },
     {
       accessorKey: 'startedAt',
       header: () => t('table.callReceived'),
       sortable: true,
       cell: (row) => {
+        if (!row.getValue('startedAt')) return '';
+        
         const time = new Date(row.getValue('startedAt'));
         const timeAgo = formatTimeAgo(time)
         return time.toLocaleString('en-US', {
@@ -328,6 +339,27 @@ const columns = computed(() => {
     })
 
     baseColumns.push({
+      accessorKey: "endedReason",
+      header: () => "Ended Reason",
+      cell: (row) => {
+        const reason = row.getValue('endedReason')
+        if (!reason) return ''
+        
+        // Format the reason string
+        const formatted = reason
+          .split('-')
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ')
+        
+        return h(UBadge, { 
+          class: 'capitalize', 
+          variant: 'subtle',
+          color: 'warning'
+        }, () => formatted)
+      }
+    })
+
+    baseColumns.push({
       accessorKey: "tags",
       header: () => "Tags",
       cell: (row) => {
@@ -380,7 +412,10 @@ const quickViewColumns = computed(() => {
       accessorKey: "assistant",
       header: () => t('table.assistant'),
       enableColumnFilter: true,
-      filterFn: 'includesString',
+      filterFn: (row, columnId, filterValue) => {
+        const value = row.getValue(columnId) || ''
+        return value.toLowerCase().includes(filterValue.toLowerCase())
+      },
       cell: (row) => {
         const assistant = row.getValue('assistant')
         if(!assistant) {
@@ -412,6 +447,26 @@ const quickViewColumns = computed(() => {
       }
   },
   {
+      accessorKey: "endedReason",
+      header: () => "Ended Reason",
+      cell: (row) => {
+        const reason = row.getValue('endedReason')
+        if (!reason) return ''
+        
+        // Format the reason string
+        const formatted = reason
+          .split('-')
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ')
+        
+        return h(UBadge, { 
+          class: 'capitalize', 
+          variant: 'subtle',
+          color: 'warning'
+        }, () => formatted)
+      }
+    },
+    {
       accessorKey: 'startedAt',
       header: () => t('table.callReceived'),
       sortable: true,

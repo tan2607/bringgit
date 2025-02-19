@@ -84,8 +84,12 @@ export default {
     'recording': '녹음',
     'play-recording': '녹음 재생',
     'pause-recording': '녹음 일시정지',
-    'queued': '대기 중',
-    'ended': '종료',
+    queued: '대기 중',
+    ringing: '벨울림',
+    'in-progress': '통화 중',
+    forwarding: '전달 중',
+    ended: '종료됨',
+    all: '전체',
 
     // Scheduling
     'call-scheduling': '통화 일정',

@@ -83,8 +83,12 @@ export default {
   'tags': 'Tag',
   'recording': 'Rekaman',
   'download-recording': 'Unduh Rekaman',
-  'queued': 'Dalam Antrian',
-  'ended': 'Selesai',
+  queued: 'Dalam Antrian',
+  ringing: 'Berdering',
+  'in-progress': 'Sedang Berlangsung',
+  forwarding: 'Meneruskan',
+  ended: 'Selesai',
+  all: 'Semua',
 
   // Scheduling
   'call-scheduling': 'Penjadwalan Panggilan',
