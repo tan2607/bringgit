@@ -31,28 +31,23 @@ export default defineEventHandler(async (event: H3Event) => {
   })
 
   // Mock job updates
-  const mockJobUpdate = () => {
-    const mockJobs = Array.from({ length: 3 }, (_, i) => ({
-      id: `job-${i + 1}`,
-      name: `Test Job ${i + 1}`,
-      status: Math.random() > 0.7 ? 'paused' : 'running',
-      progress: Math.min(100, Math.floor(Math.random() * 100)),
-      completedCalls: Math.floor(Math.random() * 50),
-      totalCalls: 50,
-      schedule: new Date().toISOString()
-    }))
 
+
+  const JobUpdate = async () => {
+    const jobsData = await $fetch('/api/jobs')
     sendEvent({
       type: 'jobUpdate',
-      jobs: mockJobs
+      jobs: jobsData
     })
   }
 
+  
+
   // Send initial mock data
-  mockJobUpdate()
+  await JobUpdate()
 
   // Periodically send mock updates
-  const updateInterval = setInterval(mockJobUpdate, 30000)
+  const updateInterval = setInterval(JobUpdate, 30000)
 
   // Keep connection alive with ping
   const keepAlive = setInterval(() => {

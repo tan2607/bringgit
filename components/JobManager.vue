@@ -393,7 +393,7 @@ const handleJobAction = async (action: string, job: Job) => {
     case 'view':
       quickViewJob.value = filteredJobs.value[job.id]
       slideover.open(JobDetailsSlideover, {
-        job: quickViewJob.value
+        jobId: quickViewJob.value.id
       })
       break
     case 'edit':

@@ -1,14 +1,16 @@
 import { ref, onMounted, onUnmounted } from 'vue'
-import type { JobStatus } from '~/server/utils/jobStorage'
+import type { Job } from '~/composables/useJobState'
 
 export interface JobUpdate {
-  jobId: string
-  status: JobStatus
+  jobs: Job[]
   timestamp: Date
 }
 
 export const useJobUpdates = () => {
-  const jobUpdates = ref<JobUpdate[]>([])
+  const jobUpdates = ref<JobUpdate>({
+    jobs: [],
+    timestamp: new Date()
+  })
   const connected = ref(false)
   let eventSource: EventSource | null = null
 
@@ -27,17 +29,23 @@ export const useJobUpdates = () => {
       
       // Ignore ping events
       if (update.type === 'ping') return
+
+      const currentJobs = JSON.stringify(jobUpdates.value.jobs)
+      const newJobs = JSON.stringify(update.jobs)
+      
+      if(currentJobs === newJobs) {
+        return
+      }
       
       // Add timestamp to update
-      update.timestamp = new Date()
-      
-      // Add to updates list
-      jobUpdates.value.push(update)
+      update.timestamp = new Date().getTime();
+      jobUpdates.value.timestamp = update.timestamp
       
       // Keep only last 100 updates
-      if (jobUpdates.value.length > 100) {
-        jobUpdates.value = jobUpdates.value.slice(-100)
+      if (update.jobs.length > 100) {
+        update.jobs = update.jobs.slice(-100)
       }
+      jobUpdates.value.jobs = update.jobs
     }
 
     eventSource.onerror = (error) => {

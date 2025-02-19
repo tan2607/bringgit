@@ -191,7 +191,7 @@ function handleDateChange(date: CalendarDate) {
 function showJobDetails(job: Job) {
   quickViewJob.value = job
   slideover.open(JobDetailsSlideover, {
-    job: quickViewJob.value
+    jobId: quickViewJob.value.id
   })
 }
 
