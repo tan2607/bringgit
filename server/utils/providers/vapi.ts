@@ -100,7 +100,10 @@ export class VapiProvider {
     createdAtLe?: string;
   }) {
     const [calls, assistants] = await Promise.all([
-      this.client.calls.list(params),
+      this.client.calls.list({
+        ...params,
+        limit: 1000 // temporary until pagination is implemented
+      }),
       this.client.assistants.list()
     ]);
 
@@ -136,7 +139,8 @@ export class VapiProvider {
         recordingUrl: (call as any).recordingUrl ?? '',
         structuredData,
         tags: tagList,
-        assistantOverrides: call.assistantOverrides
+        assistantOverrides: call.assistantOverrides,
+        endedReason: call.endedReason
       };
     });
   }

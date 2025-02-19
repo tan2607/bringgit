@@ -89,8 +89,12 @@ export default {
   'tags': 'Tag',
   'recording': 'Rakaman',
   'download-recording': 'Muat Turun Rakaman',
-  'queued': 'Dalam Giliran',
-  'ended': 'Tamat',
+  queued: 'Dalam Giliran',
+  ringing: 'Berdering',
+  'in-progress': 'Sedang Berlangsung',
+  forwarding: 'Mengalihkan',
+  ended: 'Tamat',
+  all: 'Semua',
 
   // Assistant List
   'assistant-list': 'Senarai Pembantu AI',

@@ -83,8 +83,12 @@ export default {
   'summary': 'สรุป',
   'tags': 'แท็ก',
   'recording': 'การบันทึก',
-  'queued': 'อยู่ในคิว',
-  'ended': 'สิ้นสุดแล้ว',
+  queued: 'รอดำเนินการ',
+  ringing: 'กำลังเรียก',
+  'in-progress': 'กำลังสนทนา',
+  forwarding: 'กำลังโอนสาย',
+  ended: 'จบการสนทนา',
+  all: 'ทั้งหมด',
 
   // Scheduling
   'call-scheduling': 'การจัดตารางการโทร',

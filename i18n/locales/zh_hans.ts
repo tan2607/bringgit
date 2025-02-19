@@ -86,8 +86,12 @@ export default {
   'play-recording': '播放录音',
   'pause-recording': '暂停录音',
   'no-summary-available': '暂无摘要',
-  'queued': '排队中',
-  'ended': '已结束',
+  queued: '排队中',
+  ringing: '响铃中',
+  'in-progress': '进行中',
+  forwarding: '转接中',
+  ended: '已结束',
+  all: '全部',
 
   // Scheduling
   'call-scheduling': '通话日程',

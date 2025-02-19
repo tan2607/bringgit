@@ -89,8 +89,12 @@ export default {
   'recording': '錄音',
   'play-recording': '播放錄音',
   'pause-recording': '暫停錄音',
-  'queued': '排隊中',
-  'ended': '已結束',
+  queued: '排隊中',
+  ringing: '響鈴中',
+  'in-progress': '進行中',
+  forwarding: '轉接中',
+  ended: '已結束',
+  all: '全部',
 
   // Scheduling
   'call-scheduling': '通話日程',
