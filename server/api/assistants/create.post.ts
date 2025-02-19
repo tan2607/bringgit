@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
 
     delete body.prompt;
     // Create new assistant using the VAPI client
-    const newAssistant = await vapiProvider.client.assistants.create(body);
+    const newAssistant = await vapiProvider.createAssistant(body);
     
     return newAssistant;
   } catch (error: any) {

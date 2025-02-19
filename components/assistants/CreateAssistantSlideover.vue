@@ -86,7 +86,12 @@ async function createAgent() {
   
   isCreating.value = true
   try {
-    emit('created', { ...newAgent, template: selectedTemplate.value })
+    const { id, orgId, createdAt, updatedAt, ...newAssistant } = newAgent
+    const createdAssistant = await $fetch('/api/assistants/create', {
+      method: 'POST',
+      body: newAssistant
+    })
+    emit('created', createdAssistant)
     slideover.close()
   } catch (error) {
     console.error('Failed to create assistant:', error)
