@@ -55,7 +55,7 @@ const localeDropdown = computed(() => {
 })
 
 // Navigation items
-const filteredItems = ref<any[]>([]);
+const moduleSettings = ref<any[]>([]);
 
 const items = computed(() => [
   {
@@ -268,39 +268,40 @@ const items = computed(() => [
   }
 ])
 
-async function setHeaderMenu() {
+const filteredItems = computed(() => items.value.reduce((acc: any[], item) => {
+  if (moduleSettings.value.length === 0 || !item.key) {
+    return [...acc, item];
+  }
+
+  const mdl = moduleSettings.value.find((m: any) => m.key == item.key)
+  if (!mdl || !mdl.enable) {
+    return acc;
+  }
+  if (!item.children || !mdl.sub) {
+    return [...acc, item];
+  }
+
+  const filteredChildren = item.children.filter(child => {
+    const sub = mdl.sub?.find((s: any) => s.key == child.key)
+    return sub && sub.enable
+  })
+
+  // if no child is enabled, no need to return the item;
+  if (filteredChildren.length > 0) {
+    const newItem = { ...item, children: filteredChildren } as any;
+    return [...acc, newItem];
+  }
+
+  return acc
+}, []))
+async function fetchModuleSettings() {
   const response = await fetch('/api/settings/module');
   const data = await response.json();
 
-  filteredItems.value = [];
   if (data.success) {
-    const modules = data.modules;
-
-    items.value.forEach(item => {
-      if (item.key) {
-        const mdl = modules.find((m: any) => m.key == item.key)
-        if (mdl && mdl.enable) {
-          if (item.children && mdl.sub) {
-            const filteredChildren = item.children.filter(child => {
-              const sub = mdl.sub.find((s: any) => s.key == child.key)
-              return sub && sub.enable
-            })
-
-            if (filteredChildren.length > 0) {
-              filteredItems.value.push({ ...item, children: filteredChildren })
-            }
-          } else {
-            filteredItems.value.push(item)
-          }
-        }
-      } else {
-        filteredItems.value.push(item);
-      }
-    })
+    moduleSettings.value = data.modules;
   } else {
-    items.value.forEach(item => {
-      filteredItems.value.push(item);
-    })
+    moduleSettings.value = [];
   }
 
   settingStore.finishReload()
@@ -308,7 +309,7 @@ async function setHeaderMenu() {
 
 watch(() => settingStore.reload, (newValue, oldValue) => {
   if (newValue) {
-    setHeaderMenu();
+    fetchModuleSettings();
   }
 });
 
@@ -325,7 +326,7 @@ onMounted(() => {
     locale.value = baseLocale
   }
 
-  setHeaderMenu()
+  fetchModuleSettings()
 })
 
 useHead({
