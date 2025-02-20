@@ -93,7 +93,8 @@ const {
   isLoading, 
   exportCalls,
   isExporting,
-  exportProgress 
+  exportProgress,
+  resetCalls
 } = useCalls()
 const { transformRecordingUrl } = useRecordingUrl()
 const { exportToExcel } = useExcel()
@@ -166,6 +167,8 @@ const exportToExcelFile = async () => {
 
 watch(dateRange, async (newRange) => {
   if (!newRange.start || !newRange.end) return
+  
+  resetCalls()
   
   const startDateTime = newRange.start.toDate(getLocalTimeZone())
   startDateTime.setHours(0, 0, 0, 0)

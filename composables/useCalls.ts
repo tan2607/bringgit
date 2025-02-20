@@ -120,6 +120,11 @@ export const useCalls = () => {
     }
   }
 
+  const resetCalls = () => {
+    calls.value = []
+    hasMore.value = true
+  }
+
   return {
     calls,
     currentPlayingAudio,
@@ -134,5 +139,6 @@ export const useCalls = () => {
     exportCalls,
     isExporting,
     exportProgress,
+    resetCalls,
   }
 }
