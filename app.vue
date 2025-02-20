@@ -315,16 +315,13 @@ watch(() => settingStore.reload, (newValue, oldValue) => {
 onMounted(() => {
   const browserLocale = locale.value;
   const supportedLocales = ['ar', 'en', 'id', 'vi', 'ja', 'ko', 'ms', 'th', 'zh_hans', 'zh_hant']
+  const baseLocale = browserLocale.split('-')[0]
   
   // Special case for Chinese
   if (browserLocale.startsWith('zh')) {
     locale.value = browserLocale.includes('hant') ? 'zh_hant' : 'zh_hans'
-    return
-  }
-
-  // For other languages, use the base language code
-  const baseLocale = browserLocale.split('-')[0]
-  if (baseLocale && supportedLocales.includes(baseLocale)) {
+  } else if (baseLocale && supportedLocales.includes(baseLocale)) {
+    // For other languages, use the base language code
     locale.value = baseLocale
   }
 
