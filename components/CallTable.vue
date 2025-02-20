@@ -413,6 +413,9 @@ const columns = computed(() => {
             color: 'primary',
             variant: 'ghost',
             onClick: () => {
+              if (currentPlayingId.value) {
+                togglePlayAudio('', currentPlayingId.value)
+              }
               const id = row.getValue('id');
               const call = props.data.find(call => call.id === id)
               selectedCall.value = call
@@ -615,6 +618,9 @@ const quickViewColumns = computed(() => {
               color: 'primary',
               variant: 'ghost',
               onClick: () => {
+                if (currentPlayingId.value) {
+                togglePlayAudio('', currentPlayingId.value)
+              }
                 const call = props.data.find(call => call.vapiId === vapiId)
                 selectedCall.value = call
                 slideover.open(TranscriptSlideover)
