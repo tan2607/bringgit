@@ -30,7 +30,6 @@ export default {
   'view-api': 'View API specifications',
   'view-demo': 'View demo page',
 
-
   // Auth
   login: 'Login',
   'sign-up': 'Sign Up',
@@ -386,6 +385,7 @@ export default {
 
   // subnav
   'jobs': 'Jobs',
+  'schedule-job': 'Schedule Calling Job',
   'reports': 'Reports',
   'translation-demo': 'Translation',
   'patient-intake-demo': 'Patient Intake',
@@ -398,7 +398,8 @@ export default {
   'claims-assistant': 'Claims Assistant',
 
   // subnav descriptions
-  'manage-scheduled-jobs': 'Manage scheduled jobs',
+  'view-schedule': 'View all scheduled jobs',
+  'schedule-job-description': 'Create new scheduled job',
   'view-job-reports': 'View job reports and analytics',
   'configure-scheduling-settings': 'Configure scheduling settings',
   'translation-demo-description': 'Translation demo',

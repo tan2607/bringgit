@@ -55,7 +55,7 @@ const localeDropdown = computed(() => {
 })
 
 // Navigation items
-const filteredItems = ref<any[]>([]);
+const moduleSettings = ref<any[]>([]);
 
 const items = computed(() => [
   {
@@ -95,7 +95,14 @@ const items = computed(() => [
         key: 'scheduling-jobs',
         label: t('jobs'),
         icon: 'i-lucide-briefcase',
-        description: t('manage-scheduled-jobs'),
+        description: t('view-schedule'),
+        to: localeRoute('/scheduling/jobs')?.path
+      },
+      {
+        key: 'scheduling-jobs',
+        label: t('schedule-job'),
+        icon: 'i-lucide-calendar',
+        description: t('schedule-job-description'),
         to: localeRoute('/scheduling')?.path
       },
       {
@@ -261,39 +268,40 @@ const items = computed(() => [
   }
 ])
 
-async function setHeaderMenu() {
+const filteredItems = computed(() => items.value.reduce((acc: any[], item) => {
+  if (moduleSettings.value.length === 0 || !item.key) {
+    return [...acc, item];
+  }
+
+  const mdl = moduleSettings.value.find((m: any) => m.key == item.key)
+  if (!mdl || !mdl.enable) {
+    return acc;
+  }
+  if (!item.children || !mdl.sub) {
+    return [...acc, item];
+  }
+
+  const filteredChildren = item.children.filter(child => {
+    const sub = mdl.sub?.find((s: any) => s.key == child.key)
+    return sub && sub.enable
+  })
+
+  // if no child is enabled, no need to return the item;
+  if (filteredChildren.length > 0) {
+    const newItem = { ...item, children: filteredChildren } as any;
+    return [...acc, newItem];
+  }
+
+  return acc
+}, []))
+async function fetchModuleSettings() {
   const response = await fetch('/api/settings/module');
   const data = await response.json();
 
-  filteredItems.value = [];
   if (data.success) {
-    const modules = data.modules;
-
-    items.value.forEach(item => {
-      if (item.key) {
-        const mdl = modules.find((m: any) => m.key == item.key)
-        if (mdl && mdl.enable) {
-          if (item.children && mdl.sub) {
-            const filteredChildren = item.children.filter(child => {
-              const sub = mdl.sub.find((s: any) => s.key == child.key)
-              return sub && sub.enable
-            })
-
-            if (filteredChildren.length > 0) {
-              filteredItems.value.push({ ...item, children: filteredChildren })
-            }
-          } else {
-            filteredItems.value.push(item)
-          }
-        }
-      } else {
-        filteredItems.value.push(item);
-      }
-    })
+    moduleSettings.value = data.modules;
   } else {
-    items.value.forEach(item => {
-      filteredItems.value.push(item);
-    })
+    moduleSettings.value = [];
   }
 
   settingStore.finishReload()
@@ -301,27 +309,24 @@ async function setHeaderMenu() {
 
 watch(() => settingStore.reload, (newValue, oldValue) => {
   if (newValue) {
-    setHeaderMenu();
+    fetchModuleSettings();
   }
 });
 
 onMounted(() => {
   const browserLocale = locale.value;
   const supportedLocales = ['ar', 'en', 'id', 'vi', 'ja', 'ko', 'ms', 'th', 'zh_hans', 'zh_hant']
+  const baseLocale = browserLocale.split('-')[0]
   
   // Special case for Chinese
   if (browserLocale.startsWith('zh')) {
     locale.value = browserLocale.includes('hant') ? 'zh_hant' : 'zh_hans'
-    return
-  }
-
-  // For other languages, use the base language code
-  const baseLocale = browserLocale.split('-')[0]
-  if (baseLocale && supportedLocales.includes(baseLocale)) {
+  } else if (baseLocale && supportedLocales.includes(baseLocale)) {
+    // For other languages, use the base language code
     locale.value = baseLocale
   }
 
-  setHeaderMenu()
+  fetchModuleSettings()
 })
 
 useHead({
@@ -335,7 +340,8 @@ useHead({
   ],
   htmlAttrs: {
     lang: 'en'
-  }
+  },
+  title: 'KeyReply Voice'
 })
 </script>
 

@@ -296,6 +296,7 @@ export default {
 
   // subnav
   'jobs': 'งาน',
+  'schedule-job': 'กำหนดเวลางานโทร',
   'reports': 'รายงาน',
   'patient-intake-demo': 'การรับผู้ป่วย',
   'sms-demo': 'SMS',
@@ -307,7 +308,8 @@ export default {
   'claims-assistant': 'ผู้ช่วยการเรียกร้อง',
 
   // subnav descriptions
-  'manage-scheduled-jobs': 'จัดการงานที่กำหนดเวลาไว้',
+  'view-schedule': 'ดูตารางเวลา',
+  'schedule-job-description': 'สร้างงานที่กำหนดเวลาใหม่',
   'view-job-reports': 'ดูรายงานงานและการวิเคราะห์',
   'configure-scheduling-settings': 'กำหนดค่าการตั้งค่าเวลา',
   'translation-demo-description': 'การสาธิตการแปล',

@@ -303,6 +303,7 @@ export default {
 
   // subnav
   'jobs': 'ジョブ',
+  'schedule-job': '通話ジョブをスケジュール',
   'reports': 'レポート',
   'patient-intake-demo': '患者受付',
   'sms-demo': 'SMS',
@@ -314,7 +315,8 @@ export default {
   'claims-assistant': 'クレームアシスタント',
 
   // subnav descriptions
-  'manage-scheduled-jobs': 'スケジュールされたジョブを管理する',
+  'view-schedule': 'スケジュールを表示',
+  'schedule-job-description': '新しいスケジュールされたジョブを作成',
   'view-job-reports': 'ジョブレポートと分析を表示する',
   'configure-scheduling-settings': 'スケジューリング設定を構成する',
   'translation-demo-description': '翻訳デモ',
