@@ -98,6 +98,7 @@ export default {
   'schedule-description': '以下の詳細を入力して通話をスケジュールしてください。',
   'add-notes': 'ノートを追加...',
   cancel: 'キャンセル',
+  'view-schedule': 'スケジュールを表示',
 
   // Help Center
   'help-center': 'ヘルプセンター',

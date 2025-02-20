@@ -103,6 +103,7 @@ export default {
   'schedule-description': '填写以下详细信息以安排通话。',
   'add-notes': '添加备注...',
   'cancel': '取消',
+  'view-schedule': '查看所有已安排的作业',
 
   // Help Center
   'help-center': '帮助中心',

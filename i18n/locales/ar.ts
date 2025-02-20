@@ -127,6 +127,7 @@ export default {
   'schedule-description': 'املأ التفاصيل أدناه لجدولة مكالمتك.',
   'add-notes': 'إضافة ملاحظات...',
   'cancel': 'إلغاء',
+  'view-schedule': 'عرض الجدول الزمني',
 
   // Help Center
   'help-center': 'مركز المساعدة',

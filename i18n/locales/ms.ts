@@ -113,6 +113,7 @@ export default {
   'schedule-description': 'Isi butiran di bawah untuk menjadualkan panggilan anda.',
   'add-notes': 'Tambah nota...',
   'cancel': 'Batal',
+  'view-schedule': 'Lihat semua pekerjaan yang dijadualkan',
 
   // Help Center
   'help-center': 'Pusat Bantuan',

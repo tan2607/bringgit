@@ -29,6 +29,7 @@ export default {
   'get-help': 'Get help and support',
   'view-api': 'View API specifications',
   'view-demo': 'View demo page',
+  'view-schedule': "View all scheduled jobs",
 
 
   // Auth

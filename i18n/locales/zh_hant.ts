@@ -36,6 +36,7 @@ export default {
   'manage-phone-numbers': '管理電話號碼',
   'view-demo': '查看演示頁面',
   'view-assistants': '查看助手',
+  'view-schedule': '查看所有已排程的作業',
 
   // Auth
   login: '登入',

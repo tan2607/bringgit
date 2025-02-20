@@ -146,6 +146,7 @@ export default {
   'schedule-description': 'Nhập thông tin bên dưới để đặt lịch gọi.',
   'add-notes': 'Thêm ghi chú...',
   cancel: 'Hủy',
+  'view-schedule': 'Xem lịch',
 
   // Help Center
   'help-center': 'Trung tâm Trợ giúp',

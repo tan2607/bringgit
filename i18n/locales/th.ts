@@ -100,6 +100,7 @@ export default {
   'schedule-description': 'กรอกรายละเอียดด้านล่างเพื่อกำหนดการโทร',
   'add-notes': 'เพิ่มบันทึก...',
   'cancel': 'ยกเลิก',
+  'view-schedule': 'ดูตารางเวลา',
 
   // Help Center
   'help-center': 'ศูนย์ช่วยเหลือ',
