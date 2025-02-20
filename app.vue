@@ -95,7 +95,14 @@ const items = computed(() => [
         key: 'scheduling-jobs',
         label: t('jobs'),
         icon: 'i-lucide-briefcase',
-        description: t('manage-scheduled-jobs'),
+        description: t('view-schedule'),
+        to: localeRoute('/scheduling/jobs')?.path
+      },
+      {
+        key: 'scheduling-jobs',
+        label: t('schedule-job'),
+        icon: 'i-lucide-calendar',
+        description: t('schedule-job-description'),
         to: localeRoute('/scheduling')?.path
       },
       {
