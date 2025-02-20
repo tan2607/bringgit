@@ -106,7 +106,7 @@ export class VapiProvider {
     const [calls, assistants] = await Promise.all([
       this.client.calls.list({
         ...params,
-        limit: params?.limit || 100
+        limit: params?.limit || 250
       }),
       this.client.assistants.list()
     ]);

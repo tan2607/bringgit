@@ -7,7 +7,7 @@ export const useCalls = () => {
   const hasMore = useState('hasMore', () => true)
   const isExporting = useState('isExporting', () => false)
   const exportProgress = useState('exportProgress', () => 0)
-  const pageSize = 100
+  const pageSize = 250
 
   const fetchCalls = async (startDate?: string, endDate?: string, limit?: number) => {
     isLoading.value = true
@@ -85,12 +85,13 @@ export const useCalls = () => {
       const allCalls = []
       let lastCreatedAt = endDate
       let hasMoreData = hasMore.value ? true : false
+      const _pageSize = 500;
       
       while (hasMoreData) {
         const queryParams = new URLSearchParams()
         if (startDate) queryParams.append('startDate', startDate)
         if (lastCreatedAt) queryParams.append('endDate', lastCreatedAt)
-        queryParams.append('limit', (pageSize + 1).toString())
+        queryParams.append('limit', (_pageSize + 1).toString())
         
         const { data } = await useFetch(`/api/calls?${queryParams.toString()}`)
         const newCalls = data?.value || []
