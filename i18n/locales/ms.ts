@@ -113,7 +113,6 @@ export default {
   'schedule-description': 'Isi butiran di bawah untuk menjadualkan panggilan anda.',
   'add-notes': 'Tambah nota...',
   'cancel': 'Batal',
-  'view-schedule': 'Lihat semua pekerjaan yang dijadualkan',
 
   // Help Center
   'help-center': 'Pusat Bantuan',
@@ -224,6 +223,7 @@ export default {
 
   // subnav
   'jobs': 'Pekerjaan',
+  'schedule-job': 'Jadualkan Pekerjaan Panggilan',
   'reports': 'Laporan',
   'patient-intake-demo': 'Penerimaan Pesakit',
   'sms-demo': 'SMS',
@@ -235,7 +235,8 @@ export default {
   'claims-assistant': 'Pembantu Tuntutan',
 
   // subnav descriptions
-  'manage-scheduled-jobs': 'Urus pekerjaan yang dijadualkan',
+  'view-schedule': 'Lihat semua pekerjaan yang dijadualkan',
+  'schedule-job-description': 'Cipta pekerjaan baharu yang dijadualkan',
   'view-job-reports': 'Lihat laporan pekerjaan dan analisis',
   'configure-scheduling-settings': 'Konfigurasikan tetapan penjadualan',
   'translation-demo-description': 'Demo terjemahan',

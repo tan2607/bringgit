@@ -31,7 +31,6 @@ export default {
     'view-api': 'API 사양 보기',
     'manage-phone-numbers': '전화번호 관리',
     'view-demo': '데모 페이지 보기',
-    'view-schedule': '일정 보기',
 
     // Auth
     login: '로그인',
@@ -295,6 +294,7 @@ export default {
 
     // subnav
     'jobs': '작업',
+    'schedule-job': '통화 작업 예약',
     'reports': '보고서',
     'patient-intake-demo': '환자 접수',
     'sms-demo': 'SMS',
@@ -306,7 +306,8 @@ export default {
     'claims-assistant': '클레임 도우미',
 
     // subnav descriptions
-    'manage-scheduled-jobs': '예정된 작업 관리',
+    'view-schedule': '일정 보기',
+    'schedule-job-description': '새로운 예약 작업 생성',
     'view-job-reports': '작업 보고서 및 분석 보기',
     'configure-scheduling-settings': '일정 설정 구성',
     'translation-demo-description': '번역 데모',

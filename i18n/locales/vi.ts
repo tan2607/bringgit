@@ -146,7 +146,6 @@ export default {
   'schedule-description': 'Nhập thông tin bên dưới để đặt lịch gọi.',
   'add-notes': 'Thêm ghi chú...',
   cancel: 'Hủy',
-  'view-schedule': 'Xem lịch',
 
   // Help Center
   'help-center': 'Trung tâm Trợ giúp',
@@ -308,6 +307,7 @@ export default {
 
   // subnav
   'jobs': 'Công việc',
+  'schedule-job': 'Lên lịch công việc gọi điện',
   'reports': 'Báo cáo',
   'translation-demo': 'Dịch',
   'patient-intake-demo': 'Tiếp nhận bệnh nhân',
@@ -320,7 +320,8 @@ export default {
   'claims-assistant': 'Trợ lý yêu cầu',
 
   // subnav descriptions
-  'manage-scheduled-jobs': 'Quản lý công việc đã lên lịch',
+  'view-schedule': 'Xem lịch',
+  'schedule-job-description': 'Tạo công việc mới đã lên lịch',
   'view-job-reports': 'Xem báo cáo công việc và phân tích',
   'configure-scheduling-settings': 'Cấu hình cài đặt lịch trình',
   'translation-demo-description': 'Demo dịch',
