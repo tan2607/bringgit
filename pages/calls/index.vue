@@ -38,7 +38,15 @@
       />
     </div>
 
-    <CallTable :data="filteredCalls" :export-button="true" @export="exportToExcelFile" />
+    <CallTable 
+      :data="filteredCalls" 
+      :export-button="true" 
+      :is-loading-table="isLoading"
+      :is-exporting="isExporting"
+      :export-progress="exportProgress"
+      @export="exportToExcelFile" 
+      @load-more="handleLoadMore"
+    />
   </UContainer>
 </template>
 
@@ -77,7 +85,16 @@ const dateRange = shallowRef({
 
 const callStatus = ref('all')
 
-const { calls, stopCurrentAudio, fetchCalls } = useCalls()
+const { 
+  calls, 
+  stopCurrentAudio, 
+  fetchCalls, 
+  loadMore, 
+  isLoading, 
+  exportCalls,
+  isExporting,
+  exportProgress 
+} = useCalls()
 const { transformRecordingUrl } = useRecordingUrl()
 const { exportToExcel } = useExcel()
 
@@ -87,13 +104,35 @@ const filteredCalls = computed(() => {
   })
 })
 
-const exportToExcelFile = () => {
-  // Generate filename with date range
-  const startDate = dateRange.value.start.toDate(getLocalTimeZone()).toLocaleDateString()
-  const endDate = dateRange.value.end.toDate(getLocalTimeZone()).toLocaleDateString()
-  const filename = `calls_${startDate}_to_${endDate}.xlsx`
+const handleLoadMore = async () => {
+  if (!dateRange.value.start) return
+  
+  const startDateTime = dateRange.value.start.toDate(getLocalTimeZone())
+  startDateTime.setHours(0, 0, 0, 0)
+  
+  const startDate = startDateTime.toISOString()
+  await loadMore(startDate)
+}
 
-  exportToExcel(filteredCalls.value, {
+const exportToExcelFile = async () => {
+  if (!dateRange.value.start) return
+  
+  const startDateTime = dateRange.value.start.toDate(getLocalTimeZone())
+  startDateTime.setHours(0, 0, 0, 0)
+  const startDate = startDateTime.toISOString()
+  
+  const endDateTime = dateRange.value.end?.toDate(getLocalTimeZone())
+  const endDate = endDateTime ? (endDateTime.setHours(23, 59, 59, 999), endDateTime.toISOString()) : undefined
+  
+  const allCalls = await exportCalls(startDate, endDate)
+  if (!allCalls?.length) return
+
+  // Generate filename with date range
+  const startDateStr = dateRange.value.start.toDate(getLocalTimeZone()).toLocaleDateString()
+  const endDateStr = dateRange.value.end?.toDate(getLocalTimeZone()).toLocaleDateString() || startDateStr
+  const filename = `calls_${startDateStr}_to_${endDateStr}.xlsx`
+
+  exportToExcel(allCalls, {
     filename,
     sheetName: 'Calls',
     transformData: (call) => {
@@ -138,20 +177,6 @@ watch(dateRange, async (newRange) => {
   const endDate = endDateTime.toISOString()
   await fetchCalls(startDate, endDate)
 }, { immediate: true, deep: true })
-
-onMounted(async () => {
-  if (!dateRange.value.start || !dateRange.value.end) return
-
-  const startDateTime = dateRange.value.start.toDate(getLocalTimeZone())
-  startDateTime.setHours(0, 0, 0, 0)
-  
-  const endDateTime = dateRange.value.end.toDate(getLocalTimeZone())
-  endDateTime.setHours(23, 59, 59, 999)
-  
-  const startDate = startDateTime.toISOString()
-  const endDate = endDateTime.toISOString()
-  await fetchCalls(startDate, endDate)
-})
 
 onBeforeUnmount(() => {
   stopCurrentAudio()

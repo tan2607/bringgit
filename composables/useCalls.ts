@@ -4,19 +4,50 @@ export const useCalls = () => {
   const currentPlayingId = useState('currentPlayingId', () => null)
   const selectedCall = useState<TableData | null>('selectedCall', () => null)
   const isLoading = useState('callsIsLoading', () => false)
+  const hasMore = useState('hasMore', () => true)
+  const isExporting = useState('isExporting', () => false)
+  const exportProgress = useState('exportProgress', () => 0)
+  const pageSize = 100
 
-  const fetchCalls = async (startDate?: string, endDate?: string) => {
+  const fetchCalls = async (startDate?: string, endDate?: string, limit?: number) => {
     isLoading.value = true
     try {
       const queryParams = new URLSearchParams()
       if (startDate) queryParams.append('startDate', startDate)
       if (endDate) queryParams.append('endDate', endDate)
+      if (limit) queryParams.append('limit', limit.toString())
       
       const { data } = await useFetch(`/api/calls?${queryParams.toString()}`)
-      calls.value = data?.value
+      const newCalls = data?.value || []
+      
+      const unfilteredResults = [...calls.value, ...newCalls]
+      calls.value = unfilteredResults.filter((call, index, self) => 
+        index === self.findIndex((t) => (
+          t.id === call.id && 
+          new Date(t.createdAt) > new Date(startDate)
+        ))
+      )
+      
+      hasMore.value = newCalls.length >= pageSize
     } finally {
       isLoading.value = false
     }
+  }
+
+
+  
+  const loadMore = async (startDate?: string) => {
+    if (!hasMore.value || isLoading.value || !calls.value.length) return
+
+    // Get the createdAt of the last call
+    const lastCall = calls.value[calls.value.length - 1]
+    if (!lastCall?.createdAt) return
+
+    if (startDate && lastCall?.createdAt && startDate > lastCall.createdAt) {
+      hasMore.value = false
+    }
+    
+    await fetchCalls(startDate, lastCall?.createdAt, pageSize + 1)
   }
 
   const stopCurrentAudio = () => {
@@ -45,6 +76,50 @@ export const useCalls = () => {
     currentPlayingId.value = id
   }
 
+  const exportCalls = async (startDate?: string, endDate?: string) => {
+    if (!startDate) return
+    
+    try {
+      isExporting.value = true
+      exportProgress.value = 0
+      const allCalls = []
+      let lastCreatedAt = endDate
+      let hasMoreData = hasMore.value ? true : false
+      
+      while (hasMoreData) {
+        const queryParams = new URLSearchParams()
+        if (startDate) queryParams.append('startDate', startDate)
+        if (lastCreatedAt) queryParams.append('endDate', lastCreatedAt)
+        queryParams.append('limit', (pageSize + 1).toString())
+        
+        const { data } = await useFetch(`/api/calls?${queryParams.toString()}`)
+        const newCalls = data?.value || []
+        
+        // Filter duplicates and add to collection
+        const uniqueCalls = newCalls.filter(call => 
+          !allCalls.some(existing => existing.id === call.id) &&
+          new Date(call.createdAt) > new Date(startDate)
+        )
+        allCalls.push(...uniqueCalls)
+        exportProgress.value = allCalls.length
+        
+        // Check if we have more data to fetch
+        if (newCalls.length >= pageSize + 1) {
+          // Get the last call's createdAt for next iteration
+          const lastCall = newCalls[newCalls.length - 1]
+          lastCreatedAt = lastCall.createdAt
+        } else {
+          hasMoreData = false
+        }
+      }
+
+      return allCalls
+    } finally {
+      isExporting.value = false
+      exportProgress.value = 0
+    }
+  }
+
   return {
     calls,
     currentPlayingAudio,
@@ -53,6 +128,11 @@ export const useCalls = () => {
     isLoading,
     fetchCalls,
     stopCurrentAudio,
-    togglePlayAudio
+    togglePlayAudio,
+    loadMore,
+    hasMore,
+    exportCalls,
+    isExporting,
+    exportProgress,
   }
 }
