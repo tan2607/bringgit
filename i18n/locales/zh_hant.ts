@@ -282,6 +282,7 @@ export default {
 
   // subnav
   'jobs': '工作',
+  'schedule-job': '安排呼叫工作',
   'reports': '報告',
   'patient-intake-demo': '病人接收',
   'sms-demo': '短信',
@@ -293,7 +294,8 @@ export default {
   'claims-assistant': '索賠助手',
 
   // subnav descriptions
-  'manage-scheduled-jobs': '管理計劃的工作',
+  'view-schedule': '查看所有已排程的作業',
+  'schedule-job-description': '創建新的計劃工作',
   'view-job-reports': '查看工作報告和分析',
   'configure-scheduling-settings': '配置計劃設置',
   'translation-demo-description': '翻譯演示',

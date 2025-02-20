@@ -254,6 +254,7 @@ export default {
 
   // Subnav
   'jobs': 'Pekerjaan',
+  'schedule-job': 'Jadwalkan Pekerjaan Panggilan',
   'reports': 'Laporan',
   'patient-intake-demo': 'Penerimaan Pasien',
   'sms-demo': 'SMS',
@@ -265,7 +266,8 @@ export default {
   'claims-assistant': 'Asisten Klaim',
 
   // Subnav descriptions
-  'manage-scheduled-jobs': 'Kelola pekerjaan terjadwal',
+  'view-schedule': 'Lihat semua pekerjaan yang dijadwalkan',
+  'schedule-job-description': 'Buat pekerjaan terjadwal baru',
   'view-job-reports': 'Lihat laporan pekerjaan dan analitik',
   'configure-scheduling-settings': 'Konfigurasi pengaturan penjadwalan',
   'translation-demo-description': 'Demo terjemahan',

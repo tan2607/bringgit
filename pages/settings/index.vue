@@ -190,7 +190,7 @@ watch(() => appForm.value.theme, (newTheme) => {
 })
 
 onMounted(async () => {
-  const response = await fetch('api/settings/module');
+  const response = await fetch('/api/settings/module');
   const data = await response.json();
   if(data.success) {
     moduleSettings.value = data.modules;

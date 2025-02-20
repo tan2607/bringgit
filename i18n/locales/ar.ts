@@ -274,6 +274,7 @@ export default {
 
   // subnav
   'jobs': 'وظائف',
+  'schedule-job': 'جدولة وظيفة الاتصال',
   'reports': 'تقارير',
   'patient-intake-demo': 'استقبال المرضى',
   'sms-demo': 'رسائل نصية',
@@ -285,7 +286,8 @@ export default {
   'claims-assistant': 'مساعد المطالبات',
 
   // subnav descriptions
-  'manage-scheduled-jobs': 'إدارة الوظائف المجدولة',
+  'view-schedule': 'عرض الجدول الزمني',
+  'schedule-job-description': 'إنشاء وظيفة مجدولة جديدة',
   'view-job-reports': 'عرض تقارير الوظائف وتحليلاتها',
   'configure-scheduling-settings': 'تكوين إعدادات الجدولة',
   'translation-demo-description': 'عرض الترجمة',
