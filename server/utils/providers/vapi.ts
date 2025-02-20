@@ -101,11 +101,12 @@ export class VapiProvider {
   async listCalls(params?: {
     createdAtGe?: string;
     createdAtLe?: string;
+    limit?: number;
   }) {
     const [calls, assistants] = await Promise.all([
       this.client.calls.list({
         ...params,
-        limit: 1000 // temporary until pagination is implemented
+        limit: params?.limit || 250
       }),
       this.client.assistants.list()
     ]);
@@ -134,6 +135,7 @@ export class VapiProvider {
         customer: call.customer,
         messages: call.messages,
         status: call.status,
+        createdAt: call.createdAt,
         startedAt: call.startedAt,
         endedAt: call.endedAt,
         duration: duration,

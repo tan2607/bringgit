@@ -44,11 +44,25 @@
         </div>
       </div>
       <div class="flex items-center gap-2">
+        <div class="text-sm text-gray-500 mr-2">
+          {{ filteredData?.length || 0 }} data loaded
+        </div>
+        <UButton
+          color="primary"
+          variant="soft"
+          :loading="isLoading"
+          :disabled="isLoading || !hasMore"
+          class="cursor-pointer"
+          @click="$emit('load-more')"
+        >
+            Load More
+        </UButton>
         <UButton
           v-if="props.exportButton"
           color="primary"
           variant="soft"
-          :disabled="props.isLoadingTable || isLoading || !props.data?.length"
+          :loading="props.isExporting"
+          :disabled="props.isLoadingTable || props.isExporting || !props.data?.length"
           class="group cursor-pointer"
           @click="$emit('export')"
         >
@@ -56,7 +70,10 @@
             <UIcon
               name="i-lucide-download"
             />
-            {{ t('export') }}
+            {{ props.isExporting 
+              ? `Preparing Export... (${props.exportProgress} records)` 
+              : t('export') 
+            }}
           </div>
         </UButton>
         <UDropdownMenu
@@ -152,15 +169,23 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
+  isExporting: {
+    type: Boolean,
+    default: false
+  },
+  exportProgress: {
+    type: Number,
+    default: 0
+  },
   exportButton: {
     type: Boolean,
     default: false
   }
 })
 
-defineEmits(['export'])
+defineEmits(['export', 'load-more'])
 
-const { isLoading, currentPlayingId, togglePlayAudio, selectedCall } = useCalls()
+const { isLoading, currentPlayingId, togglePlayAudio, selectedCall, hasMore } = useCalls()
 
 const { t } = useI18n()
 const { transformRecordingUrl } = useRecordingUrl()

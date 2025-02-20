@@ -4,7 +4,7 @@ import { VapiProvider } from '@/server/utils/providers/vapi';
 export default defineEventHandler(async (event) => {
   try {
     const query = getQuery(event);
-    const { startDate, endDate } = query;
+    const { startDate, endDate, limit } = query;
     
     console.log('Received date range:', { startDate, endDate });
     
@@ -16,6 +16,7 @@ export default defineEventHandler(async (event) => {
     return await vapiProvider.listCalls({
       ...(startDateTime && { createdAtGe: startDateTime }),
       ...(endDateTime && { createdAtLe: endDateTime }),
+      ...(limit && { limit: parseInt(limit as string) })
     });
   } catch (error) {
     throw createError({
