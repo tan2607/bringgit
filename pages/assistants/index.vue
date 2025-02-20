@@ -30,7 +30,10 @@ const slideover = useSlideover()
 
 function openCreateSlideover() {
   slideover.open(CreateAssistantSlideover, {
-      title: t('assistant.create')
+      title: t('assistant.create'),
+      onCreated: () => {
+        fetchAssistants()
+      }
   })
 }
 
