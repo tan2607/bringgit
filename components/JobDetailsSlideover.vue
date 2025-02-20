@@ -1,6 +1,6 @@
 <!-- components/JobDetailsSlideover.vue -->
 <template>
-	<USlideover side="right">
+	<USlideover side="right" destroy-on-close>
 		<template #content>
 			<UCard class="h-full overflow-y-auto">
 				<template #header>
