@@ -340,7 +340,8 @@ useHead({
   ],
   htmlAttrs: {
     lang: 'en'
-  }
+  },
+  title: 'KeyReply Voice'
 })
 </script>
 
