@@ -10,7 +10,7 @@
       </div>
 
       <div class="flex gap-2">
-        <UButton icon="i-heroicons-plus" @click="showCreateModal = true" color="primary">
+        <UButton icon="i-heroicons-plus" @click="handleCreateJob" color="primary">
           New Job
         </UButton>
       </div>
@@ -109,8 +109,8 @@
     </UTable>
 
     <!-- Create/Edit Job Modal -->
-    <JobFormModal v-model="showCreateModal" :editing-job="editingJob" :assistantOptions="assistants"
-      :phone-number-options="numbers" @submit="handleJobSubmit" />
+    <JobFormModal v-if="showCreateModal" v-model="showCreateModal" :editing-job="editingJob" :assistantOptions="assistants"
+      :phone-number-options="numbers" @submit="handleJobSubmit"/>
 
     <!-- Quick View Drawer -->
     <JobDetailsSlideover />
@@ -227,8 +227,12 @@ const columns = [
     accessorKey: 'phoneNumbers', 
     header: 'Users Count', 
     cell: ({ row }: { row:any }) => {
-      const list = JSON.parse(row.getValue('phoneNumbers'))
-      return list.length
+      try {
+        const list = JSON.parse(row.getValue('phoneNumbers'))
+        return list.length
+      } catch (error) {
+        return row.getValue('phoneNumbers').length
+      }
     }
   },
   { 
@@ -398,7 +402,6 @@ const handleJobAction = async (action: string, job: Job) => {
       break
     case 'edit':
       const jobDetails = filteredJobs.value[job.id]
-      console.log(jobDetails.phoneNumbers)
       editingJob.value = jobDetails
       jobForm.value = {
         ...jobDetails,
@@ -441,7 +444,6 @@ const handleJobSubmit = async (jobData: Job) => {
   try {
     if (editingJob.value) {
       console.log(jobData);
-      
       // Implement edit
     } else {
       await createJob(jobData)
@@ -493,6 +495,11 @@ const loadView = (view: any) => {
 
 function getJobPhoneNumbers(job: Job) {
   return JSON.parse(job.phoneNumbers)
+}
+
+function handleCreateJob() {
+  editingJob.value = null
+  showCreateModal.value = true
 }
 
 onMounted(async () => {

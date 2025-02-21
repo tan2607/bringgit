@@ -238,12 +238,13 @@ async function handleCreateJob() {
       phoneNumberId: state.selectedNumber,
       selectedTimeWindow: selectedTimeWindow.value
     })
-    slideover.close()
     toast.add({
       title: 'Success',
       description: 'Job created successfully',
       color: 'success'
     })
+    await slideover.close()
+    resetComponents()
   } catch (error) {
     console.error('Failed to create job:', error)
     toast.add({
@@ -579,6 +580,14 @@ function downloadResults() {
   link.click()
   document.body.removeChild(link)
   window.URL.revokeObjectURL(url)
+}
+
+function resetComponents() {
+  clearCalls()
+  state.jobName = ''
+  selectedNumber.value = null
+  selectedAssistant.value = null
+  selectedTimeWindow.value = timeWindowOptions[0]?.value
 }
 </script>
 

@@ -56,6 +56,15 @@
           </div>
         </UFormField>
 
+        <UFormField name="selectedTimeWindow" label="Time Window">
+          <USelect
+            v-model="jobForm.selectedTimeWindow"
+            :items="timeWindowOptions"
+            placeholder="Select a time window"
+            class="w-full"
+          />
+        </UFormField>
+
         <UFormField
           name="assistantId"
           label="Assistant"
@@ -120,36 +129,51 @@ const props = defineProps<{
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
   'submit': [jobData: any]
+  'refreshEditJob': []
 }>()
 
 const assistantOptions = defineModel<Assistant[]>('assistantOptions', { required: true })
 const phoneNumberOptions = defineModel<any[]>('phoneNumberOptions', { required: true })
-
+const currentDate = today("Asia/Singapore");
 // Form validation schema
 const jobFormSchema = z.object({
   name: z.string().min(1, 'Job name is required'),
-  schedule: z.date().min(new Date(), 'Schedule must be in the future'),
+  schedule: z.date().min(new Date(new Date().setHours(0, 0, 0, 0)), 'Schedule must be in the future'),
   phoneNumbers: z.string().min(1, 'At least one phone number is required'),
   assistantId: z.string().min(1, 'Assistant is required'),
-  phoneNumberId: z.string().min(1, 'Phone number is required')
+  phoneNumberId: z.string().min(1, 'Phone number is required'),
+  selectedTimeWindow: z.object({
+    start: z.number().min(0).max(24),
+    end: z.number().min(0).max(24)
+  })
 })
 
 type JobFormSchema = z.output<typeof jobFormSchema>
 
 // Form state
 const isSubmitting = ref(false)
-const currentDate = today();
 
 const isDateDisabled: Matcher = (date) => {
   return date.compare(currentDate) < 0
 }
+
+const timeWindowOptions = [
+  { label: '9 AM - 5 PM', value: { start: 9, end: 17 } },
+  { label: '8 AM - 4 PM', value: { start: 8, end: 16 } },
+  { label: '10 AM - 6 PM', value: { start: 10, end: 18 } },
+  { label: "Anytime", value: { start: 0, end: 24 } }
+]
 
 const jobForm = ref({
   name: '',
   schedule: new Date(),
   phoneNumbers: '',
   assistantId: '',
-  phoneNumberId: ''
+  phoneNumberId: '',
+  selectedTimeWindow: {
+    start: 9,
+    end: 17
+  }
 })
 const scheduleDate = ref(currentDate);
 // Update jobForm.schedule when scheduleDate changes
@@ -201,6 +225,7 @@ watch(() => props.editingJob, (job) => {
     jobForm.value = {
       ...job,
       phoneNumbers: JSON.parse(job.phoneNumbers).join('\n'),
+      selectedTimeWindow: JSON.parse(job.selectedTimeWindow)
     }
     const schedule = new Date(job.schedule)
     scheduleDate.value = new CalendarDate(schedule.getFullYear(), schedule.getMonth() + 1, schedule.getDate());
@@ -214,4 +239,5 @@ watch(() => props.editingJob, (job) => {
     }
   }
 }, { immediate: true })
+
 </script>

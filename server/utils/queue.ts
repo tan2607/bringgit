@@ -86,6 +86,14 @@ export class CallQueueHandler {
       defaultPriority: 3
     })
 
+    // Check if the job is today or in the future
+    const today = new Date()
+    const jobDate = new Date(message.scheduledAt)
+    if (jobDate > today) {
+      await this.sendToQueue(message)
+      return true
+    }
+
     const validation = scheduler.validateSchedule(new Date())
     if (!validation.isValid) {
       const nextTime = scheduler.getNextAvailableTime()
