@@ -40,6 +40,6 @@ export const findNearestClinicsTool = {
   },
   async: false,
   server: {
-    url: "https://next.keyreply.com/api/tool"
+    url: useRuntimeConfig()?.public?.baseUrl + "/api/tool"
   }
 }

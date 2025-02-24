@@ -13,7 +13,7 @@
       />
     </div>
 
-    <AssistantTable :data="assistants" />
+    <AssistantTable :data="sortedAssistants" />
   </UContainer>
 </template>
 
@@ -30,9 +30,17 @@ const slideover = useSlideover()
 
 function openCreateSlideover() {
   slideover.open(CreateAssistantSlideover, {
-      title: t('assistant.create')
+      title: t('assistant.create'),
+      onCreated: () => {
+        fetchAssistants()
+      }
   })
 }
+
+const sortedAssistants = computed(() => {
+  if(!assistants.value) return []
+  return assistants.value.sort((a, b) => a.name.localeCompare(b.name))
+})
 
 onMounted(() => {
   fetchAssistants()

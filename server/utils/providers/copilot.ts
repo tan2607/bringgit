@@ -1,4 +1,5 @@
 import Groq from 'groq-sdk';
+import OpenAI from 'openai';
 
 interface CalendarInvite {
   subject: string;
@@ -115,6 +116,43 @@ export class PromptEnhancer {
     };
 
     return invite;
+  }
+
+  async claimsAnalysis(current, past, question): Promise<string> {
+    const config = useRuntimeConfig()
+    const client = new OpenAI({
+      apiKey: config.openaiApiKey,
+    });
+
+    const response = await client.chat.completions.create({
+      // model: "deepseek-r1-distill-llama-70b",
+      model: "o3-mini-2025-01-31",
+      messages: [
+        {
+          role: "system",
+          content: `You are provided with four claim records: one original claim that was denied and three past successful claims. Your task is to:
+- Analyze Differences:
+Compare the denied claim with the three successful claims across key fields such as patient demographics, CPT codes, modifiers, provider identifiers (e.g., NPI), policy coverage details etc.
+Identify any discrepancies or deviations in the denied claim relative to the successful ones.
+
+- Explain Potential Denial Reason(s):
+Based on the differences you identified, provide a clear explanation of why the denial might have occurred. Consider factors such as coding errors, missing or incorrect documentation, or payer-specific requirements that were not met. Invoice Detail Line Level Remark Description represents the details of the CARC code (Remark Code 1)
+
+- Recommendations:
+Offer up to three actionable recommendations that could help resolve the issues leading to the denial. Recommendations might include correcting specific codes, supplementing documentation, or revising data entry practices.
+Output your answer in a structured format with a clear section for "Analysis", "Potential Denial Reasons", and "Recommendations".
+Output in Markdown format.
+`
+        },
+        {
+          role: "user",
+          content: `Denied Claims:\n${JSON.stringify(current)}\n\nPast Successful Claims:\n${JSON.stringify(past)}\n\nQuestion:\n${question}`
+        }
+      ],
+      max_completion_tokens: 2048,
+    });
+
+    return response.choices[0].message.content || "Sorry, I couldn't analyze the data.";
   }
 
   async analyzeData(question: string, data: string): Promise<string> {

@@ -5,28 +5,12 @@
       <div class="flex justify-between items-center space-x-4 px-2">
         <div class="flex items-center gap-2">
           <UButton 
-            icon="i-lucide-skip-back" 
-            color="info" 
-            variant="ghost" 
-            size="sm"
-            class="rounded-full" 
-            @click="skipTime(-10)" 
-          />
-          <UButton 
             :icon="isPlaying ? 'i-lucide-pause' : 'i-lucide-play'" 
             color="info" 
             variant="soft" 
             size="lg"
             class="rounded-full flex-shrink-0 shadow-sm" 
             @click="togglePlayback" 
-          />
-          <UButton 
-            icon="i-lucide-skip-forward" 
-            color="info" 
-            variant="ghost" 
-            size="sm"
-            class="rounded-full" 
-            @click="skipTime(10)" 
           />
         </div>
         

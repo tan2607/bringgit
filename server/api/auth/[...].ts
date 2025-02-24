@@ -1,12 +1,19 @@
-import MicrosoftEntraID from '@auth/core/providers/microsoft-entra-id'
+import Auth0Provider from '@auth/core/providers/auth0'
 import type { AuthConfig } from "@auth/core/types"
 import { NuxtAuthHandler } from '#auth'
-import Credentials from '@auth/core/providers/credentials'
 
 const runtimeConfig = useRuntimeConfig()
-const isDevelopment = process.env.NODE_ENV === 'development'
 
 const authConfig: AuthConfig = {
+  logger: {
+    error(code, ...message) {
+      console.error('[AUTH] Error. Runtime Config:', {
+        baseUrl: runtimeConfig.public.baseUrl,
+        authJs: runtimeConfig.public.authJs
+      })
+      console.error(code, ...message)
+    }
+  },
   secret: runtimeConfig.authJs.secret,
   jwt: {
     encode: ({ secret, token }) => {
@@ -18,47 +25,21 @@ const authConfig: AuthConfig = {
   },
   basePath: "/api/auth",
   providers: [
-    ...(isDevelopment ? [
-      Credentials({
-        name: 'credentials',
-        credentials: {
-          email: { label: "Email", type: "email", placeholder: "dev@keyreply.com" },
-          password: { label: "Password", type: "password" }
-        },
-        async authorize(credentials) {
-          if (!credentials?.email || !credentials?.password) return null
-
-          if (credentials.email === 'dev@keyreply.com' && 
-              credentials.password === 'password') {
-            return {
-              id: 'dev-user-id',
-              email: credentials.email,
-              name: 'Development User',
-              emailVerified: new Date()
-            }
-          }
-          return null
+    Auth0Provider({
+      clientId: process.env.AUTH0_CLIENT_ID,
+      clientSecret: process.env.AUTH0_CLIENT_SECRET,
+      issuer: process.env.AUTH0_ISSUER,
+      authorization: {
+        params: {
+          prompt: "login"
         }
-      })
-    ] : []),
-    // Microsoft Entra ID provider
-    MicrosoftEntraID({
-      clientId: process.env.AUTH_MICROSOFT_ENTRA_ID_ID,
-      clientSecret: process.env.AUTH_MICROSOFT_ENTRA_ID_SECRET,
-      issuer: process.env.AUTH_MICROSOFT_ENTRA_ID_ISSUER,
-      authorization: process.env.AUTH_MICROSOFT_ENTRA_ID_AUTHORIZATION,
-      token: process.env.AUTH_MICROSOFT_ENTRA_ID_TOKEN,
-      userinfo: process.env.AUTH_MICROSOFT_ENTRA_ID_USERINFO,
-    }),
+      }
+    })
   ],
   callbacks: {
     async signIn({ user }) {
-      const emailDomain = user.email?.split('@')[1]
-      if (emailDomain === 'keyreply.com') {
-        return true
-      } else {
-        return false
-      }
+      // For Auth0, allow any verified email
+      return !!user.email
     },
     async jwt({ token, user }) {
       if (user) {
@@ -78,7 +59,7 @@ const authConfig: AuthConfig = {
     }
   },
   pages: {
-    signIn: '/auth/login'
+    signIn: '/auth/login',
   }
 }
 

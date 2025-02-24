@@ -7,6 +7,7 @@ export default {
     welcome: '환영합니다',
     analytics: '분석',
     scheduling: '일정',
+    phoneNumbers: '전화번호',
     settings: '설정',
     'dev-tools': '개발자 도구',
     profile: '프로필',
@@ -18,15 +19,18 @@ export default {
     security: '보안',
     widget: '위젯',
     copied: '복사됨',
+    export: '내보내기',
 
     // Descriptions
     'manage-calls': '통화 및 회의 관리',
-    'manage-assistants': 'AI 어시스턴트 관리',
+    'manage-assistants': '통화 일정 관리',
     'review-statistics': '상세 통계 보기',
     'manage-schedule': '통화 일정 관리',
     'configure-preferences': '환경설정 구성',
     'get-help': '도움말 및 지원',
     'view-api': 'API 사양 보기',
+    'manage-phone-numbers': '전화번호 관리',
+    'view-demo': '데모 페이지 보기',
 
     // Auth
     login: '로그인',
@@ -45,6 +49,7 @@ export default {
     'passwords-not-match': '비밀번호가 일치하지 않습니다',
     'account-created': '계정이 생성되었습니다',
     'reset-password-description': '이메일 주소를 입력하시면 비밀번호 재설정 링크를 보내드립니다.',
+    'sign-out': '로그아웃',
 
     // Settings
     'profile-settings': '프로필 설정',
@@ -79,8 +84,12 @@ export default {
     'recording': '녹음',
     'play-recording': '녹음 재생',
     'pause-recording': '녹음 일시정지',
-    'queued': '대기 중',
-    'ended': '종료',
+    queued: '대기 중',
+    ringing: '벨울림',
+    'in-progress': '통화 중',
+    forwarding: '전달 중',
+    ended: '종료됨',
+    all: '전체',
 
     // Scheduling
     'call-scheduling': '통화 일정',
@@ -144,6 +153,7 @@ export default {
     'model': '모델',
     'voice': '음성',
     'created-at': '생성일',
+    'view-assistants': '어시스턴트 보기',
 
     // Form Fields
     'subject': '제목',
@@ -280,5 +290,59 @@ export default {
       'llm-help': '사용할 언어 모델을 선택하세요',
       temperature: '온도',
       'temperature-help': '높은 값은 더 창의적인 응답을 생성합니다. 낮은 값은 일관된 응답을 생성합니다.'
-    }
-  }
+    },
+
+    // subnav
+    'jobs': '작업',
+    'schedule-job': '통화 작업 예약',
+    'reports': '보고서',
+    'patient-intake-demo': '환자 접수',
+    'sms-demo': 'SMS',
+    'location-search-demo': '위치 검색',
+    'ocr-demo': 'OCR 데모',
+    'rpa-demo': 'RPA 데모',
+    'workflow-demo': '워크플로우',
+    'report-assistant': '보고서 도우미',
+    'claims-assistant': '클레임 도우미',
+
+    // subnav descriptions
+    'view-schedule': '일정 보기',
+    'schedule-job-description': '새로운 예약 작업 생성',
+    'view-job-reports': '작업 보고서 및 분석 보기',
+    'configure-scheduling-settings': '일정 설정 구성',
+    'translation-demo-description': '번역 데모',
+    'patient-intake-demo-description': '환자 접수 양식 데모',
+    'sms-demo-description': 'SMS 발신 데모',
+    'location-search-demo-description': '클리닉 위치 검색 데모',
+    'rpa-demo-description': 'RPA',
+    'workflow-demo-description': '홈 수면 연구 워크플로우',
+    'report-assistant-description': '보고서에 대한 질문하기',
+    'claims-assistant-description': '거부된 청구에 대한 질문하기',
+    // Phone Numbers Page
+    'registerNewPhoneNumber': '새 전화번호 등록',
+    'newNumber': '새 번호',
+    'phoneForm': {
+      'name': '이름',
+      'nameDesc': '전화번호의 이름을 입력하세요',
+      'phoneNumber': '전화번호',
+      'phoneNumberDesc': '전화번호를 입력하세요',
+      'username': '사용자 이름',
+      'usernameDesc': '전화번호의 사용자 이름을 입력하세요',
+      'passwordOptional': '비밀번호 (선택 사항)',
+      'passwordDesc': '비밀번호를 입력하세요',
+      'domain': '도메인 / IP',
+      'domainDesc': '도메인 또는 IP 주소를 입력하세요',
+      'port': '포트',
+      'portDesc': '포트 번호를 입력하세요 (기본값: 5060)',
+      'portHelperText': '유효한 포트 범위는 1-65535입니다',
+      'protocol': '프로토콜',
+      'protocolDesc': '전화번호의 프로토콜을 선택하세요',
+      'register': '등록',
+    },
+    'filterPlaceholder': '이름 또는 번호로 필터...',
+    'phoneTable': {
+      'name': '이름',
+      'number': '번호',
+      'actions': '작업',
+    },
+}

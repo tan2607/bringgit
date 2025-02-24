@@ -66,3 +66,4 @@ The voice translation feature allows users to:
 - Phi-4 (14b)
 - Reasoning (Deepseek r1)
 - OCR (Gemini 2 Flash)
+

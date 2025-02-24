@@ -20,9 +20,14 @@ export const useAssistants = () => {
     try {
       const { data } = await useFetch('/api/assistants')
       assistants.value = (await Promise.all(data.value!.map(attachMeta))).filter(Boolean)
+      return assistants.value;
     } finally {
       isLoading.value = false
     }
+  }
+
+  const getAssistantById = (id: string) => {
+    return assistants.value.find((assistant) => assistant.id === id)
   }
 
   return {
@@ -30,5 +35,6 @@ export const useAssistants = () => {
     selectedAssistant,
     isLoading,
     fetchAssistants,
+    getAssistantById
   }
 }

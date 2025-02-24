@@ -1,4 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+const baseUrl = process.env.NUXT_PUBLIC_BASE_URL || process.env.CF_PAGES_URL || "https://galaxy.voice.keyreply.com"
+
 export default defineNuxtConfig({
   debug: false,
   icon: {
@@ -28,9 +30,10 @@ export default defineNuxtConfig({
       secret: process.env.NEXTAUTH_SECRET,
     },
     public: {
+      baseUrl,
       googleApiKey: process.env.GOOGLE_API_KEY,
       authJs: {
-        baseUrl: "https://next.keyreply.com",
+        baseUrl,
         guestRedirectTo: "/auth/login",
         authenticatedRedirectTo: "/analytics",
         verifyClientOnEveryRequest: true,
@@ -86,7 +89,8 @@ export default defineNuxtConfig({
     '@nuxtjs/mdc',
     '@nuxt/icon',
     '@nuxt/scripts',
-    '@formkit/nuxt'
+    '@formkit/nuxt',
+    '@pinia/nuxt'
   ],
   hub: {
     database: true
@@ -135,11 +139,23 @@ export default defineNuxtConfig({
   },
   ssr: false,
   devtools: { enabled: true },
-  nitro: {
+  nitro: {    
+  
+    scheduledTasks: {
+      '* * * * *': ['jobs:schedule']
+    },
     preset: 'cloudflare_pages',
     compatibilityDate: '2024-09-02',
     experimental: {
       openAPI: true,
+      tasks: true,
+      database: true
+    },
+    database: {
+      default: {
+        connector: 'sqlite',
+        options: { name: 'claims' }
+      },
     },
     openAPI: {
       meta: {

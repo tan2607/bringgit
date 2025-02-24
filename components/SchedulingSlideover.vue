@@ -101,15 +101,14 @@
 
             <div class="flex justify-end space-x-2 mt-4">
               <!-- handleCreateJob -->
-              <!-- <UButton v-if="scheduledCalls.length && !isSimulating" color="primary"
+              <UButton v-if="scheduledCalls.length && !isSimulating" color="primary"
                 :disabled="!selectedAssistant || !selectedNumber" @click="handleCreateJob">
                 {{ !selectedAssistant || !selectedNumber ? 'Select Assistant & Phone Number' : 'Run Job' }}
-              </UButton> -->
-              
-              <UButton v-if="scheduledCalls.length && !isSimulating" color="primary"
+              </UButton>
+              <!-- <UButton v-if="scheduledCalls.length && !isSimulating" color="primary"
                 :disabled="!state.selectedAssistant || !state.selectedNumber" @click="runSimulation">
                 {{ !state.selectedAssistant || !state.selectedNumber ? 'Select Assistant & Phone Number' : 'Run Job' }}
-              </UButton>
+              </UButton> -->
               <UButton v-if="isSimulating" :color="isPaused ? 'primary' : 'warning'"
                 @click="isPaused ? runSimulation() : pauseJob()">
                 {{ isPaused ? 'Resume Job' : 'Pause Job' }}
@@ -194,6 +193,8 @@ const state = reactive({
   isSubmitting: false
 })
 
+const selectedDate = defineModel('selectedDate', { type: Object })
+
 // Fetch assistants on mount
 onMounted(async () => {
   await fetchAssistants()
@@ -204,18 +205,46 @@ async function handleCreateJob() {
   
   state.isSubmitting = true
   try {
+    
+    const { year, month, day } = selectedDate.value;
+    const selectedDateObj = new Date(year, month - 1, day);
+    const currentDateObj = new Date();
+
+    let currentHour = currentDateObj.getHours();
+    let currentMinute = currentDateObj.getMinutes();
+
+    let selectedDay = day;
+    let selectedMonth = month;
+    let selectedYear = year;
+
+    
+    if (currentHour < selectedTimeWindow.value.start) {
+      currentHour = selectedTimeWindow.value.start;
+    } else if (currentHour > selectedTimeWindow.value.end) {
+      currentHour = selectedTimeWindow.value.start;
+      if (currentDateObj.toLocaleDateString() === selectedDateObj.toLocaleDateString()) {
+        selectedDay += 1;
+      }
+    }
+
+
     await createJob({
       name: state.jobName,
       assistantId: state.selectedAssistant,
-      phoneNumbers: [state.selectedNumber],
-      contacts: state.contacts,
+      phoneNumbers: scheduledCalls.value.map((call: any) => call.phone),
+      names: scheduledCalls.value.map((call: any) => call.name),
+      schedule: new Date(selectedYear, selectedMonth - 1, selectedDay, currentHour, currentMinute, 0, 0),
+      totalCalls: scheduledCalls.value.length,
+      phoneNumberId: state.selectedNumber,
+      selectedTimeWindow: selectedTimeWindow.value
     })
-    slideover.close()
     toast.add({
       title: 'Success',
       description: 'Job created successfully',
       color: 'success'
     })
+    await slideover.close()
+    resetComponents()
   } catch (error) {
     console.error('Failed to create job:', error)
     toast.add({
@@ -234,8 +263,6 @@ function handleFileUpload(event: Event) {
     state.contacts = file
   }
 }
-
-
 
 const isPaused = ref(false)
 const numberOfCalls = ref<number>(10)
@@ -352,6 +379,7 @@ async function processFile(file: File) {
     scheduledCalls.value = rows.map((row: any) => ({
       id: crypto.randomUUID(),
       phone: `+${row.phone_number}`,
+      name: row.name || `Contact ${scheduledCalls.value.length + 1}`,
       estimatedDuration: Math.floor(Math.random() * (simulationConfig.value.callDurationRange.max - simulationConfig.value.callDurationRange.min + 1)) + simulationConfig.value.callDurationRange.min,
       status: CallStatus.Queued,
       scheduledTime: new Date(),
@@ -391,7 +419,8 @@ const workingHours = computed(() => ({
 const timeWindowOptions = [
   { label: '9 AM - 5 PM', value: { start: 9, end: 17 } },
   { label: '8 AM - 4 PM', value: { start: 8, end: 16 } },
-  { label: '10 AM - 6 PM', value: { start: 10, end: 18 } }
+  { label: '10 AM - 6 PM', value: { start: 10, end: 18 } },
+  { label: "Anytime", value: { start: 0, end: 24 } }
 ]
 
 const selectedTimeWindow = ref(timeWindowOptions[0].value)
@@ -443,8 +472,6 @@ function formatTime(date: Date | number) {
     hour12: true
   }).format(new Date(date))
 }
-
-
 
 const getSelectedAssistantName = computed(() => {
   const assistant = assistants.value.find(a => a.id === state.selectedAssistant)
@@ -553,6 +580,14 @@ function downloadResults() {
   link.click()
   document.body.removeChild(link)
   window.URL.revokeObjectURL(url)
+}
+
+function resetComponents() {
+  clearCalls()
+  state.jobName = ''
+  selectedNumber.value = null
+  selectedAssistant.value = null
+  selectedTimeWindow.value = timeWindowOptions[0]?.value
 }
 </script>
 

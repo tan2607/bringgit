@@ -7,6 +7,7 @@ export default {
   welcome: 'ようこそ',
   analytics: '分析',
   scheduling: 'スケジュール',
+  phoneNumbers: '電話番号',
   settings: '設定',
   'dev-tools': '開発者ツール',
   profile: 'プロフィール',
@@ -17,15 +18,18 @@ export default {
   security: 'セキュリティ',
   widget: 'ウィジェット',
   copied: 'コピーしました',
+  export: 'エクスポート',
 
   // Descriptions
   'manage-calls': '通話と会議の管理',
-  'manage-assistants': 'AIアシスタントの管理',
+  'manage-assistants': '助手を作成および変更',
   'review-statistics': '詳細な統計を表示',
   'manage-schedule': '通話スケジュールを管理',
   'configure-preferences': '設定を構成',
   'get-help': 'ヘルプとサポートを取得',
   'view-api': 'API仕様を表示',
+  'manage-phone-numbers': '電話番号を管理',
+  'view-demo': 'デモページを見る',
 
   // Auth
   login: 'ログイン',
@@ -44,6 +48,7 @@ export default {
   'passwords-not-match': 'パスワードが一致しません',
   'account-created': 'アカウントが作成されました',
   'reset-password-description': 'メールアドレスを入力してください。パスワードリセットのリンクを送信します。',
+  'sign-out': 'サインアウト',
 
   // Settings
   'profile-settings': 'プロフィール設定',
@@ -77,7 +82,11 @@ export default {
   tags: 'タグ',
   recording: '録音',
   queued: 'キュー中',
+  ringing: '呼び出し中',
+  'in-progress': '通話中',
+  forwarding: '転送中',
   ended: '終了',
+  all: 'すべて',
 
   // Scheduling
   'call-scheduling': '通話スケジュール',
@@ -140,9 +149,10 @@ export default {
   // Assistant List
   'assistant-list': 'AIアシスタント一覧',
   'first-message': '最初のメッセージ',
-  'model': 'モデル',
-  'voice': '音声',
+  model: 'モデル',
+  voice: '音声',
   'created-at': '作成日時',
+  'view-assistants': '助手を表示',
 
   // Form Fields
   subject: '件名',
@@ -289,5 +299,60 @@ export default {
     'llm-help': '使用する言語モデルを選択してください',
     temperature: '温度',
     'temperature-help': '値が高いほど、より創造的な応答になります。低い値は一貫性のある応答を生成します。',
+  },
+
+  // subnav
+  'jobs': 'ジョブ',
+  'schedule-job': '通話ジョブをスケジュール',
+  'reports': 'レポート',
+  'patient-intake-demo': '患者受付',
+  'sms-demo': 'SMS',
+  'location-search-demo': 'ロケーション検索',
+  'ocr-demo': 'OCRデモ',
+  'rpa-demo': 'RPAデモ',
+  'workflow-demo': 'ワークフロー',
+  'report-assistant': 'レポートアシスタント',
+  'claims-assistant': 'クレームアシスタント',
+
+  // subnav descriptions
+  'view-schedule': 'スケジュールを表示',
+  'schedule-job-description': '新しいスケジュールされたジョブを作成',
+  'view-job-reports': 'ジョブレポートと分析を表示する',
+  'configure-scheduling-settings': 'スケジューリング設定を構成する',
+  'translation-demo-description': '翻訳デモ',
+  'patient-intake-demo-description': '患者受付フォームデモ',
+  'sms-demo-description': 'SMS送信デモ',
+  'location-search-demo-description': 'クリニックの場所検索デモ',
+  'rpa-demo-description': 'RPA',
+  'workflow-demo-description': '在宅睡眠研究ワークフロー',
+  'report-assistant-description': 'レポートについて質問する',
+  'claims-assistant-description': '拒否されたクレームについて質問する',
+  
+  // Phone Numbers Page
+  'newNumber': '新しい番号',
+  'registerNewPhoneNumber': '新しい電話番号を登録',
+  'phoneForm': {
+    'name': '名前',
+    'nameDesc': '電話番号の名前を入力してください',
+    'phoneNumber': '電話番号',
+    'phoneNumberDesc': '電話番号を入力してください',
+    'username': 'ユーザー名',
+    'usernameDesc': '電話番号のユーザー名を入力してください',
+    'passwordOptional': 'パスワード（オプション）',
+    'passwordDesc': 'パスワードを入力してください',
+    'domain': 'ドメイン / IP',
+    'domainDesc': 'ドメインまたはIPアドレスを入力してください',
+    'port': 'ポート',
+    'portDesc': 'ポート番号を入力してください（デフォルト：5060）',
+    'portHelperText': '有効なポート範囲は1-65535です',
+    'protocol': 'プロトコル',
+    'protocolDesc': '電話番号のプロトコルを選択してください',
+    'register': '登録',
+  },
+  'filterPlaceholder': '名前または番号でフィルタ...',
+  'phoneTable': {
+    'name': '名前',
+    'number': '番号',
+    'actions': 'アクション',
   },
 }

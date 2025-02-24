@@ -24,22 +24,41 @@
         </template>
       </UPopover>
 
-      <USelect v-model="callStatus" :items="[
+      <USelect 
+        v-model="callStatus" 
+        class="w-40"
+        :items="[
         { label: t('queued'), value: 'queued' },
-        { label: t('ended'), value: 'ended' }
-      ]" />
+        { label: t('ringing'), value: 'ringing' },
+        { label: t('in-progress'), value: 'in-progress' },
+        { label: t('forwarding'), value: 'forwarding' },
+        { label: t('ended'), value: 'ended' },
+        { label: t('all'), value: 'all' }
+        ]" 
+      />
     </div>
 
-    <CallTable :data="filteredCalls" />
+    <CallTable 
+      :data="filteredCalls" 
+      :export-button="true" 
+      :is-loading-table="isLoading"
+      :is-exporting="isExporting"
+      :export-progress="exportProgress"
+      @export="exportToExcelFile" 
+      @load-more="handleLoadMore"
+    />
   </UContainer>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { CalendarDate, DateFormatter, getLocalTimeZone } from '@internationalized/date'
+import { utils, writeFile } from 'xlsx'
 definePageMeta({ middleware: "auth" })
 import { useCalls } from '@/composables/useCalls'
 import CallTable from '@/components/CallTable.vue'
+import { useRecordingUrl } from '@/composables/useRecordingUrl'
+import { useExcel } from '@/composables/useExcel'
 
 const { t } = useI18n()
 
@@ -64,28 +83,92 @@ const dateRange = shallowRef({
   )
 })
 
-const callStatus = ref('ended')
+const callStatus = ref('all')
 
-const { calls, stopCurrentAudio, fetchCalls } = useCalls()
+const { 
+  calls, 
+  stopCurrentAudio, 
+  fetchCalls, 
+  loadMore, 
+  isLoading, 
+  exportCalls,
+  isExporting,
+  exportProgress,
+  resetCalls
+} = useCalls()
+const { transformRecordingUrl } = useRecordingUrl()
+const { exportToExcel } = useExcel()
 
 const filteredCalls = computed(() => {
-  if (!dateRange.value.start || !dateRange.value.end) return calls.value
-  
-  const start = dateRange.value.start.toDate(getLocalTimeZone())
-  const end = dateRange.value.end.toDate(getLocalTimeZone())
-  
   return calls.value.filter(call => {
-    const callDate = new Date(call.startedAt)
-    return (
-      callDate >= start &&
-      callDate <= end &&
-      call.status === callStatus.value
-    )
+    return callStatus.value === 'all' || call.status === callStatus.value
   })
 })
 
+const handleLoadMore = async () => {
+  if (!dateRange.value.start) return
+  
+  const startDateTime = dateRange.value.start.toDate(getLocalTimeZone())
+  startDateTime.setHours(0, 0, 0, 0)
+  
+  const startDate = startDateTime.toISOString()
+  await loadMore(startDate)
+}
+
+const exportToExcelFile = async () => {
+  if (!dateRange.value.start) return
+  
+  const startDateTime = dateRange.value.start.toDate(getLocalTimeZone())
+  startDateTime.setHours(0, 0, 0, 0)
+  const startDate = startDateTime.toISOString()
+  
+  const endDateTime = dateRange.value.end?.toDate(getLocalTimeZone())
+  const endDate = endDateTime ? (endDateTime.setHours(23, 59, 59, 999), endDateTime.toISOString()) : undefined
+  
+  const allCalls = await exportCalls(startDate, endDate)
+  if (!allCalls?.length) return
+
+  // Generate filename with date range
+  const startDateStr = dateRange.value.start.toDate(getLocalTimeZone()).toLocaleDateString()
+  const endDateStr = dateRange.value.end?.toDate(getLocalTimeZone()).toLocaleDateString() || startDateStr
+  const filename = `calls_${startDateStr}_to_${endDateStr}.xlsx`
+
+  exportToExcel(allCalls, {
+    filename,
+    sheetName: 'Calls',
+    transformData: (call) => {
+      const startTime = call.startedAt ? new Date(call.startedAt) : undefined
+      const formattedStartTime = startTime ? startTime.toLocaleString('en-US', {
+        year: 'numeric',
+        day: 'numeric',
+        month: 'short',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      }) : ''
+
+      return {
+        'ID': call.id || '',
+        'Assistant': call.assistant || '',
+        'Phone Number': call.customer?.number || '',
+        'Name': call.assistantOverrides?.variableValues?.name || '',
+        'Call Received': formattedStartTime,
+        'Recording URL': call.recordingUrl ? transformRecordingUrl(call.recordingUrl) : '',
+        'Duration': call.duration || '',
+        'Status': call.status || '',
+        'Ended Reason': call.endedReason?.split('-')
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ') || '',
+        'Tags': call.tags?.join(', ') || ''
+      }
+    }
+  })
+}
+
 watch(dateRange, async (newRange) => {
   if (!newRange.start || !newRange.end) return
+  
+  resetCalls()
   
   const startDateTime = newRange.start.toDate(getLocalTimeZone())
   startDateTime.setHours(0, 0, 0, 0)
@@ -97,10 +180,6 @@ watch(dateRange, async (newRange) => {
   const endDate = endDateTime.toISOString()
   await fetchCalls(startDate, endDate)
 }, { immediate: true, deep: true })
-
-onMounted(async () => {
-  await fetchCalls()
-})
 
 onBeforeUnmount(() => {
   stopCurrentAudio()

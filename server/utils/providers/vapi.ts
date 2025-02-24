@@ -1,4 +1,6 @@
 import { VapiClient } from "@vapi-ai/server-sdk";
+import { gte } from 'drizzle-orm';
+import { jobs } from '~/server/database/schema';
 
 export class VapiProvider {
   private static instance: VapiProvider;
@@ -70,6 +72,9 @@ export class VapiProvider {
     return await this.client.phoneNumbers.list();
   }
 
+  async createAssistant(data: any) {
+    return await this.client.assistants.create(data);
+  }
   async updateAssistant(id: string, data: any) {
     return await this.client.assistants.update(id, data);
   }
@@ -96,9 +101,13 @@ export class VapiProvider {
   async listCalls(params?: {
     createdAtGe?: string;
     createdAtLe?: string;
+    limit?: number;
   }) {
     const [calls, assistants] = await Promise.all([
-      this.client.calls.list(params),
+      this.client.calls.list({
+        ...params,
+        limit: params?.limit || 250
+      }),
       this.client.assistants.list()
     ]);
 
@@ -112,6 +121,12 @@ export class VapiProvider {
         return `${minutes}m ${seconds}s`;
       })();
 
+      const structuredData: Record<string, any> =
+        call.analysis && call.analysis.structuredData ? call.analysis.structuredData : {}
+      const tagList = Object.keys(structuredData)
+        .filter((key) => typeof structuredData[key] !== 'object')
+        .map((key) => `${key}: ${structuredData[key]}`)
+
       return {
         id: call.id,
         assistant: assistants.find((assistant) =>
@@ -120,12 +135,17 @@ export class VapiProvider {
         customer: call.customer,
         messages: call.messages,
         status: call.status,
+        createdAt: call.createdAt,
         startedAt: call.startedAt,
         endedAt: call.endedAt,
         duration: duration,
         transcript: (call as any).transcript ?? '',
         summary: (call as any).summary ?? '',
         recordingUrl: (call as any).recordingUrl ?? '',
+        structuredData,
+        tags: tagList,
+        assistantOverrides: call.assistantOverrides,
+        endedReason: call.endedReason
       };
     });
   }
@@ -159,10 +179,18 @@ export class VapiProvider {
       }],
     });
 
+    const db = useDrizzle();
+    // Find all and count jobs for last 7 days
+    const allJobs = await db.query.jobs.findMany({
+      where: and(gte(jobs.createdAt, new Date(Date.now() - 7 * 24 * 60 * 60 * 1000))),
+    });
+
     const calls = analytics.find((a) => a.name === "calls");
+
     return {
       calls,
-      timeRange: calls?.timeRange!
+      timeRange: calls?.timeRange!,
+      jobs: allJobs.length,
     };
   }
 }

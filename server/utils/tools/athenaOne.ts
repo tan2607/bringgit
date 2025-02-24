@@ -78,6 +78,6 @@ export const athenaOneTool = {
   },
   async: true,
   server: {
-    url: "https://next.keyreply.com/api/tool"
+    url: useRuntimeConfig()?.public?.baseUrl + "/api/tool"
   }
 }

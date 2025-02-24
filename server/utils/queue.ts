@@ -3,25 +3,32 @@ import { VapiProvider } from './providers/vapi'
 import { JobStorage, JobStatus } from './jobStorage'
 import { RateLimiter } from './rateLimiter'
 import { Scheduler } from './scheduler'
+import { jobQueue, jobs } from '../database/schema'
+
 
 export interface CallMessage {
+  id?: string
   jobId: string
   phoneNumber: string
+  name: string
   assistantId: string
   phoneNumberId: string
   retryCount?: number
   priority?: number
+  status: string
+  delay: number
+  scheduledAt: string
+  vapiId: string
+  selectedTimeWindow: { start: string, end: string }
 }
 
 export class CallQueueHandler {
-  private queue: Queue
   private vapi: VapiProvider
   private storage: JobStorage
   private rateLimiter: RateLimiter
   private scheduler: Scheduler
 
-  constructor(queue: Queue, vapiApiKey: string, storage: JobStorage) {
-    this.queue = queue
+  constructor(vapiApiKey: string, storage: JobStorage) {
     this.vapi = new VapiProvider(vapiApiKey)
     this.storage = storage
     this.rateLimiter = new RateLimiter({
@@ -67,20 +74,39 @@ export class CallQueueHandler {
       return false
     }
 
-    // Check if current time is valid for scheduling
-    const validation = this.scheduler.validateSchedule(new Date())
+    const scheduler = new Scheduler({
+      businessHours: {
+        daysOfWeek: [1, 2, 3, 4, 5],
+        startTime: message.selectedTimeWindow.start,
+        endTime: message.selectedTimeWindow.end,
+        timezone: 'Asia/Singapore'
+      },
+      blackoutPeriods: [],
+      priorityWindows: [],
+      defaultPriority: 3
+    })
+
+    // Check if the job is today or in the future
+    const today = new Date()
+    const jobDate = new Date(message.scheduledAt)
+    if (jobDate > today) {
+      await this.sendToQueue(message)
+      return true
+    }
+
+    const validation = scheduler.validateSchedule(new Date())
     if (!validation.isValid) {
-      // Schedule for next available time
-      const nextTime = this.scheduler.getNextAvailableTime()
-      const delay = nextTime.getTime() - Date.now()
-      
-      await this.queue.send(message, { delay: Math.max(0, delay / 1000) })
+      const nextTime = scheduler.getNextAvailableTime()
+      console.log(validation.reason);
+      console.log("Scheduling for next available time", nextTime)
+      message.scheduledAt = new Date(nextTime).toISOString();
+      await this.sendToQueue(message)
       return true
     }
 
     // Get current priority
     const priority = this.scheduler.getCurrentPriority()
-    await this.queue.send({ ...message, priority })
+    await this.sendToQueue({ ...message, priority })
     return true
   }
 
@@ -116,30 +142,59 @@ export class CallQueueHandler {
   }
 
   async processMessage(message: QueueMessage<CallMessage>) {
-    const { jobId, phoneNumber, assistantId, phoneNumberId, retryCount = 0 } = message.body
-    
-    // Check if we should process this message now
-    const validation = this.scheduler.validateSchedule(new Date())
+    const { jobId, phoneNumber, assistantId, phoneNumberId, retryCount = 0, id: queueId, delay, scheduledAt, name } = message;
+    const db = useDrizzle();
+    const selectedTimeWindow = JSON.parse(message.selectedTimeWindow);
+
+    const scheduler = new Scheduler({
+      businessHours: {
+        daysOfWeek: [1, 2, 3, 4, 5],
+        startTime: selectedTimeWindow.start,
+        endTime: selectedTimeWindow.end,
+        timezone: 'Asia/Singapore'
+      },
+      blackoutPeriods: [],
+      priorityWindows: [],
+      defaultPriority: 3
+    })
+
+    const validation = scheduler.validateSchedule(new Date())
     if (!validation.isValid) {
-      // Requeue for next available time
-      const nextTime = this.scheduler.getNextAvailableTime()
-      const delay = nextTime.getTime() - Date.now()
-      
-      await this.queue.send(message.body, { delay: Math.max(0, delay / 1000) })
-      await message.ack()
+      const nextTime = scheduler.getNextAvailableTime()
+      message.scheduledAt = new Date(nextTime).toISOString();
+      await this.sendToQueue(message)
       return
     }
 
     // Try to acquire a slot for this job
     if (!await this.rateLimiter.acquireJobSlot(jobId)) {
       // If we can't get a slot, requeue the message with a delay
-      await this.queue.send(message.body, { delay: 5 })
-      await message.ack()
+      await this.sendToQueue(message, { delay: 5 })
+      // await message.ack()
       return
     }
-    
+    console.log("Processing call for job", jobId);    
+
+    const job = await db.query.jobs.findFirst({ where: eq(jobs.id, jobId) })
+    if (job?.status === "pending") {
+      await db.update(jobs).set({ status: "running" }).where(eq(jobs.id, jobId))
+    }
+
     try {
-      console.log(`Processing call for job ${jobId} to number ${phoneNumber}`)
+      // @todo: find a way to do it via vapi {{now}} or separate greeting logic
+      const hour = parseInt(new Date().toLocaleString('en-US', { timeZone: 'Asia/Singapore', hour: '2-digit', hour12: false }));
+      let greeting;
+      if (hour < 12) {
+        greeting = "Good Morning";
+      } else if (hour < 18) {
+        greeting = "Good Afternoon";
+      } else if (hour < 21) {
+        greeting = "Good Evening";
+      } else {
+        greeting = "Good Night";
+      }
+      
+      console.log(`Processing call for job ${jobId} to number ${phoneNumber} with variables:`, {name, greeting})
       
       const call = await this.vapi.client.calls.create({
         assistantId,
@@ -147,6 +202,12 @@ export class CallQueueHandler {
         customer: {
           number: phoneNumber,
           numberE164CheckEnabled: false
+        },
+        assistantOverrides: {
+          variableValues: {
+            name,
+            greeting
+          }
         }
       })
 
@@ -155,7 +216,14 @@ export class CallQueueHandler {
       })
 
       console.log(`Successfully initiated call ${call.id} for job ${jobId}`)
-      await message.ack()
+
+      await this.updateQueue({
+        ...message,
+        id: queueId,
+        status: "completed",
+        vapiId: call.id
+      })
+      // await message.ack()
 
     } catch (error: any) {
       console.error(`Error processing call for job ${jobId}:`, error)
@@ -169,7 +237,7 @@ export class CallQueueHandler {
           ...message.body,
           retryCount: retryCount + 1
         }
-        await this.queue.send(retryMessage, { delay })
+        await this.sendToQueue(retryMessage, { delay })
         console.log(`Requeued call for job ${jobId} (retry ${retryCount + 1}/3)`)
       } else {
         await this.updateJobProgress(jobId, {
@@ -193,8 +261,13 @@ export class CallQueueHandler {
     completedCalls?: number
     failedNumbers?: string[]
     error?: string
-  }) {
-    const job = await this.storage.getJob(jobId)
+  }) { 
+    const db = useDrizzle();
+
+    const job = await db.query.jobs.findFirst({
+      where: eq(jobs.id, jobId)
+    })
+
     if (!job) return
 
     const newStatus: JobStatus = {
@@ -217,6 +290,54 @@ export class CallQueueHandler {
       newStatus.status = newStatus.failedCalls === job.totalCalls ? 'failed' : 'completed'
     }
 
-    await this.storage.updateJobStatus(jobId, newStatus)
+    // update the job
+    const updatedJob = await db.update(jobs).set({
+      status: newStatus.status,
+      progress: newStatus.progress,
+      completedCalls: newStatus.completedCalls,
+      failedCalls: newStatus.failedCalls,
+      failedNumbers: newStatus.failedNumbers
+    }).where(eq(jobs.id, jobId))
+
+    return updatedJob;
+  }
+
+  private async sendToQueue(message: CallMessage, options?: { delay?: number }) {
+    // Update the queue item if it already exists
+    if(message.id) {
+      message.status = "pending";
+      message.delay = options?.delay || 0;
+      await this.updateQueue(message)
+      return;
+    }
+
+    // For new queue item
+    const db = useDrizzle();
+    await db.insert(jobQueue).values({
+      jobId: message.jobId,
+      phoneNumber: message.phoneNumber,
+      assistantId: message.assistantId,
+      phoneNumberId: message.phoneNumberId,
+      name: message.name,
+      retryCount: message.retryCount,
+      priority: message.priority,
+      id: crypto.randomUUID(),
+      delay: options?.delay || 0,
+      status: "pending",
+      scheduledAt: message.scheduledAt,
+      vapiId: null,
+      selectedTimeWindow: JSON.stringify(message.selectedTimeWindow)
+    })
+  }
+
+
+  private async updateQueue(message: CallMessage) {
+    const db = useDrizzle();
+    await db.update(jobQueue).set({
+      status: message.status as "pending" | "completed" | "failed" | "running" | undefined || "pending",
+      delay: message.delay || 0,
+      vapiId: message.vapiId || null,
+      scheduledAt: message.scheduledAt || null
+    }).where(eq(jobQueue.id, message.id as string))
   }
 }

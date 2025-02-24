@@ -13,6 +13,7 @@ export const CallStatus = {
 export interface ScheduledCall {
   id: string
   phone: string
+  name: string
   estimatedDuration: number
   status: CallStatus
   tag?: 'Accepted' | 'Rejected' | 'Busy'
@@ -112,6 +113,7 @@ export const useCallScheduler = () => {
       const mockCall = {
         id: crypto.randomUUID(),
         phone: generatePhoneNumber(),
+        name: `John Doe ${i + 1}`,
         estimatedDuration: Math.floor(Math.random() * (max - min + 1)) + min,
         status: CallStatus.Queued,
         scheduledTime: timeSlots[i],
@@ -141,6 +143,7 @@ export const useCallScheduler = () => {
         const result = await $fetch('/api/call', {
           method: 'POST',
           body: {
+            simulate: window.location.hostname === 'localhost',
             phoneNumber: call.phone,
             assistantId: selectedAssistant.value,
             phoneNumberId: selectedNumber.value

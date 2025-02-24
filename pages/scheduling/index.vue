@@ -4,6 +4,12 @@
       <div class="mb-6">
         <h1 class="text-2xl font-bold">Job Management</h1>
         <p class="text-gray-500">Create and manage scheduled jobs</p>
+
+        <!-- <a href="/scheduling/jobs" class="inline-block">
+          <UButton icon="i-lucide-plus" color="success">
+            Schedule Calling Job
+          </UButton>
+        </a> -->
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -17,15 +23,26 @@
               </UButton>
             </div>
           </template>
-          <UCalendar v-model="state.selectedDate" :events="calendarEvents" class="w-full" @change="handleDateChange" />
+          <div class="keyreply-calendar">
+            <UCalendar 
+              v-model="state.selectedDate" 
+              :events="calendarEvents" 
+              :is-date-disabled="isDateDisabled"
+              class="w-full" 
+              @change="handleDateChange" 
+          /></div>
         </UCard>
 
         <!-- Job List Section -->
         <UCard class="lg:col-span-1">
           <template #header>
             <div class="flex items-center justify-between">
-              <h2 class="text-lg font-semibold">Jobs</h2>
-              <USelect v-model="state.statusFilter" :items="statusOptions" placeholder="All Status" size="sm" />
+              <h2 class="text-lg font-semibold hover:underline hover:text-blue-500">
+                <a href="/scheduling/jobs">
+                  Jobs
+                </a>
+              </h2>
+              <USelect v-model="jobState.selectedStatus" :items="statusOptions" placeholder="All Status" size="sm"  class="min-w-[100px]"/>
             </div>
           </template>
 
@@ -42,7 +59,7 @@
               </div>
 
               <div class="flex items-center gap-2 mb-2">
-                <UProgress :value="job.progress" :color="getStatusColor(job.status)" size="xs" class="flex-1" />
+                <UProgress :value="job.progress" :color="getStatusColor(job.status)" size="xs" class="flex-1" :animation="job.status === 'completed' ? 'pulse' : 'carousel'"/>
                 <span class="text-sm text-gray-600">{{ job.progress }}%</span>
               </div>
 
@@ -50,14 +67,14 @@
                 <span class="text-sm text-gray-600">{{ job.completedCalls }}/{{ job.totalCalls }} calls</span>
                 <div class="flex gap-1">
                   <UButton v-if="job.status === 'running'" color="warning" variant="soft" icon="i-lucide-pause"
-                    size="xs" @click="pauseJob(job.id)" :loading="job.id === state.loadingJobId" />
+                    size="xs" @click="pauseJob(job.id)" :loading="job.id === jobState.loadingJobId" />
                   <UButton v-if="job.status === 'paused'" color="success" variant="soft" icon="i-lucide-play" size="xs"
-                    @click="resumeJob(job.id)" :loading="job.id === state.loadingJobId" />
+                    @click="resumeJob(job.id)" :loading="job.id === jobState.loadingJobId" />
                   <UButton v-if="['running', 'paused'].includes(job.status)" color="error" variant="soft"
-                    icon="i-lucide-stop" size="xs" @click="stopJob(job.id)" :loading="job.id === state.loadingJobId" />
-                  <UDropdown :items="getJobActions(job)" :popper="{ placement: 'bottom-end' }">
+                    icon="i-lucide-stop" size="xs" @click="stopJob(job.id)" :loading="job.id === jobState.loadingJobId" />
+                  <UDropdownMenu :items="getJobActions(job)" :popper="{ placement: 'bottom-end' }" class="text-black">
                     <UButton color="gray" variant="ghost" icon="i-lucide-more-vertical" size="xs" />
-                  </UDropdown>
+                  </UDropdownMenu>
                 </div>
               </div>
             </div>
@@ -65,31 +82,52 @@
         </UCard>
       </div>
     </UContainer>
+
+    <JobDetailsSlideover />
   </div>
 </template>
 
 <script setup lang="ts">
-import { CalendarDate } from '@internationalized/date'
-import type { Job } from "@/composables/useJobState"
+import { ref, computed, watch } from 'vue'
+import { CalendarDate, today } from '@internationalized/date'
+import type { Matcher } from '#ui/types'
+import { useJobState } from '@/composables/useJobState'
+import type { Job } from '@/composables/useJobState'
+import { useState } from '#app'
 import SchedulingSlideover from '~/components/SchedulingSlideover.vue'
-
+import JobDetailsSlideover from '~/components/JobDetailsSlideover.vue'
 const slideover = useSlideover()
 
 const openSlideover = () => {
-  slideover.open(SchedulingSlideover)
+  slideover.open(SchedulingSlideover, {
+    selectedDate: state.value.selectedDate
+  })
 }
 
-const { startJob, pauseJob, resumeJob, stopJob } = useJobState()
+const { jobState, startJob, pauseJob, resumeJob, stopJob, getJobs, deleteJob } = useJobState()
+const { confirm } = useConfirm()
+const toast = useToast()
+
 
 const currentDate = new Date()
+const currentDateCalendar = new CalendarDate(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate())
+const selectedDate = ref(currentDateCalendar)
+const showQuickView = ref(false)
+const quickViewJob = ref<Job | null>(null)
+
 
 const state = useState('scheduling', () => ({
   jobs: [] as Job[],
   statusFilter: '',
-  selectedDate: new CalendarDate(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate()),
+  selectedDate: currentDateCalendar,
   loadingJobId: null as string | null,
 }))
 
+
+// Update jobState when selectedDate changes
+watch(selectedDate, (newDate) => {
+  jobState.value.selectedDate = new Date(newDate.year, newDate.month - 1, newDate.day)
+})
 const statusOptions = [
   { label: 'All', value: null },
   { label: 'Running', value: 'running' },
@@ -99,7 +137,7 @@ const statusOptions = [
 ]
 
 const calendarEvents = computed(() =>
-  state.value.jobs.map(job => ({
+  jobState.value.jobs.map(job => ({
     date: job.schedule,
     title: job.name,
     color: getStatusColor(job.status)
@@ -107,9 +145,9 @@ const calendarEvents = computed(() =>
 )
 
 const filteredJobs = computed(() => {
-  let jobs = state.value.jobs
-  if (state.value.statusFilter) {
-    jobs = jobs.filter(job => job.status === state.value.statusFilter)
+  let jobs = [...jobState.value.jobs]
+  if (jobState.value.selectedStatus) {
+    jobs = jobs.filter(job => job.status === jobState.value.selectedStatus)
   }
   return jobs
 })
@@ -119,6 +157,7 @@ function getStatusColor(status: string): string {
     case 'running': return 'success'
     case 'paused': return 'warning'
     case 'failed': return 'error'
+    case 'completed': return 'success'
     default: return 'neutral'
   }
 }
@@ -127,7 +166,7 @@ function formatDate(date: Date): string {
   return new Intl.DateTimeFormat('en-US', {
     dateStyle: 'medium',
     timeStyle: 'short'
-  }).format(date)
+  }).format(new Date(date))
 }
 
 function getJobActions(job: Job) {
@@ -135,23 +174,25 @@ function getJobActions(job: Job) {
     {
       label: 'View Details',
       icon: 'i-lucide-info',
-      click: () => showJobDetails(job)
+      onSelect: () => showJobDetails(job)
     },
     {
       label: 'Delete',
       icon: 'i-lucide-trash',
-      click: () => deleteJob(job.id)
+      onSelect: () => handleDeleteJob(job.id)
     }
   ]
 }
-
 function handleDateChange(date: CalendarDate) {
-  state.value.selectedDate = date
-  // Fetch jobs for the selected date
+  selectedDate.value = date
+  // Update jobState.selectedDate is handled by the watcher
 }
 
 function showJobDetails(job: Job) {
-  // Implement job details view
+  quickViewJob.value = job
+  slideover.open(JobDetailsSlideover, {
+    jobId: quickViewJob.value.id
+  })
 }
 
 function handleFileUpload(event: Event) {
@@ -160,4 +201,46 @@ function handleFileUpload(event: Event) {
     state.value.contacts = file
   }
 }
+
+async function handleDeleteJob(jobId: string) {
+  const confirming = await confirm("Are you sure you want to delete this job?");
+  if (confirming) {
+    const response = await deleteJob(jobId);
+    if (response.success) {
+      toast.add({
+        title: 'Success',
+        description: response.message,
+        color: 'success'
+      })
+    } else {
+      toast.add({
+        title: 'Error',
+        description: response.message,
+        color: 'error'
+      })
+    }
+  } else {
+    console.log('Canceled');
+  }
+}
+
+onMounted(async () => {
+  const { jobs } = await getJobs()
+  state.value.jobs = jobs
+
+})
 </script>
+
+
+<style>
+ .keyreply-calendar th {
+  text-align: center;
+ }
+
+ .keyreply-calendar td {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ }
+</style>

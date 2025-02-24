@@ -22,6 +22,7 @@ a[aria-label="Nuxt UI Pro"] {
 
 <script setup lang="ts">
 import { availableLocales, getLocaleIcon } from '~/i18n/config'
+import { useSettingStore } from '~/stores/useSettingStore';
 
 const { locale, locales, setLocale, t } = useI18n()
 const { status, signOut, session } = useAuth()
@@ -40,10 +41,13 @@ const availableLocaleItems = computed(() =>
     }))
 )
 
+const settingStore = useSettingStore();
+
 // Locale dropdown
 const localeDropdown = computed(() => {
     const currentLocale = locales.value?.find(l => l.code === locale.value)
     return {
+        key: null,
         label: currentLocale?.name || t('language'),
         icon: getLocaleIcon(currentLocale?.code || 'en'),
         children: availableLocaleItems.value
@@ -51,189 +55,278 @@ const localeDropdown = computed(() => {
 })
 
 // Navigation items
+const moduleSettings = ref<any[]>([]);
+
 const items = computed(() => [
-    {
-        label: t('home'),
-        icon: 'i-lucide-home',
-        to: localeRoute('/')?.path
-    },
-    {
-        label: t('calls'),
-        icon: 'i-lucide-phone',
-        description: t('manage-calls'),
-        to: localeRoute('/calls')?.path
-    },
-    {
-        label: t('assistants'),
-        icon: 'i-lucide-bot',
-        description: t('manage-assistants'),
-        to: localeRoute('/assistants')?.path
-    },
-    {
-        label: t('analytics'),
-        icon: 'i-lucide-line-chart',
-        description: t('review-statistics'),
-        to: localeRoute('/analytics')?.path
-    },
-    {
-        label: t('scheduling'),
+  {
+    key: null,
+    label: t('home'),
+    icon: 'i-lucide-home',
+    to: localeRoute('/')?.path
+  },
+  {
+    key: 'calls',
+    label: t('calls'),
+    icon: 'i-lucide-phone',
+    description: t('manage-calls'),
+    to: localeRoute('/calls')?.path
+  },
+  {
+    key: 'assistants',
+    label: t('assistants'),
+    icon: 'i-lucide-bot',
+    description: t('manage-assistants'),
+    to: localeRoute('/assistants')?.path
+  },
+  {
+    key: 'analytics',
+    label: t('analytics'),
+    icon: 'i-lucide-line-chart',
+    description: t('review-statistics'),
+    to: localeRoute('/analytics')?.path
+  },
+  {
+    key: 'scheduling',
+    label: t('scheduling'),
+    icon: 'i-lucide-calendar',
+    description: t('manage-schedule'),
+    children: [
+      {
+        key: 'scheduling-jobs',
+        label: t('jobs'),
+        icon: 'i-lucide-briefcase',
+        description: t('view-schedule'),
+        to: localeRoute('/scheduling/jobs')?.path
+      },
+      {
+        key: 'scheduling-jobs',
+        label: t('schedule-job'),
         icon: 'i-lucide-calendar',
-        description: t('manage-schedule'),
-        children: [
-            {
-                label: 'Jobs',
-                icon: 'i-lucide-briefcase',
-                description: 'Manage scheduled jobs',
-                to: localeRoute('/scheduling')?.path
-            },
-            {
-                label: 'Reports',
-                icon: 'i-lucide-bar-chart',
-                description: 'View job reports and analytics',
-                to: localeRoute('/scheduling/reports')?.path
-            },
-            {
-                label: 'Settings',
-                icon: 'i-lucide-settings',
-                description: 'Configure scheduling settings',
-                to: localeRoute('/scheduling/settings')?.path
-            }
-        ]
-    },
-    {
-        label: 'Phone Numbers',
-        icon: 'i-lucide-phone',
-        description: 'Manage phone numbers',
-        to: localeRoute('/numbers')?.path
-    },
-    {
-        label: 'Demo',
-        icon: 'i-lucide-layout-template',
-        description: 'View demo pages',
-        children: [
-            {
-                label: 'Translation',
-                icon: 'i-lucide-languages',
-                description: 'Translation demo',
-                to: localeRoute('/demo/translation')?.path
-            },
-            {
-                label: 'Patient Intake',
-                icon: 'i-lucide-clipboard-list',
-                description: 'Patient intake form demo',
-                to: localeRoute('/demo/patient-intake-form')?.path
-            },
-            {
-                label: 'SMS',
-                icon: 'i-lucide-message-square',
-                description: 'SMS sender demo',
-                to: localeRoute('/demo/sms')?.path
-            },
-            {
-                label: 'Location Search',
-                icon: 'i-lucide-map-pin',
-                description: 'Clinic location search demo',
-                to: localeRoute('/demo/location')?.path
-            },
-            {
-              label: 'OCR Demo',
-              icon: 'i-lucide-file-scan',
-              to: localeRoute('/ocr')
-            },
-            {
-              label: 'RPA Demo',
-              icon: 'i-lucide-cpu',
-              description: 'RPA',
-              to: localeRoute('/demo/rpa')?.path
-            },
-            {
-              label: 'Workflow Demo',
-              icon: 'i-lucide-workflow',
-              description: 'Home Sleep Study Workflow',
-              to: localeRoute('/demo/workflow')?.path
-            },
-            {
-              label: 'Report Assistant',
-              icon: 'i-lucide-table',
-              description: 'Ask questions about your reports',
-              to: localeRoute('/demo/report-assistant')?.path
-            },
-        ]
-    },
-    {
-        label: t('support'),
-        icon: 'i-lucide-help-circle',
-        children: [
-            {
-                label: t('help-center'),
-                icon: 'i-lucide-life-buoy',
-                description: t('get-help'),
-                to: localeRoute('/help')?.path
-            },
-            {
-                label: t('settings'),
-                icon: 'i-lucide-settings',
-                description: t('configure-preferences'),
-                to: localeRoute('/settings')?.path
-            },
-            {
-                label: t('view-api'),
-                icon: 'i-lucide-file-json',
-                to: localeRoute('/dev')?.path
-            }
-        ]
-    },
-    // Profile/Auth menu
-    {
-        label: session.value?.user?.name || t('profile'),
-        icon: session.value?.user ? 'i-lucide-user' : 'i-lucide-key',
-        children: session.value?.user ? [
-            {
-                label: session.value.user.email,
-                icon: 'i-lucide-mail',
-                disabled: true
-            },
-            {
-                label: t('settings'),
-                icon: 'i-lucide-settings',
-                to: localeRoute('/settings')?.path
-            },
-            {
-                label: t('logout'),
-                icon: 'i-lucide-log-out',
-                description: t('sign-out'),
-                onClick: () => signOut({ redirect: true, callbackUrl: '/auth/login' })
-            }
-        ] : [
-            {
-                label: t('login'),
-                icon: 'i-lucide-log-in',
-                description: t('sign-in'),
-                to: localeRoute('/auth/login')?.path
-            }
-        ]
-    },
-    localeDropdown.value,
-    {
-        slot: 'color-mode',
-    }
+        description: t('schedule-job-description'),
+        to: localeRoute('/scheduling')?.path
+      },
+      {
+        key: 'scheduling-reports',
+        label: t('reports'),
+        icon: 'i-lucide-bar-chart',
+        description: t('view-job-reports'),
+        to: localeRoute('/scheduling/reports')?.path
+      },
+      {
+        key: 'scheduling-settings',
+        label: t('settings'),
+        icon: 'i-lucide-settings',
+        description: t('configure-scheduling-settings'),
+        to: localeRoute('/scheduling/settings')?.path
+      }
+    ]
+  },
+  {
+    key: 'phone-numbers',
+    label: t('phoneNumbers'),
+    icon: 'i-lucide-phone',
+    description: t('manage-phone-numbers'),
+    to: localeRoute('/numbers')?.path
+  },
+  {
+    key: 'demo',
+    label: t('demos'),
+    icon: 'i-lucide-layout-template',
+    description: t('view-demo'),
+    children: [
+      {
+        key: 'demo-translation',
+        label: t('translation-demo'),
+        icon: 'i-lucide-languages',
+        description: t('translation-demo-description'),
+        to: localeRoute('/demo/translation')?.path
+      },
+      {
+        key: 'demo-patient-intake',
+        label: t('patient-intake-demo'),
+        icon: 'i-lucide-clipboard-list',
+        description: t('patient-intake-demo-description'),
+        to: localeRoute('/demo/patient-intake-form')?.path
+      },
+      {
+        key: 'demo-sms',
+        label: t('sms-demo'),
+        icon: 'i-lucide-message-square',
+        description: t('sms-demo-description'),
+        to: localeRoute('/demo/sms')?.path
+      },
+      {
+        key: 'demo-location-search',
+        label: t('location-search-demo'),
+        icon: 'i-lucide-map-pin',
+        description: t('location-search-demo-description'),
+        to: localeRoute('/demo/location')?.path
+      },
+      {
+        key: 'demo-ocr',
+        label: t('ocr-demo'),
+        icon: 'i-lucide-file-scan',
+        to: localeRoute('/ocr')
+      },
+      {
+        key: 'demo-rpa',
+        label: t('rpa-demo'),
+        icon: 'i-lucide-cpu',
+        description: t('rpa-demo-description'),
+        to: localeRoute('/demo/rpa')?.path
+      },
+      {
+        key: 'demo-workflow',
+        label: t('workflow-demo'),
+        icon: 'i-lucide-workflow',
+        description: t('workflow-demo-description'),
+        to: localeRoute('/demo/workflow')?.path
+      },
+      {
+        key: 'demo-report-assistant',
+        label: t('report-assistant'),
+        icon: 'i-lucide-table',
+        description: t('report-assistant-description'),
+        to: localeRoute('/demo/report-assistant')?.path
+      },
+      {
+        key: 'demo-claims-assistant',
+        label: t('claims-assistant'),
+        icon: 'i-lucide-table',
+        description: t('claims-assistant-description'),
+        to: localeRoute('/demo/claims-assistant')?.path
+      }
+    ]
+  },
+  {
+    key: 'support',
+    label: t('support'),
+    icon: 'i-lucide-help-circle',
+    children: [
+      {
+        key: 'support-help-center',
+        label: t('help-center'),
+        icon: 'i-lucide-life-buoy',
+        description: t('get-help'),
+        to: localeRoute('/help')?.path
+      },
+      {
+        key: 'support-settings',
+        label: t('settings'),
+        icon: 'i-lucide-settings',
+        description: t('configure-preferences'),
+        to: localeRoute('/settings')?.path
+      },
+      {
+        key: 'support-view-api',
+        label: t('view-api'),
+        icon: 'i-lucide-file-json',
+        to: localeRoute('/dev')?.path
+      }
+    ]
+  },
+  // Profile/Auth menu
+  {
+    key: null,
+    label: session.value?.user?.name || t('profile'),
+    icon: session.value?.user ? 'i-lucide-user' : 'i-lucide-key',
+    children: session.value?.user ? [
+      {
+        key: null,
+        label: session.value.user.email,
+        icon: 'i-lucide-mail',
+        disabled: true
+      },
+      {
+        key: null,
+        label: t('settings'),
+        icon: 'i-lucide-settings',
+        to: localeRoute('/settings')?.path
+      },
+      {
+        key: null,
+        label: t('logout'),
+        icon: 'i-lucide-log-out',
+        description: t('sign-out'),
+        onSelect: () => signOut({ redirect: true, callbackUrl: '/auth/login' }),
+        class: "cursor-pointer",
+      }
+    ] : [
+      {
+        key: null,
+        label: t('login'),
+        icon: 'i-lucide-log-in',
+        description: t('sign-in'),
+        to: localeRoute('/auth/login')?.path
+      }
+    ]
+  },
+  localeDropdown.value,
+  {
+    key: null,
+    slot: 'color-mode',
+  }
 ])
+
+const filteredItems = computed(() => items.value.reduce((acc: any[], item) => {
+  if (moduleSettings.value.length === 0 || !item.key) {
+    return [...acc, item];
+  }
+
+  const mdl = moduleSettings.value.find((m: any) => m.key == item.key)
+  if (!mdl || !mdl.enable) {
+    return acc;
+  }
+  if (!item.children || !mdl.sub) {
+    return [...acc, item];
+  }
+
+  const filteredChildren = item.children.filter(child => {
+    const sub = mdl.sub?.find((s: any) => s.key == child.key)
+    return sub && sub.enable
+  })
+
+  // if no child is enabled, no need to return the item;
+  if (filteredChildren.length > 0) {
+    const newItem = { ...item, children: filteredChildren } as any;
+    return [...acc, newItem];
+  }
+
+  return acc
+}, []))
+async function fetchModuleSettings() {
+  const response = await fetch('/api/settings/module');
+  const data = await response.json();
+
+  if (data.success) {
+    moduleSettings.value = data.modules;
+  } else {
+    moduleSettings.value = [];
+  }
+
+  settingStore.finishReload()
+}
+
+watch(() => settingStore.reload, (newValue, oldValue) => {
+  if (newValue) {
+    fetchModuleSettings();
+  }
+});
 
 onMounted(() => {
   const browserLocale = locale.value;
   const supportedLocales = ['ar', 'en', 'id', 'vi', 'ja', 'ko', 'ms', 'th', 'zh_hans', 'zh_hant']
+  const baseLocale = browserLocale.split('-')[0]
   
   // Special case for Chinese
   if (browserLocale.startsWith('zh')) {
     locale.value = browserLocale.includes('hant') ? 'zh_hant' : 'zh_hans'
-    return
-  }
-
-  // For other languages, use the base language code
-  const baseLocale = browserLocale.split('-')[0]
-  if (supportedLocales.includes(baseLocale)) {
+  } else if (baseLocale && supportedLocales.includes(baseLocale)) {
+    // For other languages, use the base language code
     locale.value = baseLocale
   }
+
+  fetchModuleSettings()
 })
 
 useHead({
@@ -247,21 +340,24 @@ useHead({
   ],
   htmlAttrs: {
     lang: 'en'
-  }
+  },
+  title: 'KeyReply Voice'
 })
 </script>
 
 <template>
   <UApp :locale="locales[locale as string]">
-    <UHeader>
-      <template #left></template>
-      <template #right>
-        <UColorModeButton />
-      </template>
-
-      <UNavigationMenu orientation="horizontal" variant="pill" arrow highlight :items="items" class="z-50">
-      </UNavigationMenu>
-    </UHeader>
+    <template v-if="!$route.path.startsWith('/auth')">
+      <UHeader>
+        <template #left></template>
+        <template #right>
+          <UColorModeButton />
+        </template>
+        <UNavigationMenu orientation="horizontal" variant="pill" arrow highlight :items="filteredItems" class="z-50">
+        </UNavigationMenu>
+      </UHeader>
+    </template>
+    
     <NuxtLoadingIndicator />
     <UMain>
       <NuxtLayout>
@@ -272,6 +368,8 @@ useHead({
       </NuxtLayout>
     </UMain>
 
-    <UFooter />
+    <UFooter/>
+
+    <ConfirmDialog />
   </UApp>
 </template>

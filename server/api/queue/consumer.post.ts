@@ -8,8 +8,8 @@ export default defineEventHandler(async (event) => {
   // You should implement proper authentication here
   
   const queueHandler = new CallQueueHandler(
-    event.context.cloudflare.queue,
-    config.vapiApiKey
+    config.vapiApiKey,
+    event.context.cloudflare.queue
   )
 
   try {

@@ -9,7 +9,10 @@
     "dev": "nuxt dev",
     "preview": "nuxt preview",
     "cleanup": "nuxt cleanup",
-    "upgrade": "npx nuxi@latest upgrade --force"
+    "upgrade": "npx nuxi@latest upgrade --force",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@auth/core": "0.37.4",
@@ -27,6 +30,7 @@
     "@nuxthub/core": "latest",
     "@nuxtjs/i18n": "latest",
     "@nuxtjs/mdc": "latest",
+    "@pinia/nuxt": "^0.10.1",
     "@sendgrid/mail": "^8.1.4",
     "@vapi-ai/server-sdk": "^0.1.0",
     "@vueuse/core": "^12.4.0",
