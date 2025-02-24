@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex items-center justify-between px-4 py-3.5 border-b border-[var(--ui-border-accented)]">
+    <div v-if="!props.compact" class="flex items-center justify-between px-4 py-3.5 border-b border-[var(--ui-border-accented)]">
       <div class="flex items-center gap-4">
         <UInput :model-value="table?.tableApi?.getColumn('assistant')?.getFilterValue() as string" class="w-64"
           placeholder="Filter by assistant..." icon="i-lucide-search"
@@ -345,87 +345,84 @@ const columns = computed(() => {
     }
   ]
 
-  // Only add these columns if not in compact mode
-  if (!props.compact) {
-    baseColumns.unshift({
-      accessorKey: "id",
-      header: () => t('table.id'),
-      cell: (row) => row.getValue("id").slice(0, 6)
-    })
+  baseColumns.unshift({
+    accessorKey: "id",
+    header: () => t('table.id'),
+    cell: (row) => row.getValue("id").slice(0, 6)
+  })
 
-    baseColumns.push({
-      accessorKey: "status",
-      header: () => t('table.status'),
-      cell: (row) => {
-        return h(UBadge, { class: 'capitalize', variant: 'subtle' }, () =>
-          row.getValue('status')
-        )
-      }
-    })
+  baseColumns.push({
+    accessorKey: "status",
+    header: () => t('table.status'),
+    cell: (row) => {
+      return h(UBadge, { class: 'capitalize', variant: 'subtle' }, () =>
+        row.getValue('status')
+      )
+    }
+  })
 
-    baseColumns.push({
-      accessorKey: "endedReason",
-      header: () => "Ended Reason",
-      cell: (row) => {
-        const reason = row.getValue('endedReason')
-        if (!reason) return ''
-        
-        // Format the reason string
-        const formatted = reason
-          .split('-')
-          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-          .join(' ')
-        
-        return h(UBadge, { 
-          class: 'capitalize', 
-          variant: 'subtle',
-          color: 'warning'
-        }, () => formatted)
-      }
-    })
+  baseColumns.push({
+    accessorKey: "endedReason",
+    header: () => "Ended Reason",
+    cell: (row) => {
+      const reason = row.getValue('endedReason')
+      if (!reason) return ''
+      
+      // Format the reason string
+      const formatted = reason
+        .split('-')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ')
+      
+      return h(UBadge, { 
+        class: 'capitalize', 
+        variant: 'subtle',
+        color: 'warning'
+      }, () => formatted)
+    }
+  })
 
-    baseColumns.push({
-      accessorKey: "tags",
-      header: () => "Tags",
-      cell: (row) => {
-        const tags = row.getValue('tags');
-        return h(
-          'div', 
-          { class: 'flex flex-wrap gap-2' }, 
-          tags.map((tag: string) => h(
-            UBadge, 
-            { class: 'capitalize', variant: 'subtle', key: tag, color: 'info' }, 
-            () => tag
-          ))
-        );
-      }
-    })
+  baseColumns.push({
+    accessorKey: "tags",
+    header: () => "Tags",
+    cell: (row) => {
+      const tags = row.getValue('tags');
+      return h(
+        'div', 
+        { class: 'flex flex-wrap gap-2' }, 
+        tags.map((tag: string) => h(
+          UBadge, 
+          { class: 'capitalize', variant: 'subtle', key: tag, color: 'info' }, 
+          () => tag
+        ))
+      );
+    }
+  })
 
-    baseColumns.push({
-      accessorKey: "id",
-      header: () => t('table.actions'),
-      cell: (row) => {
-        return h('div', { class: 'flex gap-2' }, [
-          h(UButton, {
-            icon: 'i-lucide-file-text',
-            label: 'View Transcript',
-            size: 'sm',
-            color: 'primary',
-            variant: 'ghost',
-            onClick: () => {
-              if (currentPlayingId.value) {
-                togglePlayAudio('', currentPlayingId.value)
-              }
-              const id = row.getValue('id');
-              const call = props.data.find(call => call.id === id)
-              selectedCall.value = call
-              slideover.open(TranscriptSlideover)
+  baseColumns.push({
+    accessorKey: "id",
+    header: () => t('table.actions'),
+    cell: (row) => {
+      return h('div', { class: 'flex gap-2' }, [
+        h(UButton, {
+          icon: 'i-lucide-file-text',
+          label: 'View Transcript',
+          size: 'sm',
+          color: 'primary',
+          variant: 'ghost',
+          onClick: () => {
+            if (currentPlayingId.value) {
+              togglePlayAudio('', currentPlayingId.value)
             }
-          })
-        ])
-      }
-    })
-  }
+            const id = row.getValue('id');
+            const call = props.data.find(call => call.id === id)
+            selectedCall.value = call
+            slideover.open(TranscriptSlideover)
+          }
+        })
+      ])
+    }
+  })
 
   return baseColumns
 })
