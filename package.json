@@ -24,7 +24,7 @@
     "@img/sharp-libvips-dev": "^1.0.6",
     "@img/sharp-wasm32": "^0.33.5",
     "@internationalized/date": "^3.7.0",
-    "@nuxt/content": "next",
+    "@nuxt/content": "latest",
     "@nuxt/icon": "latest",
     "@nuxt/ui-pro": "3.0.0-alpha.12",
     "@nuxthub/core": "latest",
