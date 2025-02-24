@@ -21,6 +21,18 @@ export const useCalls = () => {
       const newCalls = data?.value || []
       
       const unfilteredResults = [...calls.value, ...newCalls]
+
+      hasMore.value = newCalls.length >= pageSize
+
+      if(!startDate) {
+        calls.value = unfilteredResults.filter((call, index, self) => 
+          index === self.findIndex((t) => (
+            t.id === call.id
+          ))
+        )
+        return;
+      }
+
       calls.value = unfilteredResults.filter((call, index, self) => 
         index === self.findIndex((t) => (
           t.id === call.id && 
@@ -28,7 +40,6 @@ export const useCalls = () => {
         ))
       )
       
-      hasMore.value = newCalls.length >= pageSize
     } finally {
       isLoading.value = false
     }
