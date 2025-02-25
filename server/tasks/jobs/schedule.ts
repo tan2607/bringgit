@@ -18,7 +18,6 @@ export default defineTask({
 				lt(jobQueue.scheduledAt, new Date(today.getTime() + 24 * 60 * 60 * 1000).toISOString()) // Less than start of next day
 			),
 			orderBy: [asc(jobQueue.createdAt)],
-			limit: 500,
 		});
 
 		console.log(`[Schedule] Scheduling ${jobQueues.length} jobs`);
