@@ -8,7 +8,7 @@ This document outlines the process for preparing comprehensive background inform
 
 ## Document Generation Process
 
-### 1. Company Profile (`1.intro.md`)
+### 1. Company Profile (`intro.md`)
 - Use web search to gather company information including:
   - About the company
   - Core services and products
@@ -24,7 +24,7 @@ This document outlines the process for preparing comprehensive background inform
     * Communication formality norms
     * Local business etiquette
 
-### 2. FAQ Document (`2.faq.md`)
+### 2. FAQ Document (`faq.md`)
 - Generate comprehensive FAQ based on:
   - Common customer inquiries and pain points
   - Product/service-specific questions
@@ -36,7 +36,7 @@ This document outlines the process for preparing comprehensive background inform
   - Include 15-20 most common questions minimum
   - Add internal notes for complex scenarios
 
-### 3. Service Call Flow (`3.callflow.md`)
+### 3. Service Call Flow (`callflow.md`)
 - Document the company's primary service flows:
   - Customer interaction points and emotional states
   - Decision trees for common scenarios
@@ -46,7 +46,7 @@ This document outlines the process for preparing comprehensive background inform
   - Clear success/failure paths
   - Balance of open/closed questions (60/40 ratio)
 
-### 4. Agent Persona (`4.persona.md`)
+### 4. Agent Persona (`persona.md`)
 - Define the AI agent's personality:
   - Language style and tone variations
   - Cultural considerations and sensitivities
@@ -86,9 +86,6 @@ This document outlines the process for preparing comprehensive background inform
     * Culturally appropriate metaphors
 - Should not reply in numbered bullet points. use Firstly, secondly.... finally instead. 
 
-### 5. Product and Service Catalog (`5.catalog.md`)
-- Research and find the pricing information for the products and services.
-
 Conversation Naturalization Techniques:
 - Vary sentence length (mix short/long responses)
 - Use controlled informality where appropriate
@@ -101,11 +98,6 @@ Conversation Naturalization Techniques:
   - Avoid visual references ("as shown below" → "as I explain")
 - Add verbal acknowledgments ("I see", "Understood")
 - Provide clear next steps before transfers
-
-finally, run the following command to generate the final merged document:
-```bash
-cat *.md > merged.md
-```
 
 ## Reminder
 - This is a background research task; no programming or code generation required
