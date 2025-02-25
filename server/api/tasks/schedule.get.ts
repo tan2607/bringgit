@@ -1,4 +1,4 @@
-import { gte, lt } from 'drizzle-orm';
+import { gte, lt } from "drizzle-orm";
 import { jobQueue } from "~/server/database/schema";
 import { CallQueueHandler } from "~/server/utils/queue";
 
@@ -13,18 +13,24 @@ export default defineEventHandler(async (event) => {
 			where: and(
 				eq(jobQueue.status, "pending"),
 				gte(jobQueue.scheduledAt, today.toISOString()),
-				lt(jobQueue.scheduledAt, new Date(today.getTime() + 24 * 60 * 60 * 1000).toISOString()) // Less than start of next day
+				lt(jobQueue.scheduledAt, new Date(today.getTime() + 24 * 60 * 60 * 1000).toISOString()), // Less than start of next day
 			),
-			orderBy: [desc(jobQueue.createdAt)],
+			orderBy: [asc(jobQueue.createdAt)],
+			limit: 500,
 		});
-	
-	const config = useRuntimeConfig()
-		const queueHandler = new CallQueueHandler(
-			config.vapiApiKey,
-			event.context.cloudflare.queue
-		)
 
-		await queueHandler.processBatch(jobQueues);
+		const config = useRuntimeConfig();
+		const queueHandler = new CallQueueHandler(config.vapiApiKey, event.context.cloudflare.queue);
+
+		const batchSize = 100;
+		const batches = [];
+		for (let i = 0; i < jobQueues.length; i += batchSize) {
+			batches.push(jobQueues.slice(i, i + batchSize));
+		}
+
+		for (const batch of batches) {
+			await queueHandler.processBatch(batch);
+		}
 		return {
 			result: "success",
 			jobs: jobQueues,

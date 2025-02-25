@@ -57,8 +57,6 @@ export class Scheduler {
     const targetDateHour = targetDate.getHours()
     const { startTime, endTime } = this.config.businessHours
 
-    console.log({targetDateHour, startTime, endTime});
-    
     return targetDateHour >= parseInt(startTime) && targetDateHour <= parseInt(endTime)
   }
 
