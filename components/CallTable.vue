@@ -603,7 +603,6 @@ const quickViewColumns = computed(() => {
         header: () => t('table.actions'),
         cell: (row) => {
           const vapiId = row.getValue('vapiId')
-          console.log(vapiId);
           if(!vapiId) {
             return "N/A"
           }

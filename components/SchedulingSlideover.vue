@@ -102,7 +102,7 @@
             <div class="flex justify-end space-x-2 mt-4">
               <!-- handleCreateJob -->
               <UButton v-if="scheduledCalls.length && !isSimulating" color="primary"
-                :disabled="!selectedAssistant || !selectedNumber" @click="handleCreateJob">
+                :disabled="!selectedAssistant || !selectedNumber" @click="handleCreateJob" :loading="isLoadingCreateJob">
                 {{ !selectedAssistant || !selectedNumber ? 'Select Assistant & Phone Number' : 'Run Job' }}
               </UButton>
               <!-- <UButton v-if="scheduledCalls.length && !isSimulating" color="primary"
@@ -227,7 +227,7 @@ async function handleCreateJob() {
       }
     }
 
-
+    isLoadingCreateJob.value = true
     await createJob({
       name: state.jobName,
       assistantId: state.selectedAssistant,
@@ -243,6 +243,7 @@ async function handleCreateJob() {
       description: 'Job created successfully',
       color: 'success'
     })
+    isLoadingCreateJob.value = false
     await slideover.close()
     resetComponents()
   } catch (error) {
@@ -252,8 +253,10 @@ async function handleCreateJob() {
       description: 'Failed to create job',
       color: 'error'
     })
+    isLoadingCreateJob.value = false
   } finally {
     state.isSubmitting = false
+    isLoadingCreateJob.value = false
   }
 }
 
@@ -268,6 +271,7 @@ const isPaused = ref(false)
 const numberOfCalls = ref<number>(10)
 const completedCalls = ref(0)
 const totalCalls = ref(0)
+const isLoadingCreateJob = ref(false)
 
 const statusCounts = computed(() => ({
   queued: scheduledCalls.value.filter(call => call.status === CallStatus.Queued).length,
