@@ -115,9 +115,10 @@ export class VapiProvider {
       callParams.createdAtLe = params?.createdAtLe;
     }
 
-    const [calls, assistants] = await Promise.all([
+    const [calls, assistants, phoneNumbers] = await Promise.all([
       this.client.calls.list(callParams),
-      this.client.assistants.list()
+      this.client.assistants.list(),
+      this.client.phoneNumbers.list()
     ]);
 
     const calls_analytics = await this.client.analytics.get({
@@ -137,6 +138,7 @@ export class VapiProvider {
 
 
     const callResults = calls.map((call) => {
+      const phoneNumber = phoneNumbers.find((phoneNumber) => phoneNumber.id === call.phoneNumberId);
       const duration = (() => {
         const start = new Date(call.startedAt ?? new Date());
         const end = new Date(call.endedAt ?? new Date());
@@ -170,10 +172,10 @@ export class VapiProvider {
         structuredData,
         tags: tagList,
         assistantOverrides: call.assistantOverrides,
-        endedReason: call.endedReason
+        endedReason: call.endedReason,
+        botPhoneNumber: phoneNumber?.number || 'N/A'
       };
     }); 
-
 
     return  {
       calls: callResults,

@@ -282,6 +282,11 @@ const columns = computed(() => {
       cell: (row) => row.getValue("customer")?.number
     },
     {
+      accessorKey: "botPhoneNumber",
+      header: () => 'Bot Phone Number',
+      cell: (row) => row.getValue("botPhoneNumber")
+    },
+    {
       accessorKey: "assistantOverrides",
       header: () => 'Name',
       cell: (row) => {
@@ -456,6 +461,7 @@ const quickViewColumns = computed(() => {
     return h('div', { class: 'text-sm text-gray-500' }, row.original.name || "N/A")
   } },
   { accessorKey: 'phoneNumber', header: 'Phone Number' },
+  { accessorKey: 'botPhoneNumber', header: 'Bot Phone Number' },
   {
       accessorKey: "assistant",
       header: () => t('table.assistant'),
