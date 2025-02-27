@@ -120,6 +120,13 @@
       :assistant="selectedAssistant"
       @success="(message) => toast.add({ title: 'Success', description: message, color: 'success', icon: 'i-lucide-check-circle' })"
       @error="(message) => toast.add({ title: 'Error', description: message, color: 'error', icon: 'i-lucide-alert-circle' })" />
+
+    <!-- Pagination -->
+    <div class="flex items-center justify-center mt-4 gap-4">
+      <UButton :loading="isLoading" :disabled="page === 1 || isLoading" @click="$emit('load-first')">First</UButton>
+      <UButton :loading="isLoading" :disabled="page === 1 || isLoading" @click="handlePreviousPage">Previous</UButton>
+      <UButton :loading="isLoading" :disabled="page === totalPages || isLoading" @click="handleNextPage">Next</UButton>
+    </div>
   </div>
 </template>
 
@@ -180,10 +187,26 @@ const props = defineProps({
   exportButton: {
     type: Boolean,
     default: false
+  },
+  totalCalls: {
+    type: Number,
+    default: 0
+  },
+  pageSize: {
+    type: Number,
+    default: 1000
+  },
+  page: {
+    type: Number,
+    default: 1
+  },
+  totalPages: {
+    type: Number,
+    default: 0
   }
 })
 
-defineEmits(['export', 'load-more'])
+const emit = defineEmits(['export', 'load-more', 'load-previous', 'load-first'])
 
 const { isLoading, currentPlayingId, togglePlayAudio, selectedCall, hasMore } = useCalls()
 
@@ -659,5 +682,16 @@ const filteredData = computed(() => {
     return props.data.filter(call => call.tags.includes(`${selectedCategory.value}: ${selectedValue.value}`))
   }
 })
+
+
+const handleNextPage = async () => {
+  emit('load-more')
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+const handlePreviousPage = async () => {
+  emit('load-previous')
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
 
 </script>
