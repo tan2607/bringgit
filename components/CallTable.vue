@@ -122,7 +122,7 @@
       @error="(message) => toast.add({ title: 'Error', description: message, color: 'error', icon: 'i-lucide-alert-circle' })" />
 
     <!-- Pagination -->
-    <div class="flex items-center justify-center mt-4 gap-4">
+    <div v-if="!props.compact" class="flex items-center justify-center mt-4 gap-4">
       <UButton :loading="isLoading" :disabled="page === 1 || isLoading" @click="$emit('load-first')">First</UButton>
       <UButton :loading="isLoading" :disabled="page === 1 || isLoading" @click="handlePreviousPage">Previous</UButton>
       <UButton :loading="isLoading" :disabled="page === totalPages || isLoading" @click="handleNextPage">Next</UButton>
