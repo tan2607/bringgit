@@ -1,13 +1,22 @@
 <template>
   <div>
-    <div v-if="!props.compact" class="flex items-center justify-between px-4 py-3.5 border-b border-[var(--ui-border-accented)]">
+    <div v-if="!props.compact"
+      class="flex items-center justify-between px-4 py-3.5 border-b border-[var(--ui-border-accented)]">
       <div class="flex items-center gap-4">
         <UInput :model-value="table?.tableApi?.getColumn('assistant')?.getFilterValue() as string" class="w-64"
           placeholder="Filter by assistant..." icon="i-lucide-search"
           @update:model-value="table?.tableApi?.getColumn('assistant')?.setFilterValue($event)" />
-        <div class="flex flex-col gap-4 w-64">
-          <!-- Dropdown: Tags Filter -->
+        <div class="flex gap-4">
           <div class="relative">
+            <USelectMenu :resetSearchTermOnBlur="true" class="w-full min-w-[250px]" v-model="selectedBotPhoneNumber"
+              :items="botPhoneNumbers" label-key="name" placeholder="Filter by bot phone number...">
+              <template #trailing>
+                <UIcon name="i-lucide-x" class="w-5 h-5 cursor-pointer" @click="selectedBotPhoneNumber = null" />
+              </template>
+            </USelectMenu>
+          </div>
+          <!-- Dropdown: Tags Filter -->
+          <div class="relative w-auto">
             <UPopover v-model:open="shouldShowTagsFilter">
               <UButton color="neutral" variant="outline" trailing-icon="i-lucide-chevron-down">
                 Tags Filter
@@ -47,37 +56,22 @@
         <div class="text-sm text-gray-500 mr-2">
           {{ filteredData?.length || 0 }} data loaded
         </div>
-        <UButton
-          color="primary"
-          variant="soft"
-          :loading="isLoading"
-          :disabled="isLoading || !hasMore"
-          class="cursor-pointer"
-          @click="$emit('load-more')"
-        >
-            Load More
+        <UButton color="primary" variant="soft" :loading="isLoading" :disabled="isLoading || !hasMore"
+          class="cursor-pointer" @click="$emit('load-more')">
+          Load More
         </UButton>
-        <UButton
-          v-if="props.exportButton"
-          color="primary"
-          variant="soft"
-          :loading="props.isExporting"
-          :disabled="props.isLoadingTable || props.isExporting || !props.data?.length"
-          class="group cursor-pointer"
-          @click="$emit('export')"
-        >
+        <UButton v-if="props.exportButton" color="primary" variant="soft" :loading="props.isExporting"
+          :disabled="props.isLoadingTable || props.isExporting || !props.data?.length" class="group cursor-pointer"
+          @click="$emit('export')">
           <div class="flex items-center gap-2">
-            <UIcon
-              name="i-lucide-download"
-            />
-            {{ props.isExporting 
-              ? `Preparing Export... (${props.exportProgress} records)` 
-              : t('export') 
+            <UIcon name="i-lucide-download" />
+            {{ props.isExporting
+            ? `Preparing Export... (${props.exportProgress} records)`
+            : t('export')
             }}
           </div>
         </UButton>
-        <UDropdownMenu
-          :items="table?.tableApi
+        <UDropdownMenu :items="table?.tableApi
             ?.getAllColumns()
             .filter((column) => ['duration', 'status', 'tags'].includes(column.id))
             .map((column) => ({
@@ -90,15 +84,8 @@
               onSelect(e?: Event) {
                 e?.preventDefault()
               }
-            }))"
-          :content="{ align: 'end' }"
-        >
-          <UButton
-            label="Columns"
-            color="neutral"
-            variant="outline"
-            trailing-icon="i-lucide-chevron-down"
-          />
+            }))" :content="{ align: 'end' }">
+          <UButton label="Columns" color="neutral" variant="outline" trailing-icon="i-lucide-chevron-down" />
         </UDropdownMenu>
       </div>
     </div>
@@ -116,8 +103,7 @@
         </div>
       </template>
     </UTable>
-    <CallSlideover
-      :assistant="selectedAssistant"
+    <CallSlideover :assistant="selectedAssistant"
       @success="(message) => toast.add({ title: 'Success', description: message, color: 'success', icon: 'i-lucide-check-circle' })"
       @error="(message) => toast.add({ title: 'Error', description: message, color: 'error', icon: 'i-lucide-alert-circle' })" />
 
@@ -255,12 +241,17 @@ const categories = computed(() => {
 
 const selectedCategory = ref(null);
 const selectedValue = ref(null);
+const selectedBotPhoneNumber = ref(null);
 
 const filteredOptions = computed(() => {
   return uniqueTags.value
     .filter(tag => tag.startsWith(`${selectedCategory.value}:`))
     .map(tag => tag.split(": ")[1]); 
 });
+
+const botPhoneNumbers = computed(() => {
+  return [...new Set(props.data?.map(call => call.botPhoneNumber) || [])].sort()
+})
 
 
 
@@ -680,12 +671,18 @@ const handleChooseValue = (value: string) => {
 
 
 const filteredData = computed(() => {
+  let rawData = props.data;
+
+  if(selectedBotPhoneNumber.value) {
+    rawData = rawData.filter(call => call.botPhoneNumber === selectedBotPhoneNumber.value)
+  }
+
   if(!selectedCategory.value || !selectedValue.value) {
-    return props.data
+    return rawData
   } 
 
   if(selectedCategory.value && selectedValue.value) {
-    return props.data.filter(call => call.tags.includes(`${selectedCategory.value}: ${selectedValue.value}`))
+    return rawData.filter(call => call.tags.includes(`${selectedCategory.value}: ${selectedValue.value}`))
   }
 })
 
