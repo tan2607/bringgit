@@ -57,7 +57,7 @@ export class Scheduler {
     const targetDateHour = targetDate.getHours()
     const { startTime, endTime } = this.config.businessHours
 
-    return targetDateHour >= parseInt(startTime) && targetDateHour <= parseInt(endTime)
+    return targetDateHour >= parseInt(startTime) && targetDateHour < parseInt(endTime)
   }
 
   isBlackoutPeriod(date: Date): BlackoutPeriod | null {
@@ -124,6 +124,7 @@ export class Scheduler {
     reason?: string
   } {
     if (!this.isBusinessHours(date)) {
+      console.log('Outside business hours');
       return {
         isValid: false,
         reason: 'Outside business hours'
