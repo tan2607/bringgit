@@ -107,7 +107,7 @@ const items = computed(() => [
         to: localeRoute('/numbers')?.path
     },
     {
-        label: 'Demo',
+        label: 'Sandbox',
         icon: 'i-lucide-layout-template',
         description: 'View demo pages',
         children: [
@@ -138,7 +138,27 @@ const items = computed(() => [
             {
               label: 'OCR Demo',
               icon: 'i-lucide-file-scan',
-              to: localeRoute('/ocr')
+              to: localeRoute('/ocr')?.path
+            },
+            {
+              label: 'OCR Multi File Demo',
+              icon: 'i-lucide-file-scan',
+              to: localeRoute('/demo/ocr-call')?.path
+            },
+            {
+              label: 'Brightree Demo',
+              icon: 'i-lucide-file-scan',
+              to: localeRoute('/demo/brightree')?.path
+            },
+            {
+              label: 'RingCentral Demo',
+              icon: 'i-lucide-file-scan',
+              to: localeRoute('/demo/ringcentral')?.path
+            },
+            {
+              label: 'Webcall Demo',
+              icon: 'i-lucide-file-scan',
+              to: localeRoute('/demo/webcall')?.path
             },
             {
               label: 'RPA Demo',

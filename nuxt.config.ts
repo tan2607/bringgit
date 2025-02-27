@@ -19,6 +19,16 @@ export default defineNuxtConfig({
     sendgridApiKey: process.env.SENDGRID_API_KEY,
     firecrawlApiKey: process.env.FIRECRAWL_API_KEY,
     geminiApiKey: process.env.GEMINI_API_KEY,
+    // Brightree API credentials
+    brightreeUsername: process.env.BRIGHTREE_USERNAME,
+    brightreePassword: process.env.BRIGHTREE_PASSWORD,
+    // RingCentral API credentials
+    ringcentral: {
+      clientId: process.env.RINGCENTRAL_CLIENT_ID,
+      clientSecret: process.env.RINGCENTRAL_CLIENT_SECRET,
+      serverUrl: process.env.RINGCENTRAL_SERVER_URL || 'https://platform.ringcentral.com',
+      jwt: process.env.RINGCENTRAL_JWT
+    },
     twilio: {
       accountSid: process.env.TWILIO_ACCOUNT_SID,
       authToken: process.env.TWILIO_AUTH_TOKEN,
