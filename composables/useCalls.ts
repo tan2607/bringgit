@@ -118,7 +118,7 @@ export const useCalls = () => {
       const allCalls = []
       let lastCreatedAt = endDate
       let hasMoreData = hasMore.value ? true : false
-      const _pageSize = 10;
+      const _pageSize = 500;
 
       if (!hasMoreData && calls.value.length > 0) return calls.value; // all data already loaded, no need to fetch again
       
