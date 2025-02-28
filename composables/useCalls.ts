@@ -129,7 +129,7 @@ export const useCalls = () => {
         queryParams.append('limit', (_pageSize + 1).toString())
         
         const { data } = await useFetch(`/api/calls?${queryParams.toString()}`)
-        const newCalls = data?.value || []
+        const newCalls = data?.value.calls || []
         
         // Filter duplicates and add to collection
         const uniqueCalls = newCalls.filter(call => 
