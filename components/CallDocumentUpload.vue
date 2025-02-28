@@ -204,11 +204,23 @@ async function processDocuments() {
     })
     
     if (response.value?.success) {
-      // Emit extracted variables to parent component
-      emit('update:extractedVariables', response.value.data)
+      // Store FHIR data for potential future use
+      const fhirData = response.value.fhirData
+      console.log('FHIR Data:', fhirData)
+      
+      // Emit extracted variables to parent component, now includes both application variables and FHIR data
+      emit('update:extractedVariables', {
+        ...response.value.data,
+        fhirData: fhirData,
+        availabilityData: response.value.availabilityData
+      })
       
       // Call onComplete callback
-      props.onComplete(response.value.data)
+      props.onComplete({
+        ...response.value.data,
+        fhirData: fhirData,
+        availabilityData: response.value.availabilityData
+      })
     } else {
       error.value = response.value?.error || 'Failed to process documents'
     }

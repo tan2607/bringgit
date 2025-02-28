@@ -1,6 +1,10 @@
 import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai"
+import { definePatientSchema, createExtractionPrompt } from '../variableSchema'
 import { patientDataSchema } from '#shared/forms/patientIntakeSchema'
 import { describeSchema, extractJsonFromText, validateWithSchema } from '~/utils/schema'
+import { extractFHIRFromText, createFHIRExtractionPrompt, defineFHIRPatientSchema, fhirToCallVariables } from '../medplum/mapper'
+import type { Bundle } from '../medplum/fhirTypes'
+import { validateFhirResource } from '../medplum/client'
 
 interface FileInput {
   buffer: Buffer
@@ -40,79 +44,7 @@ export class GeminiOCR {
   }
 
   private defineSchema(): PatientSchema {
-    return {
-      description: "Patient data for an intake call",
-      type: SchemaType.OBJECT,
-      properties: {
-        patient: {
-          type: SchemaType.OBJECT,
-          description: "Patient information",
-          properties: {
-            name: {
-              type: SchemaType.STRING,
-              description: "Full name of the patient",
-              nullable: false,
-            },
-            condition: {
-              type: SchemaType.STRING,
-              description: "Medical conditions of the patient (e.g., diabetes and hypertension)",
-              nullable: false,
-            },
-            address: {
-              type: SchemaType.STRING,
-              description: "Patient's home address",
-              nullable: false,
-            },
-            lastVisit: {
-              type: SchemaType.STRING,
-              description: "Patient Visit Date",
-              nullable: false,
-            },
-          },
-          nullable: true,
-        },
-        doctor: {
-          type: SchemaType.OBJECT,
-          description: "Doctor information",
-          properties: {
-            name: {
-              type: SchemaType.STRING,
-              description: "Doctor's full name with title",
-              nullable: true,
-            },
-          },
-          nullable: true,
-        },
-        payment: {
-          type: SchemaType.OBJECT,
-          description: "Payment information",
-          properties: {
-            insuranceName: {
-              type: SchemaType.STRING,
-              description: "Insurance Payor provider name",
-              nullable: true,
-            },
-            insuranceCoverage: {
-              type: SchemaType.STRING,
-              description: "Coverage percentage",
-              nullable: true,
-            },
-            insurancePrice: {
-              type: SchemaType.STRING,
-              description: "Price with insurance",
-              nullable: true,
-            },
-            cashPrice: {
-              type: SchemaType.STRING,
-              description: "Patient Responsibility amount ($)",
-              nullable: true,
-            },
-          },
-          nullable: true,
-        },
-      },
-      nullable: false,
-    }
+    return defineFHIRPatientSchema()
   }
 
   private fileToGenerativePart(buffer: Buffer, mimeType: string) {
@@ -130,8 +62,8 @@ export class GeminiOCR {
       // Convert buffers to generative parts
       const imageParts = files.map(file => this.fileToGenerativePart(file.buffer, file.mimeType))
       
-      // Create a custom prompt for call variables extraction
-      const prompt = this.getCallVariablesPrompt()
+      // Create a custom prompt for FHIR data extraction
+      const prompt = this.getFHIRExtractionPrompt()
       
       const result = await this.model.generateContent([
         prompt,
@@ -142,19 +74,20 @@ export class GeminiOCR {
       const text = response.text()
       const extractedData = extractJsonFromText(text)
       
-      console.log("extractedData: ", extractedData);
-      return extractedData
+      // Convert to FHIR if not already in FHIR format
+      const fhirData = extractFHIRFromText(extractedData)
+      
+      console.log("FHIR data: ", fhirData);
+      return fhirToCallVariables(fhirData)
     } catch (error) {
-      console.error('Error in call variables extraction:', error)
+      console.error('Error in FHIR data extraction:', error)
       throw error
     }
   }
   
-  // Custom prompt for call variables extraction
-  private getCallVariablesPrompt(): string {
-    let prompt = "Please analyze these documents and extract information for a patient call. "
-    prompt += `Only include fields that you can confidently extract from the documents. If information is not available, omit that field.`
-    return prompt
+  // Custom prompt for FHIR data extraction
+  private getFHIRExtractionPrompt(): string {
+    return createFHIRExtractionPrompt()
   }
 
   async processDocument(fileBuffer: Buffer, mimeType: string): Promise<any> {
@@ -168,7 +101,7 @@ export class GeminiOCR {
       await this.waitForFilesActive([file])
 
       // Generate schema description for the prompt
-      const schemaDescription = describeSchema(patientDataSchema)
+      const schemaDescription = describeSchema(BundleSchema)
       const prompt = `
 Schema Description:
 ${schemaDescription}
@@ -211,7 +144,7 @@ For phone numbers, use (XXX) XXX-XXXX format. For addresses, extract street, cit
       console.log('Extracted data:', extractedData);
 
       // Validate against schema
-      const validation = validateWithSchema(patientDataSchema, extractedData)
+      const validation = validateWithSchema(BundleSchema, extractedData)
       if (!validation.success) {
         throw new Error(`Validation failed: ${validation.error}`)
       }

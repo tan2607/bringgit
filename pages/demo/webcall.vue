@@ -160,14 +160,14 @@
 </template>
 
 <script setup lang="ts">
-import { watch, ref, onMounted } from 'vue'
+import { watch, ref, onMounted, computed } from 'vue'
 import { useRoute } from '#imports'
 import Vapi from "@vapi-ai/web";
+import { defaultCallVariables, flattenVariables } from '~/server/utils/variableSchema'
 
 // Import the appointment availability component
 import AppointmentAvailability from '~/components/AppointmentAvailability.vue'
 
-// Get the route to check for tab parameter
 const route = useRoute()
 const stepper = ref()
 
@@ -198,7 +198,8 @@ const steps = [
 ]
 
 // Set the initial step based on the URL query parameter
-watch(() => route.query.tab, (newTab) => {
+const tabParam = computed(() => route.query.tab?.toString())
+watch(tabParam, (newTab) => {
     if (newTab && stepper.value) {
         const stepIndex = steps.findIndex(step => step.slot === newTab)
         if (stepIndex !== -1) {
@@ -228,6 +229,12 @@ const accordionItems = [
         defaultOpen: true
     },
     {
+        key: 'sleepCoach',
+        label: 'Sleep Coach',
+        icon: 'i-heroicons-academic-cap',
+        defaultOpen: true
+    },
+    {
         key: 'appointment',
         label: 'Appointment Details',
         icon: 'i-heroicons-calendar',
@@ -254,7 +261,7 @@ const accordionItems = [
 ]
 
 // Store for appointment availability data
-const appointmentAvailabilityData = useState('appointmentAvailabilityData', () => [])
+const appointmentAvailabilityData = ref([])
 
 // Fetch appointment availability data from the server
 async function fetchAppointmentAvailability() {
@@ -291,106 +298,25 @@ onMounted(() => {
     fetchAppointmentAvailability()
 })
 
-// Define default dynamic variables
-const dynamicVariables = {
-    patient: {
-        name: 'John Smith',
-        condition: 'diabetes and hypertension',
-        address: '8023 Sunny Ridge Dr',
-        lastVisit: '2 days ago',
-    },
-    doctor: {
-        name: 'Dr. Oz',
-    },
-    appointment: {
-        date: 'December 16th',
-        morningSlot: '9am',
-        afternoonSlot: '3pm',
-    },
-    payment: {
-        insuranceName: 'Blue Cross Blue Shield',
-        insuranceCoverage: '80%',
-        insurancePrice: '$500',
-        cashPrice: '$750',
-        minDownPayment: '$250',
-        remainingAmount: '$150',
-        secondInstallment: '$200',
-        cancellationFee: '$50',
-        acceptedMethods: 'Mastercard or Visa',
-        maxInstallments: '4',
-    },
-    business: {
-        hoursStart: '8am',
-        hoursEnd: '7pm',
-        timezone: 'Central',
-    },
-    test: {
-        name: 'Comprehensive Home Sleep Test (CHST)',
-        duration: 'three nights',
-    },
-    agent: {
-        name: 'Brooke',
-    },
-    coach: {
-        name: 'Emily',
-    },
-}
+// Define default dynamic variables - use the centralized schema
+const dynamicVariables = ref({ ...defaultCallVariables })
 
 // Create a reactive copy for editing
-const editableVariables = useState('editableVariables', () => JSON.parse(JSON.stringify(dynamicVariables)))
+const editableVariables = ref({ ...dynamicVariables.value })
 
-// Convert nested structure to flat format for the API
-const flattenVariables = (nestedVars) => {
-    const result = { ...nestedVars }
-
-    // Flatten the structure by adding underscores
-    const mappedVars = {
-        // Patient information
-        patient_name: result.patient.name,
-        patient_condition: result.patient.condition,
-        patient_address: result.patient.address,
-        patient_last_visit: result.patient.lastVisit,
-
-        // Doctor information
-        doctor_name: result.doctor.name,
-
-        // Appointment information
-        appointment_date: result.appointment.date,
-        appointment_morning: result.appointment.morningSlot,
-        appointment_afternoon: result.appointment.afternoonSlot,
-
-        // Personnel information
-        agent_name: result.agent.name,
-        coach_name: result.coach.name,
-
-        // Business information
-        business_hours_start: result.business.hoursStart,
-        business_hours_end: result.business.hoursEnd,
-        timezone: result.business.timezone,
-
-        // Test information
-        test_name: result.test.name,
-        test_duration: result.test.duration,
-
-        // Financial information
-        insurance_name: result.payment.insuranceName,
-        insurance_coverage: result.payment.insuranceCoverage,
-        insurance_price: result.payment.insurancePrice,
-        cash_price: result.payment.cashPrice,
-        min_down_payment: result.payment.minDownPayment,
-        remaining_payment: result.payment.remainingAmount,
-        second_payment: result.payment.secondInstallment,
-        cancellation_fee: result.payment.cancellationFee,
-        payment_methods: result.payment.acceptedMethods,
-        max_payments: result.payment.maxInstallments
-    };
-
-    return mappedVars;
-};
+// FHIR data storage
+const fhirData = ref(null)
 
 // Handle document extraction results
 function updateVariables(extractedData) {
     console.log(extractedData)
+    
+    // Store FHIR data if available
+    if (extractedData.fhirData) {
+        fhirData.value = extractedData.fhirData
+        console.log('FHIR data stored:', fhirData.value)
+    }
+    
     // Deep merge the extracted data with the existing variables
     if (extractedData.patient) {
         Object.assign(editableVariables.value.patient, extractedData.patient);
@@ -404,12 +330,12 @@ function updateVariables(extractedData) {
         editableVariables.value.appointment.date = extractedData.appointment.date || editableVariables.value.appointment.date;
 
         // Handle available times if present
-        if (extractedData.appointment.availableTimes?.length > 0) {
-            editableVariables.value.appointment.morningSlot = extractedData.appointment.availableTimes[0] || editableVariables.value.appointment.morningSlot;
-
-            if (extractedData.appointment.availableTimes.length > 1) {
-                editableVariables.value.appointment.afternoonSlot = extractedData.appointment.availableTimes[1] || editableVariables.value.appointment.afternoonSlot;
-            }
+        if (extractedData.appointment.morningSlot) {
+            editableVariables.value.appointment.morningSlot = extractedData.appointment.morningSlot || editableVariables.value.appointment.morningSlot;
+        }
+        
+        if (extractedData.appointment.afternoonSlot) {
+            editableVariables.value.appointment.afternoonSlot = extractedData.appointment.afternoonSlot || editableVariables.value.appointment.afternoonSlot;
         }
     }
 
@@ -418,8 +344,8 @@ function updateVariables(extractedData) {
     }
 
     // Store appointment availability data if present
-    if (extractedData.appointmentAvailability && extractedData.appointmentAvailability.length > 0) {
-        appointmentAvailabilityData.value = extractedData.appointmentAvailability;
+    if (extractedData.availabilityData && extractedData.availabilityData.length > 0) {
+        appointmentAvailabilityData.value = extractedData.availabilityData;
     } else if (appointmentAvailabilityData.value.length === 0) {
         // If no availability data was provided, fetch from server
         fetchAppointmentAvailability();
@@ -488,9 +414,8 @@ function startCall() {
         console.log("Starting call with variables:", variables)
 
         variables.json = JSON.stringify(editableVariables.value)
-        // Here you would normally call an API endpoint to initiate the call
-        // For now just log the variables
-
+        
+        // Configure vapi with our variables and start the call
         const assistantOverrides = {
             transcriber: {
                 provider: "deepgram",

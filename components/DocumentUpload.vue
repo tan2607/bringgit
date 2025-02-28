@@ -78,7 +78,7 @@
         </template>
       </UCollapsible>
       
-      <FormKitSchema :schema="patientIntakeFormSchema" :value="patientData" />
+      <!-- <FormKitSchema :schema="patientIntakeFormSchema" :value="patientData" /> -->
 
       <div class="flex justify-end space-x-2">
         <UButton
@@ -101,7 +101,7 @@
 </template>
 
 <script setup lang="ts">
-import { patientIntakeFormSchema } from '~/shared/forms/patientIntakeSchema'
+// import { patientIntakeFormSchema } from '~/shared/forms/patientIntakeSchema'
 
 const {
   documentFile,
