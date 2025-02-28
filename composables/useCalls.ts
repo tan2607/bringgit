@@ -129,7 +129,7 @@ export const useCalls = () => {
         queryParams.append('limit', (_pageSize + 1).toString())
         
         const { data } = await useFetch(`/api/calls?${queryParams.toString()}`)
-        const newCalls = data?.value || []
+        const newCalls = data?.value.calls || []
         
         // Filter duplicates and add to collection
         const uniqueCalls = newCalls.filter(call => 
@@ -140,7 +140,7 @@ export const useCalls = () => {
         exportProgress.value = allCalls.length
         
         // Check if we have more data to fetch
-        if (newCalls.length >= pageSize + 1) {
+        if (allCalls.length < totalCalls.value) {
           // Get the last call's createdAt for next iteration
           const lastCall = newCalls[newCalls.length - 1]
           lastCreatedAt = lastCall.createdAt

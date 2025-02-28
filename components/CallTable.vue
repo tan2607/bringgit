@@ -53,16 +53,15 @@
         </div>
       </div>
       <div class="flex items-center gap-2">
-        <div class="text-sm text-gray-500 mr-2">
-          {{ filteredData?.length || 0 }} data loaded
-        </div>
-        <UButton color="primary" variant="soft" :loading="isLoading" :disabled="isLoading || !hasMore"
-          class="cursor-pointer" @click="$emit('load-more')">
-          Load More
-        </UButton>
-        <UButton v-if="props.exportButton" color="primary" variant="soft" :loading="props.isExporting"
-          :disabled="props.isLoadingTable || props.isExporting || !props.data?.length" class="group cursor-pointer"
-          @click="$emit('export')">
+        <UButton
+          v-if="props.exportButton"
+          color="primary"
+          variant="soft"
+          :loading="props.isExporting"
+          :disabled="props.isLoadingTable || props.isExporting || !props.data?.length"
+          class="group cursor-pointer"
+          @click="$emit('export')"
+        >
           <div class="flex items-center gap-2">
             <UIcon name="i-lucide-download" />
             {{ props.isExporting
@@ -73,7 +72,18 @@
         </UButton>
         <UDropdownMenu :items="table?.tableApi
             ?.getAllColumns()
-            .filter((column) => ['duration', 'status', 'tags'].includes(column.id))
+            .filter((column) => [
+              'phoneNumber',
+              'botPhoneNumber',
+              'assistant',
+              'status',
+              'duration',
+              'tags',
+              'startedAt',
+              'scheduledAt',
+              'recordingUrl',
+              'endedReason'
+            ].includes(column.id))
             .map((column) => ({
               label: upperFirst(column.id),
               type: 'checkbox' as const,
@@ -84,7 +94,7 @@
               onSelect(e?: Event) {
                 e?.preventDefault()
               }
-            }))" :content="{ align: 'end' }">
+            }))" :content="{ align: 'end', class: 'max-h-[300px] overflow-y-auto' }">
           <UButton label="Columns" color="neutral" variant="outline" trailing-icon="i-lucide-chevron-down" />
         </UDropdownMenu>
       </div>
