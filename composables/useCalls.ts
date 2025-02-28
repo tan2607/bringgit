@@ -140,7 +140,7 @@ export const useCalls = () => {
         exportProgress.value = allCalls.length
         
         // Check if we have more data to fetch
-        if (newCalls.length >= pageSize + 1) {
+        if (newCalls.length >= totalCalls.value) {
           // Get the last call's createdAt for next iteration
           const lastCall = newCalls[newCalls.length - 1]
           lastCreatedAt = lastCall.createdAt
