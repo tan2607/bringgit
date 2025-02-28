@@ -72,7 +72,18 @@
         </UButton>
         <UDropdownMenu :items="table?.tableApi
             ?.getAllColumns()
-            .filter((column) => ['duration', 'status', 'tags'].includes(column.id))
+            .filter((column) => [
+              'phoneNumber',
+              'botPhoneNumber',
+              'assistant',
+              'status',
+              'duration',
+              'tags',
+              'startedAt',
+              'scheduledAt',
+              'recordingUrl',
+              'endedReason'
+            ].includes(column.id))
             .map((column) => ({
               label: upperFirst(column.id),
               type: 'checkbox' as const,
@@ -83,7 +94,7 @@
               onSelect(e?: Event) {
                 e?.preventDefault()
               }
-            }))" :content="{ align: 'end' }">
+            }))" :content="{ align: 'end', class: 'max-h-[300px] overflow-y-auto' }">
           <UButton label="Columns" color="neutral" variant="outline" trailing-icon="i-lucide-chevron-down" />
         </UDropdownMenu>
       </div>
