@@ -40,7 +40,7 @@ const authConfig: AuthConfig = {
     async signIn({ user }) {
       if (!user.email) return false
       // temporary
-      return user.email.includes('@keyreply.com') || user.email.includes('@efusion.com.sg')
+      return user.email.includes('@keyreply.com') || user.email.includes('@efusion.com.sg') || user.email.includes('@aia.com.sg')
     },
     async jwt({ token, user }) {
       if (user) {
