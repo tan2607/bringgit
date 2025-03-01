@@ -9,18 +9,3 @@
 50_SC Communicate results to patients
 52_Cancel Order, PT Does not want Test
 52-1_Cancel Order, Declined, Financial
-
-Required Information:
-Name
-Date of visit
-Name of doctor / office
-Insurance name
-PTR (Patient Total Responsibility)
-Address to ship
-
-Documents: Benefits calculator
-
-Name of the sleep coach:
-3 Available time slots:
-
-30-45 minute phone call.

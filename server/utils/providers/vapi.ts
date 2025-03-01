@@ -102,16 +102,43 @@ export class VapiProvider {
     createdAtGe?: string;
     createdAtLe?: string;
     limit?: number;
+    loadMore?: boolean;
   }) {
-    const [calls, assistants] = await Promise.all([
-      this.client.calls.list({
-        ...params,
-        limit: params?.limit || 250
-      }),
-      this.client.assistants.list()
+    const callParams: any = {
+      createdAtGe: params?.createdAtGe,
+      limit: params?.limit ?? 1000,
+    }
+
+    if(params?.loadMore) {
+      callParams.createdAtLt = params?.createdAtLe;
+    } else {
+      callParams.createdAtLe = params?.createdAtLe;
+    }
+
+    const [calls, assistants, phoneNumbers] = await Promise.all([
+      this.client.calls.list(callParams),
+      this.client.assistants.list(),
+      this.client.phoneNumbers.list()
     ]);
 
-    return calls.map((call) => {
+    const calls_analytics = await this.client.analytics.get({
+      queries: [{
+        table: "call",
+        name: "calls",
+        operations: [{operation: "count", column: "id"}],
+        timeRange: {
+          start: params?.createdAtGe,
+          end: params?.createdAtLe
+        }
+      }]
+    });
+
+
+    const [{ result: [{ countId: totalCalls }] }] = calls_analytics;
+
+
+    const callResults = calls.map((call) => {
+      const phoneNumber = phoneNumbers.find((phoneNumber) => phoneNumber.id === call.phoneNumberId);
       const duration = (() => {
         const start = new Date(call.startedAt ?? new Date());
         const end = new Date(call.endedAt ?? new Date());
@@ -145,9 +172,15 @@ export class VapiProvider {
         structuredData,
         tags: tagList,
         assistantOverrides: call.assistantOverrides,
-        endedReason: call.endedReason
+        endedReason: call.endedReason,
+        botPhoneNumber: phoneNumber?.number || 'N/A'
       };
-    });
+    }); 
+
+    return  {
+      calls: callResults,
+      count: totalCalls
+    }
   }
 
   // Raw client access if needed

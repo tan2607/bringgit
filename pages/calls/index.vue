@@ -44,8 +44,14 @@
       :is-loading-table="isLoading"
       :is-exporting="isExporting"
       :export-progress="exportProgress"
+      :total-calls="totalCalls"
+      :page-size="pageSize"
+      :page="page"
+      :total-pages="totalPages"
       @export="exportToExcelFile" 
       @load-more="handleLoadMore"
+      @load-previous="handleLoadPrevious"
+      @load-first="handleLoadFirst"
     />
   </UContainer>
 </template>
@@ -94,10 +100,17 @@ const {
   exportCalls,
   isExporting,
   exportProgress,
-  resetCalls
+  resetCalls,
+  loadPrevious,
+  resetPreviousEndDates,
+  totalCalls,
 } = useCalls()
 const { transformRecordingUrl } = useRecordingUrl()
 const { exportToExcel } = useExcel()
+
+const pageSize = 1000
+const page = ref(1)
+const totalPages = computed(() => Math.ceil(totalCalls.value / pageSize))
 
 const filteredCalls = computed(() => {
   return calls.value.filter(call => {
@@ -113,6 +126,24 @@ const handleLoadMore = async () => {
   
   const startDate = startDateTime.toISOString()
   await loadMore(startDate)
+  page.value++;
+}
+
+const handleLoadPrevious = async () => {
+  await loadPrevious()
+  page.value--;
+}
+
+const handleLoadFirst = async () => {
+  const startDateTime = dateRange.value.start.toDate(getLocalTimeZone())
+  startDateTime.setHours(0, 0, 0, 0)
+  const endDateTime = dateRange.value.end?.toDate(getLocalTimeZone())
+  endDateTime?.setHours(23, 59, 59, 999)
+  const startDate = startDateTime.toISOString()
+  const endDate = endDateTime.toISOString()
+  await fetchCalls(startDate, endDate)
+  resetPreviousEndDates()
+  page.value = 1
 }
 
 const exportToExcelFile = async () => {
@@ -179,6 +210,8 @@ watch(dateRange, async (newRange) => {
   const startDate = startDateTime.toISOString()
   const endDate = endDateTime.toISOString()
   await fetchCalls(startDate, endDate)
+  resetPreviousEndDates()
+  page.value = 1
 }, { immediate: true, deep: true })
 
 onBeforeUnmount(() => {
