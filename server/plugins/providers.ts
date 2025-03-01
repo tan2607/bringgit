@@ -4,6 +4,7 @@ import { PlayAIProvider } from '../utils/providers/playai';
 import { OpenAIVoiceProvider } from '../utils/providers/openai';
 import { WhisperProvider } from '../utils/providers/whisper';
 import { SendGridProvider } from '../utils/providers/sendgrid';
+import { PerplexityProvider } from '../utils/providers/perplexity';
 
 export default defineNitroPlugin((nitroApp) => {
   const config = useRuntimeConfig();
@@ -46,9 +47,16 @@ export default defineNitroPlugin((nitroApp) => {
 
     // Initialize SendGrid provider
     const sendgridStart = performance.now();
-    SendGridProvider.getInstance(config.sendgridApiKey);
+    SendGridProvider.initialize(config.sendgridApiKey);
     timings.push({ provider: 'SendGrid', time: performance.now() - sendgridStart });
     console.log('✅ SendGridProvider initialized');
+
+    // Initialize Perplexity provider
+    const perplexityStart = performance.now();
+    PerplexityProvider.initialize(config.perplexityApiKey);
+    timings.push({ provider: 'Perplexity', time: performance.now() - perplexityStart });
+    console.log('✅ PerplexityProvider initialized');
+
 
     const totalTime = performance.now() - startTime;
 
