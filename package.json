@@ -12,6 +12,9 @@
     "upgrade": "npx nuxi@latest upgrade --force"
   },
   "dependencies": {
+    "@ai-sdk/openai": "^1.1.15",
+    "@ai-sdk/perplexity": "^1.0.2",
+    "@ai-sdk/vue": "^1.1.19",
     "@auth/core": "0.37.4",
     "@browserbasehq/sdk": "^2.0.0",
     "@browserbasehq/stagehand": "^1.8.0",
@@ -34,6 +37,7 @@
     "@vapi-ai/web": "^2.2.2",
     "@vueuse/core": "^12.4.0",
     "@vueuse/motion": "latest",
+    "ai": "^4.1.47",
     "bufferutil": "^4.0.9",
     "dotenv": "^16.4.7",
     "drizzle-orm": "latest",
@@ -48,7 +52,7 @@
     "vue-chartjs": "latest",
     "vue-router": "latest",
     "xlsx": "^0.18.5",
-    "zod": "^3.24.1"
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@hebilicious/authjs-nuxt": "latest",

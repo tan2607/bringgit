@@ -19,6 +19,7 @@ export default defineNuxtConfig({
     sendgridApiKey: process.env.SENDGRID_API_KEY,
     firecrawlApiKey: process.env.FIRECRAWL_API_KEY,
     geminiApiKey: process.env.GEMINI_API_KEY,
+    perplexityApiKey: process.env.PERPLEXITY_API_KEY,
     // Brightree API credentials
     brightreeUsername: process.env.BRIGHTREE_USERNAME,
     brightreePassword: process.env.BRIGHTREE_PASSWORD,
@@ -38,6 +39,7 @@ export default defineNuxtConfig({
       secret: process.env.NEXTAUTH_SECRET,
     },
     public: {
+      vapiPublicKey: process.env.VAPI_PUBLIC_KEY,
       googleApiKey: process.env.GOOGLE_API_KEY,
       authJs: {
         baseUrl: "https://next.keyreply.com",

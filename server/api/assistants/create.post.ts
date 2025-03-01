@@ -6,6 +6,11 @@ export default defineEventHandler(async (event) => {
     const vapiProvider = VapiProvider.getInstance();
 
     delete body.prompt;
+    delete body.orgId;
+    delete body.createdAt;
+    delete body.updatedAt;
+    delete body.isServerUrlSecretSet;
+    
     // Create new assistant using the VAPI client
     const newAssistant = await vapiProvider.client.assistants.create(body);
     

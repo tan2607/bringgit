@@ -1,7 +1,6 @@
 import { createError, readBody } from 'h3'
 import { z } from 'zod'
-import { getHMACValidator } from '~/server/utils/hmac'
-import { extractCallVariables } from '../utils/providers/gemini'
+import { GeminiOCR } from '../utils/providers/gemini'
 import { validateFhirResource } from '../utils/medplum/client'
 import { fhirToCallVariables } from '../utils/medplum/mapper'
 import type { Bundle } from '../utils/medplum/fhirTypes'
@@ -16,21 +15,6 @@ const ALLOWED_MIME_TYPES = [
 ]
 
 export default defineEventHandler(async (event) => {
-  const hmacValidator = getHMACValidator()
-  
-  // Simple auth verification if HMAC is enabled
-  try {
-    if (hmacValidator) {
-      const isValid = await hmacValidator(event)
-      if (!isValid) {
-        throw createError({ message: 'Invalid authentication', statusCode: 401 })
-      }
-    }
-  } catch (error) {
-    console.error('Authentication error:', error)
-    throw createError({ message: 'Authentication error', statusCode: 401 })
-  }
-  
   try {
     const body = await readBody(event)
     
@@ -41,8 +25,9 @@ export default defineEventHandler(async (event) => {
       })
     }
     
+    const gemini = new GeminiOCR(process.env.GEMINI_API_KEY as string)
     // Process the files to extract call variables
-    const result = await extractCallVariables(body.files)
+    const result = await gemini.extractCallVariables(body.files)
     
     // Handle both the old format and the new FHIR format
     if (result.fhir && result.variables) {

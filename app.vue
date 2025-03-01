@@ -145,11 +145,6 @@ const items = computed(() => [
         icon: 'i-lucide-file-scan',
         children: [
           {
-            label: 'OCR Multi File Demo',
-            icon: 'i-lucide-file-scan',
-            to: localeRoute('/demo/ocr-call')?.path
-          },
-          {
             label: 'Brightree Demo',
             icon: 'i-lucide-file-scan',
             to: localeRoute('/demo/brightree')?.path
@@ -171,6 +166,12 @@ const items = computed(() => [
         icon: 'i-lucide-cpu',
         description: 'RPA',
         to: localeRoute('/demo/rpa')?.path
+      },
+      {
+        label: 'Company Research',
+        icon: 'i-lucide-brain',
+        description: 'Deep Research',
+        to: localeRoute('/research')?.path
       },
       {
         label: 'Workflow Demo',

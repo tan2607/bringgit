@@ -114,44 +114,10 @@
                 <!-- Start Call Step -->
                 <template #call>
                     <div class="p-4">
-                        <div v-if="!callActive" class="flex flex-col items-center gap-4">
-                            <UAlert v-if="callError" color="red" variant="soft" icon="i-lucide-alert-circle"
-                                class="mb-4">
-                                {{ callError }}
-                            </UAlert>
-                            <p class="text-center text-gray-700 mb-4">
-                                When you start the call, you'll be connected to a virtual assistant using the variables
-                                you've configured.
-                            </p>
-                            <UButton @click="startCall" color="primary" size="xl" class="px-8">
-                                <template #leading>
-                                    <UIcon name="i-lucide-phone" />
-                                </template>
-                                Start Call
-                            </UButton>
-                        </div>
-
-                        <div v-else class="flex flex-col items-center gap-6">
-                            <div class="call-status bg-primary-50 p-4 rounded-lg w-full max-w-md text-center">
-                                <p class="text-lg font-medium text-primary-700">Call in progress</p>
-                                <p class="text-sm text-gray-600">Connected to virtual assistant</p>
-                            </div>
-
-                            <div class="call-controls flex gap-4">
-                                <UButton color="gray" variant="soft">
-                                    <template #leading>
-                                        <UIcon name="i-lucide-mic" />
-                                    </template>
-                                    Mute
-                                </UButton>
-                                <UButton @click="endCall" color="red" variant="soft">
-                                    <template #leading>
-                                        <UIcon name="i-lucide-phone-off" />
-                                    </template>
-                                    End Call
-                                </UButton>
-                            </div>
-                        </div>
+                        <CallTask 
+                            :variables="editableVariables" 
+                            :assistant-id="VAPI_ASSISTANT_ID" 
+                        />
                     </div>
                 </template>
             </UStepper>
@@ -162,17 +128,17 @@
 <script setup lang="ts">
 import { watch, ref, onMounted, computed } from 'vue'
 import { useRoute } from '#imports'
-import Vapi from "@vapi-ai/web";
-import { defaultCallVariables, flattenVariables } from '~/server/utils/variableSchema'
+import { defaultCallVariables } from '~/server/utils/variableSchema'
 
-// Import the appointment availability component
+// Import components
 import AppointmentAvailability from '~/components/AppointmentAvailability.vue'
+import CallTask from '~/components/CallTask.vue'
 
 const route = useRoute()
 const stepper = ref()
 
-const VAPI_PUBLIC_KEY = "ed768954-311b-4532-920d-ff3a635c3e8f";
-const vapi = new Vapi(VAPI_PUBLIC_KEY);
+// VAPI configuration
+const VAPI_ASSISTANT_ID = "271b3b9b-94aa-4a09-800b-5f8ee7e31d21";
 
 
 // Define steps for the stepper
@@ -396,49 +362,7 @@ function updateSelectedTime(time) {
     }
 }
 
-// Add call state
-const callActive = ref(false)
-const callError = ref<string | null>(null)
 
-// Functions
-function startCall() {
-    try {
-        // Reset any previous errors
-        callError.value = null
-
-        // Set call as active
-        callActive.value = true
-
-        // Use the assistant config with flattened variables
-        const variables = flattenVariables(editableVariables.value)
-        console.log("Starting call with variables:", variables)
-
-        variables.json = JSON.stringify(editableVariables.value)
-        
-        // Configure vapi with our variables and start the call
-        const assistantOverrides = {
-            transcriber: {
-                provider: "deepgram",
-                model: "nova-3",
-                language: "en-US",
-            },
-            recordingEnabled: false,
-            variableValues: variables,
-        };
-
-        vapi.start("271b3b9b-94aa-4a09-800b-5f8ee7e31d21", assistantOverrides);
-
-    } catch (error) {
-        console.error("Error starting call:", error)
-        callActive.value = false
-        callError.value = error instanceof Error ? error.message : 'Unknown error occurred'
-    }
-}
-
-function endCall() {
-    callActive.value = false
-    vapi.stop();
-}
 </script>
 
 <style scoped></style>
