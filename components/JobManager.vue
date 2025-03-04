@@ -108,7 +108,7 @@
       </template>
     </UTable>
     <div class="flex justify-end">
-      <UPagination v-model="page" :page-count="pageCount" :total="total" />
+      <UPagination v-model="page" :page-count="pageCount" :total="total" :disabled="isLoading" />
     </div>
 
     <!-- Create/Edit Job Modal -->
@@ -143,7 +143,7 @@ const jobFormSchema = z.object({
 
 type JobFormSchema = z.output<typeof jobFormSchema>
 
-const { jobState, createJob, pauseJob, resumeJob, stopJob, getJobs, deleteJob } = useJobState()
+const { jobState, createJob, pauseJob, startJob, getJobs, deleteJob } = useJobState()
 const { assistants, fetchAssistants } = useAssistants()
 const { numbers, fetchNumbers } = usePhoneNumbers()
 const { confirm } = useConfirm()
@@ -175,6 +175,7 @@ const editingJob = ref<Job | null>(null)
 const quickViewJob = ref<Job | null>(null)
 const sort = ref({ column: 'schedule', direction: 'desc' })
 const selectedJobs = ref<Job[]>([])
+const filteredJobs = ref<Job[]>([])
 const isLoading = ref(false)
 const page = ref(1)
 const pageCount = ref(20)
@@ -290,8 +291,21 @@ const statusOptions = [
   { label: 'Failed', value: 'failed' }
 ]
 
-// Computed
-const filteredJobs = computed(() => {
+watch(() => localState.value.searchQuery, () => {
+  page.value = 1;
+  filterJobs();
+});
+
+watch(() => jobState.value.selectedStatus, () => {
+  page.value = 1;
+  filterJobs();
+});
+
+watch(() => page.value, () => {
+  filterJobs();
+});
+
+const filterJobs = () => {
   let jobs = [...jobState.value.jobs]
 
   // Apply search
@@ -313,8 +327,8 @@ const filteredJobs = computed(() => {
   const end = page.value * pageCount.value;
 
   // Apply pagination
-  return jobs.slice(start, end);
-})
+  filteredJobs.value = jobs.slice(start, end);
+}
 
 // Methods
 const getJobIcon = (status: string) => {
@@ -329,10 +343,10 @@ const getJobIcon = (status: string) => {
 
 const getStatusColor = (status: string) => {
   switch (status) {
-    case 'pending': return 'info'
+    case 'pending': return 'neutral'
     case 'running': return 'success'
     case 'paused': return 'warning'
-    case 'completed': return 'success'
+    case 'completed': return 'info'
     case 'failed': return 'error'
     default: return 'neutral'
   }
@@ -512,8 +526,11 @@ function handleCreateJob() {
 }
 
 onMounted(async () => {
+  isLoading.value = true
   await getJobs()
   await fetchAssistants()
   await fetchNumbers()
+  filterJobs()
+  isLoading.value = false
 })
 </script>
