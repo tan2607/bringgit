@@ -113,7 +113,7 @@
       :phone-number-options="numbers" @submit="handleJobSubmit"/>
 
     <!-- Quick View Drawer -->
-    <JobDetailsSlideover />
+    <JobDetailsSlideover  v-if="quickViewJob" :model-value="true" :job-id="quickViewJob.id"/>
   </div>
 </template>
 

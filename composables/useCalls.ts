@@ -24,16 +24,15 @@ export const useCalls = () => {
       const { data } = await useFetch(`/api/calls?${queryParams.toString()}`)
       const newCalls = data?.value.calls || []
 
-
       if(!loadMore || previousEndDates.value.length === 0) {
         totalCalls.value = parseInt(data?.value.count) || 0
       }
 
-      
       const unfilteredResults = [...newCalls]
 
+      fetchingProgress.value = Math.floor((unfilteredResults.length / totalCalls.value) * 100)
 
-      let isFetchAllData = totalCalls.value >= calls.value.length && unfilteredResults.length < callsLimit;
+      let isFetchAllData = totalCalls.value > calls.value.length && unfilteredResults.length < callsLimit;
       endDate = unfilteredResults[unfilteredResults.length - 1].createdAt
       while (isFetchAllData) {
         const queryParams = new URLSearchParams()
@@ -42,7 +41,7 @@ export const useCalls = () => {
         queryParams.append('limit', pageSize.toString())
         queryParams.append('loadMore', 'true')
         const { data } = await useFetch(`/api/calls?${queryParams.toString()}`)
-        const newCalls = data?.value.calls || []
+        const newCalls = data?.value?.calls || []
         unfilteredResults.push(...newCalls)
         isFetchAllData = unfilteredResults.length < callsLimit;
 
@@ -91,6 +90,22 @@ export const useCalls = () => {
       isLoading.value = false
       fetchingProgress.value = 0
       hasMore.value = totalCalls.value > calls.value.length;
+    }
+  }
+
+  const fetchRecentCalls = async () => {
+    isLoading.value = true
+    try {
+      const queryParams = new URLSearchParams()
+      queryParams.append('limit', "5")
+      const { data } = await useFetch(`/api/calls?${queryParams.toString()}`)
+      const newCalls = data?.value.calls || []
+
+      calls.value = newCalls
+    } catch (error) {
+      console.error(error)
+    } finally {
+      isLoading.value = false
     }
   }
 
@@ -229,6 +244,7 @@ export const useCalls = () => {
     resetCalls,
     loadPrevious,
     resetPreviousEndDates,
-    fetchingProgress
+    fetchingProgress,
+    fetchRecentCalls
   }
 }

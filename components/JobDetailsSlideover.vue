@@ -178,7 +178,8 @@
 onMounted(async () => {
 	isLoadingTable.value = true
 	if(!calls.value || calls.value.length === 0) {
-		await fetchCalls()
+		const startDate = new Date(quickViewJob.value?.createdAt).toISOString()
+		await fetchCalls(startDate)
 	}
 
 	if(!assistants.value || assistants.value.length === 0) {

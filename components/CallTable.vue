@@ -56,8 +56,8 @@
         <div class="text-sm text-gray-500 mr-2">
           {{ data?.length || 0 }} data loaded
         </div>
-        <UTooltip text="Current is limited to 10000 calls, if you need more data click the button below">
-          <UButton  v-if="hasMore" color="primary" variant="soft" :loading="isLoading" :disabled="isLoading || !hasMore"
+        <UTooltip  v-if="hasMore && !props.quickView" text="Current is limited to 10000 calls, if you need more data click the button below">
+          <UButton  color="primary" variant="soft" :loading="isLoading" :disabled="isLoading || !hasMore"
             class="cursor-pointer" @click="$emit('load-more')">
             <div class="flex items-center gap-2">
               Load More
