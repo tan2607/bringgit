@@ -1,5 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-const baseUrl = process.env.NUXT_PUBLIC_BASE_URL || process.env.CF_PAGES_URL || "https://galaxy.voice.keyreply.com"
+const baseUrl = process.env.NUXT_PUBLIC_BASE_URL || process.env.CF_PAGES_URL || "http://localhost:3000"
 
 export default defineNuxtConfig({
   debug: false,

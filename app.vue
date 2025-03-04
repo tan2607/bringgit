@@ -22,10 +22,17 @@ a[aria-label="Nuxt UI Pro"] {
 
 <script setup lang="ts">
 import { availableLocales, getLocaleIcon } from '~/i18n/config'
-import { useSettingStore } from '~/stores/useSettingStore';
+import { useSettingStore } from '~/stores/useSettingStore'
+import { useUser } from '@/composables/useUser'
+
+// Apply auth middleware to all routes
+definePageMeta({
+  middleware: ['auth']
+})
 
 const { locale, locales, setLocale, t } = useI18n()
 const { status, signOut, session } = useAuth()
+const { isAdmin, user } = useUser()
 const switchLocalePath = useSwitchLocalePath()
 const localeRoute = useLocaleRoute()
 const colorMode = useColorMode()
@@ -33,44 +40,49 @@ const color = computed(() => colorMode.value === 'dark' ? '#111827' : 'white')
 
 // Available locales for the dropdown
 const availableLocaleItems = computed(() =>
-    (locales.value || []).map(l => ({
-        label: l.name,
-        icon: getLocaleIcon(l.code),
-        onSelect: () => setLocale(l.code),
-        selected: l.code === locale.value
-    }))
+  (locales.value || []).map(l => ({
+    label: l.name,
+    icon: getLocaleIcon(l.code),
+    onSelect: () => setLocale(l.code),
+    selected: l.code === locale.value
+  }))
 )
 
 const settingStore = useSettingStore();
 
 // Locale dropdown
 const localeDropdown = computed(() => {
-    const currentLocale = locales.value?.find(l => l.code === locale.value)
-    return {
-        key: null,
-        label: currentLocale?.name || t('language'),
-        icon: getLocaleIcon(currentLocale?.code || 'en'),
-        children: availableLocaleItems.value
-    }
+  const currentLocale = locales.value?.find(l => l.code === locale.value)
+  return {
+    key: null,
+    label: currentLocale?.name || t('language'),
+    icon: getLocaleIcon(currentLocale?.code || 'en'),
+    children: availableLocaleItems.value
+  }
 })
 
 // Navigation items
 const moduleSettings = ref<any[]>([]);
 
-const items = computed(() => [
-  {
-    key: null,
-    label: t('home'),
-    icon: 'i-lucide-home',
-    to: localeRoute('/')?.path
-  },
+// Base items that all users can access
+const baseItems = [
   {
     key: 'calls',
     label: t('calls'),
     icon: 'i-lucide-phone',
     description: t('manage-calls'),
     to: localeRoute('/calls')?.path
-  },
+  }
+]
+
+// Admin-only items
+const adminItems = [
+  {
+    key: null,
+    label: t('home'),
+    icon: 'i-lucide-home',
+    to: localeRoute('/')?.path
+  },  
   {
     key: 'assistants',
     label: t('assistants'),
@@ -224,43 +236,51 @@ const items = computed(() => [
         to: localeRoute('/dev')?.path
       }
     ]
-  },
-  // Profile/Auth menu
-  {
-    key: null,
-    label: session.value?.user?.name || t('profile'),
-    icon: session.value?.user ? 'i-lucide-user' : 'i-lucide-key',
-    children: session.value?.user ? [
-      {
-        key: null,
-        label: session.value.user.email,
-        icon: 'i-lucide-mail',
-        disabled: true
-      },
-      {
+  }
+]
+
+// Profile menu items
+const profileMenu = computed(() => ({
+  key: null,
+  label: user.value?.name || t('profile'),
+  icon: user.value ? 'i-lucide-user' : 'i-lucide-key',
+  children: user.value ? [
+    {
+      key: null,
+      label: user.value.email,
+      icon: 'i-lucide-mail',
+      disabled: true
+    },
+    {
         key: null,
         label: t('settings'),
         icon: 'i-lucide-settings',
         to: localeRoute('/settings')?.path
       },
-      {
-        key: null,
-        label: t('logout'),
-        icon: 'i-lucide-log-out',
-        description: t('sign-out'),
-        onSelect: () => signOut({ redirect: true, callbackUrl: '/auth/login' }),
-        class: "cursor-pointer",
-      }
-    ] : [
-      {
-        key: null,
-        label: t('login'),
-        icon: 'i-lucide-log-in',
-        description: t('sign-in'),
-        to: localeRoute('/auth/login')?.path
-      }
-    ]
-  },
+    {
+      key: null,
+      label: t('logout'),
+      icon: 'i-lucide-log-out',
+      description: t('sign-out'),
+      onSelect: () => signOut({ redirect: true, callbackUrl: '/auth/login' }),
+      class: "cursor-pointer",
+    }
+  ] : [
+    {
+      key: null,
+      label: t('login'),
+      icon: 'i-lucide-log-in',
+      description: t('sign-in'),
+      to: localeRoute('/auth/login')?.path
+    }
+  ]
+}))
+
+// Combine items based on user role
+const items = computed(() => [
+  ...baseItems,
+  ...(isAdmin.value ? adminItems : []),
+  profileMenu.value,
   localeDropdown.value,
   {
     key: null,
@@ -268,6 +288,7 @@ const items = computed(() => [
   }
 ])
 
+// Filter items based on module settings
 const filteredItems = computed(() => items.value.reduce((acc: any[], item) => {
   if (moduleSettings.value.length === 0 || !item.key) {
     return [...acc, item];
@@ -286,7 +307,7 @@ const filteredItems = computed(() => items.value.reduce((acc: any[], item) => {
     return sub && sub.enable
   })
 
-  // if no child is enabled, no need to return the item;
+// if no child is enabled, no need to return the item;
   if (filteredChildren.length > 0) {
     const newItem = { ...item, children: filteredChildren } as any;
     return [...acc, newItem];
