@@ -71,13 +71,13 @@
           variant="soft"
           :loading="props.isExporting"
           :disabled="props.isLoadingTable || props.isExporting || !props.data?.length"
-          class="group cursor-pointer"
+          class="group cursor-pointer max-w-[200px] whitespace-nowrap"
           @click="$emit('export')"
         >
           <div class="flex items-center gap-2">
             <UIcon name="i-lucide-download" />
             {{ props.isExporting
-            ? `Preparing Export... (${props.exportProgress} records)`
+            ? `Exporting (${props.exportProgress})...`
             : t('export')
             }}
           </div>

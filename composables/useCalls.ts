@@ -33,7 +33,7 @@ export const useCalls = () => {
       const unfilteredResults = [...newCalls]
 
 
-      let isFetchAllData = totalCalls.value >= calls.value.length;
+      let isFetchAllData = totalCalls.value >= calls.value.length && unfilteredResults.length < callsLimit;
       endDate = unfilteredResults[unfilteredResults.length - 1].createdAt
       while (isFetchAllData) {
         const queryParams = new URLSearchParams()
@@ -155,8 +155,14 @@ export const useCalls = () => {
     try {
       isExporting.value = true
       exportProgress.value = 0
-      const allCalls = []
+      let allCalls = []
+
       let lastCreatedAt = endDate
+      if (calls.value && calls.value.length > 0) {
+        allCalls = [...calls.value]
+        lastCreatedAt = calls.value[calls.value.length - 1].createdAt
+      }
+
       let hasMoreData = hasMore.value ? true : false
       const _pageSize = 500;
 
