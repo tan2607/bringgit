@@ -690,7 +690,9 @@ const filteredData = computed(() => {
 
 
   if(selectedBotPhoneNumber.value) {
+    console.log(selectedBotPhoneNumber.value)
     rawData = rawData.filter(call => call.botPhoneNumber === selectedBotPhoneNumber.value)
+    return rawData
   }
 
   if(!selectedCategory.value || !selectedValue.value) {
