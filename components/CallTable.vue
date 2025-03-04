@@ -118,7 +118,7 @@
       </div>
     </div>
     <UTable v-else ref="table" v-model:column-visibility="columnVisibility" v-model:column-filters="columnFilters"
-      :data="filteredData" :columns="props.quickView ? quickViewColumns : columns"
+      :data="pagedData" :columns="props.quickView ? quickViewColumns : columns"
       :loading="props.isLoadingTable || isLoading">
       <template #status-data="{ row }">
         <UBadge :color="row.status === 'ended' ? 'success' : 'info'">
@@ -137,7 +137,7 @@
 
     <!-- Pagination -->
     <div v-if="!props.compact && totalCalls > pageSize && !isLoading" class="flex items-center justify-center mt-4 gap-4">
-      <UPagination v-model:page="page" :total="data.length" :items-per-page="pageSize" />
+      <UPagination v-model:page="page" :total="filteredData.length" :items-per-page="pageSize" :show-edges="true"/>
     </div>
   </div>
 </template>
@@ -682,39 +682,24 @@ const handleChooseValue = (value: string) => {
   selectedValue.value = value
 }
 
-
 const filteredData = computed(() => {
-
+  page.value = 1
   let rawData = props.data;
-  const pagedData = rawData.slice((page.value - 1) * pageSize.value, page.value * pageSize.value);
-
 
   if(selectedBotPhoneNumber.value) {
-    console.log(selectedBotPhoneNumber.value)
-    rawData = rawData.filter(call => call.botPhoneNumber === selectedBotPhoneNumber.value)
-    return rawData
+    rawData = rawData.filter(call => call.botPhoneNumber === selectedBotPhoneNumber.value);
   }
-
-  if(!selectedCategory.value || !selectedValue.value) {
-    return pagedData
-  } 
 
   if(selectedCategory.value && selectedValue.value) {
-    return rawData.filter(call => call.tags.includes(`${selectedCategory.value}: ${selectedValue.value}`))
+    rawData = rawData.filter(call => call.tags.includes(`${selectedCategory.value}: ${selectedValue.value}`));
   }
 
-  return pagedData;
+  return rawData;
 })
 
+const pagedData = computed(() => {
+  return filteredData.value.slice((page.value - 1) * pageSize.value, page.value * pageSize.value);
+})
 
-const handleNextPage = async () => {
-  emit('load-more')
-  window.scrollTo({ top: 0, behavior: 'smooth' })
-}
-
-const handlePreviousPage = async () => {
-  emit('load-previous')
-  window.scrollTo({ top: 0, behavior: 'smooth' })
-}
 
 </script>
