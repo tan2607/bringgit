@@ -5,6 +5,7 @@ export default defineEventHandler(async (event) => {
     const db = useDrizzle()
     // get all jobs include related job_queues
     const jobsData = await db.query.jobs.findMany({
+      orderBy: desc(jobs.createdAt),
       with: {
         jobQueues: true
       }
