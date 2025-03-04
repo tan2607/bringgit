@@ -303,32 +303,48 @@ export class CallQueueHandler {
   }
 
   private async sendToQueue(message: CallMessage, options?: { delay?: number }) {
-    // Update the queue item if it already exists
-    if(message.id) {
-      message.status = "pending";
-      message.delay = options?.delay || 0;
-      await this.updateQueue(message)
-      return;
+    const retries = 5;
+    const delay = options?.delay || 0;
+  
+    for (let attempt = 0; attempt < retries; attempt++) {
+      try {
+        if (message.id) {
+          message.status = "pending";
+          message.delay = delay;
+          await this.updateQueue(message);
+          return;
+        }
+  
+        const db = useDrizzle();
+        const queuePayload = {
+          jobId: message.jobId,
+          phoneNumber: message.phoneNumber,
+          assistantId: message.assistantId,
+          phoneNumberId: message.phoneNumberId,
+          name: message.name,
+          retryCount: message.retryCount,
+          priority: message.priority,
+          id: crypto.randomUUID(),
+          delay,
+          status: "pending",
+          scheduledAt: message.scheduledAt,
+          vapiId: null,
+          selectedTimeWindow: JSON.stringify(message.selectedTimeWindow),
+        };
+  
+        await db.insert(jobQueue).values(queuePayload as any);
+        return;
+      } catch (error) {
+        console.error(
+          `Failed to send message to queue (Attempt ${attempt + 1}/${retries}): ${message.phoneNumber} | Error: ${error}`
+        );
+        if (attempt < retries - 1) {
+          await new Promise(res => setTimeout(res, 100 * (2 ** attempt))); // Exponential backoff
+        }
+      }
     }
-
-    // For new queue item
-    const db = useDrizzle();
-    await db.insert(jobQueue).values({
-      jobId: message.jobId,
-      phoneNumber: message.phoneNumber,
-      assistantId: message.assistantId,
-      phoneNumberId: message.phoneNumberId,
-      name: message.name,
-      retryCount: message.retryCount,
-      priority: message.priority,
-      id: crypto.randomUUID(),
-      delay: options?.delay || 0,
-      status: "pending",
-      scheduledAt: message.scheduledAt,
-      vapiId: null,
-      selectedTimeWindow: JSON.stringify(message.selectedTimeWindow)
-    })
-  }
+      console.error(`Failed to queue message after ${retries} attempts: ${message.phoneNumber}`);
+    }
 
 
   private async updateQueue(message: CallMessage) {
