@@ -4,12 +4,10 @@
     <template #header>
       <div class="flex justify-between gap-4">
         <div class="flex gap-4 items-center">
-          <UButton color="primary" size="md" icon="i-lucide-user-plus" class="cursor-pointer">{{
+          <UButton color="primary" size="md" icon="i-lucide-user-plus" class="cursor-pointer" @click="isOpenAddUserModal = true">{{
             t('access-control.add-user') }}</UButton>
-          <UButton color="neutral" size="md" icon="i-lucide-edit" class="cursor-pointer">{{ t('access-control.edit') }}
-          </UButton>
-          <UButton color="neutral" size="md" icon="i-lucide-trash" class="cursor-pointer">{{ t('access-control.delete')
-            }}</UButton>
+          <UButton color="neutral" size="md" icon="i-lucide-edit" class="cursor-pointer">{{ t('access-control.edit') }}</UButton>
+          <UButton color="neutral" size="md" icon="i-lucide-trash" class="cursor-pointer">{{ t('access-control.delete') }}</UButton>
         </div>
         <div class="flex gap-4 items-center">
           <UInput v-model="search" :placeholder="t('access-control.search')" class="w-40" icon="i-lucide-search" />
@@ -19,37 +17,41 @@
       </div>
     </template>
     <!-- table -->
-    <UTable :columns="columns" :data="data" />
+    <UTable :columns="columns" :data="filteredData" />
     <UserAssistantEditModal 
-      v-if="isOpen" 
-      :isOpen="isOpen"
-      @update:isOpen="isOpen = $event"
+      v-if="isOpenEditAssistantModal" 
+      :isOpen="isOpenEditAssistantModal"
+      @update:isOpen="isOpenEditAssistantModal = $event"
       :assistants="assistants" 
       :selectedUser="selectedUser" 
+    />
+    <AddUserModal 
+      v-if="isOpenAddUserModal" 
+      :isOpen="isOpenAddUserModal"
+      @update:isOpen="isOpenAddUserModal = $event"
     />
   </UCard>
 </template>
 
 <script lang="ts" setup>
-import type { User } from '~/server/utils/drizzle'
+import type { User } from '@auth/core/types'
 import UserAssistantEditModal from './UserAssistantEditModal.vue'
 
 const { t } = useI18n()
 const { assistants, fetchAssistants } = useAssistants()
 
-
-
 const UCheckbox = resolveComponent('UCheckbox')
 const UBadge = resolveComponent('UBadge')
 const UButton = resolveComponent('UButton')
 const search = ref('')
-const isOpen = ref(false)
+const isOpenEditAssistantModal = ref(false)
+const isOpenAddUserModal = ref(false)
 const selectedUser = ref<User>({} as User)
 
 const columns = [
   {
     id: 'select',
-    header: ({ table }) =>
+    header: ({ table }: { table: any }) =>
       h(UCheckbox, {
         modelValue: table.getIsSomePageRowsSelected()
           ? 'indeterminate'
@@ -58,7 +60,7 @@ const columns = [
           table.toggleAllPageRowsSelected(!!value),
         ariaLabel: 'Select all'
       }),
-    cell: ({ row }) =>
+    cell: ({ row }: { row: any }) =>
       h(UCheckbox, {
         modelValue: row.getIsSelected(),
         'onUpdate:modelValue': (value: boolean | 'indeterminate') => row.toggleSelected(!!value),
@@ -76,7 +78,7 @@ const columns = [
   {
     accessorKey: 'role',
     header: () => t('access-control.table-role'),
-    cell: (row) => {
+    cell: (row: any) => {
       const color = {
         Admin: 'error' as const,
         User: 'success' as const,
@@ -104,16 +106,16 @@ const columns = [
           size: 'md',
           class: 'cursor-pointer',
           onClick: () => {
-            // Handle edit click
             selectedUser.value = row.original
-            isOpen.value = true
+            isOpenEditAssistantModal.value = true
           }
         })
       ])
     }
   },
 ]
-const data = [
+
+const data = ref([
   {
     name: 'John Doe',
     email: 'john.doe@example.com',
@@ -126,12 +128,17 @@ const data = [
     role: 'User',
     assistants: ['Assistant 1', 'Assistant 2'],
   },
-]
+])
+
+const filteredData = computed(() => {
+  return data.value.filter(user => 
+    user.name.toLowerCase().includes(search.value.toLowerCase()) ||
+    user.email.toLowerCase().includes(search.value.toLowerCase()) ||
+    user.role.toLowerCase().includes(search.value.toLowerCase())
+  );
+});
 
 onMounted(async () => {
   await fetchAssistants()
 })
-
 </script>
-
-<style></style>

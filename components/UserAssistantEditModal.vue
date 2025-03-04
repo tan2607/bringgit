@@ -30,15 +30,16 @@
     </template>
     <template #footer>
       <div class="flex justify-end gap-2">
-        <UButton @click="$emit('update:isOpen', false)">Close</UButton>
-        <UButton @click="$emit('update:isOpen', false)">Save</UButton>
+        <UButton @click="$emit('update:isOpen', false)" class="cursor-pointer">Close</UButton>
+        <UButton @click="$emit('update:isOpen', false)" class="cursor-pointer">Save</UButton>
       </div>
     </template>
   </UModal>
 </template>
 
 <script lang="ts" setup>
-import type { Assistant, User } from '~/server/utils/drizzle';
+import type { User } from '@auth/core/types';
+import type { Assistant } from '~/types/assistant';
 
 const props = defineProps<{
   isOpen: boolean
@@ -48,9 +49,7 @@ const props = defineProps<{
 const assistants = defineModel<Assistant[]>('assistants', { required: true })
 const selectedUser = defineModel<User>('selectedUser', { required: true })
 
-console.log(assistants)
-
-const selectedAssistant = ref<string[]>([])
+const selectedAssistant = ref<any[]>([])
 
 
 const emit = defineEmits<{
