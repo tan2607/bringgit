@@ -107,6 +107,9 @@
         </div>
       </template>
     </UTable>
+    <div class="flex justify-end">
+      <UPagination v-model="page" :page-count="pageCount" :total="total" />
+    </div>
 
     <!-- Create/Edit Job Modal -->
     <JobFormModal v-if="showCreateModal" v-model="showCreateModal" :editing-job="editingJob" :assistantOptions="assistants"
@@ -172,7 +175,10 @@ const editingJob = ref<Job | null>(null)
 const quickViewJob = ref<Job | null>(null)
 const sort = ref({ column: 'schedule', direction: 'desc' })
 const selectedJobs = ref<Job[]>([])
-const isLoading = ref<bool>(false)
+const isLoading = ref(false)
+const page = ref(1)
+const pageCount = ref(5)
+const total = ref(0)
 
 // Form jobState
 const jobForm = ref({
@@ -295,16 +301,12 @@ const filteredJobs = computed(() => {
     )
   }
 
-  if (jobState.value.selectedStatus === 'all') {
-    return jobs
-  }
-
   // Apply status filter
-  if (jobState.value.selectedStatus) {
+  if (jobState.value.selectedStatus && jobState.value.selectedStatus !== 'all') {
     jobs = jobs.filter(job => job.status === jobState.value.selectedStatus)
   }
 
-  return jobs
+  return jobs.slice((page.value - 1) * pageCount.value, page.value * pageCount.value)
 })
 
 // Methods
@@ -506,5 +508,6 @@ onMounted(async () => {
   await getJobs()
   await fetchAssistants()
   await fetchNumbers()
+  total.value = jobState.value.jobs.length
 })
 </script>
