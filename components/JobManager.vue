@@ -177,7 +177,7 @@ const sort = ref({ column: 'schedule', direction: 'desc' })
 const selectedJobs = ref<Job[]>([])
 const isLoading = ref(false)
 const page = ref(1)
-const pageCount = ref(5)
+const pageCount = ref(20)
 const total = ref(0)
 
 // Form jobState
@@ -306,7 +306,14 @@ const filteredJobs = computed(() => {
     jobs = jobs.filter(job => job.status === jobState.value.selectedStatus)
   }
 
-  return jobs.slice((page.value - 1) * pageCount.value, page.value * pageCount.value)
+  // Update total count after filtering
+  total.value = jobs.length
+
+  const start = (page.value - 1) * pageCount.value;
+  const end = page.value * pageCount.value;
+
+  // Apply pagination
+  return jobs.slice(start, end);
 })
 
 // Methods
@@ -508,6 +515,5 @@ onMounted(async () => {
   await getJobs()
   await fetchAssistants()
   await fetchNumbers()
-  total.value = jobState.value.jobs.length
 })
 </script>
