@@ -326,4 +326,22 @@ export default {
     'number': 'الرقم',
     'actions': 'الإجراءات',
   },
+
+  // Access Control
+  'access-control': {
+    'title': 'التحكم في الوصول',
+    'role': 'الدور',
+    'assistant': 'المساعدات المعينة',
+    'all': 'جميع المساعدات',
+    'add-user': 'إضافة مستخدم',
+    'edit': 'تعديل',
+    'delete': 'حذف',
+    'filter': 'تصفية',
+    'search': 'ابحث عن مستخدم...',
+    'clear': 'مسح',
+    'table-name': 'الاسم',
+    'table-email': 'البريد الإلكتروني',
+    'table-role': 'الدور',
+    'table-assistant': 'المساعدات المعينة',
+  },
 }

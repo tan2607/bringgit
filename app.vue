@@ -236,7 +236,13 @@ const adminItems = [
         to: localeRoute('/dev')?.path
       }
     ]
-  }
+  },
+  {
+    key: 'access-control',
+    label: t('access-control.title'),
+    icon: 'i-lucide-lock',
+    to: localeRoute('/access-control')?.path
+  },
 ]
 
 // Profile menu items
