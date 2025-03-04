@@ -108,7 +108,7 @@
       </template>
     </UTable>
     <div class="flex justify-end">
-      <UPagination v-model="page" :page-count="pageCount" :total="total" :disabled="isLoading" />
+      <UPagination :page="page" :itemsPerPage="pageCount" :total="total"  @update:page="(val) => page = val" :disabled="isLoading" />
     </div>
 
     <!-- Create/Edit Job Modal -->
