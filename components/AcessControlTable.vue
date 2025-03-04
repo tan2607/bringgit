@@ -20,16 +20,31 @@
     </template>
     <!-- table -->
     <UTable :columns="columns" :data="data" />
+    <UserAssistantEditModal 
+      v-if="isOpen" 
+      :isOpen="isOpen"
+      @update:isOpen="isOpen = $event"
+      :assistants="assistants" 
+      :selectedUser="selectedUser" 
+    />
   </UCard>
 </template>
 
 <script lang="ts" setup>
+import type { User } from '~/server/utils/drizzle'
+import UserAssistantEditModal from './UserAssistantEditModal.vue'
+
 const { t } = useI18n()
+const { assistants, fetchAssistants } = useAssistants()
+
+
+
 const UCheckbox = resolveComponent('UCheckbox')
 const UBadge = resolveComponent('UBadge')
 const UButton = resolveComponent('UButton')
 const search = ref('')
-const rowSelection = ref({ 1: true })
+const isOpen = ref(false)
+const selectedUser = ref<User>({} as User)
 
 const columns = [
   {
@@ -72,14 +87,29 @@ const columns = [
     }
   },
   {
-    accessorKey: 'assistant',
+    accessorKey: 'assistants',
     header: () => t('access-control.table-assistant'),
     cell: ({ row }: { row: any }) => {
       const role = row.original.role;
       if (role === 'Admin') {
         return h(UBadge, { variant: 'outline', color: 'neutral', class: 'capitalize mr-2', size: 'md' }, 'All Assistants')
       }
-      return row.getValue('assistant').map((assistant: string) => h(UBadge, { variant: 'outline', color: 'neutral', class: 'capitalize mr-2', size: 'md' }, assistant))
+      
+      return h('div', { class: 'flex items-center' }, [
+        ...row.getValue('assistants').map((assistant: string) => h(UBadge, { variant: 'outline', color: 'neutral', class: 'capitalize mr-2', size: 'md' }, assistant)),
+        h(UButton, { 
+          icon: 'i-lucide-edit',
+          color: 'primary',
+          variant: 'ghost', 
+          size: 'md',
+          class: 'cursor-pointer',
+          onClick: () => {
+            // Handle edit click
+            selectedUser.value = row.original
+            isOpen.value = true
+          }
+        })
+      ])
     }
   },
 ]
@@ -88,15 +118,20 @@ const data = [
     name: 'John Doe',
     email: 'john.doe@example.com',
     role: 'Admin',
-    assistant: ['Assistant 1', 'Assistant 2'],
+    assistants: ['Assistant 1', 'Assistant 2'],
   },
   {
     name: 'Jane Doe',
     email: 'jane.doe@example.com',
     role: 'User',
-    assistant: ['Assistant 1', 'Assistant 2'],
+    assistants: ['Assistant 1', 'Assistant 2'],
   },
 ]
+
+onMounted(async () => {
+  await fetchAssistants()
+})
+
 </script>
 
 <style></style>
