@@ -14,7 +14,7 @@
             icon="i-lucide-refresh-cw" 
             variant="ghost" 
             :loading="loading"
-            class="cursor-pointer""
+            class="cursor-pointer"
           />
           <!-- <UPopover>
             <UButton color="neutral" variant="outline" icon="i-lucide-filter" class="cursor-pointer">{{ t('access-control.filter') }}</UButton>
@@ -77,7 +77,7 @@ const { t } = useI18n()
 const { assistants, fetchAssistants, getAssistantById } = useAssistants()
 const { fetchUsers } = useUserManagement()
 
-const currentPage = ref(2)
+const currentPage = ref(1)
 const itemsPerPage = ref(10)
 const search = ref('')
 
