@@ -15,6 +15,7 @@
             variant="ghost" 
             :loading="loading"
             class="cursor-pointer"
+            @click="refreshUsers"
           />
           <template v-if="isPermissionSuperAdmin">
             <UCheckbox 
@@ -83,7 +84,7 @@ import { useUser } from '@/composables/useUser'
 
 const { t } = useI18n()
 const { assistants, fetchAssistants, getAssistantById } = useAssistants()
-const { fetchUsers } = useUserManagement()
+const { fetchUsers, updateUserRole } = useUserManagement()
 const { isPermissionSuperAdmin } = useUser()
 
 const currentPage = ref(1)
@@ -105,7 +106,7 @@ const {
     includeSuperadmin: includeSuperadmin.value
   }),
   {
-    watch: [currentPage]
+    watch: [currentPage, includeSuperadmin]
   }
 )
 
@@ -114,6 +115,7 @@ const total = computed(() => userData.value?.total || 0)
 
 const UBadge = resolveComponent('UBadge')
 const UButton = resolveComponent('UButton')
+const UPopover = resolveComponent('UPopover')
 const isOpenEditAssistantModal = ref(false)
 const isOpenAddUserModal = ref(false)
 const selectedUser = ref<User>({} as User)
@@ -149,14 +151,47 @@ const columns = [
   {
     accessorKey: 'role',
     header: () => t('access-control.table-role'),
-    cell: (row: any) => {
+    cell: ({ row }: { row: any }) => {
+      const role = row.getValue('role')
       const color = {
         Admin: 'error' as const,
         User: 'success' as const,
-      }[row.getValue('role') as string]
-      return h(UBadge, { class: 'capitalize', variant: 'subtle', color }, () =>
-        row.getValue('role')
-      )
+      }[role]
+      
+      return h('div', { class: 'flex items-center gap-2' }, [
+        h(UBadge, { class: 'capitalize', variant: 'subtle', color }, () => role),
+        h(UPopover, {
+          mode: 'click',
+          class: 'min-w-[120px]'
+        }, {
+          default: () => h(UButton, {
+            icon: 'i-lucide-edit',
+            color: 'primary',
+            variant: 'ghost',
+            size: 'xs',
+            class: 'cursor-pointer'
+          }),
+          content: () => h('div', { class: 'p-2' }, [
+            h('select', {
+              value: role,
+              class: 'w-full px-2 py-1 border rounded',
+              onChange: async (e: Event) => {
+                const newRole = (e.target as HTMLSelectElement).value
+                if (newRole === role) return
+                try {
+                  await updateUserRole(row.original.id, newRole === 'Admin')
+                  await refreshUsers()
+                } catch (error) {
+                  console.error('Failed to update role:', error)
+                }
+              }
+            }, [
+              h('option', { value: 'Admin' }, 'Admin'),
+              h('option', { value: 'User' }, 'User')
+            ])
+          ])
+        })
+      ])
     }
   },
   {

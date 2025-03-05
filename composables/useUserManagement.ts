@@ -54,8 +54,17 @@ export const useUserManagement = () => {
     })
   }
 
+  const updateUserRole = async (userId: string, isAdmin: boolean) => {
+    return await fetch(`/api/admin/users/${userId}/role`, {
+      method: 'PUT',
+      body: JSON.stringify({ isAdmin }),
+      headers: { 'Content-Type': 'application/json' }
+    })
+  }
+
   return {
     fetchUsers,
-    updateUserAssistants
+    updateUserAssistants,
+    updateUserRole
   }
 }
