@@ -21,7 +21,7 @@
             <UCheckbox 
               v-model="includeSuperadmin" 
               label="include superadmin users"
-              @change="() => refreshUsers()"
+              @change="resetPageAndRefresh"
             />
           </template>
           <!-- <UPopover>
@@ -127,10 +127,14 @@ const tableRef = ref()
 const handleSearch = useDebounceFn(() => {
   // Only search if there are 3 or more characters, or if the search is empty
   if (search.value.length === 0 || search.value.length >= 3) {
-    currentPage.value = 1 // Reset to first page on search
-    refreshUsers()
+    resetPageAndRefresh()
   }
 }, 300)
+
+const resetPageAndRefresh = () => {
+  currentPage.value = 1
+  refreshUsers()
+}
 
 const columns = [
   {
