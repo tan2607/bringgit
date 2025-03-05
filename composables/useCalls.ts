@@ -4,18 +4,18 @@ export const useCalls = () => {
   const currentPlayingId = useState('currentPlayingId', () => null)
   const selectedCall = useState<TableData | null>('selectedCall', () => null)
   const isLoading = useState('callsIsLoading', () => false)
-  const hasMore = useState('hasMore', () => true)
+  const hasMore = useState('hasMore', () => false)
   const isExporting = useState('isExporting', () => false)
   const exportProgress = useState('exportProgress', () => 0)
   const totalCalls = useState('totalCalls', () => 0)
   const pageSize = 1000
   const previousEndDates = useState('previousEndDates', () => [])
+  const fetchingProgress = useState('fetchingProgress', () => 0)
+  const callsLimit = 10000
 
   const fetchCalls = async (startDate?: string, endDate?: string, limit?: number, loadMore?: boolean = false) => {
     isLoading.value = true
     try {
-      calls.value = [];
-
       const queryParams = new URLSearchParams()
       if (startDate) queryParams.append('startDate', startDate)
       if (endDate) queryParams.append('endDate', endDate)
@@ -28,27 +28,82 @@ export const useCalls = () => {
         totalCalls.value = parseInt(data?.value.count) || 0
       }
 
-      
       const unfilteredResults = [...newCalls]
 
-      hasMore.value = totalCalls.value >= pageSize
+      fetchingProgress.value = Math.floor((unfilteredResults.length / totalCalls.value) * 100)
+
+      let isFetchAllData = totalCalls.value > calls.value.length && unfilteredResults.length < callsLimit;
+      endDate = unfilteredResults[unfilteredResults.length - 1].createdAt
+      while (isFetchAllData) {
+        const queryParams = new URLSearchParams()
+        if (startDate) queryParams.append('startDate', startDate)
+        if (endDate) queryParams.append('endDate', endDate)
+        queryParams.append('limit', pageSize.toString())
+        queryParams.append('loadMore', 'true')
+        const { data } = await useFetch(`/api/calls?${queryParams.toString()}`)
+        const newCalls = data?.value?.calls || []
+        unfilteredResults.push(...newCalls)
+        isFetchAllData = unfilteredResults.length < callsLimit;
+
+        if(totalCalls.value < callsLimit) {
+          fetchingProgress.value = Math.floor((unfilteredResults.length / totalCalls.value) * 100)
+        } else {
+          fetchingProgress.value = Math.floor((unfilteredResults.length / callsLimit) * 100)
+        }
+
+        if(isFetchAllData && newCalls.length > 0) {
+          const lastCall = newCalls[newCalls.length - 1]
+          endDate = lastCall.createdAt
+        } else {
+          isFetchAllData = false;
+        }
+      }
 
       if(!startDate) {
-        calls.value = unfilteredResults.filter((call, index, self) => 
+        const newFilteredCalls = unfilteredResults.filter((call, index, self) => 
           index === self.findIndex((t) => (
             t.id === call.id
           ))
         )
+        if(loadMore) {
+          calls.value = [...calls.value, ...newFilteredCalls]
+        } else {
+          calls.value = newFilteredCalls;
+        }
         return;
       }
 
-      calls.value = unfilteredResults.filter((call, index, self) => 
+      const newFilteredCalls = unfilteredResults.filter((call, index, self) => 
         index === self.findIndex((t) => (
           t.id === call.id && 
           new Date(t.createdAt) > new Date(startDate)
         ))
       )
+
+      if(loadMore) {
+        calls.value = [...calls.value, ...newFilteredCalls]
+      } else {
+        calls.value = newFilteredCalls;
+      }
       
+    } finally {
+      isLoading.value = false
+      fetchingProgress.value = 0
+      hasMore.value = totalCalls.value > calls.value.length;
+    }
+  }
+
+  const fetchRecentCalls = async () => {
+    isLoading.value = true
+    try {
+      const queryParams = new URLSearchParams()
+      queryParams.append('limit', "5")
+      const { data } = await useFetch(`/api/calls?${queryParams.toString()}`)
+      const newCalls = data?.value.calls || []
+
+      calls.value = newCalls
+    } catch (error) {
+      console.error(error)
     } finally {
       isLoading.value = false
     }
@@ -115,8 +170,14 @@ export const useCalls = () => {
     try {
       isExporting.value = true
       exportProgress.value = 0
-      const allCalls = []
+      let allCalls = []
+
       let lastCreatedAt = endDate
+      if (calls.value && calls.value.length > 0) {
+        allCalls = [...calls.value]
+        lastCreatedAt = calls.value[calls.value.length - 1].createdAt
+      }
+
       let hasMoreData = hasMore.value ? true : false
       const _pageSize = 500;
 
@@ -158,7 +219,7 @@ export const useCalls = () => {
 
   const resetCalls = () => {
     calls.value = []
-    hasMore.value = true
+    hasMore.value = false
   }
 
   const resetPreviousEndDates = () => {
@@ -182,6 +243,8 @@ export const useCalls = () => {
     totalCalls,
     resetCalls,
     loadPrevious,
-    resetPreviousEndDates
+    resetPreviousEndDates,
+    fetchingProgress,
+    fetchRecentCalls
   }
 }
