@@ -28,7 +28,7 @@
       <UTable 
         ref="tableRef"
         :columns="columns" 
-        :data="users || []" 
+        :data="users" 
         :loading="loading"
       />
       <div class="flex justify-between items-center mt-4 px-4">
@@ -36,12 +36,12 @@
           {{ t('access-control.total-users', { count: total }) }}
         </div>
         <UPagination
-          v-model="page"
           :total="total"
           :per-page="itemsPerPage"
           :show-arrows="true"
           class="mt-4"
-          @click="(e: PointerEvent) => handlePageClick(e.target as HTMLElement)"
+          :page="currentPage"
+          @update:page="(val) => currentPage = val"
         />
       </div>
     </template>
@@ -69,25 +69,34 @@ import { useUserManagement } from '@/composables/useUserManagement'
 
 const { t } = useI18n()
 const { assistants, fetchAssistants } = useAssistants()
-const { 
-  users, 
-  total, 
-  currentPage, 
-  itemsPerPage, 
-  loading,
-  error,
-  fetchUsers 
-} = useUserManagement()
+const { fetchUsers } = useUserManagement()
 
-// Use computed for page to sync with currentPage
-const page = computed({
-  get: () => currentPage.value,
-  set: (value) => currentPage.value = value
-})
+const currentPage = ref(2)
+const itemsPerPage = ref(10)
+const search = ref('')
+
+const { 
+  data: userData,
+  pending: loading,
+  error,
+  refresh: refreshUsers
+} = useAsyncData(
+  'users',
+  () => fetchUsers({ 
+    page: currentPage.value,
+    limit: itemsPerPage.value,
+    search: search.value 
+  }),
+  {
+    watch: [currentPage]
+  }
+)
+
+const users = computed(() => userData.value?.users || [])
+const total = computed(() => userData.value?.total || 0)
 
 const UBadge = resolveComponent('UBadge')
 const UButton = resolveComponent('UButton')
-const search = ref('')
 const isOpenEditAssistantModal = ref(false)
 const isOpenAddUserModal = ref(false)
 const selectedUser = ref<User>({} as User)
@@ -99,7 +108,8 @@ const tableRef = ref()
 const handleSearch = useDebounceFn(() => {
   // Only search if there are 3 or more characters, or if the search is empty
   if (search.value.length === 0 || search.value.length >= 3) {
-    fetchUsers({ search: search.value, page: 1 })
+    currentPage.value = 1 // Reset to first page on search
+    refreshUsers()
   }
 }, 300)
 
@@ -142,7 +152,7 @@ const columns = [
       }
       
       return h('div', { class: 'flex items-center' }, [
-        ...row.getValue('assistants').map((assistant: string) => h(UBadge, { variant: 'outline', color: 'neutral', class: 'capitalize mr-2', size: 'md' }, assistant)),
+        ...row.getValue('assistants')?.map((assistant: string) => h(UBadge, { variant: 'outline', color: 'neutral', class: 'capitalize mr-2', size: 'md' }, assistant)),
         h(UButton, { 
           icon: 'i-lucide-edit',
           color: 'primary',
@@ -159,19 +169,9 @@ const columns = [
   },
 ]
 
-// Handle page click
-const handlePageClick = async (element: HTMLElement) => {
-  const newPage = parseInt(element.textContent || '1')
-  if (!isNaN(newPage)) {
-    console.log('Page clicked:', newPage)
-    await fetchUsers({ page: newPage, search: search.value })
-  }
-}
-
 onMounted(async () => {
   await Promise.all([
-    fetchAssistants(),
-    fetchUsers()
+    fetchAssistants()
   ])
 })
 </script>

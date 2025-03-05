@@ -16,11 +16,7 @@ interface FetchParams {
 }
 
 export const useUserManagement = () => {
-  const currentPage = ref(1)
-  const itemsPerPage = ref(10)
-  const search = ref('')
-
-  const fetchUserData = async (params: FetchParams) => {
+  const fetchUsers = async (params: FetchParams) => {
     const queryParams = new URLSearchParams()
     if (params.page) queryParams.set('page', params.page.toString())
     if (params.limit) queryParams.set('limit', params.limit.toString())
@@ -48,42 +44,7 @@ export const useUserManagement = () => {
     }
   }
 
-  const { 
-    data: userData,
-    pending: loading,
-    error,
-    refresh: refreshUsers
-  } = useAsyncData(
-    'users',
-    () => fetchUserData({ 
-      page: currentPage.value,
-      limit: itemsPerPage.value,
-      search: search.value 
-    }),
-    {
-      watch: [currentPage, itemsPerPage, search]
-    }
-  )
-
-  const users = computed(() => userData.value?.users || [])
-  const total = computed(() => userData.value?.total || 0)
-  const totalPages = computed(() => userData.value?.pages || 0)
-
-  const fetchUsers = async (params?: FetchParams) => {
-    if (params?.page) currentPage.value = params.page
-    if (params?.limit) itemsPerPage.value = params.limit
-    if (params?.search !== undefined) search.value = params.search
-    await refreshUsers()
-  }
-
   return {
-    users,
-    total,
-    currentPage,
-    itemsPerPage,
-    totalPages,
-    loading,
-    error,
     fetchUsers
   }
 }
