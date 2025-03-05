@@ -9,8 +9,6 @@ export default defineEventHandler(async (event) => {
     const startDateTime = startDate ? new Date(startDate as string).toISOString() : undefined;
     const endDateTime = endDate ? new Date(endDate as string).toISOString() : undefined;
 
-    console.log({startDateTime, endDateTime, limit});
-    
     const vapiProvider = VapiProvider.getInstance();
     return await vapiProvider.listCalls({
       ...(startDateTime && { createdAtGe: startDateTime }),

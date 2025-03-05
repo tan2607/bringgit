@@ -108,7 +108,7 @@ import CallTable from '@/components/CallTable.vue'
 
 const { t } = useI18n()
 
-const { calls, isLoading: callsLoading, fetchCalls } = useCalls()
+const { calls, isLoading: callsLoading, fetchRecentCalls } = useCalls()
 const { 
   timeRangeInfo, 
   stats, 
@@ -117,7 +117,7 @@ const {
 } = useAnalytics()
 
 onMounted(async () => {
-  await fetchCalls()
+  await fetchRecentCalls()
   await fetchAnalytics()
 })
 </script>

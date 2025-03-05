@@ -53,19 +53,31 @@
         </div>
       </div>
       <div class="flex items-center gap-2">
+        <div class="text-sm text-gray-500 mr-2">
+          {{ data?.length || 0 }} data loaded
+        </div>
+        <UTooltip  v-if="hasMore && !props.quickView" text="Current is limited to 10000 calls, if you need more data click the button below">
+          <UButton  color="primary" variant="soft" :loading="isLoading" :disabled="isLoading || !hasMore"
+            class="cursor-pointer" @click="$emit('load-more')">
+            <div class="flex items-center gap-2">
+              Load More
+            </div>
+            <UIcon name="i-lucide-info"  class="size-10"/>
+          </UButton>
+        </UTooltip>
         <UButton
           v-if="props.exportButton"
           color="primary"
           variant="soft"
           :loading="props.isExporting"
           :disabled="props.isLoadingTable || props.isExporting || !props.data?.length"
-          class="group cursor-pointer"
+          class="group cursor-pointer max-w-[200px] whitespace-nowrap"
           @click="$emit('export')"
         >
           <div class="flex items-center gap-2">
             <UIcon name="i-lucide-download" />
             {{ props.isExporting
-            ? `Preparing Export... (${props.exportProgress} records)`
+            ? `Exporting (${props.exportProgress})...`
             : t('export')
             }}
           </div>
@@ -99,8 +111,14 @@
         </UDropdownMenu>
       </div>
     </div>
-    <UTable ref="table" v-model:column-visibility="columnVisibility" v-model:column-filters="columnFilters"
-      :data="filteredData" :columns="props.quickView ? quickViewColumns : columns"
+    <div v-if="isLoading" class="flex items-center justify-center mt-4 gap-4">
+      <div class="flex flex-col items-center gap-2">
+        <div class="text-sm text-gray-600">Fetching calls... {{ fetchingProgress }}%</div>
+        <UProgress :model-value="fetchingProgress" :max="100" class="w-64" />
+      </div>
+    </div>
+    <UTable v-else ref="table" v-model:column-visibility="columnVisibility" v-model:column-filters="columnFilters"
+      :data="pagedData" :columns="props.quickView ? quickViewColumns : columns"
       :loading="props.isLoadingTable || isLoading">
       <template #status-data="{ row }">
         <UBadge :color="row.status === 'ended' ? 'success' : 'info'">
@@ -118,10 +136,8 @@
       @error="(message) => toast.add({ title: 'Error', description: message, color: 'error', icon: 'i-lucide-alert-circle' })" />
 
     <!-- Pagination -->
-    <div v-if="!props.compact" class="flex items-center justify-center mt-4 gap-4">
-      <UButton :loading="isLoading" :disabled="page === 1 || isLoading" @click="$emit('load-first')">First</UButton>
-      <UButton :loading="isLoading" :disabled="page === 1 || isLoading" @click="handlePreviousPage">Previous</UButton>
-      <UButton :loading="isLoading" :disabled="page === totalPages || isLoading" @click="handleNextPage">Next</UButton>
+    <div v-if="!props.compact && totalCalls > pageSize && !isLoading" class="flex items-center justify-center mt-4 gap-4">
+      <UPagination v-model:page="page" :total="filteredData.length" :items-per-page="pageSize" :show-edges="true"/>
     </div>
   </div>
 </template>
@@ -144,6 +160,9 @@ const UInput = resolveComponent('UInput')
 const toast = useToast();
 const slideover = useSlideover()
 const selectedAssistant = ref<Assistant | undefined>()
+
+const page = ref(1)
+const pageSize = ref(100)
 
 interface TableData {
   id: string
@@ -183,28 +202,12 @@ const props = defineProps({
   exportButton: {
     type: Boolean,
     default: false
-  },
-  totalCalls: {
-    type: Number,
-    default: 0
-  },
-  pageSize: {
-    type: Number,
-    default: 1000
-  },
-  page: {
-    type: Number,
-    default: 1
-  },
-  totalPages: {
-    type: Number,
-    default: 0
   }
 })
 
 const emit = defineEmits(['export', 'load-more', 'load-previous', 'load-first'])
 
-const { isLoading, currentPlayingId, togglePlayAudio, selectedCall, hasMore } = useCalls()
+const { isLoading, currentPlayingId, togglePlayAudio, selectedCall, hasMore, fetchingProgress, totalCalls } = useCalls()
 
 const { t } = useI18n()
 const { transformRecordingUrl } = useRecordingUrl()
@@ -679,32 +682,24 @@ const handleChooseValue = (value: string) => {
   selectedValue.value = value
 }
 
-
 const filteredData = computed(() => {
+  page.value = 1
   let rawData = props.data;
 
   if(selectedBotPhoneNumber.value) {
-    rawData = rawData.filter(call => call.botPhoneNumber === selectedBotPhoneNumber.value)
+    rawData = rawData.filter(call => call.botPhoneNumber === selectedBotPhoneNumber.value);
   }
-
-  if(!selectedCategory.value || !selectedValue.value) {
-    return rawData
-  } 
 
   if(selectedCategory.value && selectedValue.value) {
-    return rawData.filter(call => call.tags.includes(`${selectedCategory.value}: ${selectedValue.value}`))
+    rawData = rawData.filter(call => call.tags.includes(`${selectedCategory.value}: ${selectedValue.value}`));
   }
+
+  return rawData;
 })
 
+const pagedData = computed(() => {
+  return filteredData.value.slice((page.value - 1) * pageSize.value, page.value * pageSize.value);
+})
 
-const handleNextPage = async () => {
-  emit('load-more')
-  window.scrollTo({ top: 0, behavior: 'smooth' })
-}
-
-const handlePreviousPage = async () => {
-  emit('load-previous')
-  window.scrollTo({ top: 0, behavior: 'smooth' })
-}
 
 </script>
