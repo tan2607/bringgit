@@ -16,6 +16,13 @@
             :loading="loading"
             class="cursor-pointer"
           />
+          <template v-if="isPermissionSuperAdmin">
+            <UCheckbox 
+              v-model="includeSuperadmin" 
+              label="include superadmin users"
+              @change="() => refreshUsers()"
+            />
+          </template>
           <!-- <UPopover>
             <UButton color="neutral" variant="outline" icon="i-lucide-filter" class="cursor-pointer">{{ t('access-control.filter') }}</UButton>
             <template #content>
@@ -72,14 +79,17 @@ import type { User } from '@auth/core/types'
 import { useDebounceFn } from '@vueuse/core'
 import UserAssistantEditModal from './UserAssistantEditModal.vue'
 import { useUserManagement } from '@/composables/useUserManagement'
+import { useUser } from '@/composables/useUser'
 
 const { t } = useI18n()
 const { assistants, fetchAssistants, getAssistantById } = useAssistants()
 const { fetchUsers } = useUserManagement()
+const { isPermissionSuperAdmin } = useUser()
 
 const currentPage = ref(1)
 const itemsPerPage = ref(10)
 const search = ref('')
+const includeSuperadmin = ref(true)
 
 const { 
   data: userData,
@@ -91,7 +101,8 @@ const {
   () => fetchUsers({ 
     page: currentPage.value,
     limit: itemsPerPage.value,
-    search: search.value 
+    search: search.value,
+    includeSuperadmin: includeSuperadmin.value
   }),
   {
     watch: [currentPage]

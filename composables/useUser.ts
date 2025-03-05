@@ -15,10 +15,15 @@ export const useUser = () => {
 
   const user = computed(() => session.value?.user)
 
+  const isPermissionSuperAdmin = computed(() => {
+    return user.value?.app_metadata?.permissions?.includes('superadmin')
+  })
+
   return {
     user,
     isAdmin,
     getAssistants,
-    hasPermission
+    hasPermission,
+    isPermissionSuperAdmin
   }
 }

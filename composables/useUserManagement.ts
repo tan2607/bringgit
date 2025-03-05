@@ -13,6 +13,7 @@ interface FetchParams {
   page?: number
   limit?: number
   search?: string
+  includeSuperadmin?: boolean
 }
 
 export const useUserManagement = () => {
@@ -21,6 +22,7 @@ export const useUserManagement = () => {
     if (params.page) queryParams.set('page', params.page.toString())
     if (params.limit) queryParams.set('limit', params.limit.toString())
     if (params.search) queryParams.set('q', params.search)
+    if (typeof params.includeSuperadmin === 'boolean') queryParams.set('includeSuperadmin', params.includeSuperadmin.toString())
 
     const response = await fetch(`/api/admin/users?${queryParams}`)
     const data: UserListResponse = await response.json()

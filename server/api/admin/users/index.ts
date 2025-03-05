@@ -1,10 +1,12 @@
 import { auth0Management } from '@/lib/auth0'
 import { H3Event } from 'h3'
 import { AuthUser } from '@/server/utils/user'
+import { domainUtils } from '@/lib/domain'
 
 export default defineEventHandler(async (event: H3Event) => {
   try {
     const user = await AuthUser.fromRequest(event)
+    const config = useRuntimeConfig()
 
     if (!user.isAdmin()) {
       return createError({
@@ -25,16 +27,16 @@ export default defineEventHandler(async (event: H3Event) => {
     const page = parseInt(query.page as string) || 1
     const limit = parseInt(query.limit as string) || 10
     const search = query.q as string
+    const includeSuperadmin = query.includeSuperadmin !== 'false' // default to true if not specified
 
-    // Get user's email domain and subdomain
-    const userEmailDomain = user.email.split('@')[1]
-    const subdomain = userEmailDomain.split('.')[0]
+    // Get subdomain from baseUrl
+    const subdomain = domainUtils.getFirstSubdomain(config.public.baseUrl)
 
-    // Build search query based on permissions
-    let searchQuery = `app_metadata.permissions: ${subdomain}`
+    // Build search query based on permissions, using accountId or subdomain
+    let searchQuery = `app_metadata.permissions: ${config.accountId || subdomain}`
 
-    if (user.isPermissionSuperAdmin()) {
-      // Superadmins can see keyreply.com users
+    // Only include superadmin users if explicitly requested
+    if (user.isPermissionSuperAdmin() && includeSuperadmin) {
       searchQuery += ' OR app_metadata.permissions: superadmin'
     }
 
