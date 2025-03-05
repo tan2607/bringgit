@@ -369,5 +369,6 @@ export default {
     'table-email': 'อีเมล',
     'table-role': 'สิทธิ์',
     'table-assistant': 'ผู้ช่วยที่ถูกตั้งค่า',
+    'total-users': 'ผู้ใช้ คน'
   },
 }

@@ -360,5 +360,6 @@ export default {
       'table-email': '이메일',
       'table-role': '역할',
       'table-assistant': '할당된 어시스턴트',
+      'total-users': '사용자 {count}명'
     },
 }

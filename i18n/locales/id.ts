@@ -348,6 +348,7 @@ export default {
     'table-name': 'Nama',
     'table-email': 'Email',
     'table-role': 'Peran',
-    'table-assistant': 'Asisten yang Ditetapkan',
+    'table-assistant': 'Asisten',
+    'total-users': 'Total pengguna'
   },
 }

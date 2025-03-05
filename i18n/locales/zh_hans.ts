@@ -361,5 +361,6 @@ export default {
     'table-email': '邮箱',
     'table-role': '角色',
     'table-assistant': '分配助手',
+    'total-users': '个用户'
   },
 }

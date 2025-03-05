@@ -342,6 +342,7 @@ export default {
     'table-name': 'الاسم',
     'table-email': 'البريد الإلكتروني',
     'table-role': 'الدور',
-    'table-assistant': 'المساعدات المعينة',
+    'table-assistant': 'المساعدون',
+    'total-users': '{count} مستخدم'
   },
 }

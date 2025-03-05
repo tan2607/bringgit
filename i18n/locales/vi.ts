@@ -381,5 +381,6 @@ export default {
     'table-email': 'Email',
     'table-role': 'Vai trò',
     'table-assistant': 'Trợ lý được gán',
+    'total-users': 'người dùng'
   },
 }

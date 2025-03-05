@@ -455,5 +455,6 @@ export default {
     'table-email': 'Email',
     'table-role': 'Role',
     'table-assistant': 'Assigned Assistants',
+    'total-users': '{count} users'
   },
 }

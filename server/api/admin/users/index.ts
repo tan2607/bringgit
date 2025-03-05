@@ -1,4 +1,3 @@
-
 import { auth0Management } from '@/lib/auth0'
 import { H3Event } from 'h3'
 import { AuthUser } from '@/server/utils/user'
@@ -27,17 +26,33 @@ export default defineEventHandler(async (event: H3Event) => {
     const limit = parseInt(query.limit as string) || 10
     const search = query.q as string
 
-    // Build search query
-    const searchQuery = search ? { q: search } : undefined
+    // Get user's email domain and subdomain
+    const userEmailDomain = user.email.split('@')[1]
+    const subdomain = userEmailDomain.split('.')[0]
+
+    // Build search query based on permissions
+    let searchQuery = `app_metadata.permissions: ${subdomain}`
+
+    if (user.isPermissionSuperAdmin()) {
+      // Superadmins can see keyreply.com users
+      searchQuery += ' OR app_metadata.permissions: superadmin'
+    }
+
+    // Add name and email search if provided
+    if (search) {
+      searchQuery += ` AND (name: *${search}* OR email: *${search}*)`
+    }
+
+    console.log(searchQuery)
 
     // Get users with pagination
     const users = await auth0Management.getUsers({
-      ...searchQuery,
-      page,
+      q: searchQuery,
+      page: page - 1,
       per_page: limit,
       include_totals: true,
-      fields: 'user_id,email,name,picture,app_metadata,user_metadata,created_at,last_login',
-      sort: 'created_at:1'
+      fields: 'user_id,email,name,picture,app_metadata,created_at,last_login',
+      sort: 'name:1'
     })
 
     return {

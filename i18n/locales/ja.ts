@@ -370,5 +370,6 @@ export default {
     'table-email': 'メール',
     'table-role': 'ロール',
     'table-assistant': '割り当てられたアシスタント',
+    'total-users': 'ユーザー数：{count}人'
   },
 }

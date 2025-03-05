@@ -7,7 +7,8 @@ const ADMIN_ROUTES = [
   '/scheduling',
   '/numbers',
   '/demo',
-  '/settings'
+  '/settings',
+  '/access-control'
 ]
 
 // Routes that all authenticated users can access

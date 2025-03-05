@@ -16,6 +16,10 @@ export class AuthUser {
         return this.app_metadata?.roles?.includes('admin') || false
     }
 
+    isPermissionSuperAdmin(): boolean {
+        return this.app_metadata?.permissions?.includes('superadmin') || false
+    }
+
     getAssistants(): string[] {
         return this.app_metadata?.assistants || []
     }
