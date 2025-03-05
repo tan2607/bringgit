@@ -27,7 +27,7 @@ import { useUser } from '@/composables/useUser'
 
 // Apply auth middleware to all routes
 definePageMeta({
-  middleware: ['auth']
+  middleware: ['access-control']
 })
 
 const { locale, locales, setLocale, t } = useI18n()
