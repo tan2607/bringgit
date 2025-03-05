@@ -31,7 +31,7 @@
     <template #footer>
       <div class="flex justify-end gap-2">
         <UButton @click="$emit('update:isOpen', false)" class="cursor-pointer">Close</UButton>
-        <UButton @click="$emit('update:isOpen', false)" class="cursor-pointer">Save</UButton>
+        <UButton @click="handleSave" color="primary" class="cursor-pointer">Save</UButton>
       </div>
     </template>
   </UModal>
@@ -49,13 +49,51 @@ const props = defineProps<{
 const assistants = defineModel<Assistant[]>('assistants', { required: true })
 const selectedUser = defineModel<User>('selectedUser', { required: true })
 
-const selectedAssistant = ref<any[]>([])
+const selectedAssistant = ref<Assistant[]>([])
 
+const { updateUserAssistants } = useUserManagement()
+const toast = useToast()
+
+// Initialize selected assistants when modal opens or user changes
+watch([() => props.isOpen, selectedUser], () => {
+  if (props.isOpen && selectedUser.value) {
+    selectedAssistant.value = assistants.value.filter(assistant => 
+      selectedUser.value.assistants?.includes(assistant.id)
+    )
+  }
+}, { immediate: true })
 
 const emit = defineEmits<{
   'update:isOpen': [value: boolean]
 }>()
 
+const handleSave = async () => {
+  if (selectedUser.value) {
+    try {
+      const assistantIds = selectedAssistant.value.map(a => a.id)
+      await updateUserAssistants(selectedUser.value.id, assistantIds)
+      
+      // Update the local user state
+      selectedUser.value.assistants = assistantIds
+      
+      // Show success toast
+      toast.add({
+        title: 'Success',
+        description: 'Assistants updated successfully. Please refresh the data.',
+      })
+      
+      // Close the modal
+      emit('update:isOpen', false)
+    } catch (error) {
+      // Show error toast
+      toast.add({
+        title: 'Error',
+        description: 'Failed to update assistants',
+      })
+      console.error('Failed to update user assistants:', error)
+    }
+  }
+}
 
 </script>
 

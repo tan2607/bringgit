@@ -31,9 +31,16 @@ export default defineEventHandler(async (event: H3Event) => {
       })
     }
 
+    // Get the target user's current metadata
+    const currentMetadata = await auth0Management.getUserMetadata(userId as string)
+
+    // Only update the assistants field, preserving other metadata
     const updatedMetadata = await auth0Management.updateUserMetadata(
       userId as string,
-      { assistants }
+      { 
+        ...currentMetadata,
+        assistants 
+      }
     )
 
     return {

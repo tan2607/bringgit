@@ -43,8 +43,6 @@ export default defineEventHandler(async (event: H3Event) => {
       searchQuery += ` AND (name: *${search}* OR email: *${search}*)`
     }
 
-    console.log(searchQuery)
-
     // Get users with pagination
     const users = await auth0Management.getUsers({
       q: searchQuery,

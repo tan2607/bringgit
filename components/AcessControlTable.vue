@@ -10,6 +10,12 @@
         </div>
         <div class="flex gap-4 items-center">
           <UInput v-model="search" :placeholder="t('access-control.search')" class="w-40" icon="i-lucide-search" @input="handleSearch"/>
+          <UButton 
+            icon="i-lucide-refresh-cw" 
+            variant="ghost" 
+            :loading="loading"
+            class="cursor-pointer""
+          />
           <!-- <UPopover>
             <UButton color="neutral" variant="outline" icon="i-lucide-filter" class="cursor-pointer">{{ t('access-control.filter') }}</UButton>
             <template #content>
@@ -51,7 +57,7 @@
       :isOpen="isOpenEditAssistantModal"
       @update:isOpen="isOpenEditAssistantModal = $event"
       :assistants="assistants" 
-      :selectedUser="selectedUser" 
+      :selectedUser="selectedUser"
     />
     <AddUserModal 
       v-if="isOpenAddUserModal" 
@@ -68,7 +74,7 @@ import UserAssistantEditModal from './UserAssistantEditModal.vue'
 import { useUserManagement } from '@/composables/useUserManagement'
 
 const { t } = useI18n()
-const { assistants, fetchAssistants } = useAssistants()
+const { assistants, fetchAssistants, getAssistantById } = useAssistants()
 const { fetchUsers } = useUserManagement()
 
 const currentPage = ref(2)
@@ -151,18 +157,28 @@ const columns = [
         return h(UBadge, { variant: 'outline', color: 'neutral', class: 'capitalize mr-2', size: 'md' }, 'All Assistants')
       }
       
-      return h('div', { class: 'flex items-center' }, [
-        ...row.getValue('assistants')?.map((assistant: string) => h(UBadge, { variant: 'outline', color: 'neutral', class: 'capitalize mr-2', size: 'md' }, assistant)),
+      return h('div', { 
+        class: 'flex flex-wrap items-center gap-2'  
+      }, [
         h(UButton, { 
           icon: 'i-lucide-edit',
           color: 'primary',
           variant: 'ghost', 
           size: 'md',
-          class: 'cursor-pointer',
+          class: 'cursor-pointer shrink-0',  
           onClick: () => {
             selectedUser.value = row.original
             isOpenEditAssistantModal.value = true
           }
+        }),
+        ...(row.getValue('assistants') || []).map((assistantId: string) => {
+          const assistant = getAssistantById(assistantId)
+          return h(UBadge, { 
+            variant: 'outline', 
+            color: 'neutral', 
+            class: 'capitalize', 
+            size: 'md'
+          }, () => assistant?.name || assistantId)
         })
       ])
     }

@@ -44,7 +44,16 @@ export const useUserManagement = () => {
     }
   }
 
+  const updateUserAssistants = async (userId: string, assistants: string[]) => {
+    return await fetch(`/api/admin/users/${userId}/assistant`, {
+      method: 'PUT',
+      body: JSON.stringify({ assistants }),
+      headers: { 'Content-Type': 'application/json' }
+    })
+  }
+
   return {
-    fetchUsers
+    fetchUsers,
+    updateUserAssistants
   }
 }
