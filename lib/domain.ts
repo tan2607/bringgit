@@ -13,10 +13,18 @@ export const domainUtils = {
       }
     },
   
-    canAccessDomain(hostname: string, permissions: string[] = []): boolean {
+    canAccessDomain(hostname: string, permissions: string[] = [], accountId?: any): boolean {
       if (!hostname) return false
-      if (permissions.includes('superadmin')) return true
       
+      // Check for superadmin permission or exact localhost match
+      if (permissions.includes('superadmin') || /^(?:http:\/\/)?localhost:3000(?:\/|$)/.test(hostname)) return true
+      
+      // Check for account ID permission if configured
+      if (accountId && permissions.includes(accountId)) {
+        return true
+      }
+      
+      // Fallback to subdomain check
       const subdomain = this.getFirstSubdomain(hostname)
       if (!subdomain) return false
       

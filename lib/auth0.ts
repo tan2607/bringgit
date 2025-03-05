@@ -3,6 +3,7 @@ import { DEFAULT_APP_METADATA, type AppMetadata } from "@/types/auth"
 export class Auth0ManagementClient {
     private accessToken: string | null = null
     private tokenExpiresAt: number = 0
+    private auth0Config = useRuntimeConfig().auth0 || {}
 
     async refreshTokenIfNeeded(): Promise<void> {
         const BUFFER_TIME = 60 * 1000
@@ -11,13 +12,13 @@ export class Auth0ManagementClient {
         }
 
         try {
-            const response = await fetch(`https://${process.env.AUTH0_DOMAIN}/oauth/token`, {
+            const response = await fetch(`https://${this.auth0Config.domain}/oauth/token`, {
                 method: 'POST',
                 headers: { 'content-type': 'application/json' },
                 body: JSON.stringify({
-                    client_id: process.env.AUTH0_CLIENT_ID,
-                    client_secret: process.env.AUTH0_CLIENT_SECRET,
-                    audience: process.env.AUTH0_AUDIENCE,
+                    client_id: this.auth0Config.clientId,
+                    client_secret: this.auth0Config.clientSecret,
+                    audience: this.auth0Config.audience,
                     grant_type: 'client_credentials',
                     scope: 'read:users update:users update:users_app_metadata'
                 })
@@ -47,7 +48,7 @@ export class Auth0ManagementClient {
             const formattedUserId = encodeURIComponent(`auth0|${userId}`)
 
             const response = await fetch(
-                `https://${process.env.AUTH0_DOMAIN}/api/v2/users/${userId}`,
+                `https://${this.auth0Config.domain}/api/v2/users/${userId}`,
                 {
                     headers: {
                         Authorization: `Bearer ${this.accessToken}`,
@@ -90,7 +91,7 @@ export class Auth0ManagementClient {
             if (params.sort) queryParams.set('sort', params.sort)
 
             const response = await fetch(
-                `https://${process.env.AUTH0_DOMAIN}/api/v2/users?${queryParams}`,
+                `https://${this.auth0Config.domain}/api/v2/users?${queryParams}`,
                 {
                     headers: {
                         Authorization: `Bearer ${this.accessToken}`,
@@ -117,7 +118,7 @@ export class Auth0ManagementClient {
         const formattedUserId = encodeURIComponent(`auth0|${userId}`)
         
         const response = await fetch(
-            `https://${process.env.AUTH0_DOMAIN}/api/v2/users/${userId}`,
+            `https://${this.auth0Config.domain}/api/v2/users/${userId}`,
             {
                 method: 'PATCH',
                 headers: {

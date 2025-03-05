@@ -12,7 +12,14 @@ const authConfig: AuthConfig = {
     error(code, ...message) {
       console.error('[AUTH] Error. Runtime Config:', {
         baseUrl: runtimeConfig.public.baseUrl,
-        authJs: runtimeConfig.public.authJs
+        authJs: runtimeConfig.public.authJs,
+        auth0: {
+          clientId: runtimeConfig.auth0?.clientId ? `${runtimeConfig.auth0.clientId.slice(0, 4)}...${runtimeConfig.auth0.clientId.slice(-4)}` : undefined,
+          clientSecret: runtimeConfig.auth0?.clientSecret ? `${runtimeConfig.auth0.clientSecret.slice(0, 4)}...${runtimeConfig.auth0.clientSecret.slice(-4)}` : undefined,
+          issuer: runtimeConfig.auth0?.issuer,
+          domain: runtimeConfig.auth0?.domain,
+          audience: runtimeConfig.auth0?.audience
+        }
       })
       console.error(code, ...message)
     }
@@ -29,9 +36,9 @@ const authConfig: AuthConfig = {
   basePath: "/api/auth",
   providers: [
     Auth0Provider({
-      clientId: process.env.AUTH0_CLIENT_ID,
-      clientSecret: process.env.AUTH0_CLIENT_SECRET,
-      issuer: process.env.AUTH0_ISSUER,
+      clientId: runtimeConfig.auth0?.clientId,
+      clientSecret: runtimeConfig.auth0?.clientSecret,
+      issuer: runtimeConfig.auth0?.issuer,
       authorization: {
         params: {
           prompt: "login"
@@ -59,7 +66,7 @@ const authConfig: AuthConfig = {
           return false
         }
 
-        return domainUtils.canAccessDomain(baseUrl, metadata.permissions)
+        return domainUtils.canAccessDomain(baseUrl, metadata.permissions, runtimeConfig?.accountId)
       } catch (error) {
         console.error('Sign in validation error:', error)
         return false
