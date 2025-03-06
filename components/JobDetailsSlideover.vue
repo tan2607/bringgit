@@ -72,6 +72,7 @@
 	import type { Job } from "~/types";
 	import { useCalls } from '@/composables/useCalls'
 	const slideover = useSlideover()
+	const jobQueues = ref<any[]>([])
 
 	const props = defineProps<{
 		modelValue: boolean;
@@ -85,7 +86,7 @@
 
 	const { calls, fetchCalls } = useCalls()
 	const { assistants, fetchAssistants, getAssistantById } = useAssistants()
-	const { jobState } = useJobState()
+	const { jobState, getJobQueueByJobId } = useJobState()
 
 	const isLoadingTable = ref(false)
 
@@ -163,7 +164,7 @@
 	});
 
 	function getJobQueueWithVapiDetails(job: Job) {
-		return job.jobQueues?.map((job_queue: any) => {
+		return jobQueues.value?.map((job_queue: any) => {
 			const vapi_call = calls.value.find((call) => call.id === job_queue.vapiId);
 			const assistant = vapi_call?.assistant || getAssistantById(job_queue.assistantId)?.name || "N/A";
 
@@ -177,7 +178,9 @@
 
 onMounted(async () => {
 	isLoadingTable.value = true
-	if(!calls.value || calls.value.length === 0) {
+	const firstJobQueue = jobQueues.value[0]
+	const isQueueInCalls = calls.value.some((call) => call.id === firstJobQueue.vapiId)
+	if(!isQueueInCalls) {
 		const startDate = new Date(quickViewJob.value?.createdAt).toISOString()
 		await fetchCalls(startDate)
 	}
@@ -186,19 +189,22 @@ onMounted(async () => {
 		await fetchAssistants()
 	}
 
+	jobQueues.value = await getJobQueueByJobId(props.jobId)
+
 	isLoadingTable.value = false
 })
 
+watch(() => props.jobId, async () => {
+	isLoadingTable.value = true
+	jobQueues.value = await getJobQueueByJobId(props.jobId)
+	// Check if the job queues are in the calls value
+	const firstJobQueue = jobQueues.value[0]
+	const isQueueInCalls = calls.value.some((call) => call.id === firstJobQueue.vapiId)
+	if(!isQueueInCalls) {
+		const startDate = new Date(quickViewJob.value?.createdAt).toISOString()
+		await fetchCalls(startDate)
+	}
 
-const jobQueueColumns = [
-  { accessorKey: 'name', header: 'Name', cell: ({ row }) => {
-    return h('div', { class: 'text-sm text-gray-500' }, row.original.name || "N/A")
-  } },
-  { accessorKey: 'phoneNumber', header: 'Phone Number' },
-  { accessorKey: 'retryCount', header: 'Retry Count' },
-  { accessorKey: 'scheduledAt', header: 'Schedule At', cell: ({ row }) => {
-    return h('div', { class: 'text-sm text-gray-500' }, new Date(row.original.scheduledAt).toLocaleString())
-  }  },
-  { accessorKey: 'status', header: 'Status' },
-]
+	isLoadingTable.value = false
+})
 </script>

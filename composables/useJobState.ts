@@ -32,6 +32,8 @@ interface JobState {
     completedCalls: boolean
     status: boolean
   }
+  total: number
+  isHasMore: boolean
 }
 
 export const useJobState = () => {
@@ -49,13 +51,15 @@ export const useJobState = () => {
       progress: true,
       completedCalls: true,
       status: true
-    }
+    },
+    total: 0,
+    isHasMore: false,
+    offset: 0
   }))
 
   // Subscribe to job updates
   const { jobUpdates } = useJobUpdates()
   watch(() => jobUpdates.value.jobs, (updates) => {
-      jobState.value.jobs = updates
   })
 
   const startJob = async (jobId: string) => {
@@ -267,10 +271,60 @@ export const useJobState = () => {
   }
 
   const getJobs = async () => {
-    const jobsData = await $fetch('/api/jobs')
-    jobState.value.jobs = jobsData
-    return jobState.value.jobs
+    jobState.value.isLoading = true
+    try {
+      const jobsData = await $fetch('/api/jobs')
+      jobState.value.jobs = jobsData.jobs
+      jobState.value.total = jobsData.total
 
+      if (jobState.value.jobs.length < jobState.value.total) {
+        jobState.value.isHasMore = true
+      } else {
+        jobState.value.isHasMore = false
+      }
+
+      return jobState.value.jobs
+    } catch (error) {
+      console.error('Error fetching jobs:', error)
+      return []
+    } finally {
+      jobState.value.isLoading = false
+    }
+  }
+
+  const getJobQueueByJobId = async (jobId: string) => {
+    try {
+      const jobQueueData = await $fetch(`/api/jobs/queues`, {
+        query: {
+          jobId
+        }
+      })
+      console.log(jobQueueData)
+      return jobQueueData
+    } catch (error) {
+      console.error('Error getting job queue by job id:', error)
+      return []
+    }
+  }
+
+  const loadMoreJobs = async () => {
+    jobState.value.isLoading = true
+    const newOffset = jobState.value.offset + 1
+    try {
+      const jobsData = await $fetch('/api/jobs', {
+        query: {
+          offset: newOffset
+        }
+      })
+      jobState.value.jobs.push(...jobsData.jobs)
+      jobState.value.offset = newOffset
+
+      jobState.value.isHasMore = jobState.value.jobs.length < jobState.value.total;
+    } catch (error) {
+      console.error('Error loading more jobs:', error)
+    } finally {
+      jobState.value.isLoading = false
+    }
   }
 
   return {
@@ -281,6 +335,8 @@ export const useJobState = () => {
     stopJob,
     createJob,
     getJobs,
-    deleteJob
+    deleteJob,
+    getJobQueueByJobId,
+    loadMoreJobs
   }
 }

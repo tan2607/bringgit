@@ -10,6 +10,12 @@
       </div>
 
       <div class="flex gap-2">
+        <UTooltip v-if="jobState.isHasMore"  text="Current limit is 1000 jobs, If you need more click on the button" :disabled="!jobState.isHasMore">
+          <UButton :loading="jobState.isLoading" @click="handleLoadMore" color="primary"  size="sm" class="flex items-center gap-1 cursor-pointer"
+          > <span class="text-xs">Load More </span>
+          <UIcon name="i-heroicons-question-mark-circle" class="w-4 h-4" />
+        </UButton>
+        </UTooltip>
         <UButton icon="i-heroicons-plus" @click="handleCreateJob" color="primary">
           New Job
         </UButton>
@@ -56,9 +62,9 @@
     </UCard> -->
 
     <!-- Jobs Table -->
-    <UTable :data="filteredJobs" :columns="columns" :sort="sort" @update:sort="sort = $event"
-      v-model="selectedJobs" :loading="isLoading"
-      :empty-jobState="{ icon: 'i-heroicons-clipboard', label: 'No jobs found' }" @select="handleSelectJob">
+    <UTable :data="filteredJobs" :columns="columns" :sort="sort" @update:sort="sort = $event" v-model="selectedJobs"
+      :loading="isLoading" :empty-jobState="{ icon: 'i-heroicons-clipboard', label: 'No jobs found' }"
+      @select="handleSelectJob">
       <!-- Name Column -->
       <template #name-data="{ row }">
         <div class="flex items-center gap-2">
@@ -108,15 +114,16 @@
       </template>
     </UTable>
     <div class="flex justify-end">
-      <UPagination :page="page" :itemsPerPage="pageCount" :total="total"  @update:page="(val) => page = val" :disabled="isLoading" />
+      <UPagination :page="page" :itemsPerPage="pageCount" :total="total" @update:page="(val) => page = val"
+        :disabled="isLoading" />
     </div>
 
     <!-- Create/Edit Job Modal -->
-    <JobFormModal v-if="showCreateModal" v-model="showCreateModal" :editing-job="editingJob" :assistantOptions="assistants"
-      :phone-number-options="numbers" @submit="handleJobSubmit"/>
+    <JobFormModal v-if="showCreateModal" v-model="showCreateModal" :editing-job="editingJob"
+      :assistantOptions="assistants" :phone-number-options="numbers" @submit="handleJobSubmit" />
 
     <!-- Quick View Drawer -->
-    <JobDetailsSlideover  v-if="quickViewJob" :model-value="true" :job-id="quickViewJob.id"/>
+    <JobDetailsSlideover v-if="quickViewJob" :model-value="true" :job-id="quickViewJob.id" />
   </div>
 </template>
 
@@ -143,7 +150,7 @@ const jobFormSchema = z.object({
 
 type JobFormSchema = z.output<typeof jobFormSchema>
 
-const { jobState, createJob, pauseJob, startJob, getJobs, deleteJob } = useJobState()
+const { jobState, createJob, pauseJob, startJob, getJobs, deleteJob, loadMoreJobs } = useJobState()
 const { assistants, fetchAssistants } = useAssistants()
 const { numbers, fetchNumbers } = usePhoneNumbers()
 const { confirm } = useConfirm()
@@ -523,6 +530,11 @@ function getJobPhoneNumbers(job: Job) {
 function handleCreateJob() {
   editingJob.value = null
   showCreateModal.value = true
+}
+
+async function handleLoadMore() {
+  await loadMoreJobs()
+  filterJobs()
 }
 
 onMounted(async () => {
