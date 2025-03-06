@@ -2,12 +2,12 @@
   <UModal :open="props.isOpen" @update:open="$emit('update:isOpen', $event)">
     <template #header>
       <div class="p-4">
-        <h1>Edit Assistant</h1>
+        <h1>Edit Bot Phone Number</h1>
       </div>
     </template>
     <template #body>
       <div class="p-4">
-        <p class="text-sm font-medium my-2">Select Assistants</p>
+        <p class="text-sm font-medium my-2">Select Bot Phone Numbers</p>
         <USelectMenu v-model="selectedBotPhoneNumber" :items="botPhoneNumbers" class="w-full" multiple placeholder="Select Bot Phone Numbers">
           <template #item="{ item }">
             <div class="flex items-center gap-2">
@@ -20,7 +20,7 @@
       <div class="p-4">
         <p class="text-sm font-medium my-2">Selected Bot Phone Numbers</p>
         <div class="flex gap-2 flex-wrap border rounded-md p-3 border-neutral-700">
-          <div v-if="selectedBotPhoneNumber.length > 0" v-for="botPhoneNumber in selectedBotPhoneNumber" :key="botPhoneNumber">
+          <div v-if="selectedBotPhoneNumber.length > 0" v-for="botPhoneNumber in selectedBotPhoneNumber" :key="botPhoneNumber.id">
             <UBadge class="flex items-center gap-1">
               {{ `${botPhoneNumber.name} (${botPhoneNumber.number})` }}
               <UIcon name="i-lucide-x" class="w-4 h-4 cursor-pointer"
@@ -45,24 +45,27 @@
 
 <script lang="ts" setup>
 import type { User } from '@auth/core/types';
-import type { PhoneNumbers } from '@vapi-ai/server-sdk/api/resources/phoneNumbers/client/Client';
+import type { PhoneNumber } from '~/composables/usePhoneNumbers';
+
 const props = defineProps<{
   isOpen: boolean
 }>()
 
 
-const botPhoneNumbers = defineModel<PhoneNumbers[]>('botPhoneNumbers', { required: true })
+const botPhoneNumbers = defineModel<PhoneNumber[]>('botPhoneNumbers', { required: true })
 const selectedUser = defineModel<User>('selectedUser', { required: true })
 
-const selectedBotPhoneNumber = ref<string[]>([])
+const selectedBotPhoneNumber = ref<PhoneNumber[]>([])
 
 const { updateUserBotPhoneNumbers } = useUserManagement()
 const toast = useToast()
 
-// Initialize selected assistants when modal opens or user changes
+// Initialize selected bot phone numbers when modal opens or user changes
 watch([() => props.isOpen, selectedUser], () => {
   if (props.isOpen && selectedUser.value) {
-    selectedBotPhoneNumber.value = selectedUser.value.botPhoneNumbers
+    selectedBotPhoneNumber.value = botPhoneNumbers.value.filter(botPhoneNumber => 
+      selectedUser.value.botPhoneNumbers?.includes(botPhoneNumber.id)
+    )
   }
 }, { immediate: true })
 
@@ -73,11 +76,11 @@ const emit = defineEmits<{
 const handleSave = async () => {
   if (selectedUser.value) {
     try {
-      const botPhoneNumbers = selectedBotPhoneNumber.value
-      await updateUserBotPhoneNumbers(selectedUser.value.id, botPhoneNumbers)
+      const botPhoneNumbersIds = selectedBotPhoneNumber.value.map(p => p.id)
+      await updateUserBotPhoneNumbers(selectedUser.value.id, botPhoneNumbersIds)
       
       // Update the local user state
-      selectedUser.value.botPhoneNumbers = botPhoneNumbers
+      selectedUser.value.botPhoneNumbers = botPhoneNumbersIds
       
       // Show success toast
       toast.add({

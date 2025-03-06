@@ -88,14 +88,12 @@
 import type { User } from '@auth/core/types'
 import { useDebounceFn } from '@vueuse/core'
 import UserAssistantEditModal from './UserAssistantEditModal.vue'
-import { useUserManagement } from '@/composables/useUserManagement'
-import { useUser } from '@/composables/useUser'
 
 const { t } = useI18n()
 const { assistants, fetchAssistants, getAssistantById } = useAssistants()
 const { fetchUsers, updateUserRole } = useUserManagement()
 const { isPermissionSuperAdmin } = useUser()
-const { numbers, fetchNumbers } = usePhoneNumbers()
+const { numbers, fetchNumbers, getPhoneNumberById } = usePhoneNumbers()
 
 const currentPage = ref(1)
 const itemsPerPage = ref(10)
@@ -248,7 +246,6 @@ const columns = [
     accessorKey: 'botPhoneNumbers',
     header: () => t('access-control.table-bot-phone-numbers'),
     cell: ({ row }: { row: any }) => {
-      const botPhoneNumbers = row.original.botPhoneNumbers  
       const role = row.original.role;
       if (role === 'Admin') {
         return h(UBadge, { variant: 'outline', color: 'neutral', class: 'capitalize mr-2', size: 'md' }, `${t('access-control.table-all-phone-numbers')}`)
@@ -258,12 +255,13 @@ const columns = [
       }, [
         
       ...(row.getValue('botPhoneNumbers') || []).map((botPhoneNumber: any) => {
+        const phoneNumber = getPhoneNumberById(botPhoneNumber)
           return h(UBadge, { 
             variant: 'outline', 
             color: 'neutral', 
             class: 'capitalize', 
             size: 'md'
-          }, () => `${botPhoneNumber.name} (${botPhoneNumber.number})`)
+          }, () => `${phoneNumber?.name} (${phoneNumber?.number})`)
         }),
         h(UButton, { 
           icon: 'i-lucide-edit',
