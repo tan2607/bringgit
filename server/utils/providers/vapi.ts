@@ -131,7 +131,7 @@ export class VapiProvider {
     // Filter bot phone numbers  based on user permissions
     const allowedPhoneNumbers = params?.user.isAdmin()
       ? phoneNumbers
-      : phoneNumbers.filter(phone => params?.user.getBotPhoneLines().includes(phone.id));
+      : phoneNumbers.filter(phone => params?.user.getBotPhoneNumbers().includes(phone.id));
 
     // Filter calls based on allowed assistants
     const filteredCalls = calls.filter(call => 

@@ -28,8 +28,8 @@ export class AuthUser {
         return this.app_metadata?.permissions?.includes(permission) || false
     }
 
-    getBotPhoneLines(): string[] {
-        return this.app_metadata?.botphonelines || []
+    getBotPhoneNumbers(): string[] {
+        return this.app_metadata?.botPhoneNumbers || []
     }
 
     static async fromRequest(event: H3Event): Promise<AuthUser> {
