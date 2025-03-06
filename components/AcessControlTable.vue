@@ -221,6 +221,7 @@ const columns = [
       }, [
         ...(row.getValue('assistants') || []).map((assistantId: string) => {
           const assistant = getAssistantById(assistantId)
+          if (!assistant) return null
           return h(UBadge, { 
             variant: 'outline', 
             color: 'neutral', 
@@ -256,6 +257,7 @@ const columns = [
         
       ...(row.getValue('botPhoneNumbers') || []).map((botPhoneNumber: any) => {
         const phoneNumber = getPhoneNumberById(botPhoneNumber)
+        if (!phoneNumber) return null
           return h(UBadge, { 
             variant: 'outline', 
             color: 'neutral', 
