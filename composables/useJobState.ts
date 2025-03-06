@@ -57,11 +57,6 @@ export const useJobState = () => {
     offset: 0
   }))
 
-  // Subscribe to job updates
-  const { jobUpdates } = useJobUpdates()
-  watch(() => jobUpdates.value.jobs, (updates) => {
-  })
-
   const startJob = async (jobId: string) => {
     jobState.value.loadingJobId = jobId
     try {
@@ -299,7 +294,6 @@ export const useJobState = () => {
           jobId
         }
       })
-      console.log(jobQueueData)
       return jobQueueData
     } catch (error) {
       console.error('Error getting job queue by job id:', error)
@@ -309,7 +303,7 @@ export const useJobState = () => {
 
   const loadMoreJobs = async () => {
     jobState.value.isLoading = true
-    const newOffset = jobState.value.offset + 1
+    const newOffset = jobState.value.offset + 100
     try {
       const jobsData = await $fetch('/api/jobs', {
         query: {

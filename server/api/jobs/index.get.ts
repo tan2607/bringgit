@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
     const query = getQuery(event)
     // Fetch all job from 1 week from now
     const jobsData = await db.query.jobs.findMany({
-      limit: 1000,
+      limit: 100,
       orderBy: [desc(jobs.createdAt)],
       offset: query.offset ? parseInt(query.offset as string) : 0
     })

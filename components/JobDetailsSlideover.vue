@@ -178,8 +178,9 @@
 
 onMounted(async () => {
 	isLoadingTable.value = true
+	jobQueues.value = await getJobQueueByJobId(props.jobId)
 	const firstJobQueue = jobQueues.value[0]
-	const isQueueInCalls = calls.value.some((call) => call.id === firstJobQueue.vapiId)
+	const isQueueInCalls = calls.value.some((call) => call.id === firstJobQueue?.vapiId)
 	if(!isQueueInCalls) {
 		const startDate = new Date(quickViewJob.value?.createdAt).toISOString()
 		await fetchCalls(startDate)
@@ -189,7 +190,6 @@ onMounted(async () => {
 		await fetchAssistants()
 	}
 
-	jobQueues.value = await getJobQueueByJobId(props.jobId)
 
 	isLoadingTable.value = false
 })

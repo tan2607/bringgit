@@ -10,7 +10,7 @@
       </div>
 
       <div class="flex gap-2">
-        <UTooltip v-if="jobState.isHasMore"  text="Current limit is 1000 jobs, If you need more click on the button" :disabled="!jobState.isHasMore">
+        <UTooltip v-if="jobState.isHasMore"  text="Current limit is 100 jobs, If you need more click on the button" :disabled="!jobState.isHasMore">
           <UButton :loading="jobState.isLoading" @click="handleLoadMore" color="primary"  size="sm" class="flex items-center gap-1 cursor-pointer"
           > <span class="text-xs">Load More </span>
           <UIcon name="i-heroicons-question-mark-circle" class="w-4 h-4" />
