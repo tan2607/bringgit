@@ -135,6 +135,7 @@ export class VapiProvider {
 
     // Filter calls based on allowed assistants
     const filteredCalls = calls.filter(call => 
+      params?.user.isAdmin() ||
       allowedAssistants.some(assistant => assistant.id === call.assistantId) &&
       allowedPhoneNumbers.some(phone => phone.id === call.phoneNumberId)
     );
