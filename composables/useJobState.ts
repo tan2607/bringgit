@@ -303,7 +303,7 @@ export const useJobState = () => {
 
   const loadMoreJobs = async () => {
     jobState.value.isLoading = true
-    const newOffset = jobState.value.offset + 100
+    const newOffset = jobState.value.offset + 50
     try {
       const jobsData = await $fetch('/api/jobs', {
         query: {
@@ -311,12 +311,12 @@ export const useJobState = () => {
         }
       })
       jobState.value.jobs.push(...jobsData.jobs)
-      jobState.value.offset = newOffset
 
       jobState.value.isHasMore = jobState.value.jobs.length < jobState.value.total;
     } catch (error) {
       console.error('Error loading more jobs:', error)
     } finally {
+      jobState.value.offset = newOffset
       jobState.value.isLoading = false
     }
   }
