@@ -4,6 +4,7 @@ export interface AppMetadata {
   permissions: string[]
   roles: UserRole[]
   assistants: string[]
+  botphonelines: string[]
 }
 
 export interface UserSession {
@@ -20,5 +21,6 @@ export interface UserSession {
 export const DEFAULT_APP_METADATA: AppMetadata = {
   permissions: [],
   roles: ['user'],
-  assistants: []
+  assistants: [],
+  botphonelines: []
 }
