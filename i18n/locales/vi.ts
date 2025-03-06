@@ -381,6 +381,9 @@ export default {
     'table-email': 'Email',
     'table-role': 'Vai trò',
     'table-assistant': 'Trợ lý được gán',
-    'total-users': 'người dùng'
+    'total-users': 'người dùng',
+    'table-bot-phone-numbers': 'Số điện thoại bot',
+    'table-all-phone-numbers': 'Tất cả số điện thoại',
+    'table-all-assistants': 'Tất cả trợ lý',
   },
 }

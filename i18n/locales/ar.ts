@@ -343,6 +343,9 @@ export default {
     'table-email': 'البريد الإلكتروني',
     'table-role': 'الدور',
     'table-assistant': 'المساعدون',
-    'total-users': '{count} مستخدم'
+    'total-users': '{count} مستخدم',
+    'table-bot-phone-numbers': 'رقم هاتف البوت',
+    'table-all-phone-numbers': 'جميع رقم هاتف',
+    'table-all-assistants': 'جميع المساعدات',
   },
 }

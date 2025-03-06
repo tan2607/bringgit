@@ -37,7 +37,8 @@ export const useUserManagement = () => {
         email: user.email,
         role: user.app_metadata?.roles?.includes('admin') ? 'Admin' : 'User',
         assistants: user.app_metadata?.assistants || [],
-        id: user.user_id
+        id: user.user_id,
+        botPhoneNumbers: user.app_metadata?.botPhoneNumbers || []
       })),
       total: data.data.total,
       page: data.data.page,
@@ -54,6 +55,14 @@ export const useUserManagement = () => {
     })
   }
 
+  const updateUserBotPhoneNumbers = async (userId: string, botPhoneNumbers: string[]) => {
+    return await fetch(`/api/admin/users/${userId}/bot-phone-numbers`, {
+      method: 'PUT',
+      body: JSON.stringify({ botPhoneNumbers }),
+      headers: { 'Content-Type': 'application/json' }
+    })
+  }
+
   const updateUserRole = async (userId: string, isAdmin: boolean) => {
     return await fetch(`/api/admin/users/${userId}/role`, {
       method: 'PUT',
@@ -65,6 +74,7 @@ export const useUserManagement = () => {
   return {
     fetchUsers,
     updateUserAssistants,
-    updateUserRole
+    updateUserRole,
+    updateUserBotPhoneNumbers
   }
 }

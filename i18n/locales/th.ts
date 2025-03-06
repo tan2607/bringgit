@@ -369,6 +369,9 @@ export default {
     'table-email': 'อีเมล',
     'table-role': 'สิทธิ์',
     'table-assistant': 'ผู้ช่วยที่ถูกตั้งค่า',
-    'total-users': 'ผู้ใช้ คน'
+    'total-users': 'ผู้ใช้ คน',
+    'table-bot-phone-numbers': 'หมายเลขโทรศัพท์บอท',
+    'table-all-phone-numbers': 'หมายเลขโทรศัพท์ทั้งหมด',
+    'table-all-assistants': 'ผู้ช่วยทั้งหมด',
   },
 }

@@ -67,6 +67,15 @@
       :assistants="assistants" 
       :selectedUser="selectedUser"
     />
+
+    <UserBotPhoneNumberEditModal 
+      v-if="isOpenEditBotPhoneNumberModal" 
+      :isOpen="isOpenEditBotPhoneNumberModal"
+      @update:isOpen="isOpenEditBotPhoneNumberModal = $event"
+      :botPhoneNumbers="numbers"
+      :selectedUser="selectedUser"
+    />
+
     <AddUserModal 
       v-if="isOpenAddUserModal" 
       :isOpen="isOpenAddUserModal"
@@ -86,6 +95,7 @@ const { t } = useI18n()
 const { assistants, fetchAssistants, getAssistantById } = useAssistants()
 const { fetchUsers, updateUserRole } = useUserManagement()
 const { isPermissionSuperAdmin } = useUser()
+const { numbers, fetchNumbers } = usePhoneNumbers()
 
 const currentPage = ref(1)
 const itemsPerPage = ref(10)
@@ -119,6 +129,7 @@ const UPopover = resolveComponent('UPopover')
 const isOpenEditAssistantModal = ref(false)
 const isOpenAddUserModal = ref(false)
 const selectedUser = ref<User>({} as User)
+const isOpenEditBotPhoneNumberModal = ref(false)
 
 // Template refs for table
 const tableRef = ref()
@@ -204,12 +215,21 @@ const columns = [
     cell: ({ row }: { row: any }) => {
       const role = row.original.role;
       if (role === 'Admin') {
-        return h(UBadge, { variant: 'outline', color: 'neutral', class: 'capitalize mr-2', size: 'md' }, 'All Assistants')
+        return h(UBadge, { variant: 'outline', color: 'neutral', class: 'capitalize mr-2', size: 'md' }, `${t('access-control.table-all-assistants')}`)
       }
       
       return h('div', { 
         class: 'flex flex-wrap items-center gap-2'  
       }, [
+        ...(row.getValue('assistants') || []).map((assistantId: string) => {
+          const assistant = getAssistantById(assistantId)
+          return h(UBadge, { 
+            variant: 'outline', 
+            color: 'neutral', 
+            class: 'capitalize', 
+            size: 'md'
+          }, () => assistant?.name || assistantId)
+        }),
         h(UButton, { 
           icon: 'i-lucide-edit',
           color: 'primary',
@@ -220,24 +240,51 @@ const columns = [
             selectedUser.value = row.original
             isOpenEditAssistantModal.value = true
           }
-        }),
-        ...(row.getValue('assistants') || []).map((assistantId: string) => {
-          const assistant = getAssistantById(assistantId)
+        })
+      ])
+    }
+  },
+  {
+    accessorKey: 'botPhoneNumbers',
+    header: () => t('access-control.table-bot-phone-numbers'),
+    cell: ({ row }: { row: any }) => {
+      const botPhoneNumbers = row.original.botPhoneNumbers  
+      const role = row.original.role;
+      if (role === 'Admin') {
+        return h(UBadge, { variant: 'outline', color: 'neutral', class: 'capitalize mr-2', size: 'md' }, `${t('access-control.table-all-phone-numbers')}`)
+      }
+      return h('div', { 
+        class: 'flex flex-wrap items-center gap-2'  
+      }, [
+        
+      ...(row.getValue('botPhoneNumbers') || []).map((botPhoneNumber: any) => {
           return h(UBadge, { 
             variant: 'outline', 
             color: 'neutral', 
             class: 'capitalize', 
             size: 'md'
-          }, () => assistant?.name || assistantId)
+          }, () => `${botPhoneNumber.name} (${botPhoneNumber.number})`)
+        }),
+        h(UButton, { 
+          icon: 'i-lucide-edit',
+          color: 'primary',
+          variant: 'ghost', 
+          size: 'md',
+          class: 'cursor-pointer shrink-0',  
+          onClick: () => {
+            selectedUser.value = row.original
+            isOpenEditBotPhoneNumberModal.value = true
+          }
         })
       ])
     }
-  },
+  }
 ]
 
 onMounted(async () => {
   await Promise.all([
-    fetchAssistants()
+    fetchAssistants(),
+    fetchNumbers()
   ])
 })
 </script>

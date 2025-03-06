@@ -360,6 +360,9 @@ export default {
       'table-email': '이메일',
       'table-role': '역할',
       'table-assistant': '할당된 어시스턴트',
-      'total-users': '사용자 {count}명'
+      'total-users': '사용자 {count}명',
+      'table-bot-phone-numbers': '할당된 봇 전화번호',
+      'table-all-phone-numbers': '모든 전화번호',
+      'table-all-assistants': '모든 어시스턴트',
     },
 }

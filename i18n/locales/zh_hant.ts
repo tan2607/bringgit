@@ -349,6 +349,9 @@ export default {
     'table-email': '電子郵件',
     'table-role': '角色',
     'table-assistant': '分配助手',
-    'total-users': '個用戶'
+    'total-users': '個用戶',
+    'table-bot-phone-numbers': '分配電話號碼',
+    'table-all-phone-numbers': '所有電話號碼',
+    'table-all-assistants': '所有助手',
   },
 }

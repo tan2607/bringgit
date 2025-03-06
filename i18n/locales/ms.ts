@@ -293,6 +293,9 @@ export default {
     'table-email': 'Emel',
     'table-role': 'Peran',
     'table-assistant': 'Pembantu Ditetapkan',
-    'total-users': 'Total pengguna'
+    'total-users': 'Total pengguna',
+    'table-bot-phone-numbers': 'Nombor Telefon Bot',
+    'table-all-phone-numbers': 'Semua Nombor Telefon',
+    'table-all-assistants': 'Semua Pembantu',
   },
 }
