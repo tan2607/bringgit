@@ -255,14 +255,16 @@ const profileMenu = computed(() => ({
       key: null,
       label: user.value.email,
       icon: 'i-lucide-mail',
-      disabled: true
+      disabled: true,
+      class: "cursor-pointer min-w-[max-content]"
     },
     {
         key: null,
         label: t('settings'),
         icon: 'i-lucide-settings',
-        to: localeRoute('/settings')?.path
-      },
+        to: localeRoute('/settings')?.path,
+        class: "cursor-pointer"
+    },
     {
       key: null,
       label: t('logout'),
@@ -283,16 +285,33 @@ const profileMenu = computed(() => ({
 }))
 
 // Combine items based on user role
-const items = computed(() => [
-  ...baseItems,
-  ...(isAdmin.value ? adminItems : []),
-  profileMenu.value,
-  localeDropdown.value,
-  {
-    key: null,
-    slot: 'color-mode',
+const items = computed(() => {
+  if (isAdmin.value && adminItems.length > 0) {
+    const firstAdminItem = adminItems[0];
+    const remainingAdminItems = adminItems?.slice(1);
+    return [
+      firstAdminItem,
+      ...baseItems,
+      ...remainingAdminItems,
+      profileMenu.value,
+      localeDropdown.value,
+      {
+        key: null,
+        slot: 'color-mode',
+      }
+    ];
   }
-])
+  
+  return [
+    ...baseItems,
+    profileMenu.value, 
+    localeDropdown.value,
+    {
+      key: null,
+      slot: 'color-mode',
+    }
+  ];
+})
 
 // Filter items based on module settings
 const filteredItems = computed(() => items.value.reduce((acc: any[], item) => {
@@ -375,12 +394,16 @@ useHead({
 <template>
   <UApp :locale="locales[locale as string]">
     <template v-if="!$route.path.startsWith('/auth')">
-      <UHeader>
-        <template #left></template>
+      <UHeader class="w-full">
+        <template #left>
+          
+        </template>
         <template #right>
           <UColorModeButton />
         </template>
-        <UNavigationMenu orientation="horizontal" variant="pill" arrow highlight :items="filteredItems" class="z-50">
+        <UNavigationMenu orientation="horizontal" variant="pill" arrow highlight :items="filteredItems" class="z-50" :ui="{
+          viewport: 'w-full min-w-[800px] max-w-full cursor-pointer',
+        }">
         </UNavigationMenu>
       </UHeader>
     </template>
