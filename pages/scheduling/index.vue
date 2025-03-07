@@ -34,7 +34,7 @@
         </UCard>
 
         <!-- Job List Section -->
-        <UCard class="lg:col-span-1">
+        <!-- <UCard class="lg:col-span-1">
           <template #header>
             <div class="flex items-center justify-between">
               <h2 class="text-lg font-semibold hover:underline hover:text-blue-500">
@@ -79,7 +79,7 @@
               </div>
             </div>
           </div>
-        </UCard>
+        </UCard> -->
       </div>
     </UContainer>
 
