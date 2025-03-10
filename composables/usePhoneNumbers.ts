@@ -1,4 +1,4 @@
-interface PhoneNumber {
+export interface PhoneNumber {
   id: string
   name: string
   number: string
@@ -52,9 +52,14 @@ export const usePhoneNumbers = () => {
     fetchNumbers()
   }
 
+  const getPhoneNumberById = (id: string): PhoneNumber | undefined => {
+    return numbers.value.find(number => number.id === id)
+  }
+
   return {
     numbers,
     isLoading,
-    fetchNumbers
+    fetchNumbers,
+    getPhoneNumberById
   }
 }

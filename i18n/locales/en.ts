@@ -438,4 +438,26 @@ export default {
     'number': 'Number',
     'actions': 'Actions',
   },
+
+  // Access Control
+  'access-control': {
+    'title': 'Access Control',
+    'role': 'Role',
+    'assistant': 'Assigned Assistants',
+    'all': 'All Assistants',
+    'add-user': 'Add User',
+    'edit': 'Edit',
+    'delete': 'Delete',
+    'filter': 'Filter',
+    'search': 'Search users...',
+    'clear': 'Clear',
+    'table-name': 'Name',
+    'table-email': 'Email',
+    'table-role': 'Role',
+    'table-assistant': 'Assigned Assistants',
+    'total-users': '{count} users',
+    'table-bot-phone-numbers': 'Assigned Bot Phone Numbers',
+    'table-all-phone-numbers': 'All Phone Numbers',
+    'table-all-assistants': 'All Assistants',
+  },
 }

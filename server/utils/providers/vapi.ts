@@ -1,6 +1,7 @@
 import { VapiClient } from "@vapi-ai/server-sdk";
 import { gte } from 'drizzle-orm';
 import { jobs } from '~/server/database/schema';
+import { AuthUser } from "@/server/utils/user";
 
 export class VapiProvider {
   private static instance: VapiProvider;
@@ -103,6 +104,7 @@ export class VapiProvider {
     createdAtLe?: string;
     limit?: number;
     loadMore?: boolean;
+    user: AuthUser;
   }) {
     const callParams: any = {
       createdAtGe: params?.createdAtGe,
@@ -121,6 +123,23 @@ export class VapiProvider {
       this.client.phoneNumbers.list()
     ]);
 
+    // Filter assistants based on user permissions
+    const allowedAssistants = params?.user.isAdmin() 
+      ? assistants 
+      : assistants.filter(assistant => params?.user.getAssistants().includes(assistant.id));
+
+    // Filter bot phone numbers  based on user permissions
+    const allowedPhoneNumbers = params?.user.isAdmin()
+      ? phoneNumbers
+      : phoneNumbers.filter(phone => params?.user.getBotPhoneNumbers().includes(phone.id));
+
+    // Filter calls based on allowed assistants
+    const filteredCalls = calls.filter(call => 
+      params?.user.isAdmin() ||
+      allowedAssistants.some(assistant => assistant.id === call.assistantId) &&
+      allowedPhoneNumbers.some(phone => phone.id === call.phoneNumberId)
+    );
+
     const calls_analytics = await this.client.analytics.get({
       queries: [{
         table: "call",
@@ -129,15 +148,17 @@ export class VapiProvider {
         timeRange: {
           start: params?.createdAtGe,
           end: params?.createdAtLe
-        }
+        },
+        groupBy: ["assistantId"]
       }]
     });
 
+    // Calculate total calls for allowed assistants only
+    const totalCalls = calls_analytics[0].result
+      .filter(row => params?.user.isAdmin() || allowedAssistants.some(assistant => assistant.id === row.assistantId ))
+      .reduce((sum, row) => sum + parseInt(row?.countId), 0);
 
-    const [{ result: [{ countId: totalCalls }] }] = calls_analytics;
-
-
-    const callResults = calls.map((call) => {
+    const callResults = filteredCalls.map((call) => {
       const phoneNumber = phoneNumbers.find((phoneNumber) => phoneNumber.id === call.phoneNumberId);
       const duration = (() => {
         const start = new Date(call.startedAt ?? new Date());
@@ -156,7 +177,7 @@ export class VapiProvider {
 
       return {
         id: call.id,
-        assistant: assistants.find((assistant) =>
+        assistant: allowedAssistants.find((assistant) =>
           assistant.id === call.assistantId
         )?.name,
         customer: call.customer,

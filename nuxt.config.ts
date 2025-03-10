@@ -1,5 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-const baseUrl = process.env.NUXT_PUBLIC_BASE_URL || process.env.CF_PAGES_URL || "https://galaxy.voice.keyreply.com"
+const baseUrl = process.env.NUXT_PUBLIC_BASE_URL || process.env.CF_PAGES_URL || "http://localhost:3000"
 
 export default defineNuxtConfig({
   debug: false,
@@ -9,6 +9,14 @@ export default defineNuxtConfig({
   runtimeConfig: {
     apiToken: process.env.API_TOKEN,
     vapiSecret: process.env.VAPI_SECRET_TOKEN,
+    // Auth0 Configuration
+    auth0: {
+      clientId: process.env.AUTH0_CLIENT_ID,
+      clientSecret: process.env.AUTH0_CLIENT_SECRET,
+      issuer: process.env.AUTH0_ISSUER,
+      domain: process.env.AUTH0_DOMAIN,
+      audience: process.env.AUTH0_AUDIENCE
+    },
     // Provider API Keys
     openaiApiKey: process.env.OPENAI_API_KEY,
     vapiApiKey: process.env.VAPI_API_KEY,
@@ -29,6 +37,7 @@ export default defineNuxtConfig({
     authJs: {
       secret: process.env.NEXTAUTH_SECRET,
     },
+    accountId: process.env.ACCOUNT_ID,
     public: {
       baseUrl,
       googleApiKey: process.env.GOOGLE_API_KEY,
