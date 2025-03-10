@@ -332,4 +332,26 @@ export default {
     'number': 'Nomor',
     'actions': 'Tindakan',
   },
+
+  // Access Control
+  'access-control': {
+    'title': 'Kontrol Akses',
+    'role': 'Peran',
+    'assistant': 'Asisten yang Ditetapkan',
+    'all': 'Semua Asisten',
+    'add-user': 'Tambah Pengguna',
+    'edit': 'Ubah',
+    'delete': 'Hapus',
+    'filter': 'Filter',
+    'search': 'Cari pengguna...',
+    'clear': 'Hapus',
+    'table-name': 'Nama',
+    'table-email': 'Email',
+    'table-role': 'Peran',
+    'table-assistant': 'Asisten',
+    'total-users': 'Total pengguna',
+    'table-bot-phone-numbers': 'Nomor Telepon Bot',
+    'table-all-phone-numbers': 'Semua Nomor Telepon',
+    'table-all-assistants': 'Semua Asisten',
+  },
 }
