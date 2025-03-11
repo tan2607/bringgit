@@ -175,6 +175,7 @@ export class VapiProvider {
         .filter((key) => typeof structuredData[key] !== 'object')
         .map((key) => `${key}: ${structuredData[key]}`)
 
+
       return {
         id: call.id,
         assistant: allowedAssistants.find((assistant) =>
@@ -194,7 +195,7 @@ export class VapiProvider {
         tags: tagList,
         assistantOverrides: call.assistantOverrides,
         endedReason: call.endedReason,
-        botPhoneNumber: phoneNumber?.number || 'N/A'
+        botPhoneNumber: phoneNumber?.name ?  `${phoneNumber?.name} (${phoneNumber?.number})` : 'N/A'
       };
     }); 
 

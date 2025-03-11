@@ -1,24 +1,29 @@
 <template>
   <div>
     <div v-if="!props.compact"
-      class="flex items-center justify-between px-4 py-3.5 border-b border-[var(--ui-border-accented)]">
-      <div class="flex items-center gap-4">
-        <UInput :model-value="table?.tableApi?.getColumn('assistant')?.getFilterValue() as string" class="w-64"
-          placeholder="Filter by assistant..." icon="i-lucide-search"
-          @update:model-value="table?.tableApi?.getColumn('assistant')?.setFilterValue($event)" />
-        <div class="flex gap-4">
-          <div class="relative">
-            <USelectMenu :resetSearchTermOnBlur="true" class="w-full min-w-[250px]" v-model="selectedBotPhoneNumber"
-              :items="botPhoneNumbers" label-key="name" placeholder="Filter by bot phone number...">
-              <template #trailing>
-                <UIcon name="i-lucide-x" class="w-5 h-5 cursor-pointer" @click="selectedBotPhoneNumber = null" />
-              </template>
-            </USelectMenu>
+      class="flex items-center justify-between px-4 py-3.5 gap-4 border-b flex-wrap border-[var(--ui-border-accented)]">
+      <div class="flex flex-col md:flex-row md:items-center gap-4">
+        <div>
+          <UInput :model-value="table?.tableApi?.getColumn('assistant')?.getFilterValue() as string" class="w-64"
+            placeholder="Filter by assistant..." icon="i-lucide-search"
+            @update:model-value="table?.tableApi?.getColumn('assistant')?.setFilterValue($event)" />
+        </div>
+        <div class="relative h-auto w-full md:w-auto">
+            <UDropdownMenu :resetSearchTermOnBlur="true" class="w-full"
+              :items="botPhoneNumbers" :content="{
+                align: 'start',
+                side: 'bottom',
+                sideOffset: 8
+              }">
+              <UButton label="Filter by bot phone number" color="neutral" variant="outline"
+                trailing-icon="i-lucide-chevron-down" class="w-full md:w-auto" />
+            </UDropdownMenu>
           </div>
+        <div class="flex gap-4 w-full md:w-auto">
           <!-- Dropdown: Tags Filter -->
-          <div class="relative w-auto">
+          <div class="relative w-full md:w-auto">
             <UPopover v-model:open="shouldShowTagsFilter">
-              <UButton color="neutral" variant="outline" trailing-icon="i-lucide-chevron-down">
+              <UButton color="neutral" variant="outline" trailing-icon="i-lucide-chevron-down" class="w-full md:w-auto whitespace-nowrap">
                 Tags Filter
               </UButton>
               <template #content>
@@ -52,63 +57,62 @@
           </div>
         </div>
       </div>
-      <div class="flex items-center gap-2">
-        <div class="text-sm text-gray-500 mr-2">
+      <div class="flex flex-col md:flex-row items-center gap-2">
+        <div class="text-sm text-gray-500 mr-2 w-full text-center md:text-left whitespace-nowrap">
           {{ data?.length || 0 }} data loaded
         </div>
-        <UTooltip  v-if="hasMore && !props.quickView" text="Current is limited to 10000 calls, if you need more data click the button below">
-          <UButton  color="primary" variant="soft" :loading="isLoading" :disabled="isLoading || !hasMore"
-            class="cursor-pointer" @click="$emit('load-more')">
-            <div class="flex items-center gap-2">
-              Load More
-            </div>
-            <UIcon name="i-lucide-info"  class="size-10"/>
-          </UButton>
-        </UTooltip>
-        <UButton
-          v-if="props.exportButton"
-          color="primary"
-          variant="soft"
-          :loading="props.isExporting"
-          :disabled="props.isLoadingTable || props.isExporting || !props.data?.length"
-          class="group cursor-pointer max-w-[200px] whitespace-nowrap"
-          @click="$emit('export')"
-        >
+        <div class="flex flex-col md:flex-row items-center gap-2">
+          <UTooltip v-if="hasMore && !props.quickView"
+            text="Current is limited to 10000 calls, if you need more data click the button below">
+            <UButton color="primary" variant="soft" :loading="isLoading" :disabled="isLoading || !hasMore"
+              class="cursor-pointer w-full md:w-auto" @click="$emit('load-more')">
+              <div class="flex items-center justify-center gap-2">
+                Load More
+              </div>
+              <UIcon name="i-lucide-info" class="size-10" />
+            </UButton>
+          </UTooltip>
           <div class="flex items-center gap-2">
-            <UIcon name="i-lucide-download" />
-            {{ props.isExporting
-            ? `Exporting (${props.exportProgress})...`
-            : t('export')
-            }}
+              <UButton v-if="props.exportButton" color="primary" variant="soft" :loading="props.isExporting"
+              :disabled="props.isLoadingTable || props.isExporting || !props.data?.length"
+              class="group cursor-pointer max-w-full md:max-w-[200px] whitespace-nowrap" @click="$emit('export')">
+              <div class="flex items-center justify-center gap-2">
+                <UIcon name="i-lucide-download" />
+                {{ props.isExporting
+                ? `Exporting (${props.exportProgress})...`
+                : t('export')
+                }}
+              </div>
+            </UButton>
+            <UDropdownMenu :items="table?.tableApi
+                ?.getAllColumns()
+                .filter((column) => [
+                  'phoneNumber',
+                  'botPhoneNumber',
+                  'assistant',
+                  'status',
+                  'duration',
+                  'tags',
+                  'startedAt',
+                  'scheduledAt',
+                  'recordingUrl',
+                  'endedReason'
+                ].includes(column.id))
+                .map((column) => ({
+                  label: upperFirst(column.id),
+                  type: 'checkbox' as const,
+                  checked: column.getIsVisible(),
+                  onUpdateChecked(checked: boolean) {
+                    table?.tableApi?.getColumn(column.id)?.toggleVisibility(!!checked)
+                  },
+                  onSelect(e?: Event) {
+                    e?.preventDefault()
+                  }
+                }))" :content="{ align: 'end', class: 'max-h-[300px] overflow-y-auto' }">
+              <UButton label="Columns" color="neutral" variant="outline" trailing-icon="i-lucide-chevron-down" />
+            </UDropdownMenu>
           </div>
-        </UButton>
-        <UDropdownMenu :items="table?.tableApi
-            ?.getAllColumns()
-            .filter((column) => [
-              'phoneNumber',
-              'botPhoneNumber',
-              'assistant',
-              'status',
-              'duration',
-              'tags',
-              'startedAt',
-              'scheduledAt',
-              'recordingUrl',
-              'endedReason'
-            ].includes(column.id))
-            .map((column) => ({
-              label: upperFirst(column.id),
-              type: 'checkbox' as const,
-              checked: column.getIsVisible(),
-              onUpdateChecked(checked: boolean) {
-                table?.tableApi?.getColumn(column.id)?.toggleVisibility(!!checked)
-              },
-              onSelect(e?: Event) {
-                e?.preventDefault()
-              }
-            }))" :content="{ align: 'end', class: 'max-h-[300px] overflow-y-auto' }">
-          <UButton label="Columns" color="neutral" variant="outline" trailing-icon="i-lucide-chevron-down" />
-        </UDropdownMenu>
+        </div>
       </div>
     </div>
     <div v-if="isLoading" class="flex items-center justify-center mt-4 gap-4">
@@ -136,8 +140,9 @@
       @error="(message) => toast.add({ title: 'Error', description: message, color: 'error', icon: 'i-lucide-alert-circle' })" />
 
     <!-- Pagination -->
-    <div v-if="!props.compact && totalCalls > pageSize && !isLoading" class="flex items-center justify-center mt-4 gap-4">
-      <UPagination v-model:page="page" :total="filteredData.length" :items-per-page="pageSize" :show-edges="true"/>
+    <div v-if="!props.compact && totalCalls > pageSize && !isLoading"
+      class="flex items-center justify-center mt-4 gap-4">
+      <UPagination v-model:page="page" :total="filteredData.length" :items-per-page="pageSize" :show-edges="true" />
     </div>
   </div>
 </template>
@@ -254,7 +259,6 @@ const categories = computed(() => {
 
 const selectedCategory = ref(null);
 const selectedValue = ref(null);
-const selectedBotPhoneNumber = ref(null);
 
 const filteredOptions = computed(() => {
   return uniqueTags.value
@@ -262,8 +266,26 @@ const filteredOptions = computed(() => {
     .map(tag => tag.split(": ")[1]); 
 });
 
+const selectedBotPhoneNumbers = ref([])
+
 const botPhoneNumbers = computed(() => {
-  return [...new Set(props.data?.map(call => call.botPhoneNumber) || [])].sort()
+  return [...new Set(props.data?.map(call => call.botPhoneNumber) || [])].sort().map((phoneNumber) => ({
+    label: phoneNumber,
+    value: phoneNumber,
+    type: 'checkbox' as const,
+    checked: selectedBotPhoneNumbers.value.includes(phoneNumber),
+    onUpdateChecked(checked: boolean) {
+      // if number already in array, remove it, otherwise add it
+      if(selectedBotPhoneNumbers.value.includes(phoneNumber)) {
+        selectedBotPhoneNumbers.value = selectedBotPhoneNumbers.value.filter(number => number !== phoneNumber)
+      } else {
+        selectedBotPhoneNumbers.value.push(phoneNumber)
+      }
+    },
+    onSelect(e?: Event) {
+      e?.preventDefault()
+    }
+  }))
 })
 
 
@@ -686,8 +708,8 @@ const filteredData = computed(() => {
   page.value = 1
   let rawData = props.data;
 
-  if(selectedBotPhoneNumber.value) {
-    rawData = rawData.filter(call => call.botPhoneNumber === selectedBotPhoneNumber.value);
+  if(selectedBotPhoneNumbers.value.length > 0) {
+    rawData = rawData.filter(call => selectedBotPhoneNumbers.value.includes(call.botPhoneNumber));
   }
 
   if(selectedCategory.value && selectedValue.value) {
