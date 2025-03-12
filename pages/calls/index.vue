@@ -190,7 +190,8 @@ const exportToExcelFile = async () => {
         'Ended Reason': call.endedReason?.split('-')
           .map(word => word.charAt(0).toUpperCase() + word.slice(1))
           .join(' ') || '',
-        'Tags': call.tags?.join(', ') || ''
+        'Tags': call.tags?.join(', ') || '',
+        'Transcript': call.transcript || ''
       }
     }
   })
