@@ -76,7 +76,7 @@ const dateRange = shallowRef({
   start: new CalendarDate(
     ...(() => {
       const d = new Date()
-      d.setDate(d.getDate() - 7)
+      d.setDate(d.getDate())
       return [d.getFullYear(), d.getMonth() + 1, d.getDate()]
     })()
   ),
@@ -190,7 +190,8 @@ const exportToExcelFile = async () => {
         'Ended Reason': call.endedReason?.split('-')
           .map(word => word.charAt(0).toUpperCase() + word.slice(1))
           .join(' ') || '',
-        'Tags': call.tags?.join(', ') || ''
+        'Tags': call.tags?.join(', ') || '',
+        'Transcript': call.transcript || ''
       }
     }
   })
