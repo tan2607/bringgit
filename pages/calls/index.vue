@@ -76,7 +76,7 @@ const dateRange = shallowRef({
   start: new CalendarDate(
     ...(() => {
       const d = new Date()
-      d.setDate(d.getDate() - 1)
+      d.setDate(d.getDate())
       return [d.getFullYear(), d.getMonth() + 1, d.getDate()]
     })()
   ),
