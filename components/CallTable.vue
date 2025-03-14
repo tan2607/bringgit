@@ -79,7 +79,7 @@
               <div class="flex items-center justify-center gap-2">
                 <UIcon name="i-lucide-download" />
                 {{ props.isExporting
-                ? `Exporting (${props.exportProgress})...`
+                ? `Exporting...`
                 : t('export')
                 }}
               </div>

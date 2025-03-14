@@ -6,7 +6,6 @@ export const useCalls = () => {
   const isLoading = useState('callsIsLoading', () => false)
   const hasMore = useState('hasMore', () => false)
   const isExporting = useState('isExporting', () => false)
-  const exportProgress = useState('exportProgress', () => 0)
   const totalCalls = useState('totalCalls', () => 0)
   const pageSize = 1000
   const previousEndDates = useState('previousEndDates', () => [])
@@ -164,59 +163,6 @@ export const useCalls = () => {
     currentPlayingId.value = id
   }
 
-  const exportCalls = async (startDate?: string, endDate?: string) => {
-    if (!startDate) return
-    
-    try {
-      isExporting.value = true
-      exportProgress.value = 0
-      let allCalls = []
-
-      let lastCreatedAt = endDate
-      if (calls.value && calls.value.length > 0) {
-        allCalls = [...calls.value]
-        lastCreatedAt = calls.value[calls.value.length - 1].createdAt
-      }
-
-      let hasMoreData = hasMore.value ? true : false
-      const _pageSize = 500;
-
-      if (!hasMoreData && calls.value.length > 0) return calls.value; // all data already loaded, no need to fetch again
-      
-      while (hasMoreData) {
-        const queryParams = new URLSearchParams()
-        if (startDate) queryParams.append('startDate', startDate)
-        if (lastCreatedAt) queryParams.append('endDate', lastCreatedAt)
-        queryParams.append('limit', (_pageSize + 1).toString())
-        
-        const { data } = await useFetch(`/api/calls?${queryParams.toString()}`)
-        const newCalls = data?.value.calls || []
-        
-        // Filter duplicates and add to collection
-        const uniqueCalls = newCalls.filter(call => 
-          !allCalls.some(existing => existing.id === call.id) &&
-          new Date(call.createdAt) > new Date(startDate)
-        )
-        allCalls.push(...uniqueCalls)
-        exportProgress.value = allCalls.length
-        
-        // Check if we have more data to fetch
-        if (allCalls.length < totalCalls.value) {
-          // Get the last call's createdAt for next iteration
-          const lastCall = newCalls[newCalls.length - 1]
-          lastCreatedAt = lastCall.createdAt
-        } else {
-          hasMoreData = false
-        }
-      }
-
-      return allCalls
-    } finally {
-      isExporting.value = false
-      exportProgress.value = 0
-    }
-  }
-
   const resetCalls = () => {
     calls.value = []
     hasMore.value = false
@@ -237,9 +183,7 @@ export const useCalls = () => {
     togglePlayAudio,
     loadMore,
     hasMore,
-    exportCalls,
     isExporting,
-    exportProgress,
     totalCalls,
     resetCalls,
     loadPrevious,
