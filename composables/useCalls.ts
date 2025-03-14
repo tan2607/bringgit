@@ -11,18 +11,38 @@ export const useCalls = () => {
   const pageSize = 1000
   const previousEndDates = useState('previousEndDates', () => [])
   const fetchingProgress = useState('fetchingProgress', () => 0)
-  const callsLimit = 10000
+  const callsLimit = 15000
+  let abortController: AbortController | null = null;
 
   const fetchCalls = async (startDate?: string, endDate?: string, limit?: number, loadMore?: boolean = false) => {
-    isLoading.value = true
+    if(abortController) {
+      abortController.abort()
+    }
+
+    abortController = new AbortController();
+
+
+    const signal = abortController.signal
+
     try {
+      isLoading.value = true
+      fetchingProgress.value = 0
       const queryParams = new URLSearchParams()
       if (startDate) queryParams.append('startDate', startDate)
       if (endDate) queryParams.append('endDate', endDate)
       if (limit) queryParams.append('limit', limit.toString())
       if (loadMore) queryParams.append('loadMore', 'true')
-      const { data } = await useFetch(`/api/calls?${queryParams.toString()}`)
+      const { data, error } = await useFetch(`/api/calls?${queryParams.toString()}`, { signal })
+      if(error.value) {
+        return
+      }
+
+      if(signal.aborted) {
+        return
+      }
+
       const newCalls = data?.value.calls || []
+
 
       if(!loadMore || previousEndDates.value.length === 0) {
         totalCalls.value = parseInt(data?.value.count) || 0
@@ -35,12 +55,24 @@ export const useCalls = () => {
       let isFetchAllData = totalCalls.value > calls.value.length && unfilteredResults.length < callsLimit;
       endDate = unfilteredResults[unfilteredResults.length - 1].createdAt
       while (isFetchAllData) {
+        if(signal.aborted) {
+          return
+        }
         const queryParams = new URLSearchParams()
         if (startDate) queryParams.append('startDate', startDate)
         if (endDate) queryParams.append('endDate', endDate)
         queryParams.append('limit', pageSize.toString())
         queryParams.append('loadMore', 'true')
-        const { data } = await useFetch(`/api/calls?${queryParams.toString()}`)
+        const { data, error } = await useFetch(`/api/calls?${queryParams.toString()}`, { signal })
+
+        if(error.value) {
+          return
+        }
+
+        if(signal.aborted) {
+          return
+        }
+
         const newCalls = data?.value?.calls || []
         unfilteredResults.push(...newCalls)
         isFetchAllData = unfilteredResults.length < callsLimit;
@@ -87,9 +119,13 @@ export const useCalls = () => {
       }
       
     } finally {
-      isLoading.value = false
-      fetchingProgress.value = 0
+      if(signal.aborted) {
+        return
+      }
+      isLoading.value = false;
+      fetchingProgress.value = 0;
       hasMore.value = totalCalls.value > calls.value.length;
+      abortController = null;
     }
   }
 
