@@ -182,6 +182,7 @@ const exportToExcelFile = async () => {
         'ID': call.id || '',
         'Assistant': call.assistant || '',
         'Phone Number': call.customer?.number || '',
+        'Bot Phone Number': call.botPhoneNumber || '',
         'Name': call.assistantOverrides?.variableValues?.name || '',
         'Call Received': formattedStartTime,
         'Recording URL': call.recordingUrl ? transformRecordingUrl(call.recordingUrl) : '',
