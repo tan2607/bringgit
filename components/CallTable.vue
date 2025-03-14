@@ -58,7 +58,7 @@
         </div>
       </div>
       <div class="flex flex-col md:flex-row items-center gap-2">
-        <div class="text-sm text-gray-500 mr-2 w-full text-center md:text-left whitespace-nowrap">
+        <div class="text-sm text-gray-500 mr-2 text-center md:text-left whitespace-nowrap w-fit">
           {{ data?.length || 0 }} data loaded
         </div>
         <div class="flex flex-col md:flex-row items-center gap-2">
