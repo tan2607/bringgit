@@ -73,17 +73,19 @@
             </UButton>
           </UTooltip>
           <div class="flex items-center gap-2">
+            <UTooltip text="Only loaded records will be exported. Click 'Load More' to load all records first.">
               <UButton v-if="props.exportButton" color="primary" variant="soft" :loading="props.isExporting"
-              :disabled="props.isLoadingTable || props.isExporting || !props.data?.length"
-              class="group cursor-pointer max-w-full md:max-w-[200px] whitespace-nowrap" @click="$emit('export')">
-              <div class="flex items-center justify-center gap-2">
-                <UIcon name="i-lucide-download" />
-                {{ props.isExporting
-                ? `Exporting...`
-                : t('export')
-                }}
-              </div>
-            </UButton>
+                :disabled="props.isLoadingTable || props.isExporting || !props.data?.length"
+                class="group cursor-pointer max-w-full md:max-w-[200px] whitespace-nowrap" @click="$emit('export')">
+                <div class="flex items-center justify-center gap-2">
+                  <UIcon name="i-lucide-download" />
+                  {{ props.isExporting
+                  ? `Exporting...`
+                  : t('export')
+                  }}
+                </div>
+              </UButton>
+            </UTooltip>
             <UDropdownMenu :items="table?.tableApi
                 ?.getAllColumns()
                 .filter((column) => [
