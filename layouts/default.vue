@@ -96,6 +96,11 @@ const items = computed(() => [
         ]
     },
     {
+        label: t('access-control.title'),
+        icon: 'i-lucide-lock',
+        to: localeRoute('/access-control')?.path
+    },
+    {
         label: t('dev-tools'),
         icon: 'i-lucide-wrench',
         children: [

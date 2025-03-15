@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
 		const queueHandler = new CallQueueHandler(config.vapiApiKey, event.context.cloudflare.queue);
 
 		// Create messages for each phone number
-		const messages: CallMessage[] = phoneNumbers.map((phoneNumber, index) => ({
+		const messages = phoneNumbers.map((phoneNumber, index) => ({
 			jobId,
 			phoneNumber,
 			name: names?.[index],
@@ -34,26 +34,10 @@ export default defineEventHandler(async (event) => {
 			selectedTimeWindow,
 		}));
 
-		if (messages.length > 100) {
-			const patches = messages.reduce((acc, message, index) => {
-				const patchIndex = Math.floor(index / 100);
-				if (!acc[patchIndex]) {
-					acc[patchIndex] = [];
-				}
-				acc[patchIndex].push(message);
-				return acc;
-			}, []);
+		await processMessages(queueHandler, messages);
 
-			for (const patch of patches) {
-				await queueHandler.enqueueJobBatch(patch);
-			}
-		} else {
-			await queueHandler.enqueueJobBatch(messages);
-		}
-
-		// Update job status to running
-		const shouldRun = scheduledAt && new Date(scheduledAt).getTime() < Date.now();
-		if (shouldRun) {
+		// Update job status to running if scheduled time has passed
+		if (scheduledAt && new Date(scheduledAt).getTime() < Date.now()) {
 			await db.update(jobs).set({ status: "running" }).where(eq(jobs.id, jobId));
 		}
 
@@ -61,7 +45,7 @@ export default defineEventHandler(async (event) => {
 			success: true,
 			message: `Enqueued ${phoneNumbers.length} calls for job ${jobId}`,
 		};
-	} catch (error: any) {
+	} catch (error) {
 		console.error("Error queueing job:", error);
 		return {
 			success: false,
@@ -70,17 +54,16 @@ export default defineEventHandler(async (event) => {
 	}
 });
 
-
-async function processMessages(messages, batchSize = 100) {
-	// Early return for small batches
+async function processMessages(queueHandler, messages, batchSize = 100) {
 	if (messages.length <= batchSize) {
-			await queueHandler.enqueueJobBatch(messages);
-			return;
+		await queueHandler.enqueueJobBatch(messages);
+		return;
 	}
 
-	// Process in chunks without creating intermediate arrays
+	const batches = [];
 	for (let i = 0; i < messages.length; i += batchSize) {
-			const batch = messages.slice(i, i + batchSize);
-			await queueHandler.enqueueJobBatch(batch);
+		batches.push(messages.slice(i, i + batchSize));
 	}
+
+	await Promise.all(batches.map((batch) => queueHandler.enqueueJobBatch(batch)));
 }

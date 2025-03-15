@@ -43,7 +43,6 @@
       :export-button="true" 
       :is-loading-table="isLoading"
       :is-exporting="isExporting"
-      :export-progress="exportProgress"
       :total-calls="totalCalls"
       :page-size="pageSize"
       :page="page"
@@ -76,7 +75,7 @@ const dateRange = shallowRef({
   start: new CalendarDate(
     ...(() => {
       const d = new Date()
-      d.setDate(d.getDate() - 7)
+      d.setDate(d.getDate())
       return [d.getFullYear(), d.getMonth() + 1, d.getDate()]
     })()
   ),
@@ -97,9 +96,7 @@ const {
   fetchCalls, 
   loadMore, 
   isLoading, 
-  exportCalls,
   isExporting,
-  exportProgress,
   resetCalls,
   loadPrevious,
   resetPreviousEndDates,
@@ -107,6 +104,7 @@ const {
 } = useCalls()
 const { transformRecordingUrl } = useRecordingUrl()
 const { exportToExcel } = useExcel()
+const toast = useToast()
 
 const pageSize = 1000
 const page = ref(1)
@@ -148,52 +146,59 @@ const handleLoadFirst = async () => {
 
 const exportToExcelFile = async () => {
   if (!dateRange.value.start) return
-  
-  const startDateTime = dateRange.value.start.toDate(getLocalTimeZone())
-  startDateTime.setHours(0, 0, 0, 0)
-  const startDate = startDateTime.toISOString()
-  
-  const endDateTime = dateRange.value.end?.toDate(getLocalTimeZone())
-  const endDate = endDateTime ? (endDateTime.setHours(23, 59, 59, 999), endDateTime.toISOString()) : undefined
-  
-  const allCalls = await exportCalls(startDate, endDate)
-  if (!allCalls?.length) return
 
-  // Generate filename with date range
-  const startDateStr = dateRange.value.start.toDate(getLocalTimeZone()).toLocaleDateString()
-  const endDateStr = dateRange.value.end?.toDate(getLocalTimeZone()).toLocaleDateString() || startDateStr
-  const filename = `calls_${startDateStr}_to_${endDateStr}.xlsx`
+  try {
+    isExporting.value = true;
 
-  exportToExcel(allCalls, {
-    filename,
-    sheetName: 'Calls',
-    transformData: (call) => {
-      const startTime = call.startedAt ? new Date(call.startedAt) : undefined
-      const formattedStartTime = startTime ? startTime.toLocaleString('en-US', {
-        year: 'numeric',
-        day: 'numeric',
-        month: 'short',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false
-      }) : ''
+    // Generate filename with date range
+    const startDateStr = dateRange.value.start.toDate(getLocalTimeZone()).toLocaleDateString()
+    const endDateStr = dateRange.value.end?.toDate(getLocalTimeZone()).toLocaleDateString() || startDateStr
+    const filename = `calls_${startDateStr}_to_${endDateStr}.xlsx`
 
-      return {
-        'ID': call.id || '',
-        'Assistant': call.assistant || '',
-        'Phone Number': call.customer?.number || '',
-        'Name': call.assistantOverrides?.variableValues?.name || '',
-        'Call Received': formattedStartTime,
-        'Recording URL': call.recordingUrl ? transformRecordingUrl(call.recordingUrl) : '',
-        'Duration': call.duration || '',
-        'Status': call.status || '',
-        'Ended Reason': call.endedReason?.split('-')
-          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-          .join(' ') || '',
-        'Tags': call.tags?.join(', ') || ''
+    exportToExcel(calls.value, {
+      filename,
+      sheetName: 'Calls',
+      transformData: (call) => {
+        const startTime = call.startedAt ? new Date(call.startedAt) : undefined
+        const formattedStartTime = startTime ? startTime.toLocaleString('en-US', {
+          year: 'numeric',
+          day: 'numeric',
+          month: 'short',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false
+        }) : ''
+
+        return {
+          'ID': call.id || '',
+          'Assistant': call.assistant || '',
+          'Phone Number': call.customer?.number || '',
+          'Bot Phone Number': call.botPhoneNumber || '',
+          'Name': call.assistantOverrides?.variableValues?.name || '',
+          'Call Received': formattedStartTime,
+          'Recording URL': call.recordingUrl ? transformRecordingUrl(call.recordingUrl) : '',
+          'Duration': call.duration || '',
+          'Status': call.status || '',
+          'Ended Reason': call.endedReason?.split('-')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ') || '',
+          'Tags': call.tags?.join(', ') || '',
+          'Transcript': call.transcript || ''
+        }
       }
-    }
-  })
+    })
+  } catch (e) {
+    console.error(e)
+    toast.add({
+      title: t('error'),
+      description: error.message,
+      color: 'error'
+    })
+
+  } finally {
+    isExporting.value = false
+  }
+  
 }
 
 watch(dateRange, async (newRange) => {

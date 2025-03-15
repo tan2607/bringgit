@@ -49,6 +49,11 @@ export const modules: Module[] = [
     enable: true
   },
   {
+    key: "access-control",
+    title: "Access Control",
+    enable: true
+  },
+  {
     key: "demo",
     title: "Demo",
     enable: true,

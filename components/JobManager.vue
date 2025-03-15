@@ -10,6 +10,12 @@
       </div>
 
       <div class="flex gap-2">
+        <UTooltip v-if="jobState.isHasMore"  text="Current limit is 100 jobs, If you need more click on the button" :disabled="!jobState.isHasMore">
+          <UButton :loading="jobState.isLoading" @click="handleLoadMore" color="primary"  size="sm" class="flex items-center gap-1 cursor-pointer"
+          > <span class="text-xs">Load More </span>
+          <UIcon name="i-heroicons-question-mark-circle" class="w-4 h-4" />
+        </UButton>
+        </UTooltip>
         <UButton icon="i-heroicons-plus" @click="handleCreateJob" color="primary">
           New Job
         </UButton>
@@ -56,9 +62,9 @@
     </UCard> -->
 
     <!-- Jobs Table -->
-    <UTable :data="filteredJobs" :columns="columns" :sort="sort" @update:sort="sort = $event"
-      v-model="selectedJobs" :loading="isLoading"
-      :empty-jobState="{ icon: 'i-heroicons-clipboard', label: 'No jobs found' }" @select="handleSelectJob">
+    <UTable :data="filteredJobs" :columns="columns" :sort="sort" @update:sort="sort = $event" v-model="selectedJobs"
+      :loading="isLoading" :empty-jobState="{ icon: 'i-heroicons-clipboard', label: 'No jobs found' }"
+      @select="handleSelectJob">
       <!-- Name Column -->
       <template #name-data="{ row }">
         <div class="flex items-center gap-2">
@@ -107,13 +113,17 @@
         </div>
       </template>
     </UTable>
+    <div class="flex justify-end">
+      <UPagination :page="page" :itemsPerPage="pageCount" :total="total" @update:page="(val) => page = val"
+        :disabled="isLoading" />
+    </div>
 
     <!-- Create/Edit Job Modal -->
-    <JobFormModal v-if="showCreateModal" v-model="showCreateModal" :editing-job="editingJob" :assistantOptions="assistants"
-      :phone-number-options="numbers" @submit="handleJobSubmit"/>
+    <JobFormModal v-if="showCreateModal" v-model="showCreateModal" :editing-job="editingJob"
+      :assistantOptions="assistants" :phone-number-options="numbers" @submit="handleJobSubmit" />
 
     <!-- Quick View Drawer -->
-    <JobDetailsSlideover />
+    <JobDetailsSlideover v-if="quickViewJob" :model-value="true" :job-id="quickViewJob.id" />
   </div>
 </template>
 
@@ -140,7 +150,7 @@ const jobFormSchema = z.object({
 
 type JobFormSchema = z.output<typeof jobFormSchema>
 
-const { jobState, createJob, pauseJob, resumeJob, stopJob, getJobs, deleteJob } = useJobState()
+const { jobState, createJob, pauseJob, startJob, getJobs, deleteJob, loadMoreJobs } = useJobState()
 const { assistants, fetchAssistants } = useAssistants()
 const { numbers, fetchNumbers } = usePhoneNumbers()
 const { confirm } = useConfirm()
@@ -172,7 +182,11 @@ const editingJob = ref<Job | null>(null)
 const quickViewJob = ref<Job | null>(null)
 const sort = ref({ column: 'schedule', direction: 'desc' })
 const selectedJobs = ref<Job[]>([])
-const isLoading = ref<bool>(false)
+const filteredJobs = ref<Job[]>([])
+const isLoading = ref(false)
+const page = ref(1)
+const pageCount = ref(20)
+const total = ref(0)
 
 // Form jobState
 const jobForm = ref({
@@ -284,8 +298,21 @@ const statusOptions = [
   { label: 'Failed', value: 'failed' }
 ]
 
-// Computed
-const filteredJobs = computed(() => {
+watch(() => localState.value.searchQuery, () => {
+  page.value = 1;
+  filterJobs();
+});
+
+watch(() => jobState.value.selectedStatus, () => {
+  page.value = 1;
+  filterJobs();
+});
+
+watch(() => page.value, () => {
+  filterJobs();
+});
+
+const filterJobs = () => {
   let jobs = [...jobState.value.jobs]
 
   // Apply search
@@ -295,17 +322,20 @@ const filteredJobs = computed(() => {
     )
   }
 
-  if (jobState.value.selectedStatus === 'all') {
-    return jobs
-  }
-
   // Apply status filter
-  if (jobState.value.selectedStatus) {
+  if (jobState.value.selectedStatus && jobState.value.selectedStatus !== 'all') {
     jobs = jobs.filter(job => job.status === jobState.value.selectedStatus)
   }
 
-  return jobs
-})
+  // Update total count after filtering
+  total.value = jobs.length
+
+  const start = (page.value - 1) * pageCount.value;
+  const end = page.value * pageCount.value;
+
+  // Apply pagination
+  filteredJobs.value = jobs.slice(start, end);
+}
 
 // Methods
 const getJobIcon = (status: string) => {
@@ -320,10 +350,10 @@ const getJobIcon = (status: string) => {
 
 const getStatusColor = (status: string) => {
   switch (status) {
-    case 'pending': return 'info'
+    case 'pending': return 'neutral'
     case 'running': return 'success'
     case 'paused': return 'warning'
-    case 'completed': return 'success'
+    case 'completed': return 'info'
     case 'failed': return 'error'
     default: return 'neutral'
   }
@@ -502,9 +532,17 @@ function handleCreateJob() {
   showCreateModal.value = true
 }
 
+async function handleLoadMore() {
+  await loadMoreJobs()
+  filterJobs()
+}
+
 onMounted(async () => {
+  isLoading.value = true
   await getJobs()
   await fetchAssistants()
   await fetchNumbers()
+  filterJobs()
+  isLoading.value = false
 })
 </script>
