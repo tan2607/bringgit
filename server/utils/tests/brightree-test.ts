@@ -1,4 +1,4 @@
-import { BrightreeScheduling } from '../providers/brightree'
+import { Brightree } from '../providers/brightree'
 
 /**
  * Test script for Brightree API connection
@@ -37,7 +37,7 @@ export async function testBrightreeConnection() {
   
   try {
     console.log('🔑 Initializing Brightree client with credentials...')
-    const brightree = new BrightreeScheduling(username, password)
+    const brightree = new Brightree(username, password)
     
     // Test client initialization
     console.log('🔄 Testing SOAP client initialization...')

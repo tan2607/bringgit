@@ -1,4 +1,4 @@
-import { BrightreeScheduling } from '~/server/utils/providers/brightree'
+import { BrightreeProvider } from '~/server/utils/providers/brightree'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -6,10 +6,7 @@ export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig()
     
     // Create Brightree provider
-    const brightree = new BrightreeScheduling(
-      config.brightreeUsername,
-      config.brightreePassword
-    )
+    const brightree = BrightreeProvider.getInstance()
     
     // Get mock appointment availability data
     const availabilityData = brightree.getMockAppointmentAvailability()
