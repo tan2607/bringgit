@@ -183,6 +183,7 @@ const exportToExcelFile = async () => {
             .map(word => word.charAt(0).toUpperCase() + word.slice(1))
             .join(' ') || '',
           'Tags': call.tags?.join(', ') || '',
+          'Review': call.review || '',
           'Transcript': call.transcript || ''
         }
       }

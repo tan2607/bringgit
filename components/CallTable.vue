@@ -9,8 +9,7 @@
             @update:model-value="table?.tableApi?.getColumn('assistant')?.setFilterValue($event)" />
         </div>
         <div class="relative h-auto w-full md:w-auto">
-            <UDropdownMenu :resetSearchTermOnBlur="true" class="w-full"
-              :items="botPhoneNumbers" :content="{
+          <UDropdownMenu :resetSearchTermOnBlur="true" class="w-full" :items="botPhoneNumbers" :content="{
                 align: 'start',
                 side: 'bottom',
                 sideOffset: 8
@@ -23,7 +22,8 @@
           <!-- Dropdown: Tags Filter -->
           <div class="relative w-full md:w-auto">
             <UPopover v-model:open="shouldShowTagsFilter">
-              <UButton color="neutral" variant="outline" trailing-icon="i-lucide-chevron-down" class="w-full md:w-auto whitespace-nowrap">
+              <UButton color="neutral" variant="outline" trailing-icon="i-lucide-chevron-down"
+                class="w-full md:w-auto whitespace-nowrap">
                 Tags Filter
               </UButton>
               <template #content>
@@ -62,17 +62,19 @@
           {{ data?.length || 0 }} data loaded
         </div>
         <div class="flex flex-col md:flex-row items-center gap-2">
-          <UTooltip v-if="hasMore && !props.quickView"
-            text="Current is limited to 15000 calls, if you need more data click the button below">
-            <UButton color="primary" variant="soft" :loading="isLoading" :disabled="isLoading || !hasMore"
-              class="cursor-pointer w-full md:w-auto" @click="$emit('load-more')">
-              <div class="flex items-center justify-center gap-2">
-                Load More
+          <div v-if="hasMore && !props.quickView">
+            <UTooltip 
+              text="Current is limited to 15000 calls, if you need more data click the button below">
+              <UButton color="primary" variant="soft" :loading="isLoading" :disabled="isLoading || !hasMore"
+                class="cursor-pointer w-full md:w-auto" @click="$emit('load-more')">
+                <div class="flex items-center justify-center gap-2">
+                  Load More
               </div>
               <UIcon name="i-lucide-info" class="size-10" />
             </UButton>
           </UTooltip>
-          <div class="flex items-center gap-2">
+        </div>
+          <div class="flex items-center gap-2" v-if="!props.quickView">
             <UTooltip text="Only loaded records will be exported. Click 'Load More' to load all records first.">
               <UButton v-if="props.exportButton" color="primary" variant="soft" :loading="props.isExporting"
                 :disabled="props.isLoadingTable || props.isExporting || !props.data?.length"
@@ -141,6 +143,18 @@
       @success="(message) => toast.add({ title: 'Success', description: message, color: 'success', icon: 'i-lucide-check-circle' })"
       @error="(message) => toast.add({ title: 'Error', description: message, color: 'error', icon: 'i-lucide-alert-circle' })" />
 
+    <!-- <EditTagModal v-if="isOpenEditReviewModal" :isOpen="isOpenEditReviewModal"
+      @update:isOpen="(value) => isOpenEditReviewModal = value" @updateTags="handleUpdateTags" :categories="categories"
+      :uniqueTags="uniqueTags" :selectedCall="selectedCall" /> -->
+
+      <EditReviewModal v-if="isOpenEditReviewModal" 
+        :isOpen="isOpenEditReviewModal"
+        :isLoading="isLoadingEditReviewModal"
+        :selectedCall="selectedCall" 
+        @update:isOpen="(value) => isOpenEditReviewModal = value" 
+        @updateReview="handleUpdateReview" 
+      />
+
     <!-- Pagination -->
     <div v-if="!props.compact && totalCalls > pageSize && !isLoading"
       class="flex items-center justify-center mt-4 gap-4">
@@ -162,8 +176,8 @@ import type { Assistant } from '~/types/assistant'
 const UButton = resolveComponent('UButton')
 const UBadge = resolveComponent('UBadge')
 const UDropdownMenu = resolveComponent('UDropdownMenu')
-const USelectMenu = resolveComponent('USelectMenu')
 const UInput = resolveComponent('UInput')
+const UIcon = resolveComponent('UIcon')
 const toast = useToast();
 const slideover = useSlideover()
 const selectedAssistant = ref<Assistant | undefined>()
@@ -214,7 +228,7 @@ const props = defineProps({
 
 const emit = defineEmits(['export', 'load-more', 'load-previous', 'load-first'])
 
-const { isLoading, currentPlayingId, togglePlayAudio, selectedCall, hasMore, fetchingProgress, totalCalls } = useCalls()
+const { isLoading, currentPlayingId, togglePlayAudio, selectedCall, hasMore, fetchingProgress, totalCalls, updateCall } = useCalls()
 
 const { t } = useI18n()
 const { transformRecordingUrl } = useRecordingUrl()
@@ -231,17 +245,14 @@ const columnVisibility = ref({
   id: true
 })
 
+const isOpenEditReviewModal = ref(false)
+const isLoadingEditReviewModal = ref(false)
 const columnFilters = ref([
   {
     id: 'assistant',
     value: ''
   }
 ])
-
-const uniqueAssistants = computed(() => {
-  const assistants = new Set(props.data?.map(call => call.assistant) || [])
-  return Array.from(assistants).sort()
-})
 
 const uniqueTags = computed(() => {
   const tags = new Set(
@@ -437,19 +448,53 @@ const columns = computed(() => {
       }, () => formatted)
     }
   })
+  // add Review column
+  baseColumns.push({
+    accessorKey: "review",
+    header: () => "Review",
+    cell: ({row}) => {
+      if(!row.original.review) {
+        return h(UButton, { 
+          icon: 'i-lucide-edit',
+          color: 'primary',
+          variant: 'ghost', 
+          size: 'md',
+          class: 'cursor-pointer shrink-0',  
+          onClick: () => {
+            isOpenEditReviewModal.value = true
+            const id = row.original.id;
+            const call = props.data.find(call => call.id === id)
+            selectedCall.value = call
+          }
+        })
+      }
+      return h(UBadge, { class: 'capitalize cursor-pointer', variant: 'subtle' , onClick: () => { 
+        isOpenEditReviewModal.value = true
+        const id = row.original.id;
+        const call = props.data.find(call => call.id === id)
+        selectedCall.value = call
+      } }, () =>
+      [row.original.review, h(UIcon , { 
+        name: 'i-lucide-edit',
+      })]
+      )
+    }
+  })
 
   baseColumns.push({
     accessorKey: "tags",
     header: () => "Tags",
-    cell: (row) => {
-      const tags = row.getValue('tags');
+    cell: ({row}) => {
+      const tags = row.original.tags;
       return h(
         'div', 
         { class: 'flex flex-wrap gap-2' }, 
         tags.map((tag: string) => h(
           UBadge, 
-          { class: 'capitalize', variant: 'subtle', key: tag, color: 'info' }, 
-          () => tag
+          { class: 'capitalize cursor-pointer', variant: 'subtle', key: tag, color: 'info'}, 
+          () => [
+            tag
+          ]
         ))
       );
     }
@@ -635,10 +680,11 @@ const quickViewColumns = computed(() => {
 
   if (!props.compact) {
 
-      baseColumns.push({
-        accessorKey: "tags",
-        header: () => "Tags",
-        cell: (row) => {
+
+    baseColumns.push({
+      accessorKey: "tags",
+      header: () => "Tags",
+      cell: (row) => {
           const tags = row.getValue('tags');
           if(!tags) {
             return "N/A"
@@ -724,6 +770,28 @@ const filteredData = computed(() => {
 const pagedData = computed(() => {
   return filteredData.value.slice((page.value - 1) * pageSize.value, page.value * pageSize.value);
 })
+
+const handleUpdateReview = async (review: string) => {
+ try {
+  isLoadingEditReviewModal.value = true
+  selectedCall.value.review = review
+  await updateCall(selectedCall.value.id, review)
+  isLoadingEditReviewModal.value = false
+  isOpenEditReviewModal.value = false
+  toast.add({
+    title: 'Review updated',
+    description: 'Review updated successfully',
+    color: 'success'
+  })
+ } catch (error) {
+  isLoadingEditReviewModal.value = false
+  toast.add({
+    title: 'Review update failed',
+    description: 'Review update failed',
+    color: 'error'
+  })
+ }
+}
 
 
 </script>

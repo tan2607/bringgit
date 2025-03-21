@@ -195,7 +195,8 @@ export class VapiProvider {
         tags: tagList,
         assistantOverrides: call.assistantOverrides,
         endedReason: call.endedReason,
-        botPhoneNumber: phoneNumber?.name ?  `${phoneNumber?.name} (${phoneNumber?.number})` : 'N/A'
+        botPhoneNumber: phoneNumber?.name ?  `${phoneNumber?.name} (${phoneNumber?.number})` : 'N/A',
+        review: call.name || '',
       };
     }); 
 
