@@ -14,7 +14,7 @@
                 align: 'start',
                 side: 'bottom',
                 sideOffset: 8
-              }">
+              }" :ui="{ content: 'max-h-96 overflow-y-auto' }">
               <UButton label="Filter by bot phone number" color="neutral" variant="outline"
                 trailing-icon="i-lucide-chevron-down" class="w-full md:w-auto" />
             </UDropdownMenu>
