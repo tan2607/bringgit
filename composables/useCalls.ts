@@ -208,6 +208,16 @@ export const useCalls = () => {
     previousEndDates.value = []
   }
 
+  const updateCall = async (callId: string, review: string) => {
+    const newCall = await $fetch(`/api/call/update/${callId}`, {
+      method: 'POST',
+      body: {
+        name: review
+      }
+    })
+    return newCall
+  }
+
   return {
     calls,
     currentPlayingAudio,
@@ -225,6 +235,7 @@ export const useCalls = () => {
     loadPrevious,
     resetPreviousEndDates,
     fetchingProgress,
-    fetchRecentCalls
+    fetchRecentCalls,
+    updateCall
   }
 }
