@@ -202,7 +202,8 @@ export class VapiProvider {
 
     return  {
       calls: callResults,
-      count: totalCalls
+      count: totalCalls,
+      rawCallResult: calls,
     }
   }
 
