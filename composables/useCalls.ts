@@ -48,11 +48,12 @@ export const useCalls = () => {
       }
 
       const unfilteredResults = [...newCalls]
+      const unfilteredCallTotal = data?.value?.rawCallResult?.length || 0
 
-      fetchingProgress.value = Math.floor((unfilteredResults.length / totalCalls.value) * 100)
+      fetchingProgress.value = Math.floor((unfilteredCallTotal / totalCalls.value) * 100)
 
-      let isFetchAllData = totalCalls.value > calls.value.length && unfilteredResults.length < callsLimit;
-      endDate = unfilteredResults[unfilteredResults.length - 1].createdAt
+      let isFetchAllData = totalCalls.value > calls.value.length && unfilteredCallTotal < callsLimit;
+      endDate = data?.value?.rawCallResult?.[unfilteredCallTotal - 1]?.createdAt
       while (isFetchAllData) {
         if(signal.aborted) {
           return
