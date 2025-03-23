@@ -48,7 +48,7 @@ export const useCalls = () => {
       }
 
       const unfilteredResults = [...newCalls]
-      const unfilteredCallTotal = data?.value?.rawCallResult?.length || 0
+      let unfilteredCallTotal = data?.value?.rawCallResult?.length || 0
 
       fetchingProgress.value = Math.floor((unfilteredCallTotal / totalCalls.value) * 100)
 
@@ -75,17 +75,20 @@ export const useCalls = () => {
 
         const newCalls = data?.value?.calls || []
         unfilteredResults.push(...newCalls)
-        isFetchAllData = unfilteredResults.length < callsLimit;
+        unfilteredCallTotal += data?.value?.rawCallResult?.length || 0
+        isFetchAllData = unfilteredCallTotal < callsLimit;
+
+        const rawCallResult = data?.value?.rawCallResult || []
 
         if(totalCalls.value < callsLimit) {
-          fetchingProgress.value = Math.floor((unfilteredResults.length / totalCalls.value) * 100)
+          fetchingProgress.value = Math.floor((unfilteredCallTotal / totalCalls.value) * 100)
         } else {
-          fetchingProgress.value = Math.floor((unfilteredResults.length / callsLimit) * 100)
+          fetchingProgress.value = Math.floor((unfilteredCallTotal / callsLimit) * 100)
         }
 
         if(isFetchAllData && newCalls.length > 0) {
-          const lastCall = newCalls[newCalls.length - 1]
-          endDate = lastCall.createdAt
+          const lastCall = rawCallResult[rawCallResult.length - 1]
+          endDate = lastCall?.createdAt
         } else {
           isFetchAllData = false;
         }
