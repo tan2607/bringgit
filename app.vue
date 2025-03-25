@@ -211,7 +211,87 @@ const adminItems = [
     ]
   },
   {
-    key: 'support',
+    label: 'Sandbox',
+    icon: 'i-lucide-layout-template',
+    description: 'View demo pages',
+    children: [
+      {
+        label: 'Translation',
+        icon: 'i-lucide-languages',
+        description: 'Translation demo',
+        to: localeRoute('/demo/translation')?.path
+      },
+      {
+        label: 'Patient Intake',
+        icon: 'i-lucide-clipboard-list',
+        description: 'Patient intake form demo',
+        to: localeRoute('/demo/patient-intake-form')?.path
+      },
+      {
+        label: 'SMS',
+        icon: 'i-lucide-message-square',
+        description: 'SMS sender demo',
+        to: localeRoute('/demo/sms')?.path
+      },
+      {
+        label: 'Location Search',
+        icon: 'i-lucide-map-pin',
+        description: 'Clinic location search demo',
+        to: localeRoute('/demo/location')?.path
+      },
+      {
+        label: 'OCR Demo',
+        icon: 'i-lucide-file-scan',
+        to: localeRoute('/ocr')?.path
+      },
+      {
+        label: 'Vitalus',
+        icon: 'i-lucide-file-scan',
+        children: [
+          {
+            label: 'Brightree Demo',
+            icon: 'i-lucide-file-scan',
+            to: localeRoute('/demo/brightree')?.path
+          },
+          {
+            label: 'RingCentral Demo',
+            icon: 'i-lucide-file-scan',
+            to: localeRoute('/demo/ringcentral')?.path
+          },
+          {
+            label: 'Webcall Demo',
+            icon: 'i-lucide-file-scan',
+            to: localeRoute('/demo/webcall')?.path
+          }
+        ]
+      },
+      {
+        label: 'RPA Demo',
+        icon: 'i-lucide-cpu',
+        description: 'RPA',
+        to: localeRoute('/demo/rpa')?.path
+      },
+      {
+        label: 'Company Research',
+        icon: 'i-lucide-brain',
+        description: 'Deep Research',
+        to: localeRoute('/research')?.path
+      },
+      {
+        label: 'Workflow Demo',
+        icon: 'i-lucide-workflow',
+        description: 'Home Sleep Study Workflow',
+        to: localeRoute('/demo/workflow')?.path
+      },
+      {
+        label: 'Report Assistant',
+        icon: 'i-lucide-table',
+        description: 'Ask questions about your reports',
+        to: localeRoute('/demo/report-assistant')?.path
+      },
+    ]
+  },
+  {
     label: t('support'),
     icon: 'i-lucide-help-circle',
     children: [

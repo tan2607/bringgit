@@ -17,6 +17,10 @@ export default defineNuxtConfig({
       domain: process.env.AUTH0_DOMAIN,
       audience: process.env.AUTH0_AUDIENCE
     },
+    providers: {
+      // Configure which providers to load on server start
+      enabled: (process.env.ENABLED_PROVIDERS || 'vapi,openai,whisper,sendgrid,cartesia,playai,perplexity,brightree,ringcentral,twilio,firecrawl,gemini').split(','),
+    },
     // Provider API Keys
     openaiApiKey: process.env.OPENAI_API_KEY,
     vapiApiKey: process.env.VAPI_API_KEY,
@@ -29,6 +33,19 @@ export default defineNuxtConfig({
     sendgridApiKey: process.env.SENDGRID_API_KEY,
     firecrawlApiKey: process.env.FIRECRAWL_API_KEY,
     geminiApiKey: process.env.GEMINI_API_KEY,
+    perplexityApiKey: process.env.PERPLEXITY_API_KEY,
+    // Brightree API configuration
+    brightree: {
+      username: process.env.BRIGHTREE_USERNAME,
+      password: process.env.BRIGHTREE_PASSWORD
+    },
+    // RingCentral API credentials
+    ringcentral: {
+      clientId: process.env.RINGCENTRAL_CLIENT_ID,
+      clientSecret: process.env.RINGCENTRAL_CLIENT_SECRET,
+      serverUrl: process.env.RINGCENTRAL_SERVER_URL || 'https://platform.ringcentral.com',
+      jwt: process.env.RINGCENTRAL_JWT
+    },
     twilio: {
       accountSid: process.env.TWILIO_ACCOUNT_SID,
       authToken: process.env.TWILIO_AUTH_TOKEN,
@@ -40,6 +57,7 @@ export default defineNuxtConfig({
     accountId: process.env.ACCOUNT_ID,
     public: {
       baseUrl,
+      vapiPublicKey: process.env.VAPI_PUBLIC_KEY,
       googleApiKey: process.env.GOOGLE_API_KEY,
       authJs: {
         baseUrl,
