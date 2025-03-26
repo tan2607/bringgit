@@ -1,4 +1,5 @@
-import { jobs } from "~/server/database/schema";
+import { not } from "drizzle-orm";
+import { jobQueue, jobs } from "~/server/database/schema";
 
 export default defineEventHandler(async (event) => {
   try {
@@ -7,29 +8,37 @@ export default defineEventHandler(async (event) => {
     const queueHandler = new CallQueueHandler(config.vapiApiKey, event.context.cloudflare.queue);
 
     // Get pending/running jobs with remaining calls to process
-    const pendingJobs = await db.query.jobs.findMany({
-      where: or(eq(jobs.status, "pending"), eq(jobs.status, "running")),
-      with: {
-        jobQueues: {
-          columns: {
-            id: true,
-          },
-        },
-      },
-      orderBy: [asc(jobs.createdAt)],
-    });
+    const pendingJobs = await db
+    .select({
+      jobId: jobs.id,
+      status: jobs.status,
+      createdAt: jobs.createdAt,
+      phoneNumbers: jobs.phoneNumbers,
+      names: jobs.names,
+      assistantId: jobs.assistantId,
+      phoneNumberId: jobs.phoneNumberId,
+      schedule: jobs.schedule,
+      selectedTimeWindow: jobs.selectedTimeWindow,
+      totalCalls: jobs.totalCalls,
+      totalJobQueues: sql<number>`COUNT(${jobQueue.id})`
+    })
+    .from(jobs)
+    .leftJoin(jobQueue, eq(jobs.id, jobQueue.jobId)) // Assuming jobQueues has jobId FK
+    .where(not(eq(jobs.status, "completed")))
+    .groupBy(jobs.id)
+    .orderBy(asc(jobs.createdAt));
 
     const jobsToProcess = pendingJobs
-      .filter(job => (job.totalCalls ?? 0) - (job.jobQueues?.length ?? 0) > 0)
+      .filter(job => (job.totalCalls ?? 0) - (job.totalJobQueues ?? 0) > 0)
       .map(job => ({
         ...job,
-        remainingCalls: (job.totalCalls ?? 0) - (job.jobQueues?.length ?? 0)
+        remainingCalls: (job.totalCalls ?? 0) - (job.totalJobQueues ?? 0)
       }));
 
     // Process jobs in parallel with batched messages
     await Promise.all(jobsToProcess.map(async job => {
-      const { id, phoneNumbers, names, assistantId, phoneNumberId, schedule, selectedTimeWindow } = job;
-      const queueLength = job.jobQueues?.length ?? 0;
+      const { jobId, phoneNumbers, names, assistantId, phoneNumberId, schedule, selectedTimeWindow } = job;
+      const queueLength = job.totalJobQueues ?? 0;
       
       // Parse job data
       const parsedData = {
@@ -40,7 +49,7 @@ export default defineEventHandler(async (event) => {
 
       // Create messages batch
       const messages = parsedData.phoneNumbers.map((phoneNumber, index) => ({
-        jobId: id,
+        jobId,
         phoneNumber,
         name: parsedData.names[index],
         assistantId,

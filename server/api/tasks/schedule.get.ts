@@ -1,4 +1,4 @@
-import { gte, lt } from "drizzle-orm";
+import { and, or, eq, asc,  not } from "drizzle-orm";
 import { jobQueue, jobs } from "~/server/database/schema";
 import { CallQueueHandler } from "~/server/utils/queue";
 
@@ -9,17 +9,24 @@ export default defineEventHandler(async (event) => {
 		const today = new Date();
 		today.setHours(0, 0, 0, 0); // Set to start of the day
 
+		const queueLimit = 1;
 		const pendingJobs = await db.query.jobs.findMany({
-			where: and(or(eq(jobs.status, "pending"), eq(jobs.status, "running"))),
+			where: and(
+				or(eq(jobs.status, "pending"), eq(jobs.status, "running"))
+			),
+			orderBy: asc(jobs.createdAt), // Ensure sorting at the job level
 			with: {
-				jobQueues: true,
+				jobQueues: {
+					orderBy: asc(jobQueue.createdAt), // Ensure sorting inside relations
+					limit: queueLimit,
+					where: not(eq(jobs.status, "completed")), 
+				},
 			},
 		});
 
 		const config = useRuntimeConfig();
 		const queueHandler = new CallQueueHandler(config.vapiApiKey, event.context.cloudflare.queue);
 
-		const batchLimit = 10;
 		const nextDay = new Date(today);
 		nextDay.setHours(23, 59, 59, 999);
 
@@ -29,7 +36,6 @@ export default defineEventHandler(async (event) => {
 					const jobDate = new Date(scheduledAt);
 					return jobDate < nextDay && status === "pending";
 				})
-				.slice(0, batchLimit),
 		);
 
 		for (const batch of pendingJobQueuesToday) {

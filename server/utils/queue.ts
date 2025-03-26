@@ -254,6 +254,7 @@ export class CallQueueHandler {
   }
 
   async processBatch(batch: QueueMessage<CallMessage>[]) {
+    if(batch.length === 0) return;
     await Promise.all(batch.map(msg => this.processMessage(msg)))
   }
 
