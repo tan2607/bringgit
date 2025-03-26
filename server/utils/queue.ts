@@ -276,7 +276,6 @@ export class CallQueueHandler {
       progress: job.progress,
       completedCalls: job.completedCalls + (update.completedCalls || 0),
       failedCalls: job.failedCalls + (update.failedNumbers?.length || 0),
-      failedNumbers: [...(job.failedNumbers || []), ...(update.failedNumbers || [])],
       lastProcessedAt: new Date(),
       lastError: update.error
     }
@@ -287,9 +286,7 @@ export class CallQueueHandler {
     )
 
     // Check if job is completed
-    if (newStatus.completedCalls + newStatus.failedCalls >= job.totalCalls) {
-      newStatus.status = newStatus.failedCalls === job.totalCalls ? 'failed' : 'completed'
-    }
+    newStatus.status = newStatus.completedCalls === job.totalCalls ? 'completed' : 'running'
 
     // update the job
     const updatedJob = await db.update(jobs).set({
@@ -297,7 +294,6 @@ export class CallQueueHandler {
       progress: newStatus.progress,
       completedCalls: newStatus.completedCalls,
       failedCalls: newStatus.failedCalls,
-      failedNumbers: newStatus.failedNumbers
     }).where(eq(jobs.id, jobId))
 
     return updatedJob;
