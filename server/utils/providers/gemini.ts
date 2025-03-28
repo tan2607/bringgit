@@ -1,10 +1,72 @@
-import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai"
-import { GoogleAIFileManager } from "@google/generative-ai/server"
-import { writeFile } from 'fs/promises'
-import { join } from 'path'
+// import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/genai"
+// import { GoogleAIFileManager } from "@google/genai/server"
 import { tmpdir } from 'os'
 import { patientDataSchema } from '#shared/forms/patientIntakeSchema'
 import { describeSchema, extractJsonFromText, validateWithSchema } from '~/utils/schema'
+import {GoogleGenAI, ContentListUnion} from '@google/genai';
+
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const ai = new GoogleGenAI({vertexai: false, apiKey: GEMINI_API_KEY});
+
+// Simple in-memory cache to avoid repeated identical queries
+const responseCache = new Map<string, { response: string, timestamp: number }>();
+const CACHE_TTL = 1000 * 60 * 60; // 1 hour cache TTL
+
+export async function askMedication(query: string, context: string) {
+  // Normalize query for caching (lowercase, trim whitespace)
+  const normalizedQuery = query.toLowerCase().trim();
+  
+  // Check cache first
+  const now = Date.now();
+  const cachedResult = responseCache.get(normalizedQuery);
+  if (cachedResult && (now - cachedResult.timestamp) < CACHE_TTL) {
+    console.log('Returning cached medication response');
+    return cachedResult.response;
+  }
+
+  try {
+    // Add the file to the contents.
+    const contents: ContentListUnion = [
+      {
+        parts: [{
+          text: context,
+        },
+        {
+          text: `Answer the user question strictly based on the information provided. You will be graded on comprehensiveness and accuracy. If the information is not available in the provided content, say so clearly. Format your response in markdown with appropriate headings, bullet points, and emphasis. Always add a citation at the end of response as HealthHub Reference: https://www.healthhub.sg/a-z/medications/{url_slug} using the exact url_slug from the relevant medication entry.`
+        }],
+        role: "model"
+      },
+      {
+        parts: [{
+          text: normalizedQuery
+        }],
+        role: "user"
+      },
+    ];
+
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.0-flash',
+      contents,
+      generationConfig: {
+        temperature: 0.1, // Lower temperature for more factual responses
+        topP: 0.8,
+        topK: 40,
+        maxOutputTokens: 1024,
+      }
+    });
+
+    // Store in cache
+    responseCache.set(normalizedQuery, { 
+      response: response.text, 
+      timestamp: now 
+    });
+    
+    return response.text;
+  } catch (error) {
+    console.error('Error in askMedication:', error);
+    throw new Error(`Failed to get medication information: ${error.message || 'Unknown error'}`);
+  }
+}
 
 export class GeminiOCR {
   private genAI: any
@@ -15,7 +77,7 @@ export class GeminiOCR {
     this.genAI = new GoogleGenerativeAI(apiKey)
     this.fileManager = new GoogleAIFileManager(apiKey)
     this.model = this.genAI.getGenerativeModel({
-      model: "gemini-2.0-flash-exp",
+      model: "gemini-2.0-flash",
     })
   }
 

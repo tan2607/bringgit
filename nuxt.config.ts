@@ -149,7 +149,11 @@ export default defineNuxtConfig({
   ssr: false,
   devtools: { enabled: true },
   nitro: {    
-  
+    esbuild: {
+      options: {
+        target: 'esnext'
+      }
+    },
     scheduledTasks: {
       '* * * * *': ['jobs:schedule']
     },

@@ -202,12 +202,19 @@ const adminItems = [
         to: localeRoute('/demo/report-assistant')?.path
       },
       {
+        key: 'demo-medication',
+        label: 'Medication Assistant',
+        icon: 'i-lucide-table',
+        description: 'Get medication information and side effects',
+        to: localeRoute('/demo/medication')?.path
+      },
+      {
         key: 'demo-claims-assistant',
         label: t('claims-assistant'),
         icon: 'i-lucide-table',
         description: t('claims-assistant-description'),
         to: localeRoute('/demo/claims-assistant')?.path
-      }
+      },
     ]
   },
   {
