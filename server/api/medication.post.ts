@@ -8,23 +8,23 @@ const filePath = path.resolve(process.cwd(), 'server/data/medication.md');
 let context = await readFile(filePath, 'utf-8');
 console.log('Loaded Context length:', context.length);
 
-async function prepareData() {
-  const medication = await import('../data/medication.json');
-  const tds = new TurndownService({headingStyle: 'atx'})
-  console.log(JSON.stringify(medication).length, ' characters');
-  const filteredText = medication.data.allM_Content_Medication.results.map((item) => `\`\`\`
-title: ${item.medication_Title}
-url_slug: ${item.medication_FriendlyUrl}
-keywords: ${item.medication_ENKeywords}
-\`\`\`
+// async function prepareData() {
+//   const medication = await import('../data/medication.json');
+//   const tds = new TurndownService({headingStyle: 'atx'})
+//   console.log(JSON.stringify(medication).length, ' characters');
+//   const filteredText = medication.data.allM_Content_Medication.results.map((item) => `\`\`\`
+// title: ${item.medication_Title}
+// url_slug: ${item.medication_FriendlyUrl}
+// keywords: ${item.medication_ENKeywords}
+// \`\`\`
 
-${tds.turndown(item.medication_ContentBody).split(/\*?\*?Disclai/i)[0].trim()}`).join('\n');
+// ${tds.turndown(item.medication_ContentBody).split(/\*?\*?Disclai/i)[0].trim()}`).join('\n');
 
-  const filePath = path.resolve(process.cwd(), 'server/data/medication.md');
-  writeFile(filePath, filteredText);
-  console.log('File written to:', filePath);
-  console.log(filteredText.length, ' characters');
-}
+//   const filePath = path.resolve(process.cwd(), 'server/data/medication.md');
+//   writeFile(filePath, filteredText);
+//   console.log('File written to:', filePath);
+//   console.log(filteredText.length, ' characters');
+// }
 
 // prepareData();
 
