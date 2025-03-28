@@ -1,32 +1,26 @@
 import { askMedication } from '../utils/providers/gemini'
-import path from 'path';
-import { readFile, writeFile } from 'fs/promises'
 import TurndownService from 'turndown'
 
-// Get context from server/data/medications.md file
-const filePath = path.resolve(process.cwd(), 'server/data/medication.md');
-let context = await readFile(filePath, 'utf-8');
-console.log('Loaded Context length:', context.length);
+// Use the imported data directly
+let context = ''
 
-// async function prepareData() {
-//   const medication = await import('../data/medication.json');
-//   const tds = new TurndownService({headingStyle: 'atx'})
-//   console.log(JSON.stringify(medication).length, ' characters');
-//   const filteredText = medication.data.allM_Content_Medication.results.map((item) => `\`\`\`
-// title: ${item.medication_Title}
-// url_slug: ${item.medication_FriendlyUrl}
-// keywords: ${item.medication_ENKeywords}
-// \`\`\`
+async function prepareData() {
+  const medication = await import('../data/medication.json');
+  const tds = new TurndownService({headingStyle: 'atx'})
+  console.log(JSON.stringify(medication).length, ' characters');
+  const filteredText = medication.data.allM_Content_Medication.results.map((item) => `\`\`\`
+title: ${item.medication_Title}
+url_slug: ${item.medication_FriendlyUrl}
+keywords: ${item.medication_ENKeywords}
+\`\`\`
 
-// ${tds.turndown(item.medication_ContentBody).split(/\*?\*?Disclai/i)[0].trim()}`).join('\n');
+${tds.turndown(item.medication_ContentBody).split(/\*?\*?Disclai/i)[0].trim()}`).join('\n');
 
-//   const filePath = path.resolve(process.cwd(), 'server/data/medication.md');
-//   writeFile(filePath, filteredText);
-//   console.log('File written to:', filePath);
-//   console.log(filteredText.length, ' characters');
-// }
+  console.log(filteredText.length, ' characters loaded');
+  context = filteredText;
+}
 
-// prepareData();
+prepareData();
 
 export default defineEventHandler(async (event) => {
   try {
@@ -38,6 +32,11 @@ export default defineEventHandler(async (event) => {
         statusCode: 400,
         statusMessage: 'A valid query string is required'
       })
+    }
+
+    if (context.length === 0) {
+      console.log('Preparing data at runtime...');
+      await prepareData();
     }
 
     // Set a reasonable timeout for the request
