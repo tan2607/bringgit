@@ -85,6 +85,9 @@
               <PhoneNumberSelect v-model="state.selectedNumber" class="w-full" />
             </UFormField>
           </div>
+          <div>
+            <UCheckbox v-model="state.allowWeekends" label="Allow Processing on Weekends" />
+          </div>
 
           <div class="flex items-center justify-between">
             <div class="space-y-2 text-sm text-gray-500">
@@ -190,7 +193,8 @@ const state = reactive({
   selectedAssistant: selectedAssistant,
   selectedNumber: selectedNumber,
   contacts: null,
-  isSubmitting: false
+  isSubmitting: false,
+  allowWeekends: false
 })
 
 const selectedDate = defineModel('selectedDate', { type: Object })
@@ -236,7 +240,11 @@ async function handleCreateJob() {
       schedule: new Date(selectedYear, selectedMonth - 1, selectedDay, currentHour, currentMinute, 0, 0),
       totalCalls: scheduledCalls.value.length,
       phoneNumberId: state.selectedNumber,
-      selectedTimeWindow: selectedTimeWindow.value
+      selectedTimeWindow: {
+        start: selectedTimeWindow.value.start,
+        end: selectedTimeWindow.value.end,
+        allowWeekends: state.allowWeekends
+      },
     })
     toast.add({
       title: 'Success',

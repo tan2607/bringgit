@@ -19,7 +19,7 @@ export interface CallMessage {
   delay: number
   scheduledAt: string
   vapiId: string
-  selectedTimeWindow: { start: string, end: string }
+  selectedTimeWindow: { start: string, end: string, allowWeekends: boolean }
 }
 
 export class CallQueueHandler {
@@ -73,10 +73,11 @@ export class CallQueueHandler {
       })
       return false
     }
-
+    
+    const daysOfWeek = message.selectedTimeWindow.allowWeekends ? [1, 2, 3, 4, 5, 6, 7] : [1, 2, 3, 4, 5];
     const scheduler = new Scheduler({
       businessHours: {
-        daysOfWeek: [1, 2, 3, 4, 5],
+        daysOfWeek,
         startTime: message.selectedTimeWindow.start,
         endTime: message.selectedTimeWindow.end,
         timezone: 'Asia/Singapore'
@@ -145,10 +146,14 @@ export class CallQueueHandler {
     const { jobId, phoneNumber, assistantId, phoneNumberId, retryCount = 0, id: queueId, delay, scheduledAt, name } = message;
     const db = useDrizzle();
     const selectedTimeWindow = JSON.parse(message.selectedTimeWindow);
+    const allowWeekends = selectedTimeWindow.allowWeekends;
+    const daysOfWeek = allowWeekends ? [1, 2, 3, 4, 5, 6, 7] : [1, 2, 3, 4, 5];
+
+    console.log("daysOfWeek", daysOfWeek)
 
     const scheduler = new Scheduler({
       businessHours: {
-        daysOfWeek: [1, 2, 3, 4, 5],
+        daysOfWeek,
         startTime: selectedTimeWindow.start,
         endTime: selectedTimeWindow.end,
         timezone: 'Asia/Singapore'
