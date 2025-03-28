@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
       phoneNumberId,
       status: 'pending',
       progress: 0,
-    completedCalls: 0,
+      completedCalls: 0,
       totalCalls,
       selectedTimeWindow: JSON.stringify(selectedTimeWindow)
     })
