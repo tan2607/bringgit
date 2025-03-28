@@ -25,6 +25,11 @@ export default defineNuxtRouteMiddleware(async (to) => {
     return
   }
 
+  // Public demo pages
+  if (to.path.startsWith('/demo/medication')) {
+    return
+  }
+
   // Check if route requires admin
   const isAdminRoute = ADMIN_ROUTES.some(route => to.path.startsWith(route))
   

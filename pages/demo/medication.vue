@@ -222,6 +222,14 @@ async function askMedication() {
   } catch (err: any) {
     console.error('Error fetching medication information:', err)
     error.value = err.message || 'An error occurred while processing your request'
+
+    toast.add({
+      title: 'Error',
+      description: err.message || 'This demo is rate limited: Please try again later after 1 minute.',
+      color: 'danger',
+      icon: 'i-lucide-alert-circle',
+      duration: 3000
+    })
   } finally {
     loading.value = false
   }
