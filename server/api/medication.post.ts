@@ -14,7 +14,7 @@ url_slug: ${item.medication_FriendlyUrl}
 keywords: ${item.medication_ENKeywords}
 \`\`\`
 
-${tds.turndown(item.medication_ContentBody).split(/\*?\*?Disclai/i)[0].trim()}`).join('\n');
+${tds.turndown(item.medication_ContentBody).split(/\*?\*?Disclai/i)[0].trim()}`).join('\n\n');
 
   console.log(filteredText.length, ' characters loaded');
   context = filteredText;

@@ -32,7 +32,7 @@ export async function askMedication(query: string, context: string) {
           text: context,
         },
         {
-          text: `Answer the user question strictly based on the information provided. You will be graded on comprehensiveness and accuracy. If the information is not available in the provided content, say so clearly. Format your response in markdown with appropriate headings, bullet points, and emphasis. Always add a citation at the end of response as HealthHub Reference: https://www.healthhub.sg/a-z/medications/{url_slug} using the exact url_slug from the relevant medication entry.`
+          text: `Answer the user question strictly based on the information provided. You will be graded on comprehensiveness and accuracy. If the information is not available in the provided content, say so clearly. Format your response in markdown with appropriate headings, bullet points, and emphasis. Always use full url in citation at the end of response. HealthHub Reference: https://www.healthhub.sg/a-z/medications/{url_slug}`
         }],
         role: "model"
       },
@@ -51,7 +51,7 @@ export async function askMedication(query: string, context: string) {
         temperature: 0.1, // Lower temperature for more factual responses
         topP: 0.8,
         topK: 40,
-        maxOutputTokens: 1024,
+        maxOutputTokens: 512,
       }
     });
 
