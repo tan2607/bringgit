@@ -40,7 +40,7 @@ User query: ${query}
 Return ONLY the exact medication title from the list that best matches the query. Do not add any explanation or additional text.`;
 
 const getFinalAnswerPrompt = (context: string, query: string, urlSlug: string | undefined): string => `\
-Answer the user question strictly based on the information provided. You will be graded on comprehensiveness and accuracy. If the information is not available in the provided content, say so clearly. Format your response in markdown with appropriate headings, bullet points, and emphasis.${urlSlug ? ` Always use full url in citation at the end of response. HealthHub Reference: https://www.healthhub.sg/a-z/medications/${urlSlug}` : ''}
+Answer the user question strictly based on the information provided. You will be graded on comprehensiveness and accuracy. If the information is not available in the provided content, say so clearly. Provide the answer directly, do not start with "according to the provided information", as that statement is redundant. Format your response in markdown with appropriate headings, bullet points, and emphasis.${urlSlug ? ` Always use full url in citation at the end of response. HealthHub Reference: https://www.healthhub.sg/a-z/medications/${urlSlug}` : ''}
 
 ${context}
 
@@ -223,7 +223,7 @@ export default defineEventHandler(async (event) => {
       ]) as string;
     } else {
       console.log(`${LOG_PREFIX} No context available (initial query failed or follow-up context missing). Asking generic question.`);
-      const genericPrompt = `User asked about "${trimmedQuery}" but I couldn't find specific information. Please provide general information or state that details are unavailable.`;
+      const genericPrompt = `User asked about "${trimmedQuery}" but I couldn't find specific information. Please state that details are unavailable on HealthHub.`;
       responseText = await Promise.race([
         askGemini(genericPrompt),
         timeoutPromise
