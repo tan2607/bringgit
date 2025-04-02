@@ -13,17 +13,6 @@ const responseCache = new Map<string, { response: string, timestamp: number }>()
 const CACHE_TTL = 1000 * 60 * 60; // 1 hour cache TTL
 
 export async function askMedication(query: string, context: string) {
-  // Normalize query for caching (lowercase, trim whitespace)
-  const normalizedQuery = query.toLowerCase().trim();
-  
-  // Check cache first
-  const now = Date.now();
-  const cachedResult = responseCache.get(normalizedQuery);
-  if (cachedResult && (now - cachedResult.timestamp) < CACHE_TTL) {
-    console.log('Returning cached medication response');
-    return cachedResult.response;
-  }
-
   try {
     // Add the file to the contents.
     const contents: ContentListUnion = [
@@ -38,7 +27,7 @@ export async function askMedication(query: string, context: string) {
       },
       {
         parts: [{
-          text: normalizedQuery
+          text: query
         }],
         role: "user"
       },
@@ -55,15 +44,39 @@ export async function askMedication(query: string, context: string) {
       }
     });
 
-    // Store in cache
-    responseCache.set(normalizedQuery, { 
-      response: response.text, 
-      timestamp: now 
-    });
-    
     return response.text;
   } catch (error) {
     console.error('Error in askMedication:', error);
+    throw new Error(`Failed to get medication information: ${error.message || 'Unknown error'}`);
+  }
+}
+
+export async function askGemini(prompt: string, model = 'gemini-2.0-flash') {
+  try {
+    // Add the file to the contents.
+    const contents: ContentListUnion = [
+      {
+        parts: [{
+          text: prompt
+        }],
+        role: "user"
+      }
+    ];
+
+    const response = await ai.models.generateContent({
+      model,
+      contents,
+      generationConfig: {
+        temperature: 0.1, // Lower temperature for more factual responses
+        topP: 0.8,
+        topK: 40,
+        maxOutputTokens: 512,
+      }
+    });
+
+    return response.text;
+  } catch (error) {
+    console.error('Error in askGemini:', error);
     throw new Error(`Failed to get medication information: ${error.message || 'Unknown error'}`);
   }
 }

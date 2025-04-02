@@ -26,6 +26,7 @@
             <h3 class="font-medium mb-2">Previous Questions</h3>
             <div class="space-y-2">
               <div v-for="(item, index) in queryHistory" :key="index" class="flex items-center gap-2">
+                <!-- History loading might need adjustment if you want to restore context -->
                 <UButton size="xs" color="gray" variant="soft" @click="loadFromHistory(item)"
                   class="flex-grow text-left justify-start">
                   <template #leading>
@@ -41,61 +42,102 @@
 
         <div class="flex flex-wrap gap-2 mb-4">
           <UButton v-for="(sample, index) in sampleQuestions" :key="index" size="sm" color="gray" variant="soft"
-            @click="query = sample" :disabled="loading">
+            @click="setQuery(sample)" :disabled="loading">
             {{ sample.length > 50 ? sample.substring(0, 50) + '...' : sample }}
           </UButton>
         </div>
 
         <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
           <UFormGroup label="Your Question" name="query">
-            <UTextarea v-model="query" placeholder="e.g., What are the side effects of Amiloride?" :rows="3"
-              class="w-full" :disabled="loading" @keydown.enter.ctrl.prevent="askMedication" />
+            <UTextarea v-model="query" placeholder="e.g., What are the side effects of Amiloride? or follow-up like 'How should I take it?'"
+              :rows="3" class="w-full" :disabled="loading" @keydown.enter.ctrl.prevent="askMedication" />
             <template #hint>
-              <span class="text-xs text-gray-500">Press Ctrl+Enter to submit</span>
+              <span class="text-xs text-gray-500">Press Ctrl+Enter to submit. Follow-up questions will use context from the previous answer.</span>
             </template>
           </UFormGroup>
 
-          <div class="flex justify-end mt-4 gap-2">
-            <UButton v-if="query.trim()" color="gray" variant="soft" :disabled="loading" @click="query = ''">
-              Clear
-            </UButton>
-            <UButton color="primary" :loading="loading" :disabled="!query.trim() || loading" @click="askMedication">
-              <template #leading>
-                <UIcon name="i-lucide-search" />
-              </template>
-              Get Answer
-            </UButton>
+          <div class="flex justify-between items-center mt-4 gap-2">
+            <!-- Button to clear context -->
+             <UButton v-if="previousTitle" size="xs" color="amber" variant="soft" :disabled="loading" @click="clearContext"
+               v-tooltip="'Start a new topic (clears medication context)'">
+               <template #leading>
+                 <UIcon name="i-lucide-eraser"/>
+               </template>
+               Clear Context ({{ previousTitle }})
+             </UButton>
+            <div class="flex justify-end gap-2">
+              <UButton v-if="query.trim()" color="gray" variant="soft" :disabled="loading" @click="query = ''">
+                Clear Input
+              </UButton>
+              <UButton color="primary" :loading="loading" :disabled="!query.trim() || loading" @click="askMedication">
+                <template #leading>
+                  <UIcon name="i-lucide-search" />
+                </template>
+                {{ previousTitle ? 'Ask Follow-up' : 'Get Answer' }}
+              </UButton>
+            </div>
           </div>
         </div>
       </div>
     </UCard>
 
-
-    <div v-if="loading && !response" class="mt-6">
+    <!-- Loading Indicator -->
+    <div v-if="loading" class="mt-6">
       <UCard>
         <div class="flex items-center justify-center p-4">
           <UIcon name="i-lucide-loader-2" class="animate-spin h-8 w-8 text-gray-400" />
-          <span class="ml-2 text-gray-500">Searching medication information...</span>
+          <span class="ml-2 text-gray-500">{{ loadingMessage }}</span>
         </div>
       </UCard>
     </div>
 
-    <div v-if="response" class="mt-6">
+    <!-- Response Display -->
+    <div v-if="lastResponse && !loading" class="mt-6">
       <UCard>
         <template #header>
           <div class="flex justify-between items-center">
             <h2 class="text-lg font-medium">Answer</h2>
-            <UButton size="xs" color="gray" variant="ghost" icon="i-lucide-copy" @click="copyToClipboard"
-              :loading="copying" />
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-gray-500">{{ lastResponse.metrics?.totalTimeMs }}ms</span>
+              <UButton size="xs" color="gray" variant="ghost" icon="i-lucide-copy" @click="copyToClipboard"
+                :loading="copying" v-tooltip="'Copy Answer'" />
+            </div>
           </div>
         </template>
-        <div class="prose dark:prose-invert max-w-none">
-          <MDC :value="response" />
+
+        <!-- Metrics Section -->
+        <div class="metrics bg-gray-50 dark:bg-gray-800 p-3 rounded-md mb-4 text-sm border border-gray-200 dark:border-gray-700">
+          <h3 class="font-medium mb-2 text-gray-700 dark:text-gray-300">API Call Details</h3>
+          <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-gray-600 dark:text-gray-400">
+            <p><strong>Matched Title:</strong></p>
+            <p>{{ lastResponse.matchedTitle || 'N/A' }}</p>
+            <p><strong>Title Finding:</strong></p>
+            <p>{{ lastResponse.metrics?.titleFindingTimeMs ?? 'N/A' }} ms</p>
+            <p><strong>Context Prep:</strong></p>
+            <p>{{ lastResponse.metrics?.contextPrepTimeMs ?? 'N/A' }} ms</p>
+            <p><strong>Final Query:</strong></p>
+            <p>{{ lastResponse.metrics?.finalQueryTimeMs ?? 'N/A' }} ms</p>
+            <p><strong>Context Length:</strong></p>
+            <p>{{ lastResponse.metrics?.contextLength ?? 'N/A' }} chars</p>
+          </div>
         </div>
+
+        <!-- Answer Content -->
+        <div class="prose dark:prose-invert max-w-none">
+          <MDC :value="lastResponse.data || ''" />
+        </div>
+
+         <!-- Debug Context -->
+        <details class="mt-4">
+          <summary class="text-xs text-gray-500 cursor-pointer">View Raw Context Used</summary>
+          <pre class="text-xs bg-gray-100 dark:bg-gray-900 p-2 rounded mt-1 overflow-auto max-h-40">{{ lastResponse.context || 'No context was used.' }}</pre>
+        </details>
+
       </UCard>
     </div>
 
-    <div v-if="error" class="mt-6">
+    <!-- Error Display -->
+    <div v-if="error && !loading" class="mt-6">
       <UAlert title="Error" color="red" variant="soft" icon="i-lucide-alert-circle">
         {{ error }}
       </UAlert>
@@ -104,26 +146,66 @@
 </template>
 
 <script setup lang="ts">
-const toast = useToast()
+import { ref, computed, watch, onMounted } from 'vue'
+import type { UseToastReturn } from '#imports' // Ensure correct type import
+
+// Define the expected structure of the API response
+interface MedicationApiResponse {
+  success: boolean;
+  data: string;
+  query: string;
+  context: string | null;
+  matchedTitle: string | null;
+  metrics: {
+    totalTimeMs: number;
+    titleFindingTimeMs: number;
+    contextPrepTimeMs: number;
+    finalQueryTimeMs: number;
+    contextLength: number;
+  } | null;
+  timestamp: string;
+  error?: string;
+}
+
+
+// Explicitly type useToast if possible, otherwise use `any` as fallback
+const toast: UseToastReturn = useToast()
+
+/* Commenting out auth middleware to make page public
 definePageMeta({
   middleware: ['auth']
 })
+*/
 
 interface HistoryItem {
   query: string;
-  response: string;
+  // Keep history simple for now, context/title managed separately
+  // responseData: MedicationApiResponse; // Or just store text response?
+  response: string; 
   timestamp: string;
 }
 
 const query = ref('')
-const response = ref('')
+// const response = ref('') // Replaced by lastResponse
 const loading = ref(false)
 const error = ref('')
 const copying = ref(false)
 const showHistory = ref(false)
 
+// Store the full last API response object
+const lastResponse = ref<MedicationApiResponse | null>(null)
+// Store context and title for follow-up requests
+const previousContext = ref<string | null>(null)
+const previousTitle = ref<string | null>(null)
+
 // Store query history in local storage
 const queryHistory = ref<HistoryItem[]>([])
+
+const loadingMessage = computed(() => {
+  return previousTitle.value
+    ? `Asking follow-up about ${previousTitle.value}...`
+    : 'Searching medication information...'
+});
 
 // Load history from localStorage on component mount
 onMounted(() => {
@@ -154,22 +236,46 @@ const sampleQuestions = [
   'What are NSAIDs eye preparations used for?'
 ]
 
+// Simple query setter for sample questions
+function setQuery(sample: string) {
+  query.value = sample;
+  // Clear context when clicking a sample question, as it implies a new topic
+  clearContext(); 
+}
+
 function loadFromHistory(item: HistoryItem) {
   query.value = item.query
-  response.value = item.response
+  // Reset context when loading from history, treat as new query
+  clearContext();
+  // Find the corresponding response object if needed, or just clear lastResponse
+  lastResponse.value = null; // Clear previous display when loading history
 }
 
 function removeFromHistory(index: number) {
   queryHistory.value.splice(index, 1)
 }
 
+// Function to manually clear the conversation context
+function clearContext() {
+  previousContext.value = null;
+  previousTitle.value = null;
+  // Optionally clear the lastResponse display as well?
+  // lastResponse.value = null;
+  toast.add({
+      title: 'Context Cleared',
+      description: 'Ready for a new medication query.',
+      color: 'info',
+      icon: 'i-lucide-info',
+      duration: 2000
+    })
+}
+
 async function copyToClipboard() {
-  if (!response.value) return
+  if (!lastResponse.value?.data) return
 
   copying.value = true
   try {
-    await navigator.clipboard.writeText(response.value)
-    // Show toast or notification if available
+    await navigator.clipboard.writeText(lastResponse.value.data)
     toast.add({
       title: 'Copied to clipboard',
       description: 'The response has been copied to your clipboard',
@@ -179,6 +285,7 @@ async function copyToClipboard() {
     })
   } catch (err) {
     console.error('Failed to copy to clipboard:', err)
+    error.value = 'Failed to copy text.'; // Show error in UI
   } finally {
     copying.value = false
   }
@@ -189,46 +296,72 @@ async function askMedication() {
 
   loading.value = true
   error.value = ''
-  response.value = ''
+  // Don't clear lastResponse immediately, let it display until new data arrives or error occurs
+
+  const requestBody: any = {
+    query: query.value
+  }
+
+  // Add context if available (follow-up query)
+  if (previousContext.value && previousTitle.value) {
+    requestBody.previousContext = previousContext.value;
+    requestBody.previousTitle = previousTitle.value;
+    console.log('Sending follow-up with context for title:', previousTitle.value);
+  } else {
+     console.log('Sending initial query:', query.value);
+  }
 
   try {
-    const result = await $fetch('/api/medication', {
+    // Use $fetch with type hint for better DX
+    const result = await $fetch<MedicationApiResponse>('/api/medication', {
       method: 'POST',
-      body: {
-        query: query.value
-      }
+      body: requestBody
     })
 
     if (result.success) {
-      response.value = result.data
+      lastResponse.value = result // Store the full response
+      // Update context/title for the *next* potential follow-up
+      previousContext.value = result.context
+      previousTitle.value = result.matchedTitle
+      console.log('Success. Storing context for next follow-up:', { title: previousTitle.value, contextLength: previousContext.value?.length })
 
-      // Add to history (avoid duplicates)
+      // Add to history (avoid duplicates based on query text)
       const isDuplicate = queryHistory.value.some(item => item.query === query.value)
       if (!isDuplicate) {
         queryHistory.value.unshift({
           query: query.value,
-          response: result.data,
+          response: result.data, // Store only text response in history for simplicity
           timestamp: new Date().toISOString()
         })
 
         // Limit history size
         if (queryHistory.value.length > 10) {
-          queryHistory.value = queryHistory.value.slice(0, 10)
+          queryHistory.value = queryHistory.value.slice(-10) // Keep the 10 most recent
         }
       }
+      // Clear input field after successful submission?
+      // query.value = '';
     } else {
+      // Handle API-level errors (e.g., validation)
       error.value = result.error || 'Failed to get medication information'
+      lastResponse.value = null; // Clear display on error
+      // Consider clearing context on API error?
+      // clearContext();
     }
   } catch (err: any) {
+    // Handle network errors or other exceptions
     console.error('Error fetching medication information:', err)
     error.value = err.message || 'An error occurred while processing your request'
+    lastResponse.value = null; // Clear display on error
+    // Consider clearing context on network error?
+    // clearContext();
 
     toast.add({
-      title: 'Error',
-      description: err.message || 'This demo is rate limited: Please try again later after 1 minute.',
+      title: 'Fetch Error',
+      description: err.message || 'Could not reach the API. Please try again later.',
       color: 'danger',
       icon: 'i-lucide-alert-circle',
-      duration: 3000
+      duration: 5000
     })
   } finally {
     loading.value = false
