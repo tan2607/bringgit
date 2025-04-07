@@ -108,7 +108,7 @@ const searchClinics = async () => {
     <div v-if="nearestClinics.length > 0" class="space-y-6 mt-6">
       <div class="grid gap-6">
         <UCard
-          v-for="(clinic, index) in nearestClinics.slice(0, 3)"
+          v-for="(clinic, index) in nearestClinics.slice(0, 5)"
           :key="index"
           class="transition-all hover:shadow-lg"
         >
@@ -118,7 +118,7 @@ const searchClinics = async () => {
                 {{ index + 1 }}
               </div>
               <h3 class="text-lg font-semibold">
-                {{ clinic.name }}
+                {{ clinic.clinicName }}
               </h3>
             </div>
           </template>
@@ -127,22 +127,41 @@ const searchClinics = async () => {
             <div class="flex-1 space-y-2">
               <div class="flex items-center gap-2">
                 <UIcon name="i-lucide-map-pin" class="text-gray-500" />
-                <p class="text-gray-600">
-                  {{ clinic.distance.toFixed(2) }} km away
-                </p>
+                <div>
+                  <p class="text-gray-600">
+                    {{ clinic.distance.toFixed(2) }} km away in {{ clinic.area }}
+                  </p>
+                  <p class="text-sm text-gray-500">{{ clinic.clinicAddress }}</p>
+                </div>
               </div>
+              
               <div class="flex items-center gap-2">
                 <UIcon name="i-lucide-user" class="text-gray-500" />
                 <p class="text-gray-600">
-                  {{ clinic.description }}
+                  {{ clinic.gpName }}
                 </p>
+              </div>
+              
+              <div class="flex items-center gap-2">
+                <UIcon name="i-lucide-phone" class="text-gray-500" />
+                <p class="text-gray-600">
+                  {{ clinic.clinicContact }}
+                </p>
+              </div>
+              
+              <div class="flex items-start gap-2">
+                <UIcon name="i-lucide-clock" class="text-gray-500 mt-0.5" />
+                <div>
+                  <p class="text-gray-600">Operating Hours:</p>
+                  <p class="text-sm text-gray-500 whitespace-pre-line">{{ clinic.operatingHours }}</p>
+                </div>
               </div>
             </div>
 
             <!-- Static Map Image -->
             <img 
               :src="getStaticMapUrl(clinic)"
-              :alt="`Map showing location of ${clinic.name}`"
+              :alt="`Map showing location of ${clinic.clinicName}`"
               class="w-[200px] h-[200px] rounded-lg object-cover flex-shrink-0"
               loading="lazy"
             />
