@@ -45,16 +45,14 @@
 					</div>
 
 					<!-- Failed Numbers -->
-					<div v-if="quickViewJob.failedNumbers?.length > 0">
+					<!-- <div v-if="quickViewJob.failedNumbers?.length > 0">
 						<h4 class="font-medium mb-2">Failed Numbers</h4>
 						<UCard class="bg-gray-50">
 							<div class="space-y-1">
-								<div v-for="number in quickViewJob.failedNumbers" :key="number" class="text-sm">
-									{{ number }}
-								</div>
+								{{ JSON.parse(quickViewJob.failedNumbers || '[]').join(', ') }}
 							</div>
 						</UCard>
-					</div>
+					</div> -->
 
 					<!-- Phone Numbers -->
 					<div>
