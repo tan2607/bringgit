@@ -26,7 +26,7 @@ ${chunk.join('\\n')}
 
 User query: ${query}
 
-Return ONLY the exact medication title from the list that best matches the query. It is case sensitive. Do not add any explanation or additional text.`;
+Return ONLY the exact medication title from the list that best matches the query, consider that the user query may have spelling mistakes. It is case sensitive. Do not add any explanation or additional text.`;
 
 const getFinalSelectionPrompt = (potentialMatches: string[], query: string): string => `\
 You are a medication search expert. I'll provide you with a list of potential medication matches and a user query.
@@ -37,7 +37,7 @@ ${potentialMatches.join('\\n')}
 
 User query: ${query}
 
-Return ONLY the exact medication title from the list that best matches the query. Do not add any explanation or additional text.`;
+Return ONLY the exact medication title from the list that best matches the query, consider that the user query may have spelling mistakes. Do not add any explanation or additional text.`;
 
 const getFinalAnswerPrompt = (context: string, query: string, urlSlug: string | undefined): string => `\
 Answer the user question strictly based on the information provided. You will be graded on comprehensiveness and accuracy. If the information is not available in the provided content, say so clearly. Provide the answer directly, do not start with "according to the provided information", as that statement is redundant. Format your response in markdown with appropriate headings, bullet points, and emphasis.${urlSlug ? ` Always use full url in citation at the end of response. HealthHub Reference: https://www.healthhub.sg/a-z/medications/${urlSlug}` : ''}
@@ -55,7 +55,7 @@ const formatMedicationContext = (item: typeof MEDICATION_DATA[0]): string => `\
 \\\`\\\`\\\`
 title: ${item.medication_Title}
 url_slug: ${item.medication_FriendlyUrl}
-keywords: ${item.medication_ENKeywords}
+keywords & possible brand names: ${item.medication_ENKeywords}
 \\\`\\\`\\\`
 
 ${tds.turndown(item.medication_ContentBody).trim()}`;
