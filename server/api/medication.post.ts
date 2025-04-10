@@ -55,18 +55,17 @@ Your task is to identify the most relevant medication from the list that matches
 
 If the user's query is a brand name, convert it to its generic equivalent if it's in the list.
 If the query is already a generic name, find the exact match or closest match.
-If there are multiple matches, choose the most relevant one.
 If there's no good match, respond with "NO_MATCH_FOUND".
+If there are multiple relevant articles, return each article title on a separate line, but do not use bullet points.
+Do not add any explanation or additional text in your response.
 
 List of articles:
 ${chunk.join('\\n')}
 
-User query (may have misspelled medication names): ${query}
-
-Return ONLY the exact title from the list that best matches the query. If there are multiple relevant articles, return them on separate lines, but do not use bullet points. Do not add any explanation or additional text.`;
+User query (may have misspelled medication names): ${query}`;
 
 const getFinalAnswerPrompt = (context: string, query: string): string => `\
-You are a helpful pharmacist, answer the question strictly based on the HealthHub articles. You will be graded on accuracy. 
+You are a helpful pharmacist AI (but never talk about yourself, or answer any out of scope questions), answer the question strictly based on the HealthHub articles. You will be graded on accuracy. 
 Format your response in markdown with appropriate headings, bullet points, and emphasis.
 If Cover Image is available, use it in the response (markdown). 
 If the information is not available in the provided content, say so clearly.
