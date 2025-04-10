@@ -355,7 +355,8 @@ export class CallQueueHandler {
       status: message.status as "pending" | "completed" | "failed" | "running" | undefined || "pending",
       delay: message.delay || 0,
       vapiId: message.vapiId || null,
-      scheduledAt: message.scheduledAt || null
+      scheduledAt: message.scheduledAt || null,
+      retryCount: message.retryCount || 0
     }).where(eq(jobQueue.id, message.id as string))
   }
 }

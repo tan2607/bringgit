@@ -34,7 +34,10 @@ export default defineEventHandler(async (event: H3Event) => {
           "sip-gateway-failed-to-connect-call",
           "customer-busy",
           "unknown-error",
+          "call.in-progress.error-sip-telephony-provider-failed-to-connect-call",
         ];
+
+        console.log(endedReason);
 
         if (!callId || !status || !endedReason) {
           return { success: true };
@@ -49,19 +52,22 @@ export default defineEventHandler(async (event: H3Event) => {
             return { success: true, message: "Queue not found" };
           }
 
-          if (targetQueue.retryCount && targetQueue.retryCount >= 3) {
+          const targetRetryCount = (targetQueue.retryCount || 0);
+
+          if (targetRetryCount >= 2) {
             return { success: true, message: "Max retry count reached" };
           }
-
+       
           await db
             .update(jobQueue)
             .set({
-              status: "pending",
-              retryCount: (targetQueue.retryCount || 0) + 1,
+              status: "failed",
+              updatedAt: new Date(),
+              retryCount: targetRetryCount,
             })
             .where(eq(jobQueue.vapiId, callId));
 
-          console.log(`Redial attempt: ${targetQueue.retryCount || 0 + 1} for phone ${message.call?.customer?.number}`);
+          console.log(`Redial attempt: ${targetQueue.retryCount} for phone ${message.call?.customer?.number}`);
 
           const relatedJob = await db.query.jobs.findFirst({
             where: (jobs, { eq }) => eq(jobs.id, targetQueue.jobId as string),
