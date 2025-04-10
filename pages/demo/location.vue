@@ -54,6 +54,19 @@ const searchClinics = async () => {
   <UContainer>
     <div class="flex justify-between items-center mb-6 mt-8">
       <h1 class="text-2xl font-bold">Find Nearest Clinics</h1>
+      <UButton
+        color="gray"
+        variant="soft"
+        size="sm"
+        as="a"
+        href="/nearest-clinics-api.yaml"
+        download
+      >
+        <template #leading>
+          <UIcon name="i-lucide-download" />
+        </template>
+        Download OpenAPI Spec
+      </UButton>
     </div>
 
     <div class="border rounded-lg p-4 mb-6 flex items-start gap-3 bg-green-50 dark:bg-green-950">

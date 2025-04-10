@@ -70,7 +70,7 @@ export async function askGemini(prompt: string, model = 'gemini-2.0-flash') {
         temperature: 0.1, // Lower temperature for more factual responses
         topP: 0.8,
         topK: 40,
-        maxOutputTokens: 512,
+        maxOutputTokens: 1024,
       }
     });
 

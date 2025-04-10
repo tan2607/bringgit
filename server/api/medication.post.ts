@@ -8,6 +8,40 @@ const MEDICATION_DATA = medication.data.allM_Content_Medication.results;
 const TITLE_FIND_CHUNK_SIZE = 1000; // Max items per chunk for title finding LLM call
 const REQUEST_TIMEOUT_MS = 30000; // 30 seconds timeout
 
+const sampleMedication =  {
+  "id": "SP.71bbf771-9c32-4662-b559-9e6433880d7f",
+  "medication_Title": "Glyceryl Trinitrate",
+  "medication_CategoryDesc": "Medication Information Leaflet ",
+  "medication_Purpose": "<div>Glyceryl trinitrate (GTN) belongs to a class of medications called Nitrates. Nitrates are used to prevent and treat the symptoms of angina (chest pain). Angina is caused by lack of blood supply and oxygen to your heart. Nitrates work by relaxing blood vessels so that more blood and oxygen is supplied to the heart.<br></div><div>\n      <br>\n   </div><div>Nitrates are used to treat angina in three ways:</div><div><ul><li>To relieve an ongoing attack by using the medication at the start of the attack.</li><li>To prevent attacks from occurring by using the medication just before an attack is expected to occur.</li><li>To reduce the number of attacks that occur by using the medication regularly on a long-term basis.<br></li></ul></div>",
+  "medication_Uses": "<ul><li>Glyceryl trinitrate is available in different forms, namely sublingual (under the tongue) tablets, mouth sprays and skin patches.<br>&nbsp;</li><li>GTN sublingual tablets or mouth spray can be used to relieve angina attacks or to prevent an expected angina attack, e.g. moments before exercising. Symptoms of an angina attack may include one or more of the following:<br><ul><li>Chest pain/ chest tightness</li><li>Shortness of breath&nbsp;</li><li>May also be accompanied with heavy sweating, or pain that spreads to your jaw, arm or back.<br>&nbsp;</li></ul></li><li>The tablet or spray should be used at the first sign of an attack of angina. Do not wait until severe pain occurs. This medication usually provides relief within five minutes.&nbsp;</li><li>If you are using GTN to prevent an expected angina attack, you may dissolve a tablet under your tongue if using tablets or administer a spray under the tongue if using spray, five to ten minutes before you participate in an activity that could cause angina, such as exercise.<br>&nbsp;</li><li>Directions on how to take GTN sublingual tablets:<ul><li>Place a tablet under your tongue when you experience chest pain. Do not swallow the tablet.&nbsp;</li><li>If the pain is not relieved after five minutes, use a second tablet.&nbsp;</li><li>If the pain is still not relieved after five minutes, use a third tablet. If you still have pain after using the third tablet, seek medical help or call for an ambulance (995) immediately. .&nbsp;</li><li>While waiting for the ambulance to arrive, continue placing a tablet under your tongue every five minutes if your pain continues.<br>&nbsp;</li></ul></li><li>Directions on how to use GTN mouth spray:<ul><li>Before using GTN mouth spray for the first time, check that the spray is working by pressing the spray button a few times until it produces a fine liquid mist.</li><li>If you do not need to use GTN mouth spray very often, remember to check the spray regularly to see that it still works properly.</li><li>Remove the plastic cover, and do NOT shake the plastic bottle.</li><li>Hold the bottle upright and close to your mouth, and point the nozzle at the area under your tongue. Press the button to deliver one spray under your tongue.</li><li>Release the button and close your mouth. Avoid swallowing immediately after using the spray, and do NOT inhale the spray.</li><li>Spray once under the tongue when you have chest pain or breathing difficulties.</li><li>If the pain is not relieved after five minutes, use a second spray.&nbsp;</li><li>If the pain is still not relieved after five minutes, use a third spray. If you still have pain after using the third spray, seek medical help or call for an ambulance (995) immediately.</li><li>Do not use GTN spray if you are near a naked flame, e.g. a cigarette.<br>&nbsp;</li></ul></li><li>GTN patches are applied to the skin to reduce the number of angina attacks.</li><li>Directions on how to use GTN patch:<ul><li>Apply the patch to clean, dry skin with little or no hair, free from scars, cuts or irritation.</li><li>Remove the previous patch before applying a new one, and apply a new patch if the patch falls off or comes loose.</li><li>Apply each patch to a different area of the skin to prevent skin irritation.</li><li>Do not trim or cut the adhesive patch to adjust the dosage of GTN. Speak to your doctor if you see the need to adjust your dosage, or if you think your medication is not working.</li><li>The dose of GTN is different for different patients; follow your doctor’s instructions on when to apply and remove the skin patch. The patch is usually left on for 12 hours a day.</li></ul></li><li>If you have been using this medication regularly for several weeks or more, do not stop using suddenly. Stopping your medication suddenly may cause angina attacks. Ask your doctor for recommendations on how to reduce the dose slowly before stopping completely.<br>&nbsp;</li></ul>",
+  "medication_IfIForget": "<div><ul>For patients using GTN patches: If you miss a dose, use the missed dose as soon as you remember. If it is almost time for your next dose, use only the usual dose. Do not double your dose or use extra medication to make up for the missed dose. </ul></div>",
+  "medication_Precautions": "<div>Inform your healthcare professional if: </div><div><ul><li>You are allergic to this medication or any of the other ingredients of this medication</li><li>You are pregnant, planning to become pregnant, or breastfeeding <br></li></ul></div>",
+  "medication_SideEffect": "<p>Side effects may include:<br>&nbsp;</p><ul><li>Dizziness, lightheadedness or faintness<ul><li>This may occur especially when you get up quickly from lying or sitting down. Getting up slowly or changing posture slowly may help. Take a rest by sitting or lying down if you feel dizzy.</li><li>This is also more likely to happen if you drink alcohol, stand for a long period of time, exercise or when the weather is hot. Do limit the amount of alcohol you drink while you are on Nitrates. Do take extra care during exercise, when the weather is hot or if you need to stand for long periods of time.</li></ul></li><li>Temporary headache<ul><li>This is a common side effect that will go away after taking the medication for a while. You may choose to take painkillers such as Paracetamol at the start of using Nitrates, to relieve the temporary headaches. Consult your healthcare professional if the headaches do not go away or become worse.</li></ul></li><li>Flushing or redness of the skin<br>&nbsp;</li><li>Fast heartbeat&nbsp;</li><li>Nausea and Vomiting&nbsp;</li></ul>",
+  "medication_RareSideEffect": "<p>The symptoms of a drug allergy include one or more of the following:&nbsp;</p><ul><li>Swollen face/eyes/lips/tongue</li><li>Difficulty in breathing</li><li>Itchy skin rashes over your whole body<br>&nbsp;</li></ul><p>If you experience any of these symptoms, you should stop your medication and see your healthcare professional immediately.</p>",
+  "medication_FoodToAvoid": "<div>Do not take Sildenafil (Viagra®), Tadalafil (Cialis®), Vardenafil (Levitra®) if you are taking this medication. When Sildenafil, Tadalafil or Vardenafil is taken with Nitrates, your blood pressure can lower greatly, resulting in dizziness, lightheadedness or fainting. In some cases, death has been reported when Sildenafil was taken with Nitrates.</div><div>\n      <br>\n   </div>",
+  "medication_HowToStore": "<div>Store in a cool and dry place, away from direct sunlight. Keep this medication away from children. </div><div>Throw away all expired medications. <br></div><div>For GTN tablets: </div><div><ul><li>The medication is sensitive to heat, water/moisture and light. Hence, the following instructions should be followed closely to ensure that the medication stays effective.</li><ul><li>Keep the tablets in the original container in sealed condition until first use.</li><li>Never transfer the tablets into other containers.</li><li>Do not store the tablets in the refrigerator.</li></ul><li>Carry the tablets wherever you go but do not place them in your pocket as it may be too warm.</li><li>Label the bottle with the opening date when you first open it. Throw the bottle away two months after the date of opening, even if you still have tablets left. Do remember to get a new supply of your GTN after throwing the old one away.<br></li></ul></div>",
+  "medication_ThrowAwaySafely": "<div>Pack this medication into a black trash bag and seal it tightly before throwing into the rubbish chute or bin.</div><div>\n      <strong><br></strong></div><div>\n      <strong><br></strong></div><div>\n      <strong></strong></div><div><div><div><div><div><div></div></div></div></div></div></div>",
+  "medication_WhenShouldThrow": null,
+  "medication_AdditionalInfo": null,
+  "medication_Disclaimer": "<div>Please take note that the above is not a complete list of all possible side effects. If you have any concerns about your medication or if you have other side effects that you think are caused by this medication, please consult your doctor or pharmacist.<br></div><div><br></div><div>If you take more than the recommended dose, please seek medical advice immediately. The information provided on this page does not replace information from your healthcare professional. Please consult your healthcare professional for more information.<br></div><div><br></div><div><em>This article is jointly developed by members of the National Medication Information workgroup, and supported by the Ministry of Health. The workgroup consists of cluster partners (National Healthcare Group, National University Health System and SingHealth), community pharmacies (Guardian, Unity and Watsons) and Pharmaceutical Society of Singapore. The content does not reflect drug availability and supply information in pharmacies and healthcare institutions. You are advised to check with the respective institutions for such information.</em><br></div><div><em><br></em></div><span aria-hidden=\"true\"></span>\n               <br>\n            <div>\n               <em>Last updated on July 2023</em></div><div>\n         <em><br></em></div>\n      <br>\n   ",
+  "medication_UnstructureContent": null,
+  "medication_AvailableLanguages": null,
+  "medication_IsStructuredType": true,
+  "medication_ENKeywords": "GTN,Glyceryl Trinitrate,",
+  "medication_MedKeywords": "startGTNend startGlyceryl Trinitrateend ",
+  "medication_FriendlyUrl": "Glyceryl-Trinitrate",
+  "medication_CoverImgUrl": "https://ch-api.healthhub.sg/api/public/content/d7f934d0daaf43cf8fb5389f990df6fc?v=1820b6fb",
+  "content_Name": "Glyceryl Trinitrate",
+  "medication_DateModified": "2023-08-01T00:34:53.000Z",
+  "reference_Medication_Provider_Parents": {
+      "results": [
+          {
+              "content_Name": "Pharmaceutical Society of Singapore"
+          }
+      ]
+  }
+}
+
 // --- Turndown Service ---
 const tds = new TurndownService({ headingStyle: 'atx' });
 
@@ -21,12 +55,12 @@ If the query is already a generic name, find the exact match or closest match.
 If there are multiple matches, choose the most relevant one.
 If there's no good match, respond with "NO_MATCH_FOUND".
 
-List of medications:
+List of articles:
 ${chunk.join('\\n')}
 
 User query: ${query}
 
-Return ONLY the exact medication title from the list that best matches the query, consider that the user query may have spelling mistakes. It is case sensitive. Do not add any explanation or additional text.`;
+Return ONLY the exact title from the list that best matches the query, consider that the user query may have spelling mistakes. It is case sensitive. Do not add any explanation or additional text.`;
 
 const getFinalSelectionPrompt = (potentialMatches: string[], query: string): string => `\
 You are a medication search expert. I'll provide you with a list of potential medication matches and a user query.
@@ -39,26 +73,72 @@ User query: ${query}
 
 Return ONLY the exact medication title from the list that best matches the query, consider that the user query may have spelling mistakes. Do not add any explanation or additional text.`;
 
-const getFinalAnswerPrompt = (context: string, query: string, urlSlug: string | undefined): string => `\
-Answer the user question strictly based on the information provided. You will be graded on comprehensiveness and accuracy. If the information is not available in the provided content, say so clearly. Provide the answer directly, do not start with "according to the provided information", as that statement is redundant. Format your response in markdown with appropriate headings, bullet points, and emphasis.${urlSlug ? ` Always use full url in citation at the end of response. HealthHub Reference: https://www.healthhub.sg/a-z/medications/${urlSlug}` : ''}
+const getFinalAnswerPrompt = (context: string, query: string): string => `\
+Answer the user question strictly based on the article provided. You will be graded on comprehensiveness and accuracy. If the information is not available in the provided content, say so clearly. Provide the answer directly, do not start with "according to the provided information", as that statement is redundant. Format your response in markdown with appropriate headings, bullet points, and emphasis.
+If Cover Image is available, use it in the response (markdown). Always end the response with Reference Link for the user to read more.
 
 ${context}
 
-${query}`;
+User Query:${query}`;
 
 // --- Helper Functions ---
 
 /**
  * Formats a medication item into a markdown string for context.
  */
-const formatMedicationContext = (item: typeof MEDICATION_DATA[0]): string => `\
-\\\`\\\`\\\`
-title: ${item.medication_Title}
-url_slug: ${item.medication_FriendlyUrl}
-keywords & possible brand names: ${item.medication_ENKeywords}
-\\\`\\\`\\\`
+const formatMedicationContext = (item: typeof sampleMedication): string => {
+  let article = `# ${item.medication_Title}
+keywords: ${item.medication_ENKeywords}
+description: ${item.medication_CategoryDesc}
+cover_image: ${item.medication_CoverImgUrl}
+url: https://www.healthhub.sg/a-z/medications/${item.medication_FriendlyUrl}`;
 
-${tds.turndown(item.medication_ContentBody).trim()}`;
+  if (item.medication_IsStructuredType) {
+    article += `
+
+# What Is This Medication For?
+${tds.turndown(item.medication_Purpose || '').trim()}
+
+# How Should I Take Or Use This Medication?
+${tds.turndown(item.medication_Uses || '').trim()}
+
+# What Should I Do If I Forget To Take Or Use This Medication?
+${tds.turndown(item.medication_IfIForget || '').trim()}
+
+# What Precautions Should I Take When Taking Or Using This Medication?
+${tds.turndown(item.medication_Precautions || '').trim()}
+
+# What Are Some Common Side Effects Of This Medication?
+${tds.turndown(item.medication_SideEffect || '').trim()}
+
+# What Are Some Rare But Serious Side-Effects That I Need To Seek Medical Advice Immediately?
+${tds.turndown(item.medication_RareSideEffect || '').trim()}
+
+# What Food Or Medication Should I Avoid When I Take Or Use This Medication?
+${tds.turndown(item.medication_FoodToAvoid || '').trim()}
+
+# How Should I Store This Medication?
+${tds.turndown(item.medication_HowToStore || '').trim()}
+
+# How Do I Throw Away This Medication Safely?
+${tds.turndown(item.medication_ThrowAwaySafely || '').trim()}
+
+${item.medication_WhenShouldThrow ? `# When Should I Throw Away This Medication?
+${tds.turndown(item.medication_WhenShouldThrow || '').trim()}` : ''}
+
+${item.medication_AdditionalInfo ? `# What Else Should I Know About This Medication?
+${tds.turndown(item.medication_AdditionalInfo || '').trim()}` : ''}
+
+# Disclaimer
+${tds.turndown(item.medication_Disclaimer || '').trim()}
+`;
+  } else {
+    article += `
+${tds.turndown(item.medication_UnstructureContent || '').trim()}`;
+  }
+
+  return article;
+}
 
 
 /**
@@ -67,13 +147,17 @@ ${tds.turndown(item.medication_ContentBody).trim()}`;
 async function findMedicationTitle(query: string): Promise<string> {
   console.log(`${LOG_PREFIX} Processing query:`, query);
 
-  const medicationList = MEDICATION_DATA.map(item =>
-    `${item.medication_Title}${item.medication_ENKeywords ? ` (Keywords: ${item.medication_ENKeywords})` : ''}`
+  const medicationList = MEDICATION_DATA.map(item =>`
+# ${item.medication_Title}
+${item.medication_ENKeywords ? `keywords: ${item.medication_ENKeywords}` : ''}
+${item.medication_CategoryDesc ? `${item.medication_CategoryDesc}` : ''}`
   );
 
   console.log(`${LOG_PREFIX} Processing ${medicationList.length} medications in a single request`);
 
   const prompt = getTitleFindingPrompt(medicationList, query);
+
+  console.log(`${LOG_PREFIX} Sending Title Search prompt (length: ${prompt.length})`);
 
   try {
     const response = await askGemini(prompt);
@@ -101,7 +185,7 @@ async function findMedicationTitle(query: string): Promise<string> {
 /**
  * Step 2: Prepare context based on the selected medication title.
  */
-async function prepareContext(medicationTitle: string): Promise<{ context: string; urlSlug?: string }> {
+async function prepareContext(medicationTitle: string): Promise<{ context: string; }> {
   console.log(`${LOG_PREFIX} Preparing context for: ${medicationTitle}`);
 
   let matchedItem = MEDICATION_DATA.find(item => item.medication_Title === medicationTitle);
@@ -176,7 +260,7 @@ export default defineEventHandler(async (event) => {
       console.log(`${LOG_PREFIX} Title finding took ${titleFindingTime}ms. Result: "${titleToUse}"`);
 
       const contextPrepStartTime = Date.now();
-      const { context, urlSlug: newUrlSlug } = await prepareContext(titleToUse);
+      const { context } = await prepareContext(titleToUse);
       contextToUse = context;
       contextPrepTime = Date.now() - contextPrepStartTime;
       console.log(`${LOG_PREFIX} Context preparation took ${contextPrepTime}ms`);
@@ -196,7 +280,7 @@ export default defineEventHandler(async (event) => {
         titleFindingTime = titleCheckTime; // Log the time it took to find the new title
 
         const contextPrepStartTime = Date.now();
-        const { context, urlSlug: newUrlSlug } = await prepareContext(titleToUse);
+        const { context } = await prepareContext(titleToUse);
         contextToUse = context; // Use the new context
         contextPrepTime = Date.now() - contextPrepStartTime;
         console.log(`${LOG_PREFIX} New context preparation took ${contextPrepTime}ms`);
@@ -210,12 +294,11 @@ export default defineEventHandler(async (event) => {
     // --- Final Answer Generation ---
     const finalQueryStartTime = Date.now();
     let responseText = '';
-    const { urlSlug } = await prepareContext(titleToUse); // Get urlSlug for citation, even if context is reused
 
     if (contextToUse) {
       // Include previous query/answer if available for better conversational flow? (Future enhancement)
       // For now, just use current query and determined context.
-      const finalPrompt = getFinalAnswerPrompt(contextToUse, trimmedQuery, urlSlug);
+      const finalPrompt = getFinalAnswerPrompt(contextToUse, trimmedQuery);
       console.log(`${LOG_PREFIX} Sending final prompt (length: ${finalPrompt.length}) for title "${titleToUse}"`);
       responseText = await Promise.race([
         askGemini(finalPrompt),
