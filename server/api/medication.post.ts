@@ -4,7 +4,10 @@ import { askGemini } from '../utils/providers/gemini'
 
 // --- Constants ---
 const LOG_PREFIX = '[MEDICATION-LLM]';
-const MEDICATION_DATA = medication.data.allM_Content_Medication.results;
+const MEDICATION_DATA = medication.data.allM_Content_Medication.results.map(item => {
+  item.medication_Title = item.medication_Title.trim();
+  return item;
+});
 const TITLE_FIND_CHUNK_SIZE = 1000; // Max items per chunk for title finding LLM call
 const REQUEST_TIMEOUT_MS = 30000; // 30 seconds timeout
 
@@ -58,28 +61,21 @@ If there's no good match, respond with "NO_MATCH_FOUND".
 List of articles:
 ${chunk.join('\\n')}
 
-User query: ${query}
+User query (may have misspelled medication names): ${query}
 
-Return ONLY the exact title from the list that best matches the query, consider that the user query may have spelling mistakes. It is case sensitive. Do not add any explanation or additional text.`;
-
-const getFinalSelectionPrompt = (potentialMatches: string[], query: string): string => `\
-You are a medication search expert. I'll provide you with a list of potential medication matches and a user query.
-Your task is to select the single best match from these options.
-
-Potential matches:
-${potentialMatches.join('\\n')}
-
-User query: ${query}
-
-Return ONLY the exact medication title from the list that best matches the query, consider that the user query may have spelling mistakes. Do not add any explanation or additional text.`;
+Return ONLY the exact title from the list that best matches the query. If there are multiple relevant articles, return them on separate lines, but do not use bullet points. Do not add any explanation or additional text.`;
 
 const getFinalAnswerPrompt = (context: string, query: string): string => `\
-Answer the user question strictly based on the article provided. You will be graded on comprehensiveness and accuracy. If the information is not available in the provided content, say so clearly. Provide the answer directly, do not start with "according to the provided information", as that statement is redundant. Format your response in markdown with appropriate headings, bullet points, and emphasis.
-If Cover Image is available, use it in the response (markdown). Always end the response with Reference Link for the user to read more.
+You are a helpful pharmacist, answer the question strictly based on the HealthHub articles. You will be graded on accuracy. 
+Format your response in markdown with appropriate headings, bullet points, and emphasis.
+If Cover Image is available, use it in the response (markdown). 
+If the information is not available in the provided content, say so clearly.
+Always end the response with Reference Link for the user to read more.
 
+Articles:
 ${context}
 
-User Query:${query}`;
+User Question:${query}`;
 
 // --- Helper Functions ---
 
@@ -144,7 +140,7 @@ ${tds.turndown(item.medication_UnstructureContent || '').trim()}`;
 /**
  * Step 1: Find the most relevant medication title using LLM.
  */
-async function findMedicationTitle(query: string): Promise<string> {
+async function findMedicationTitle(query: string): Promise<string[]> {
   console.log(`${LOG_PREFIX} Processing query:`, query);
 
   const medicationList = MEDICATION_DATA.map(item =>`
@@ -161,10 +157,10 @@ ${item.medication_CategoryDesc ? `${item.medication_CategoryDesc}` : ''}`
 
   try {
     const response = await askGemini(prompt);
-    const trimmedResponse = response.trim();
+    const trimmedResponse = response.trim().split('\n').map(title => title.trim());
 
     if (trimmedResponse !== "NO_MATCH_FOUND" && trimmedResponse !== "") {
-      const isValidTitle = MEDICATION_DATA.some(item => item.medication_Title === trimmedResponse);
+      const isValidTitle = trimmedResponse.some(title => MEDICATION_DATA.some(item => item.medication_Title === title));
       if (isValidTitle) {
         console.log(`${LOG_PREFIX} Found valid match:`, trimmedResponse);
         return trimmedResponse;
@@ -185,24 +181,25 @@ ${item.medication_CategoryDesc ? `${item.medication_CategoryDesc}` : ''}`
 /**
  * Step 2: Prepare context based on the selected medication title.
  */
-async function prepareContext(medicationTitle: string): Promise<{ context: string; }> {
-  console.log(`${LOG_PREFIX} Preparing context for: ${medicationTitle}`);
+async function prepareContext(medicationTitles: string[]): Promise<string> {
+  console.log(`${LOG_PREFIX} Preparing context for: ${medicationTitles}`);
 
-  let matchedItem = MEDICATION_DATA.find(item => item.medication_Title === medicationTitle);
+  // Return all matched items joined by newlines
+  const matchedItems = MEDICATION_DATA.filter(item => medicationTitles.includes(item.medication_Title));
+  const context = matchedItems.map(item => formatMedicationContext(item)).join('\n\n');
 
-  if (matchedItem) {
-    console.log(`${LOG_PREFIX} Found exact match for context`);
-    const context = formatMedicationContext(matchedItem);
+  if (context) {
     console.log(`${LOG_PREFIX} Context prepared: ${context.length} characters`);
-    return { context, urlSlug: matchedItem.medication_FriendlyUrl };
+    return context;
   }
 
+  console.log(`${LOG_PREFIX} No context could be prepared for title: ${medicationTitles}`);
   console.log(`${LOG_PREFIX} No exact match found, trying fuzzy match...`);
-  const lowerTitle = medicationTitle.toLowerCase();
+  const lowerTitles = medicationTitles.map(title => title.toLowerCase());
   const fuzzyMatches = MEDICATION_DATA.filter(item =>
-    item.medication_Title.toLowerCase() === lowerTitle ||
-    item.medication_Title.toLowerCase().includes(lowerTitle) ||
-    (item.medication_ENKeywords && item.medication_ENKeywords.toLowerCase().includes(lowerTitle))
+    lowerTitles.some(title => item.medication_Title.toLowerCase() === title) ||
+    lowerTitles.some(title => item.medication_Title.toLowerCase().includes(title)) ||
+    (item.medication_ENKeywords && lowerTitles.some(title => item.medication_ENKeywords.toLowerCase().includes(title)))
   );
 
   if (fuzzyMatches.length > 0) {
@@ -210,11 +207,11 @@ async function prepareContext(medicationTitle: string): Promise<{ context: strin
     matchedItem = fuzzyMatches[0];
     const context = formatMedicationContext(matchedItem);
     console.log(`${LOG_PREFIX} Context prepared using first fuzzy match: ${context.length} characters`);
-    return { context, urlSlug: matchedItem.medication_FriendlyUrl };
+    return context;
   }
 
-  console.log(`${LOG_PREFIX} No context could be prepared for title: ${medicationTitle}`);
-  return { context: '' }; 
+  console.log(`${LOG_PREFIX} No context could be prepared for title: ${medicationTitles}`);
+  return '';
 }
 
 /**
@@ -260,7 +257,7 @@ export default defineEventHandler(async (event) => {
       console.log(`${LOG_PREFIX} Title finding took ${titleFindingTime}ms. Result: "${titleToUse}"`);
 
       const contextPrepStartTime = Date.now();
-      const { context } = await prepareContext(titleToUse);
+      const context = await prepareContext(titleToUse);
       contextToUse = context;
       contextPrepTime = Date.now() - contextPrepStartTime;
       console.log(`${LOG_PREFIX} Context preparation took ${contextPrepTime}ms`);
@@ -280,7 +277,7 @@ export default defineEventHandler(async (event) => {
         titleFindingTime = titleCheckTime; // Log the time it took to find the new title
 
         const contextPrepStartTime = Date.now();
-        const { context } = await prepareContext(titleToUse);
+        const context = await prepareContext(titleToUse);
         contextToUse = context; // Use the new context
         contextPrepTime = Date.now() - contextPrepStartTime;
         console.log(`${LOG_PREFIX} New context preparation took ${contextPrepTime}ms`);
