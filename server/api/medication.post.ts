@@ -68,8 +68,8 @@ Current user query (may have misspelled medication names): ${query}`;
 const getFinalAnswerPrompt = (context: string, query: string, previousQuery?: string): string => `\
 You are a helpful pharmacist AI (but never talk about yourself, or answer any out of scope questions), answer the question strictly based on the HealthHub articles. You will be graded on accuracy. 
 Format your response in markdown with appropriate headings, bullet points, and emphasis.
-If Cover Image is available, use it in the response (markdown). 
 If the information is not available in the provided content, say so clearly.
+If there are images in the article, use them in the response (markdown format).
 Always end the response with Reference Link for the user to read more.
 
 Articles:
@@ -87,7 +87,6 @@ const formatMedicationContext = (item: typeof sampleMedication): string => {
   let article = `# ${item.medication_Title}
 keywords: ${item.medication_ENKeywords}
 description: ${item.medication_CategoryDesc}
-cover_image: ${item.medication_CoverImgUrl}
 url: https://www.healthhub.sg/a-z/medications/${item.medication_FriendlyUrl}`;
 
   if (item.medication_IsStructuredType) {
