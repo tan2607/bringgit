@@ -434,6 +434,9 @@ const timeWindowOptions = [
   { label: '10 AM - 6 PM', value: { start: 10, end: 18 } },
   { label: '9 AM - 8 PM', value: { start: 9, end: 20 } },
   { label: '9 AM - 12 PM', value: { start: 9, end: 12 } },
+  { label: '10 AM - 9 PM', value: { start: 10, end: 21 } },
+  { label: '9 AM - 9 PM', value: { start: 9, end: 21 } },
+  { label: '11 AM - 9 PM', value: { start: 11, end: 21 } },
   { label: "Anytime", value: { start: 0, end: 24 } }
 ]
 
