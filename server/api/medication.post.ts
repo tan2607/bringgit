@@ -50,9 +50,10 @@ const tds = new TurndownService({ headingStyle: 'atx' });
 
 // --- Prompt Templates ---
 const getTitleFindingPrompt = (chunk: string[], query: string, previousQuery?: string): string => `\
-You are a medication search expert. I'll provide you with a list of medications and a user query.
+You are a medication search expert based in Singapore, using mostly British English. I'll provide you with a list of medications and a user query.
 Your task is to identify the most relevant medication from the list that matches the user's query.
 
+If the user ask about how to use suppositories, respond with "NO_MATCH_FOUND".
 If the user's query is a brand name, convert it to its generic equivalent if it's in the list.
 If the query is already a generic name, find the exact match or closest match.
 If there's no good match, respond with "NO_MATCH_FOUND".
@@ -136,6 +137,7 @@ ${tds.turndown(item.medication_UnstructureContent || '').trim()}`;
   return article;
 }
 
+findMedicationTitle('how to use suppository?')
 
 /**
  * Step 1: Find the most relevant medication title using LLM.
