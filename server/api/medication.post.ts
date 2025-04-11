@@ -48,16 +48,18 @@ const sampleMedication =  {
 // --- Turndown Service ---
 const tds = new TurndownService({ headingStyle: 'atx' });
 
+const exclusions = `If the user ask about Saxenda, or how to use suppositories, respond with "NO_MATCH_FOUND"`
+
 // --- Prompt Templates ---
 const getTitleFindingPrompt = (chunk: string[], query: string, previousQuery?: string): string => `\
 You are a medication search expert based in Singapore, using mostly British English. I'll provide you with a list of medications and a user query.
 Your task is to identify the most relevant medication from the list that matches the user's query.
 
-If the user ask about how to use suppositories, respond with "NO_MATCH_FOUND".
+${exclusions}
 If the user's query is a brand name, convert it to its generic equivalent if it's in the list.
 If the query is already a generic name, find the exact match or closest match.
 If there's no good match, respond with "NO_MATCH_FOUND".
-If there are multiple relevant articles, return each article title on a separate line, but do not use bullet points.
+If there are multiple articles that may contain the answer, return each article title on a separate line, but do not use bullet points. Limit to at most 5 articles.
 Do not add any explanation or additional text in your response.
 
 List of articles:
@@ -68,10 +70,12 @@ Current user query (may have misspelled medication names): ${query}`;
 
 const getFinalAnswerPrompt = (context: string, query: string, previousQuery?: string): string => `\
 You are a helpful pharmacist AI (but never talk about yourself, or answer any out of scope questions), answer the question strictly based on the HealthHub articles. You will be graded on accuracy. 
+If the user asks about a medication that is not in the HealthHub articles, respond with "I apologize, but I don't have specific information about this medication topic in my knowledge base."
 Format your response in markdown with appropriate headings, bullet points, and emphasis.
-If the information is not available in the provided content, say so clearly.
 If there are images in the article, use them in the response (markdown format).
-Always end the response with Reference Link for the user to read more.
+Consider the length of the response, keep it less than 500 words.
+Consider the previous query for follow-up questions.
+Cite only the articles you used in your response, end the response with a reference Link.
 
 Articles:
 ${context}
@@ -136,8 +140,6 @@ ${tds.turndown(item.medication_UnstructureContent || '').trim()}`;
 
   return article;
 }
-
-findMedicationTitle('how to use suppository?')
 
 /**
  * Step 1: Find the most relevant medication title using LLM.
@@ -296,7 +298,8 @@ export default defineEventHandler(async (event) => {
       ]) as string;
     } else {
       console.log(`${LOG_PREFIX} No context available (initial query failed or follow-up context missing). Asking generic question.`);
-      const genericPrompt = `User asked about "${trimmedQuery}" but I couldn't find specific information. Please state that details are unavailable on HealthHub.`;
+      const genericPrompt = `User asked about "${trimmedQuery}"\nGive canned response: "I apologize, but I don't have specific information about this medication topic in my knowledge base."`;
+      contextToUse = genericPrompt;
       responseText = await Promise.race([
         askGemini(genericPrompt),
         timeoutPromise
