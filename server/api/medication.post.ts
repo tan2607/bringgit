@@ -288,7 +288,7 @@ export default defineEventHandler(async (event) => {
       // Include previous query/answer if available for better conversational flow? (Future enhancement)
       // For now, just use current query and determined context.
       const finalPrompt = getFinalAnswerPrompt(contextToUse, trimmedQuery, previousQuery);
-      console.log(`${LOG_PREFIX} Sending final prompt (length: ${finalPrompt.length}) for title "${titleToUse}"`);
+      console.log(`${LOG_PREFIX} Sending final prompt (length: ${finalPrompt.length})`);
       responseText = await Promise.race([
         askGemini(finalPrompt),
         timeoutPromise
@@ -313,7 +313,6 @@ export default defineEventHandler(async (event) => {
       data: responseText,
       query: trimmedQuery,
       context: contextToUse, // Return the context used for the response
-      matchedTitle: (titleToUse !== trimmedQuery) ? titleToUse : null, // Return the title if found, null otherwise
       metrics: {
         totalTimeMs: totalTime,
         titleFindingTimeMs: titleFindingTime,
