@@ -109,8 +109,8 @@
         <div class="metrics bg-gray-50 dark:bg-gray-800 p-3 rounded-md mb-4 text-sm border border-gray-200 dark:border-gray-700">
           <h3 class="font-medium mb-2 text-gray-700 dark:text-gray-300">API Call Details</h3>
           <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-gray-600 dark:text-gray-400">
-            <p><strong>Matched Title:</strong></p>
-            <p>{{ lastResponse.matchedTitle || 'N/A' }}</p>
+            <p><strong>Query:</strong></p>
+            <p>{{ lastResponse.query || 'N/A' }}</p>
             <p><strong>Title Finding:</strong></p>
             <p>{{ lastResponse.metrics?.titleFindingTimeMs ?? 'N/A' }} ms</p>
             <p><strong>Context Prep:</strong></p>

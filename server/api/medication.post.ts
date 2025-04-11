@@ -60,6 +60,7 @@ If the user's query is a brand name, convert it to its generic equivalent if it'
 If the query is already a generic name, find the exact match or closest match.
 If there's no good match, respond with "NO_MATCH_FOUND".
 If there are multiple articles that may contain the answer, return each article title on a separate line, but do not use bullet points. Limit to at most 5 articles.
+Consider the previous query for follow-up questions.
 Do not add any explanation or additional text in your response.
 
 List of articles:
@@ -75,7 +76,7 @@ Format your response in markdown with appropriate headings, bullet points, and e
 If there are images in the article, use them in the response (markdown format).
 Consider the length of the response, keep it less than 500 words.
 Consider the previous query for follow-up questions.
-Cite only the articles you used in your response, end the response with a reference Link.
+End the response with a reference Link if you used any articles in your current response.
 
 Articles:
 ${context}
