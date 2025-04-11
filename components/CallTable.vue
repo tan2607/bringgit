@@ -64,7 +64,7 @@
         <div class="flex flex-col md:flex-row items-center gap-2">
           <div v-if="hasMore && !props.quickView">
             <UTooltip 
-              text="Current is limited to 15000 calls, if you need more data click the button below">
+              text="Current is limited to 30000 calls, if you need more data click the button below">
               <UButton color="primary" variant="soft" :loading="isLoading" :disabled="isLoading || !hasMore"
                 class="cursor-pointer w-full md:w-auto" @click="$emit('load-more')">
                 <div class="flex items-center justify-center gap-2">

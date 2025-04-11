@@ -10,7 +10,7 @@ export const useCalls = () => {
   const pageSize = 1000
   const previousEndDates = useState('previousEndDates', () => [])
   const fetchingProgress = useState('fetchingProgress', () => 0)
-  const callsLimit = 15000
+  const callsLimit = 30000
   let abortController: AbortController | null = null;
 
   const fetchCalls = async (startDate?: string, endDate?: string, limit?: number, loadMore?: boolean = false) => {
