@@ -49,7 +49,7 @@ const sampleMedication =  {
 const tds = new TurndownService({ headingStyle: 'atx' });
 
 // --- Prompt Templates ---
-const getTitleFindingPrompt = (chunk: string[], query: string): string => `\
+const getTitleFindingPrompt = (chunk: string[], query: string, previousQuery?: string): string => `\
 You are a medication search expert. I'll provide you with a list of medications and a user query.
 Your task is to identify the most relevant medication from the list that matches the user's query.
 
@@ -62,9 +62,10 @@ Do not add any explanation or additional text in your response.
 List of articles:
 ${chunk.join('\\n')}
 
-User query (may have misspelled medication names): ${query}`;
+Previous Query: ${previousQuery}
+Current user query (may have misspelled medication names): ${query}`;
 
-const getFinalAnswerPrompt = (context: string, query: string): string => `\
+const getFinalAnswerPrompt = (context: string, query: string, previousQuery?: string): string => `\
 You are a helpful pharmacist AI (but never talk about yourself, or answer any out of scope questions), answer the question strictly based on the HealthHub articles. You will be graded on accuracy. 
 Format your response in markdown with appropriate headings, bullet points, and emphasis.
 If Cover Image is available, use it in the response (markdown). 
@@ -74,7 +75,8 @@ Always end the response with Reference Link for the user to read more.
 Articles:
 ${context}
 
-User Question:${query}`;
+Previous Query: ${previousQuery}
+Current Query: ${query}`;
 
 // --- Helper Functions ---
 
@@ -139,7 +141,7 @@ ${tds.turndown(item.medication_UnstructureContent || '').trim()}`;
 /**
  * Step 1: Find the most relevant medication title using LLM.
  */
-async function findMedicationTitle(query: string): Promise<string[]> {
+async function findMedicationTitle(query: string, previousQuery?: string): Promise<string[]> {
   console.log(`${LOG_PREFIX} Processing query:`, query);
 
   const medicationList = MEDICATION_DATA.map(item =>`
@@ -150,7 +152,7 @@ ${item.medication_CategoryDesc ? `${item.medication_CategoryDesc}` : ''}`
 
   console.log(`${LOG_PREFIX} Processing ${medicationList.length} medications in a single request`);
 
-  const prompt = getTitleFindingPrompt(medicationList, query);
+  const prompt = getTitleFindingPrompt(medicationList, query, previousQuery);
 
   console.log(`${LOG_PREFIX} Sending Title Search prompt (length: ${prompt.length})`);
 
@@ -180,12 +182,12 @@ ${item.medication_CategoryDesc ? `${item.medication_CategoryDesc}` : ''}`
 /**
  * Step 2: Prepare context based on the selected medication title.
  */
-async function prepareContext(medicationTitles: string[]): Promise<string> {
+async function prepareContext(medicationTitles: string[], previousContext?: string): Promise<string> {
   console.log(`${LOG_PREFIX} Preparing context for: ${medicationTitles}`);
 
   // Return all matched items joined by newlines
-  const matchedItems = MEDICATION_DATA.filter(item => medicationTitles.includes(item.medication_Title));
-  const context = matchedItems.map(item => formatMedicationContext(item)).join('\n\n');
+  const matchedItems = MEDICATION_DATA.filter(item => medicationTitles.includes(item.medication_Title) && !previousContext?.includes(item.medication_Title));
+  const context = matchedItems.map(item => formatMedicationContext(item)).join('\n\n') + '\n\n' + (previousContext || '');
 
   if (context) {
     console.log(`${LOG_PREFIX} Context prepared: ${context.length} characters`);
@@ -221,10 +223,9 @@ export default defineEventHandler(async (event) => {
 
   try {
     const body = await readBody(event);
-    const { query, previousContext, previousTitle } = body; // Read potential previous state
+    const { query, previousQuery, previousContext } = body; // Read potential previous state
     let isFollowUp = false;
     let contextToUse = previousContext;
-    let titleToUse = previousTitle;
     let titleFindingTime = 0;
     let contextPrepTime = 0;
 
@@ -237,8 +238,8 @@ export default defineEventHandler(async (event) => {
     const trimmedQuery = query.trim();
 
     console.log(`${LOG_PREFIX} Received query: ${trimmedQuery}`);
-    if (previousContext && previousTitle) {
-      console.log(`${LOG_PREFIX} Detected follow-up context. Previous title: "${previousTitle}"`);
+    if (previousQuery && previousContext) {
+      console.log(`${LOG_PREFIX} Detected follow-up context. Previous query: "${previousQuery}"`);
       isFollowUp = true;
     }
 
@@ -251,7 +252,7 @@ export default defineEventHandler(async (event) => {
       // Initial query: Find title and prepare context
       console.log(`${LOG_PREFIX} Initial query processing.`);
       const titleFindingStartTime = Date.now();
-      titleToUse = await findMedicationTitle(trimmedQuery);
+      const titleToUse = await findMedicationTitle(trimmedQuery);
       titleFindingTime = Date.now() - titleFindingStartTime;
       console.log(`${LOG_PREFIX} Title finding took ${titleFindingTime}ms. Result: "${titleToUse}"`);
 
@@ -265,26 +266,18 @@ export default defineEventHandler(async (event) => {
       console.log(`${LOG_PREFIX} Follow-up query processing. Checking for new medication title...`);
       const titleCheckStartTime = Date.now();
       // Use findMedicationTitle to see if the new query points to a different known medication
-      const potentialNewTitle = await findMedicationTitle(trimmedQuery); // Reuse the find function for checking
+      const potentialNewTitle = await findMedicationTitle(trimmedQuery, previousQuery); // Reuse the find function for checking
       const titleCheckTime = Date.now() - titleCheckStartTime;
       console.log(`${LOG_PREFIX} Title check took ${titleCheckTime}ms. Potential new title: "${potentialNewTitle}"`);
 
-      // If a *different* valid title is found in the follow-up query, fetch new context
-      if (potentialNewTitle !== trimmedQuery && potentialNewTitle !== previousTitle) {
-        console.log(`${LOG_PREFIX} New medication title "${potentialNewTitle}" detected in follow-up. Fetching new context.`);
-        titleToUse = potentialNewTitle; // Use the new title
-        titleFindingTime = titleCheckTime; // Log the time it took to find the new title
+      titleFindingTime = titleCheckTime; // Log the time it took to find the new title
 
-        const contextPrepStartTime = Date.now();
-        const context = await prepareContext(titleToUse);
-        contextToUse = context; // Use the new context
-        contextPrepTime = Date.now() - contextPrepStartTime;
-        console.log(`${LOG_PREFIX} New context preparation took ${contextPrepTime}ms`);
-      } else {
-        // Otherwise, reuse the previous context and title
-        console.log(`${LOG_PREFIX} No new medication title detected. Reusing previous context for title "${titleToUse}".`);
-        // titleFindingTime and contextPrepTime remain 0 as we reused
-      }
+      const contextPrepStartTime = Date.now();
+      const context = await prepareContext(potentialNewTitle, previousContext);
+
+      contextToUse = context;
+      contextPrepTime = Date.now() - contextPrepStartTime;
+      console.log(`${LOG_PREFIX} New context preparation took ${contextPrepTime}ms`);
     }
 
     // --- Final Answer Generation ---
@@ -294,7 +287,7 @@ export default defineEventHandler(async (event) => {
     if (contextToUse) {
       // Include previous query/answer if available for better conversational flow? (Future enhancement)
       // For now, just use current query and determined context.
-      const finalPrompt = getFinalAnswerPrompt(contextToUse, trimmedQuery);
+      const finalPrompt = getFinalAnswerPrompt(contextToUse, trimmedQuery, previousQuery);
       console.log(`${LOG_PREFIX} Sending final prompt (length: ${finalPrompt.length}) for title "${titleToUse}"`);
       responseText = await Promise.race([
         askGemini(finalPrompt),

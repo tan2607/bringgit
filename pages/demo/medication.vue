@@ -197,6 +197,7 @@ const lastResponse = ref<MedicationApiResponse | null>(null)
 // Store context and title for follow-up requests
 const previousContext = ref<string | null>(null)
 const previousTitle = ref<string | null>(null)
+const previousQuery = ref<string | null>(null) // Store previous query for better follow-up handling
 
 // Store query history in local storage
 const queryHistory = ref<HistoryItem[]>([])
@@ -259,6 +260,7 @@ function removeFromHistory(index: number) {
 function clearContext() {
   previousContext.value = null;
   previousTitle.value = null;
+  previousQuery.value = null; // Also clear previous query
   // Optionally clear the lastResponse display as well?
   // lastResponse.value = null;
   toast.add({
@@ -306,7 +308,14 @@ async function askMedication() {
   if (previousContext.value && previousTitle.value) {
     requestBody.previousContext = previousContext.value;
     requestBody.previousTitle = previousTitle.value;
-    console.log('Sending follow-up with context for title:', previousTitle.value);
+    
+    // Add previous query for better follow-up handling
+    if (previousQuery.value) {
+      requestBody.previousQuery = previousQuery.value;
+      console.log('Sending follow-up with context for title:', previousTitle.value, 'and previous query:', previousQuery.value);
+    } else {
+      console.log('Sending follow-up with context for title:', previousTitle.value);
+    }
   } else {
      console.log('Sending initial query:', query.value);
   }
@@ -320,10 +329,11 @@ async function askMedication() {
 
     if (result.success) {
       lastResponse.value = result // Store the full response
-      // Update context/title for the *next* potential follow-up
+      // Update context/title/query for the *next* potential follow-up
       previousContext.value = result.context
       previousTitle.value = result.matchedTitle
-      console.log('Success. Storing context for next follow-up:', { title: previousTitle.value, contextLength: previousContext.value?.length })
+      previousQuery.value = query.value // Store current query as previous for next call
+      console.log('Success. Storing context for next follow-up:', { title: previousTitle.value, contextLength: previousContext.value?.length, previousQuery: previousQuery.value })
 
       // Add to history (avoid duplicates based on query text)
       const isDuplicate = queryHistory.value.some(item => item.query === query.value)
