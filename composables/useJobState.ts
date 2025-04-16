@@ -118,7 +118,7 @@ export const useJobState = () => {
   const pauseJob = async (jobId: string) => {
     jobState.value.loadingJobId = jobId
     try {
-      const response = await $fetch(`/api/jobs/${jobId}/pause`, { method: 'POST' })
+      const response = await $fetch(`/api/jobs/status/${jobId}`, { method: 'POST', body: { status: 'paused' } })
       
       if (response.success) {
         const jobIndex = jobState.value.jobs.findIndex(job => job.id === jobId)
@@ -128,6 +128,7 @@ export const useJobState = () => {
             status: 'paused',
             lastProcessedAt: new Date()
           }
+
         }
         return true
       }
@@ -143,7 +144,7 @@ export const useJobState = () => {
   const resumeJob = async (jobId: string) => {
     jobState.value.loadingJobId = jobId
     try {
-      const response = await $fetch(`/api/jobs/${jobId}/resume`, { method: 'POST' })
+      const response = await $fetch(`/api/jobs/status/${jobId}`, { method: 'POST', body: { status: 'running' } })
       
       if (response.success) {
         const jobIndex = jobState.value.jobs.findIndex(job => job.id === jobId)

@@ -17,7 +17,7 @@ const { close, message } = useConfirm()
       <template #footer>
         <div class="flex justify-end space-x-2">
           <UButton color="neutral" class="cursor-pointer" @click="close(false)">Cancel</UButton>
-          <UButton color="error" class="cursor-pointer" @click="close(true)">Confirm</UButton>
+          <UButton color="primary" class="cursor-pointer" @click="close(true)">Confirm</UButton>
         </div>
       </template>
   </UModal>
