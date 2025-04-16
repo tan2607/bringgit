@@ -150,7 +150,7 @@ const jobFormSchema = z.object({
 
 type JobFormSchema = z.output<typeof jobFormSchema>
 
-const { jobState, createJob, pauseJob, startJob, getJobs, deleteJob, loadMoreJobs } = useJobState()
+const { jobState, createJob, pauseJob, startJob, getJobs, deleteJob, loadMoreJobs, resumeJob } = useJobState()
 const { assistants, fetchAssistants } = useAssistants()
 const { numbers, fetchNumbers } = usePhoneNumbers()
 const { confirm } = useConfirm()
@@ -312,6 +312,7 @@ watch(() => page.value, () => {
   filterJobs();
 });
 
+
 const filterJobs = () => {
   let jobs = [...jobState.value.jobs]
 
@@ -378,6 +379,9 @@ const getPhoneNumberCount = () => {
 }
 
 const getJobActions = (job: Job) => {
+  const currentJobStatus = job.original?.status;
+
+
   const actions = [
     {
       label: 'Quick View',
@@ -392,18 +396,18 @@ const getJobActions = (job: Job) => {
   ]
 
   // Add status-based actions
-  if (job.status === 'pending' || job.status === 'paused') {
+  if (currentJobStatus === 'paused') {
     actions.push({
-      label: 'Start',
+      label: 'Resume',
       icon: 'i-heroicons-play',
-      color: 'success',
-      onSelect: () => handleJobAction('start', job)
+      color: "success",
+      onSelect: () => handleJobAction('resume', job)
     })
-  } else if (job.status === 'running') {
+  } else if (currentJobStatus === 'running') {
     actions.push({
       label: 'Pause',
       icon: 'i-heroicons-pause',
-      color: 'warning',
+      color: "warning",
       onSelect: () => handleJobAction('pause', job)
     })
   }
@@ -423,6 +427,8 @@ const getJobActions = (job: Job) => {
 }
 
 const handleJobAction = async (action: string, job: Job) => {
+  const targetJob = filteredJobs.value[job.id]
+
   switch (action) {
     case 'view':
       quickViewJob.value = filteredJobs.value[job.id]
@@ -443,13 +449,49 @@ const handleJobAction = async (action: string, job: Job) => {
       await startJob(job.id)
       break
     case 'pause':
-      await pauseJob(job.id)
+      const pauseConfirm = await confirm(`Are you sure you want to pause this job: ${targetJob.name} ?`)
+      if(pauseConfirm) {
+        const response = await pauseJob(targetJob.id)
+        if(response) {
+          toast.add({
+            title: 'Job paused',
+            description: 'Job paused successfully',
+            color: 'success'
+          })
+        } else {
+          toast.add({
+            title: 'Job pause failed',
+            description: 'Job pause failed',
+            color: 'error'
+          })
+        }
+        filterJobs();
+      }
+      break
+    case 'resume':
+      const resumeConfirm = await confirm(`Are you sure you want to resume this job: ${targetJob.name}  ?`)
+      if(resumeConfirm) {
+        const response = await resumeJob(targetJob.id)
+        if(response) {
+          toast.add({
+            title: 'Job resumed',
+            description: 'Job resumed successfully',
+            color: 'success'
+          })
+        } else {
+          toast.add({
+            title: 'Job resume failed',
+            description: 'Job resume failed',
+            color: 'error'
+          })
+        }
+        filterJobs();
+      }
       break
     case 'delete':
       // Implement delete
-      const targetJob = filteredJobs.value[job.id]
-      const confirming = await confirm(`Are you sure you want to delete this job? ${targetJob.name}`)
-      if(confirming) {
+      const deleteConfirm = await confirm(`Are you sure you want to delete this job: ${targetJob.name} ?`)
+      if(deleteConfirm) {
         const response = await deleteJob(targetJob.id)
         if(response) {
           toast.add({
@@ -457,6 +499,7 @@ const handleJobAction = async (action: string, job: Job) => {
             description: 'Job deleted successfully',
             color: 'success'
           })
+          filterJobs();
         } else {
           toast.add({
             title: 'Job deletion failed',
