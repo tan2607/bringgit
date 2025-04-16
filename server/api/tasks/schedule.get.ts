@@ -11,13 +11,16 @@ export default defineEventHandler(async (event) => {
 
     const queueLimit = 1;
     const pendingJobs = await db.query.jobs.findMany({
-      where: not(eq(jobs.status, "completed")),
+      where: and(
+        not(eq(jobs.status, "completed")),
+        not(eq(jobs.status, "paused"))
+      ),
       orderBy: asc(jobs.createdAt), // Ensure sorting at the job level
       with: {
         jobQueues: {
           orderBy: asc(jobQueue.updatedAt), // Ensure sorting inside relations
           limit: queueLimit,
-          where: not(eq(jobs.status, "completed")),
+          where: not(eq(jobQueue.status, "completed")),
         },
       },
     });
