@@ -78,7 +78,8 @@
             <UTooltip text="Only loaded records will be exported. Click 'Load More' to load all records first.">
               <UButton v-if="props.exportButton" color="primary" variant="soft" :loading="props.isExporting"
                 :disabled="props.isLoadingTable || props.isExporting || !props.data?.length"
-                class="group cursor-pointer max-w-full md:max-w-[200px] whitespace-nowrap" @click="$emit('export')">
+                @click="handleExport"
+                class="group cursor-pointer max-w-full md:max-w-[200px] whitespace-nowrap">
                 <div class="flex items-center justify-center gap-2">
                   <UIcon name="i-lucide-download" />
                   {{ props.isExporting
@@ -791,6 +792,10 @@ const handleUpdateReview = async (review: string) => {
     color: 'error'
   })
  }
+}
+
+function handleExport() {
+  emit('export', filteredData.value || []);
 }
 
 
