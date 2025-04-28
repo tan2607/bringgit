@@ -17,43 +17,43 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <!-- Date Range -->
-        <UFormGroup label="Date Range">
+        <UFormField label="Date Range">
           <USelect
             v-model="state.filters.range"
             :options="dateRanges"
             @update:model-value="updateDateRange"
           />
-        </UFormGroup>
+        </UFormField>
 
         <!-- Status -->
-        <UFormGroup label="Status">
+        <UFormField label="Status">
           <USelect
             v-model="state.filters.status"
             :options="statusOptions"
             multiple
             placeholder="All Statuses"
           />
-        </UFormGroup>
+        </UFormField>
 
         <!-- Assistants -->
-        <UFormGroup label="Assistants">
+        <UFormField label="Assistants">
           <USelect
             v-model="state.filters.assistantIds"
             :options="assistantOptions"
             multiple
             placeholder="All Assistants"
           />
-        </UFormGroup>
+        </UFormField>
 
         <!-- Phone Numbers -->
-        <UFormGroup label="Phone Numbers">
+        <UFormField label="Phone Numbers">
           <USelect
             v-model="state.filters.phoneNumberIds"
             :options="phoneNumberOptions"
             multiple
             placeholder="All Numbers"
           />
-        </UFormGroup>
+        </UFormField>
       </div>
     </UCard>
 

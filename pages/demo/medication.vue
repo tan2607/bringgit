@@ -48,13 +48,19 @@
         </div>
 
         <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
-          <UFormGroup label="Your Question" name="query">
+          <UFormField label="Your Question" name="query">
             <UTextarea v-model="query" placeholder="e.g., What are the side effects of Amiloride? or follow-up like 'How should I take it?'"
               :rows="3" class="w-full" :disabled="loading" @keydown.enter.ctrl.prevent="askMedication" />
             <template #hint>
               <span class="text-xs text-gray-500">Press Ctrl+Enter to submit. Follow-up questions will use context from the previous answer.</span>
             </template>
-          </UFormGroup>
+          </UFormField>
+          
+          <!-- Format Selection -->
+          <UFormField label="Response Format" name="format" class="mt-3">
+            <URadio v-model="responseFormat" value="markdown" label="Markdown" :disabled="loading" />
+            <URadio v-model="responseFormat" value="text" label="Plain Text" :disabled="loading" />
+          </UFormField>
 
           <div class="flex justify-between items-center mt-4 gap-2">
             <!-- Button to clear context -->
@@ -150,6 +156,9 @@ import { ref, computed, watch, onMounted } from 'vue'
 import type { UseToastReturn } from '#imports' // Ensure correct type import
 
 // Define the expected structure of the API response
+
+// Define the response format options
+const responseFormat = ref('markdown')
 interface MedicationApiResponse {
   success: boolean;
   data: string;
@@ -301,7 +310,8 @@ async function askMedication() {
   // Don't clear lastResponse immediately, let it display until new data arrives or error occurs
 
   const requestBody: any = {
-    query: query.value
+    query: query.value,
+    format: responseFormat.value
   }
 
   // Add context if available (follow-up query)

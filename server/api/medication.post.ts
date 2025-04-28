@@ -69,14 +69,16 @@ ${chunk.join('\\n')}
 Previous Query: ${previousQuery}
 Current user query (may have misspelled medication names): ${query}`;
 
-const getFinalAnswerPrompt = (context: string, query: string, previousQuery?: string): string => `\
+const getFinalAnswerPrompt = (context: string, query: string, previousQuery?: string, format: string): string => `\
 You are a helpful pharmacist AI (but never talk about yourself, or answer any out of scope questions), answer the question strictly based on the HealthHub articles. You will be graded on accuracy. 
 If the user asks about a medication that is not in the HealthHub articles, respond with "I apologize, but I don't have specific information about this medication topic in my knowledge base."
 Format your response in markdown with appropriate headings, bullet points, and emphasis.
-If there are images in the article, use them in the response (markdown format).
+If the response format is markdown, use markdown formatting for images in the article.
+If the response format is text, answer concisely.
 Consider the length of the response, keep it less than 500 words.
 Consider the previous query for follow-up questions.
 End the response with a reference Link if you used any articles in your current response.
+Response Format: ${format}
 
 Articles:
 ${context}
@@ -227,7 +229,7 @@ export default defineEventHandler(async (event) => {
 
   try {
     const body = await readBody(event);
-    const { query, previousQuery, previousContext } = body; // Read potential previous state
+    const { query, previousQuery, previousContext, format = "markdown" } = body; // Read potential previous state
     let isFollowUp = false;
     let contextToUse = previousContext;
     let titleFindingTime = 0;
@@ -291,7 +293,7 @@ export default defineEventHandler(async (event) => {
     if (contextToUse) {
       // Include previous query/answer if available for better conversational flow? (Future enhancement)
       // For now, just use current query and determined context.
-      const finalPrompt = getFinalAnswerPrompt(contextToUse, trimmedQuery, previousQuery);
+      const finalPrompt = getFinalAnswerPrompt(contextToUse, trimmedQuery, previousQuery, format);
       console.log(`${LOG_PREFIX} Sending final prompt (length: ${finalPrompt.length})`);
       responseText = await Promise.race([
         askGemini(finalPrompt),

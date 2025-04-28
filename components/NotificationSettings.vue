@@ -62,7 +62,7 @@
       </template>
 
       <div class="space-y-4">
-        <UFormGroup label="Event Triggers">
+        <UFormField label="Event Triggers">
           <div class="space-y-2">
             <UCheckbox
               v-model="settings.triggers.onStart"
@@ -81,9 +81,9 @@
               label="Job Pause"
             />
           </div>
-        </UFormGroup>
+        </UFormField>
 
-        <UFormGroup label="Failure Threshold">
+        <UFormField label="Failure Threshold">
           <UInput
             v-model="settings.triggers.failureThreshold"
             type="number"
@@ -92,9 +92,9 @@
             placeholder="Failure percentage to trigger notification"
             trailing="%"
           />
-        </UFormGroup>
+        </UFormField>
 
-        <UFormGroup label="Progress Updates">
+        <UFormField label="Progress Updates">
           <UInput
             v-model="settings.triggers.progressInterval"
             type="number"
@@ -102,7 +102,7 @@
             placeholder="Minutes between progress updates"
             trailing="minutes"
           />
-        </UFormGroup>
+        </UFormField>
       </div>
     </UCard>
 
@@ -116,68 +116,68 @@
         </template>
 
         <form @submit.prevent="saveChannel" class="space-y-4">
-          <UFormGroup label="Channel Type" required>
+          <UFormField label="Channel Type" required>
             <USelect
               v-model="channelForm.type"
               :options="channelTypes"
               required
             />
-          </UFormGroup>
+          </UFormField>
 
           <!-- Email Configuration -->
           <template v-if="channelForm.type === 'email'">
-            <UFormGroup label="Recipients" required>
+            <UFormField label="Recipients" required>
               <UTextarea
                 v-model="emailRecipients"
                 placeholder="Enter email addresses (one per line)"
                 rows="3"
                 required
               />
-            </UFormGroup>
-            <UFormGroup label="From Address">
+            </UFormField>
+            <UFormField label="From Address">
               <UInput
                 v-model="(channelForm.config as any).from"
                 type="email"
                 placeholder="Optional sender address"
               />
-            </UFormGroup>
+            </UFormField>
           </template>
 
           <!-- Slack Configuration -->
           <template v-if="channelForm.type === 'slack'">
-            <UFormGroup label="Webhook URL" required>
+            <UFormField label="Webhook URL" required>
               <UInput
                 v-model="(channelForm.config as any).webhookUrl"
                 type="url"
                 placeholder="Slack webhook URL"
                 required
               />
-            </UFormGroup>
-            <UFormGroup label="Channel">
+            </UFormField>
+            <UFormField label="Channel">
               <UInput
                 v-model="(channelForm.config as any).channel"
                 placeholder="Optional channel override"
               />
-            </UFormGroup>
+            </UFormField>
           </template>
 
           <!-- Webhook Configuration -->
           <template v-if="channelForm.type === 'webhook'">
-            <UFormGroup label="Webhook URL" required>
+            <UFormField label="Webhook URL" required>
               <UInput
                 v-model="(channelForm.config as any).url"
                 type="url"
                 placeholder="Webhook URL"
                 required
               />
-            </UFormGroup>
-            <UFormGroup label="Headers">
+            </UFormField>
+            <UFormField label="Headers">
               <UTextarea
                 v-model="webhookHeaders"
                 placeholder="Enter headers (one per line, key: value)"
                 rows="3"
               />
-            </UFormGroup>
+            </UFormField>
           </template>
         </form>
 

@@ -28,9 +28,9 @@
             <UButton color="neutral" variant="outline" icon="i-lucide-filter" class="cursor-pointer">{{ t('access-control.filter') }}</UButton>
             <template #content>
               <div class="p-4 min-w-[200px]">
-                <UFormGroup :label="t('access-control.table-name')">
+                <UFormField :label="t('access-control.table-name')">
                   <UInput v-model="nameFilter" @input="handleNameFilter" :placeholder="t('access-control.filter-by-name')" />
-                </UFormGroup>
+                </UFormField>
               </div>
             </template>
           </UPopover> -->
