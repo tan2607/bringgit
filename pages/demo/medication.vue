@@ -58,8 +58,7 @@
           
           <!-- Format Selection -->
           <UFormField label="Response Format" name="format" class="mt-3">
-            <URadio v-model="responseFormat" value="markdown" label="Markdown" :disabled="loading" />
-            <URadio v-model="responseFormat" value="text" label="Plain Text" :disabled="loading" />
+            <URadioGroup v-model="responseFormat" :items="responseFormatOptions" :disabled="loading" />
           </UFormField>
 
           <div class="flex justify-between items-center mt-4 gap-2">
@@ -159,6 +158,11 @@ import type { UseToastReturn } from '#imports' // Ensure correct type import
 
 // Define the response format options
 const responseFormat = ref('markdown')
+const responseFormatOptions = [
+  { value: 'markdown', label: 'Markdown' },
+  { value: 'text', label: 'Plain Text' }
+]
+
 interface MedicationApiResponse {
   success: boolean;
   data: string;

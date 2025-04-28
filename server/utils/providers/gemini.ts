@@ -34,7 +34,7 @@ export async function askMedication(query: string, context: string) {
     ];
 
     const response = await ai.models.generateContent({
-      model: 'gemini-2.0-flash',
+      model: 'gemini-2.5-flash-preview-04-17',
       contents,
       generationConfig: {
         temperature: 0.1, // Lower temperature for more factual responses
@@ -51,7 +51,7 @@ export async function askMedication(query: string, context: string) {
   }
 }
 
-export async function askGemini(prompt: string, model = 'gemini-2.0-flash') {
+export async function askGemini(prompt: string, model = 'gemini-2.5-flash-preview-04-17') {
   try {
     // Add the file to the contents.
     const contents: ContentListUnion = [
@@ -90,7 +90,7 @@ export class GeminiOCR {
     this.genAI = new GoogleGenerativeAI(apiKey)
     this.fileManager = new GoogleAIFileManager(apiKey)
     this.model = this.genAI.getGenerativeModel({
-      model: "gemini-2.0-flash",
+      model: "gemini-2.5-flash-preview-04-17",
     })
   }
 
