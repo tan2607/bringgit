@@ -61,6 +61,7 @@ export class VapiProvider {
       startSpeakingPlan: assistant.startSpeakingPlan,
       stopSpeakingPlan: assistant.stopSpeakingPlan,
       monitorPlan: assistant.monitorPlan,
+      recordingEnabled: assistant.recordingEnabled,
       credentialIds: assistant.credentialIds
     }));
   }
