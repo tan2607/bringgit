@@ -29,6 +29,7 @@ export default defineNuxtConfig({
     sendgridApiKey: process.env.SENDGRID_API_KEY,
     firecrawlApiKey: process.env.FIRECRAWL_API_KEY,
     geminiApiKey: process.env.GEMINI_API_KEY,
+    demoApiKey: process.env.DEMO_API_KEY,
     twilio: {
       accountSid: process.env.TWILIO_ACCOUNT_SID,
       authToken: process.env.TWILIO_AUTH_TOKEN,
