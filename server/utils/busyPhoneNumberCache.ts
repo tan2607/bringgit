@@ -1,8 +1,10 @@
-// busyPhoneNumbersCache.ts
-const busyPhoneNumbers = new Set<string>();
+const busyPhoneNumbers = new Map<string, number>(); // Map<phoneNumber, expireTimestamp>
 
-export function markPhoneNumberBusy(phoneNumber: string) {
-  busyPhoneNumbers.add(phoneNumber);
+const DEFAULT_TTL = 60 * 1000; // 60 seconds
+
+export function markPhoneNumberBusy(phoneNumber: string, ttl: number = DEFAULT_TTL) {
+  const expireAt = Date.now() + ttl;
+  busyPhoneNumbers.set(phoneNumber, expireAt);
 }
 
 export function markPhoneNumberFree(phoneNumber: string) {
@@ -10,9 +12,22 @@ export function markPhoneNumberFree(phoneNumber: string) {
 }
 
 export function isPhoneNumberBusy(phoneNumber: string): boolean {
-  return busyPhoneNumbers.has(phoneNumber);
+  const expireAt = busyPhoneNumbers.get(phoneNumber);
+  if (!expireAt) return false;
+
+  if (Date.now() > expireAt) {
+    busyPhoneNumbers.delete(phoneNumber);
+    return false;
+  }
+
+  return true;
 }
 
 export function getBusyPhoneNumbers(): string[] {
-  return Array.from(busyPhoneNumbers);
+  const now = Date.now();
+  const validEntries = Array.from(busyPhoneNumbers.entries()).filter(([_, expireAt]) => expireAt > now);
+  for (const [phoneNumber, expireAt] of busyPhoneNumbers.entries()) {
+    if (expireAt <= now) busyPhoneNumbers.delete(phoneNumber);
+  }
+  return validEntries.map(([phoneNumber]) => phoneNumber);
 }
