@@ -57,6 +57,13 @@
       "when": 1739841754918,
       "tag": "0007_sour_warbound",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "6",
+      "when": 1747797906418,
+      "tag": "0008_big_shooting_star",
+      "breakpoints": true
     }
   ]
 }

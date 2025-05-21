@@ -3,11 +3,12 @@
     v-model="selectedNumber"
     :items="numbers.map(number => ({ value: number.id, label: `${number.number} (${number.name})` }))"
     :loading="isLoading"
-    class="flex-1"
+    class="flex-1 max-w-xs"
     placeholder="Select Phone Number"
     option-attribute="name"
     value-attribute="id"
     required
+    multiple
   >
     <template #leading>
       <UIcon :name="isLoading ? 'i-lucide-loader-2' : 'i-lucide-phone'" :class="{ 'animate-spin': isLoading }" />

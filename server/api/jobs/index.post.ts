@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
       phoneNumbers: JSON.stringify(phoneNumbers),
       names: JSON.stringify(names),
       assistantId,
-      phoneNumberId,
+      phoneNumberId: JSON.stringify(phoneNumberId),
       status: 'pending',
       progress: 0,
       completedCalls: 0,
@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
       message: 'Job created successfully'
     }
   } catch (error: any) {
-    console.error('Failed to create job:', error)
+    console.log('Failed to create job:', error)
     throw createError({
       statusCode: 500,
       statusMessage: 'Failed to create job'
