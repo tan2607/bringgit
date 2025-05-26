@@ -105,13 +105,10 @@
             <div class="flex justify-end space-x-2 mt-4">
               <!-- handleCreateJob -->
               <UButton v-if="scheduledCalls.length && !isSimulating" color="primary"
-                :disabled="!selectedAssistant || !selectedNumber" @click="handleCreateJob" :loading="isLoadingCreateJob">
-                {{ !selectedAssistant || !selectedNumber ? 'Select Assistant & Phone Number' : 'Run Job' }}
+                :disabled="!selectedAssistant || state.selectedNumber.length === 0" @click="handleCreateJob" :loading="isLoadingCreateJob">
+                {{ !selectedAssistant || state.selectedNumber.length === 0 ? 'Select Assistant & Phone Number' : 'Run Job' }}
               </UButton>
-              <!-- <UButton v-if="scheduledCalls.length && !isSimulating" color="primary"
-                :disabled="!state.selectedAssistant || !state.selectedNumber" @click="runSimulation">
-                {{ !state.selectedAssistant || !state.selectedNumber ? 'Select Assistant & Phone Number' : 'Run Job' }}
-              </UButton> -->
+
               <UButton v-if="isSimulating" :color="isPaused ? 'primary' : 'warning'"
                 @click="isPaused ? runSimulation() : pauseJob()">
                 {{ isPaused ? 'Resume Job' : 'Pause Job' }}
@@ -183,7 +180,6 @@ const {
   isSimulating,
   generateMockData,
   selectedAssistant,
-  selectedNumber,
   runSimulation,
   clearCalls
 } = useCallScheduler()
@@ -191,7 +187,7 @@ const {
 const state = reactive({
   jobName: '',
   selectedAssistant: selectedAssistant,
-  selectedNumber: selectedNumber,
+  selectedNumber: [],
   contacts: null,
   isSubmitting: false,
   allowWeekends: false
@@ -255,7 +251,7 @@ async function handleCreateJob() {
     await slideover.close()
     resetComponents()
   } catch (error) {
-    console.error('Failed to create job:', error)
+    console.log('Failed to create job:', error)
     toast.add({
       title: 'Error',
       description: 'Failed to create job',
@@ -602,7 +598,7 @@ function downloadResults() {
 function resetComponents() {
   clearCalls()
   state.jobName = ''
-  selectedNumber.value = null
+  state.selectedNumber = []
   selectedAssistant.value = null
   selectedTimeWindow.value = timeWindowOptions[0]?.value
 }

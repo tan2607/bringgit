@@ -169,7 +169,6 @@ export default defineNuxtConfig({
   nitro: {    
   
     scheduledTasks: {
-      '* * * * *': ['jobs:schedule']
     },
     preset: 'cloudflare_pages',
     compatibilityDate: '2024-09-02',

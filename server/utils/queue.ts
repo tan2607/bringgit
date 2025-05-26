@@ -4,6 +4,7 @@ import { JobStorage, JobStatus } from './jobStorage'
 import { RateLimiter } from './rateLimiter'
 import { Scheduler } from './scheduler'
 import { jobQueue, jobs } from '../database/schema'
+import { getBusyPhoneNumbers, isPhoneNumberBusy } from './busyPhoneNumberCache'
 
 
 export interface CallMessage {
@@ -143,13 +144,12 @@ export class CallQueueHandler {
   }
 
   async processMessage(message: QueueMessage<CallMessage>) {
-    const { jobId, phoneNumber, assistantId, phoneNumberId, retryCount = 0, id: queueId, delay, scheduledAt, name } = message;
+    const { jobId, phoneNumber, assistantId, phoneNumberId, retryCount = 0, id: queueId, delay, scheduledAt, name, phoneNumbers } = message;
     const db = useDrizzle();
     const selectedTimeWindow = JSON.parse(message.selectedTimeWindow);
     const allowWeekends = selectedTimeWindow.allowWeekends;
     const daysOfWeek = allowWeekends ? [1, 2, 3, 4, 5, 6, 7] : [1, 2, 3, 4, 5];
-
-    console.log("daysOfWeek", daysOfWeek)
+    const allowedPhoneNumbers = phoneNumbers ? JSON.parse(phoneNumbers) : [phoneNumberId];
 
     const scheduler = new Scheduler({
       businessHours: {
@@ -178,6 +178,19 @@ export class CallQueueHandler {
       // await message.ack()
       return
     }
+
+    const availablePhoneNumber = this.getAvailablePhoneNumber(allowedPhoneNumbers);
+    if (!availablePhoneNumber) {
+      await this.updateJobProgress(message.jobId, {
+        failedNumbers: message.phoneNumberId,
+        error: `All phone lines are currently unavailable`
+      });
+      await this.sendToQueue(message, { delay: 5 })
+      return;
+    }
+
+
+
     console.log("Processing call for job", jobId);    
 
     const job = await db.query.jobs.findFirst({ where: eq(jobs.id, jobId) })
@@ -203,7 +216,7 @@ export class CallQueueHandler {
       
       const call = await this.vapi.client.calls.create({
         assistantId,
-        phoneNumberId,
+        phoneNumberId: availablePhoneNumber,
         customer: {
           number: phoneNumber,
           numberE164CheckEnabled: false
@@ -222,14 +235,14 @@ export class CallQueueHandler {
 
       console.log(`Successfully initiated call ${call.id} for job ${jobId}`)
 
+      message.phoneNumberId = availablePhoneNumber;
       await this.updateQueue({
         ...message,
         id: queueId,
         status: "completed",
         vapiId: call.id
       })
-      // await message.ack()
-
+      
     } catch (error: any) {
       console.error(`Error processing call for job ${jobId}:`, error)
 
@@ -252,10 +265,20 @@ export class CallQueueHandler {
         console.error(`Max retries exceeded for job ${jobId}, call to ${phoneNumber}`)
       }
 
-      await message.ack()
+      // await message.ack()
     } finally {
       await this.rateLimiter.releaseJobSlot(jobId)
     }
+  }
+
+  getAvailablePhoneNumber(phoneNumbers: string[]) {
+    for (const phoneNumber of phoneNumbers) {
+      const isBusy = isPhoneNumberBusy(phoneNumber);
+      if (!isBusy) {
+          return phoneNumber;
+      }
+    }
+    return null;
   }
 
   async processBatch(batch: QueueMessage<CallMessage>[]) {
@@ -332,6 +355,7 @@ export class CallQueueHandler {
           scheduledAt: message.scheduledAt,
           vapiId: null,
           selectedTimeWindow: JSON.stringify(message.selectedTimeWindow),
+          phoneNumbers: message.phoneNumbers
         };
   
         await db.insert(jobQueue).values(queuePayload as any);

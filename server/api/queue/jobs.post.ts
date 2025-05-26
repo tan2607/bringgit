@@ -28,10 +28,11 @@ export default defineEventHandler(async (event) => {
 			phoneNumber,
 			name: names?.[index],
 			assistantId,
-			phoneNumberId,
+			phoneNumberId: "",
 			retryCount: 0,
 			scheduledAt,
 			selectedTimeWindow,
+			phoneNumbers: phoneNumberId
 		}));
 
 		await processMessages(queueHandler, messages);

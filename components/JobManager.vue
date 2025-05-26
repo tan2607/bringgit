@@ -223,13 +223,22 @@ const columns = [
   },
   {
     accessorKey: 'phoneNumberId',
-    header: 'Outbound Number',
+    header: 'Outbound Numbers',
     cell: ({ row }: { row:any }) => {
       const phoneNumberId = row.getValue('phoneNumberId');
-      const phoneNumber = numbers.value.find(n => n.id === phoneNumberId);
-      const phoneNumberLabel = phoneNumber ? `${phoneNumber.number} (${phoneNumber.name})` : 'N/A';
+      let phoneNumberList = [];
+      try {
+        phoneNumberList = JSON.parse(phoneNumberId);
+      } catch (error) {
+        phoneNumberList = [phoneNumberId];
+      }
 
-      return phoneNumberLabel;
+      const phoneNumbers = phoneNumberList.map((id: string) => {
+        const phoneNumber = numbers.value.find(n => n.id === id);
+        return phoneNumber ? `${phoneNumber.number} (${phoneNumber.name})` : 'N/A';
+      });
+
+      return h('div', phoneNumbers.map(phoneNumber => h('p', phoneNumber)));
     }
   },
   {
