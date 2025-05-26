@@ -87,7 +87,7 @@ const dateRange = shallowRef({
     })()
   )
 })
-
+ 
 const callStatus = ref('all')
 
 const { 
@@ -144,18 +144,18 @@ const handleLoadFirst = async () => {
   page.value = 1
 }
 
-const exportToExcelFile = async () => {
-  if (!dateRange.value.start) return
+const exportToExcelFile = async (dataToExport?: any[]) => {
+  if (!dataToExport || !dateRange.value.start) return
 
   try {
     isExporting.value = true;
 
     // Generate filename with date range
-    const startDateStr = dateRange.value.start.toDate(getLocalTimeZone()).toLocaleDateString()
+    const startDateStr = dateRange.value.start?.toDate(getLocalTimeZone()).toLocaleDateString()
     const endDateStr = dateRange.value.end?.toDate(getLocalTimeZone()).toLocaleDateString() || startDateStr
     const filename = `calls_${startDateStr}_to_${endDateStr}.xlsx`
 
-    exportToExcel(calls.value, {
+    exportToExcel(dataToExport, {
       filename,
       sheetName: 'Calls',
       transformData: (call) => {

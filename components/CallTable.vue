@@ -44,7 +44,7 @@
                     <div class="text-white font-semibold mb-2">Select a Value</div>
                     <ul class="space-y-2">
                       <li v-for="value in filteredOptions" :key="value">
-                        <UButton :color="selectedValue === value ? 'success' : 'neutral'" variant="outline"
+                        <UButton :color="selectedValue.includes(value) ? 'success' : 'neutral'" variant="outline"
                           class="w-full text-left cursor-pointer" @click="handleChooseValue(value)">
                           {{ value }}
                         </UButton>
@@ -64,7 +64,7 @@
         <div class="flex flex-col md:flex-row items-center gap-2">
           <div v-if="hasMore && !props.quickView">
             <UTooltip 
-              text="Current is limited to 15000 calls, if you need more data click the button below">
+              text="Current is limited to 30000 calls, if you need more data click the button below">
               <UButton color="primary" variant="soft" :loading="isLoading" :disabled="isLoading || !hasMore"
                 class="cursor-pointer w-full md:w-auto" @click="$emit('load-more')">
                 <div class="flex items-center justify-center gap-2">
@@ -78,7 +78,8 @@
             <UTooltip text="Only loaded records will be exported. Click 'Load More' to load all records first.">
               <UButton v-if="props.exportButton" color="primary" variant="soft" :loading="props.isExporting"
                 :disabled="props.isLoadingTable || props.isExporting || !props.data?.length"
-                class="group cursor-pointer max-w-full md:max-w-[200px] whitespace-nowrap" @click="$emit('export')">
+                @click="handleExport"
+                class="group cursor-pointer max-w-full md:max-w-[200px] whitespace-nowrap">
                 <div class="flex items-center justify-center gap-2">
                   <UIcon name="i-lucide-download" />
                   {{ props.isExporting
@@ -270,8 +271,8 @@ const categories = computed(() => {
   return [...new Set(uniqueTags.value.map(tag => tag.split(":")[0]))].sort((a,b) => a.length - b.length);
 });
 
-const selectedCategory = ref(null);
-const selectedValue = ref(null);
+const selectedCategory = ref<string>("");
+const selectedValue = ref<string[]>([]);
 
 const filteredOptions = computed(() => {
   return uniqueTags.value
@@ -737,19 +738,19 @@ const quickViewColumns = computed(() => {
 const handleChooseCategory = (category: string) => {
   if(selectedCategory.value === category) {
     selectedCategory.value = null
-    selectedValue.value = null
+    selectedValue.value = []
     return
   }
   selectedCategory.value = category
-  selectedValue.value = null
+  selectedValue.value = []
 }
 
 const handleChooseValue = (value: string) => {
-  if(selectedValue.value === value) {
-    selectedValue.value = null
+  if(selectedValue.value.includes(value)) {
+    selectedValue.value = selectedValue.value.filter(v => v !== value)
     return
   }
-  selectedValue.value = value
+  selectedValue.value.push(value)
 }
 
 const filteredData = computed(() => {
@@ -760,8 +761,8 @@ const filteredData = computed(() => {
     rawData = rawData.filter(call => selectedBotPhoneNumbers.value.includes(call.botPhoneNumber));
   }
 
-  if(selectedCategory.value && selectedValue.value) {
-    rawData = rawData.filter(call => call.tags.includes(`${selectedCategory.value}: ${selectedValue.value}`));
+  if(selectedCategory.value && selectedValue.value.length > 0) {
+    rawData = rawData.filter(call => selectedValue.value.some(value => call.tags.includes(`${selectedCategory.value}: ${value}`)));
   }
 
   return rawData;
@@ -791,6 +792,10 @@ const handleUpdateReview = async (review: string) => {
     color: 'error'
   })
  }
+}
+
+function handleExport() {
+  emit('export', filteredData.value || []);
 }
 
 

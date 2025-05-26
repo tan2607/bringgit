@@ -84,6 +84,7 @@ export const jobQueue = sqliteTable('job_queue', {
   delay: integer('delay'),
   scheduledAt: text('scheduled_at'),
   selectedTimeWindow: text('selected_time_window'),
+  phoneNumbers: text('phone_numbers'),
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(strftime('%s', 'now'))`),
   updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().default(sql`(strftime('%s', 'now'))`)
 })

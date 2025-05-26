@@ -85,6 +85,9 @@
               <PhoneNumberSelect v-model="state.selectedNumber" class="w-full" />
             </UFormField>
           </div>
+          <div>
+            <UCheckbox v-model="state.allowWeekends" label="Allow Processing on Weekends" />
+          </div>
 
           <div class="flex items-center justify-between">
             <div class="space-y-2 text-sm text-gray-500">
@@ -102,13 +105,10 @@
             <div class="flex justify-end space-x-2 mt-4">
               <!-- handleCreateJob -->
               <UButton v-if="scheduledCalls.length && !isSimulating" color="primary"
-                :disabled="!selectedAssistant || !selectedNumber" @click="handleCreateJob" :loading="isLoadingCreateJob">
-                {{ !selectedAssistant || !selectedNumber ? 'Select Assistant & Phone Number' : 'Run Job' }}
+                :disabled="!selectedAssistant || state.selectedNumber.length === 0" @click="handleCreateJob" :loading="isLoadingCreateJob">
+                {{ !selectedAssistant || state.selectedNumber.length === 0 ? 'Select Assistant & Phone Number' : 'Run Job' }}
               </UButton>
-              <!-- <UButton v-if="scheduledCalls.length && !isSimulating" color="primary"
-                :disabled="!state.selectedAssistant || !state.selectedNumber" @click="runSimulation">
-                {{ !state.selectedAssistant || !state.selectedNumber ? 'Select Assistant & Phone Number' : 'Run Job' }}
-              </UButton> -->
+
               <UButton v-if="isSimulating" :color="isPaused ? 'primary' : 'warning'"
                 @click="isPaused ? runSimulation() : pauseJob()">
                 {{ isPaused ? 'Resume Job' : 'Pause Job' }}
@@ -180,7 +180,6 @@ const {
   isSimulating,
   generateMockData,
   selectedAssistant,
-  selectedNumber,
   runSimulation,
   clearCalls
 } = useCallScheduler()
@@ -188,9 +187,10 @@ const {
 const state = reactive({
   jobName: '',
   selectedAssistant: selectedAssistant,
-  selectedNumber: selectedNumber,
+  selectedNumber: [],
   contacts: null,
-  isSubmitting: false
+  isSubmitting: false,
+  allowWeekends: false
 })
 
 const selectedDate = defineModel('selectedDate', { type: Object })
@@ -236,7 +236,11 @@ async function handleCreateJob() {
       schedule: new Date(selectedYear, selectedMonth - 1, selectedDay, currentHour, currentMinute, 0, 0),
       totalCalls: scheduledCalls.value.length,
       phoneNumberId: state.selectedNumber,
-      selectedTimeWindow: selectedTimeWindow.value
+      selectedTimeWindow: {
+        start: selectedTimeWindow.value.start,
+        end: selectedTimeWindow.value.end,
+        allowWeekends: state.allowWeekends
+      },
     })
     toast.add({
       title: 'Success',
@@ -247,7 +251,7 @@ async function handleCreateJob() {
     await slideover.close()
     resetComponents()
   } catch (error) {
-    console.error('Failed to create job:', error)
+    console.log('Failed to create job:', error)
     toast.add({
       title: 'Error',
       description: 'Failed to create job',
@@ -425,6 +429,10 @@ const timeWindowOptions = [
   { label: '8 AM - 4 PM', value: { start: 8, end: 16 } },
   { label: '10 AM - 6 PM', value: { start: 10, end: 18 } },
   { label: '9 AM - 8 PM', value: { start: 9, end: 20 } },
+  { label: '9 AM - 12 PM', value: { start: 9, end: 12 } },
+  { label: '10 AM - 9 PM', value: { start: 10, end: 21 } },
+  { label: '9 AM - 9 PM', value: { start: 9, end: 21 } },
+  { label: '11 AM - 9 PM', value: { start: 11, end: 21 } },
   { label: "Anytime", value: { start: 0, end: 24 } }
 ]
 
@@ -590,7 +598,7 @@ function downloadResults() {
 function resetComponents() {
   clearCalls()
   state.jobName = ''
-  selectedNumber.value = null
+  state.selectedNumber = []
   selectedAssistant.value = null
   selectedTimeWindow.value = timeWindowOptions[0]?.value
 }

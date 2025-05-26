@@ -156,7 +156,6 @@ export default defineNuxtConfig({
       }
     },
     scheduledTasks: {
-      '* * * * *': ['jobs:schedule']
     },
     preset: 'cloudflare_pages',
     compatibilityDate: '2024-09-02',
