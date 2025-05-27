@@ -261,7 +261,15 @@ const columns = [
   { 
     accessorKey: 'progress', 
     header: 'Progress', 
-    cell: ({ row }: { row:any }) => `${row.getValue('progress')}%` 
+    cell: ({ row }: { row:any }) => {
+      let progress = row.getValue('progress');
+
+      if(progress > 100 ) {
+        progress = 100
+      }
+
+      return  `${progress}%`
+    }
   },
   {
     accessorKey: 'status',
