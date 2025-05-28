@@ -2,6 +2,10 @@
 const baseUrl = process.env.NUXT_PUBLIC_BASE_URL || process.env.CF_PAGES_URL || "http://localhost:3000"
 
 export default defineNuxtConfig({
+  compatibilityDate: '2025-04-25',
+  future: {
+    compatibilityVersion: 4,
+  },
   debug: false,
   icon: {
     serverBundle: 'remote'
@@ -66,10 +70,6 @@ export default defineNuxtConfig({
       }
     }
   },
-  future: {
-    compatibilityVersion: 4,
-  },
-  compatibilityDate: '2024-04-03',
   vite: {
     resolve: {
       alias: {
@@ -158,7 +158,6 @@ export default defineNuxtConfig({
     scheduledTasks: {
     },
     preset: 'cloudflare_pages',
-    compatibilityDate: '2024-09-02',
     experimental: {
       openAPI: true,
       tasks: true,
@@ -172,9 +171,9 @@ export default defineNuxtConfig({
     },
     openAPI: {
       meta: {
-        title: 'KeyReply Voice AI',
-        description: 'KeyReply Voice AI API endpoints',
-        version: '1.0',
+        title: 'KeyReply',
+        description: 'KeyReply AI API endpoints',
+        version: '1.1',
       },
       ui: {
         scalar: {

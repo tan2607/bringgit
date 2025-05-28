@@ -1,4 +1,4 @@
-import { Assistant } from '@/types'
+import type { Assistant } from '@/types'
 
 export const useAssistantState = () => {
   const currentAssistant = useState<Assistant | null>('currentAssistant', () => null)
