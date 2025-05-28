@@ -10,7 +10,7 @@ export const useCalls = () => {
   const pageSize = 1000
   const previousEndDates = useState('previousEndDates', () => [])
   const fetchingProgress = useState('fetchingProgress', () => 0)
-  const callsLimit = 30000
+  const callsLimitInit = 30000
   let abortController: AbortController | null = null;
 
   const fetchCalls = async (startDate, endDate, limit, loadMore = false) => {
@@ -27,6 +27,9 @@ export const useCalls = () => {
     try {
       isLoading.value = true;
       fetchingProgress.value = 0;
+
+      const totalDates = calculateTotalDates(startDate, endDate);
+      const callsLimit = callsLimitInit * totalDates;
   
       const queryParams = buildQueryParams(startDate, endDate, limit || pageSize, loadMore);
       const { data, error } = await fetchData(queryParams, signal);
@@ -96,6 +99,14 @@ export const useCalls = () => {
   
   const calculateProgress = (unfilteredCallTotal, totalCalls) => {
     return Math.floor((unfilteredCallTotal / totalCalls) * 100);
+  };
+
+  const calculateTotalDates = (startDate, endDate) => {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const diffTime = Math.abs(end.getTime() - start.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
   };
   
   const filterCalls = (unfilteredResults, startDate) => {
