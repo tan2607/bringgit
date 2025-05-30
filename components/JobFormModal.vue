@@ -75,7 +75,7 @@
             placeholder="Select a time window"
             class="w-full"
           />
-          <UCheckbox v-model="jobForm.allowOnWeekends" label="Allow on weekends" class="mt-2"/>
+          <UCheckbox v-model="jobForm.allowWeekends" label="Allow on weekends" class="mt-2"/>
         </UFormField>
 
         <UFormField
@@ -195,7 +195,7 @@ const jobForm = ref({
     end: 17
   },
   names: [],
-  allowOnWeekends: false
+  allowWeekends: false
 })
 
 const scheduleDate = ref(currentDate);
@@ -228,7 +228,7 @@ const handleSubmit = async (event: FormSubmitEvent<JobFormSchema>) => {
       selectedTimeWindow: JSON.stringify({
         start: jobForm.value.selectedTimeWindow.start,
         end: jobForm.value.selectedTimeWindow.end,
-        allowOnWeekends: jobForm.value.allowOnWeekends
+        allowWeekends: jobForm.value.allowWeekends
       }),
       totalCalls: phoneNumbers.length,
     }
@@ -320,7 +320,7 @@ watch(() => props.editingJob, (job) => {
       },
       names: JSON.parse(job.names),
       phoneNumberId,
-      allowOnWeekends: selectedTimeWindow.allowOnWeekends
+      allowWeekends: selectedTimeWindow.allowWeekends
     }
     const schedule = new Date(job.schedule)
     scheduleDate.value = new CalendarDate(schedule.getFullYear(), schedule.getMonth() + 1, schedule.getDate());
