@@ -404,14 +404,16 @@ const getJobActions = (job: Job) => {
       label: 'Quick View',
       icon: 'i-heroicons-eye',
       onSelect: () => handleJobAction('view', job)
-    },
-    {
+    }
+  ]
+  
+  if (currentJobStatus !== 'completed') {
+    actions.push({
       label: 'Edit',
       icon: 'i-heroicons-pencil-square',
       onSelect: () => handleJobAction('edit', job)
-    }
-  ]
-
+    })
+  }
   // Add status-based actions
   if (currentJobStatus === 'paused') {
     actions.push({
