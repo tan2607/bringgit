@@ -49,10 +49,22 @@
               placeholder="Enter phone numbers (one per line)"
               rows="4"
               class="w-full"
+              readonly
             />
             <div class="text-xs text-gray-500">
               {{ getPhoneNumberCount() }} numbers entered
             </div>
+
+            <!-- Upload new phone numbers -->
+            <UButton
+              color="primary"
+              icon="i-heroicons-document-text"
+              ref="fileInput"
+              @click="uploadPhoneNumbers"
+            >
+              Upload Phone Numbers
+            </UButton>
+            <input id="file-input" ref="fileInput" type="file" accept=".csv,.xlsx,.xls" @input="handleFileInput" class="hidden"/>
           </div>
         </UFormField>
 
@@ -63,6 +75,7 @@
             placeholder="Select a time window"
             class="w-full"
           />
+          <UCheckbox v-model="jobForm.allowOnWeekends" label="Allow on weekends" class="mt-2"/>
         </UFormField>
 
         <UFormField
@@ -88,6 +101,7 @@
             :items="formattedPhoneNumber"
             placeholder="Select a phone number"
             class="w-full"
+            multiple
           />
         </UFormField>
 
@@ -121,6 +135,8 @@ import { z } from 'zod'
 import { CalendarDate, today } from '@internationalized/date'
 import type { Matcher } from '#ui/types'
 import type { Assistant } from '~/types/assistant'
+import * as XLSX from 'xlsx'
+
 const props = defineProps<{
   modelValue: boolean
   editingJob?: Job | null
@@ -141,7 +157,7 @@ const jobFormSchema = z.object({
   schedule: z.date().min(new Date(new Date().setHours(0, 0, 0, 0)), 'Schedule must be in the future'),
   phoneNumbers: z.string().min(1, 'At least one phone number is required'),
   assistantId: z.string().min(1, 'Assistant is required'),
-  phoneNumberId: z.string().min(1, 'Phone number is required'),
+  phoneNumberId: z.array(z.string()).min(1, 'Phone number is required'),
   selectedTimeWindow: z.object({
     start: z.number().min(0).max(24),
     end: z.number().min(0).max(24)
@@ -173,12 +189,15 @@ const jobForm = ref({
   schedule: new Date(),
   phoneNumbers: '',
   assistantId: '',
-  phoneNumberId: '',
+  phoneNumberId: [],
   selectedTimeWindow: {
     start: 9,
     end: 17
-  }
+  },
+  names: [],
+  allowOnWeekends: false
 })
+
 const scheduleDate = ref(currentDate);
 // Update jobForm.schedule when scheduleDate changes
 watch(scheduleDate, (newDate) => {
@@ -203,7 +222,15 @@ const handleSubmit = async (event: FormSubmitEvent<JobFormSchema>) => {
 
     const jobData = {
       ...event.data,
-      phoneNumbers,
+      phoneNumbers: JSON.stringify(phoneNumbers),
+      names: JSON.stringify(jobForm.value.names),
+      phoneNumberId: JSON.stringify(jobForm.value.phoneNumberId),
+      selectedTimeWindow: JSON.stringify({
+        start: jobForm.value.selectedTimeWindow.start,
+        end: jobForm.value.selectedTimeWindow.end,
+        allowOnWeekends: jobForm.value.allowOnWeekends
+      }),
+      totalCalls: phoneNumbers.length,
     }
     emit('submit', jobData)
     emit('update:modelValue', false)
@@ -223,13 +250,77 @@ const formattedPhoneNumber = computed(() => {
   })
 })
 
+const fileInput = ref<HTMLInputElement | null>(null)
+
+function handleFileInput(e: Event) {
+  const file = (e.target as HTMLInputElement).files?.[0]
+  if (file) {
+    processFile(file)
+  }
+}
+
+async function processFile(file: File) {
+  try {
+    const data = await readFileAsArrayBuffer(file)
+    const workbook = XLSX.read(data, { type: 'array' })
+    const firstSheetName = workbook.SheetNames[0]
+    const worksheet = workbook.Sheets[firstSheetName]
+    const rows = XLSX.utils.sheet_to_json(worksheet)
+
+    if (rows.length === 0) {
+      throw new Error('File is empty')
+    }
+
+    // Check if phone_number column exists
+    const firstRow = rows[0] as any
+    if (!('phone_number' in firstRow)) {
+      throw new Error('File must contain a phone_number column')
+    }
+
+    // Push phone numbers to jobForm.phoneNumbers
+    jobForm.value.phoneNumbers += '\n' + rows.map((row: any) => `+${row.phone_number}`).join('\n')
+    jobForm.value.names.push(...rows.map((row: any) => row.name))
+    
+  } catch (error: any) {
+    console.error('Error processing file:', error)
+    // You might want to show an error message to the user here
+  }
+}
+
+function readFileAsArrayBuffer(file: File): Promise<ArrayBuffer> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = (e) => resolve(e.target?.result as ArrayBuffer)
+    reader.onerror = (e) => reject(e)
+    reader.readAsArrayBuffer(file)
+  })
+}
+
+function uploadPhoneNumbers() {
+  fileInput.value?.click()
+}
 // Watch for editingJob changes to update form
 watch(() => props.editingJob, (job) => {
   if (job) {
+    const selectedTimeWindow = JSON.parse(job.selectedTimeWindow)
+
+    let phoneNumberId = []
+    try {
+      phoneNumberId = JSON.parse(job.phoneNumberId)
+    } catch (error) {
+      phoneNumberId = [job.phoneNumberId]
+    }
+
     jobForm.value = {
       ...job,
       phoneNumbers: JSON.parse(job.phoneNumbers).join('\n'),
-      selectedTimeWindow: JSON.parse(job.selectedTimeWindow)
+      selectedTimeWindow: {
+        start: selectedTimeWindow.start,
+        end: selectedTimeWindow.end
+      },
+      names: JSON.parse(job.names),
+      phoneNumberId,
+      allowOnWeekends: selectedTimeWindow.allowOnWeekends
     }
     const schedule = new Date(job.schedule)
     scheduleDate.value = new CalendarDate(schedule.getFullYear(), schedule.getMonth() + 1, schedule.getDate());
@@ -239,7 +330,12 @@ watch(() => props.editingJob, (job) => {
       schedule: new Date(),
       phoneNumbers: '',
       assistantId: '',
-      phoneNumberId: ''
+      phoneNumberId: [],
+      selectedTimeWindow: {
+        start: 9,
+        end: 17
+      },
+      names: []
     }
   }
 }, { immediate: true })

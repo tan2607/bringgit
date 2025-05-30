@@ -241,7 +241,11 @@ export const useJobState = () => {
       })
 
       if (response.success) {
-        await startJob(jobData.id)
+        // update Job
+        const jobIndex = jobState.value.jobs.findIndex(job => job.id === jobData.id)
+        if (jobIndex !== -1) {
+          jobState.value.jobs[jobIndex] = jobData
+        }
         return true
       }
       return false
@@ -332,6 +336,7 @@ export const useJobState = () => {
     getJobs,
     deleteJob,
     getJobQueueByJobId,
-    loadMoreJobs
+    loadMoreJobs,
+    editJob
   }
 }
