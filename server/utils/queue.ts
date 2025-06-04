@@ -146,10 +146,24 @@ export class CallQueueHandler {
   async processMessage(message: QueueMessage<CallMessage>) {
     const { jobId, phoneNumber, assistantId, phoneNumberId, retryCount = 0, id: queueId, delay, scheduledAt, name, phoneNumbers } = message;
     const db = useDrizzle();
-    const selectedTimeWindow = JSON.parse(message.selectedTimeWindow);
-    const allowWeekends = selectedTimeWindow.allowWeekends;
+
+    
+    let selectedTimeWindow;
+    try {
+      selectedTimeWindow = message.selectedTimeWindow ? JSON.parse(message.selectedTimeWindow) : null;
+    } catch (error) {
+      selectedTimeWindow = null;
+    }
+    
+    let allowedPhoneNumbers;
+    try {
+      allowedPhoneNumbers = phoneNumbers && typeof phoneNumbers === 'string' ? JSON.parse(phoneNumbers) : [phoneNumberId];
+    } catch (error) {
+      allowedPhoneNumbers = [phoneNumberId];
+    }
+
+    const allowWeekends = selectedTimeWindow?.allowWeekends;
     const daysOfWeek = allowWeekends ? [1, 2, 3, 4, 5, 6, 7] : [1, 2, 3, 4, 5];
-    const allowedPhoneNumbers = phoneNumbers ? JSON.parse(phoneNumbers) : [phoneNumberId];
 
     const scheduler = new Scheduler({
       businessHours: {
