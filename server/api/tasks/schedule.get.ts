@@ -78,7 +78,7 @@ export default defineEventHandler(async (event) => {
 
     return {
       result: "success",
-      queues: queuesByJobId,
+      queues: jobIdsToProcess,
       scheduledAt: new Date(),
     };
   } catch (error) {
