@@ -135,7 +135,7 @@
 </template>
 
 <script setup lang="ts">
-import { CallRecording } from '@@/server/utils/providers/ringcentral'
+import { type CallRecording } from '@@/server/utils/providers/ringcentral'
 
 // State management
 const recordings = useState<CallRecording[]>('callRecordings', () => [])
