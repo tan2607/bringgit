@@ -132,7 +132,11 @@ const UPopover = resolveComponent('UPopover')
 
 const toast = useToast()
 const { t } = useI18n()
-const slideover = useSlideover()
+const overlay = useOverlay()
+
+const assistantSlideover = overlay.create(AssistantSlideover)
+const promptSlideover = overlay.create(PromptSlideover)
+const callSlideover = overlay.create(CallSlideover)
 
 // interface Assistant {
 //   id: string
@@ -365,13 +369,11 @@ function getRowItems(row: Row<Assistant>) {
 
 function openEditSlideover(assistant: Assistant, advanced: boolean = false) {
   if (advanced) {
-    slideover.open(AssistantSlideover, {
-      title: t('assistant.edit'),
+    assistantSlideover.open({
       assistant
     })
   } else {
-    slideover.open(PromptSlideover, {
-      title: t('assistant.edit'),
+    promptSlideover.open({
       assistant
     })
   }
@@ -389,7 +391,7 @@ function getLanguageTag(assistant: Assistant) {
 }
 
 function openCallSlideover(assistant: Assistant) {
-  slideover.open(CallSlideover, {
+  callSlideover.open({
     assistant
   })
 }

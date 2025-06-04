@@ -40,6 +40,7 @@
       </div>
       
       <div v-for="assistant in sortedAssistants" :key="assistant.id" class="mb-4">
+        <!-- 
         <div v-if="assistantRecommendations[assistant.id]?.length" class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
           <div class="flex items-center justify-between mb-2">
             <h3 class="font-semibold text-yellow-800">{{ assistant.name }}</h3>
@@ -65,7 +66,8 @@
               />
             </li>
           </ul>
-        </div>
+        </div> 
+        -->
       </div>
       
       <!-- Debug information -->
@@ -98,11 +100,14 @@ import { getUpgradeRecommendations, type UpgradeRecommendation } from '@/utils/a
 
 const { t } = useI18n()
 const { assistants, fetchAssistants } = useAssistants()
-const slideover = useSlideover()
+const overlay = useOverlay()
 const toast = useToast()
 
+const createSlideover = overlay.create(CreateAssistantSlideover)
+const emit = defineEmits(['close'])
+
 function openCreateSlideover() {
-  slideover.open(CreateAssistantSlideover, {
+  createSlideover.open({
       title: t('assistant.create'),
       onCreated: () => {
         fetchAssistants()

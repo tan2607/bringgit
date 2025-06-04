@@ -180,7 +180,10 @@ const UDropdownMenu = resolveComponent('UDropdownMenu')
 const UInput = resolveComponent('UInput')
 const UIcon = resolveComponent('UIcon')
 const toast = useToast();
-const slideover = useSlideover()
+const overlay = useOverlay()
+const callSlideover = overlay.create(CallSlideover)
+const transcriptSlideover = overlay.create(TranscriptSlideover)
+
 const selectedAssistant = ref<Assistant | undefined>()
 
 const page = ref(1)
@@ -513,13 +516,14 @@ const columns = computed(() => {
           color: 'primary',
           variant: 'ghost',
           onClick: () => {
+            transcriptSlideover.open()
+
             if (currentPlayingId.value) {
               togglePlayAudio('', currentPlayingId.value)
             }
             const id = row.getValue('id');
             const call = props.data.find(call => call.id === id)
             selectedCall.value = call
-            slideover.open(TranscriptSlideover)
           }
         })
       ])
@@ -723,7 +727,7 @@ const quickViewColumns = computed(() => {
               }
                 const call = props.data.find(call => call.vapiId === vapiId)
                 selectedCall.value = call
-                slideover.open(TranscriptSlideover)
+                transcriptSlideover.open()
               }
             })
           ])

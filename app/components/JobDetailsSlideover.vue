@@ -13,7 +13,7 @@
 							color="gray"
 							variant="ghost"
 							class="cursor-pointer"
-							@click="slideover.close()"
+							@click="emit('close')"
 						/>
 					</div>
 				</template>
@@ -69,7 +69,7 @@
 	import { ref } from "vue";
 	import type { Job } from "~/types";
 	import { useCalls } from '@/composables/useCalls'
-	const slideover = useSlideover()
+	
 	const jobQueues = ref<any[]>([])
 
 	const props = defineProps<{

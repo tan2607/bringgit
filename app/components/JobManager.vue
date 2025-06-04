@@ -135,6 +135,7 @@ import { useJobState } from '@/composables/useJobState'
 import JobFormModal from './JobFormModal.vue'
 import JobDetailsSlideover from './JobDetailsSlideover.vue'
 
+const jobDetailsSlideover = useOverlay().create(JobDetailsSlideover)
 
 const UButton = resolveComponent('UButton')
 const UBadge = resolveComponent('UBadge')
@@ -156,7 +157,7 @@ const { numbers, fetchNumbers } = usePhoneNumbers()
 const { confirm } = useConfirm()
 const toast = useToast()
 
-const slideover = useSlideover()
+const overlay = useOverlay()
 
 
 // Local UI jobState
@@ -451,7 +452,7 @@ const handleJobAction = async (action: string, job: Job) => {
   switch (action) {
     case 'view':
       quickViewJob.value = filteredJobs.value[job.id]
-      slideover.open(JobDetailsSlideover, {
+      jobDetailsSlideover.open({
         jobId: quickViewJob.value.id
       })
       break

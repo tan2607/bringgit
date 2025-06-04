@@ -24,10 +24,10 @@
 
     <template #footer>
       <div class="flex justify-end w-full items-center space-x-4">
-        <UButton
+        <UButton  
           color="neutral"
           variant="soft"
-          @click="slideover.close()"
+          @click="emit('close')"
           :disabled="crawling"
         >
           {{ t('prompt.cancel') }}
@@ -65,7 +65,7 @@ const crawledContent = ref('')
 const crawling = ref(false)
 
 const { t } = useI18n()
-const slideover = useSlideover()
+const overlay = useOverlay()
 
 async function crawlWebsite() {
   if (!websiteUrl.value) return
@@ -99,13 +99,11 @@ async function crawlWebsite() {
 function importContent() {
   if (!crawledContent.value) return
   
-  // Append the crawled content to the current prompt
   editedPrompt.value = editedPrompt.value.trim() + '\n\n' + 
     `# Knowledge from ${websiteUrl.value}\n` + 
     crawledContent.value.trim()
   
-  // Close the import slideover
-  slideover.close()
+  emit('close')
   
   toast.add({
     title: t('prompt.success'),

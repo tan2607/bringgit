@@ -63,10 +63,9 @@ interface Props {
 }
 
 defineProps<Props>()
-const emit = defineEmits(['created'])
+const emit = defineEmits(['created', 'close'])
 
 const { t } = useI18n()
-const slideover = useSlideover()
 const { templates, applyTemplate } = useAssistant()
 
 const selectedTemplate = ref('')
@@ -92,7 +91,7 @@ async function createAgent() {
       body: newAssistant
     })
     emit('created', createdAssistant)
-    slideover.close()
+    emit('close')
   } catch (error) {
     console.error('Failed to create assistant:', error)
   } finally {
@@ -101,6 +100,6 @@ async function createAgent() {
 }
 
 function close() {
-  slideover.close()
+  emit('close')
 }
 </script>

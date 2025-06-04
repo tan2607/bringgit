@@ -106,7 +106,10 @@ import { languages } from '@@/i18n/languages'
 import type { Assistant } from '@@/types/assistant'
 
 const { t } = useI18n()
-const slideover = useSlideover()
+const overlay = useOverlay()
+const testSlideover = overlay.create(TestSlideover)
+const criteriaSlideover = overlay.create(CriteriaSlideover)
+
 const assistantState = useAssistantState()
 
 const props = defineProps<{
@@ -143,7 +146,7 @@ const isValid = computed(() => {
 })
 
 const close = () => {
-  slideover.close()
+  emit('close')
   assistantState.resetState()
 }
 
@@ -163,11 +166,11 @@ const save = async () => {
 
 const openTest = () => {
   assistantState.isTestMode.value = true
-  slideover.open(TestSlideover)
+  testSlideover.open()
 }
 
 const openAddCriteria = () => {
-  slideover.open(CriteriaSlideover)
+  criteriaSlideover.open()
 }
 
 const deleteCriterion = (id: string) => {

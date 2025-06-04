@@ -54,7 +54,7 @@ import { useI18n } from 'vue-i18n'
 import { useAssistantState } from '@/composables/useAssistantState'
 
 const { t } = useI18n()
-const slideover = useSlideover()
+const overlay = useOverlay()
 const { currentAssistant } = useAssistantState()
 
 const testMessage = ref('')
@@ -62,7 +62,7 @@ const response = ref('')
 const isLoading = ref(false)
 
 const close = () => {
-  slideover.close()
+  emit('close')
   testMessage.value = ''
   response.value = ''
 }

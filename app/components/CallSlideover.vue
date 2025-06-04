@@ -1,7 +1,7 @@
 <template>
   <USlideover>
     <template #body>
-      <CallForm :assistant-id="assistant?.id!" :assistant-name="assistant?.name!" @success="handleSuccess" @error="handleError" @cancel="close" />
+      <CallForm :assistant-id="assistant?.id!" :assistant-name="assistant?.name!" @success="handleSuccess" @error="handleError" @cancel="emit('close')"/>
     </template>
   </USlideover>
 </template>
@@ -12,7 +12,6 @@ import CallForm from './CallForm.vue'
 import type { Assistant } from '@@/types/assistant'
 
 const { t } = useI18n()
-const slideover = useSlideover()
 const toast = useToast()
 
 const props = defineProps<{
@@ -36,9 +35,5 @@ const handleError = (message: string) => {
     color: 'error',
     icon: 'i-lucide-x'
   })
-}
-
-const close = () => {
-  slideover.close()
 }
 </script>

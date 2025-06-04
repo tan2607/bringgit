@@ -90,7 +90,7 @@
           v-if="!isEditing"
           color="neutral"
           variant="soft"
-          @click="close"
+          @click="emit('close')"
         >
           {{ t('prompt.close') }}
         </UButton>
@@ -112,11 +112,13 @@
 import WebsiteImportSlideover from './WebsiteImportSlideover.vue'
 
 const { t } = useI18n()
-const slideover = useSlideover()
+const overlay = useOverlay()
 const toast = useToast()
 
+const websiteImportSlideover = overlay.create(WebsiteImportSlideover)
+
 function openWebsiteImport() {
-  slideover.open(WebsiteImportSlideover, {})
+  websiteImportSlideover.open()
 }
 
 const props = defineProps<{
@@ -179,10 +181,6 @@ function cancelEditing() {
   isEditing.value = false
 }
 
-function close() {
-  slideover.close()
-}
-
 async function saveChanges() {
   if (!hasChanges) return
 
@@ -203,7 +201,7 @@ async function saveChanges() {
     // Reset the state and close the slideover
     editedPrompt.value = ''
     isEditing.value = false
-    close()
+    emit('close')
     
     toast.add({
       title: t('prompt.success'),

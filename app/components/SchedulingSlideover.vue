@@ -169,8 +169,11 @@ import * as XLSX from 'xlsx'
 
 const toast = useToast()
 const isOpen = defineModel('modelValue', { type: Boolean })
-const slideover = useSlideover()
+const overlay = useOverlay()
 const fileInput = ref<HTMLInputElement | null>(null)
+
+const transcriptSlideover = overlay.create(TranscriptSlideover)
+const emit = defineEmits(['close'])
 
 const { createJob, pauseJob } = useJobState()
 const { assistants, fetchAssistants } = useAssistants()
@@ -248,7 +251,7 @@ async function handleCreateJob() {
       color: 'success'
     })
     isLoadingCreateJob.value = false
-    await slideover.close()
+    emit('close')
     resetComponents()
   } catch (error) {
     console.log('Failed to create job:', error)
@@ -416,7 +419,7 @@ const openTranscript = (call: any) => {
   const { selectedCall } = useCalls()
   selectedCall.value = call
 
-  slideover.open(TranscriptSlideover)
+  transcriptSlideover.open()
 }
 
 const workingHours = computed(() => ({

@@ -147,6 +147,13 @@ const adminItems = [
     description: t('view-demo'),
     children: [
       {
+        key: 'demo-medication',
+        label: 'Medication Assistant',
+        icon: 'i-lucide-languages',
+        description: 'Get medication information and side effects',
+        to: localeRoute('/demo/medication')?.path
+      },
+      {
         key: 'demo-translation',
         label: t('translation-demo'),
         icon: 'i-lucide-languages',
@@ -178,7 +185,7 @@ const adminItems = [
         key: 'demo-ocr',
         label: t('ocr-demo'),
         icon: 'i-lucide-file-scan',
-        to: localeRoute('/ocr')
+        to: localeRoute('/ocr')?.path
       },
       {
         key: 'demo-rpa',
@@ -215,86 +222,34 @@ const adminItems = [
         description: t('claims-assistant-description'),
         to: localeRoute('/demo/claims-assistant')?.path
       },
-    ]
-  },
-  {
-    label: 'Sandbox',
-    icon: 'i-lucide-layout-template',
-    description: 'View demo pages',
-    children: [
       {
-        label: 'Translation',
-        icon: 'i-lucide-languages',
-        description: 'Translation demo',
-        to: localeRoute('/demo/translation')?.path
-      },
-      {
-        label: 'Patient Intake',
-        icon: 'i-lucide-clipboard-list',
-        description: 'Patient intake form demo',
-        to: localeRoute('/demo/patient-intake-form')?.path
-      },
-      {
-        label: 'SMS',
-        icon: 'i-lucide-message-square',
-        description: 'SMS sender demo',
-        to: localeRoute('/demo/sms')?.path
-      },
-      {
-        label: 'Location Search',
-        icon: 'i-lucide-map-pin',
-        description: 'Clinic location search demo',
-        to: localeRoute('/demo/location')?.path
-      },
-      {
-        label: 'OCR Demo',
-        icon: 'i-lucide-file-scan',
-        to: localeRoute('/ocr')?.path
-      },
-      {
-        label: 'Vitalus',
-        icon: 'i-lucide-file-scan',
+        key: 'demo-call',
+        label: t('call-demo'),
+        icon: 'i-lucide-phone-call',
+        description: t('call-demo-description'),
         children: [
           {
-            label: 'Brightree Demo',
-            icon: 'i-lucide-file-scan',
-            to: localeRoute('/demo/brightree')?.path
-          },
-          {
-            label: 'RingCentral Demo',
-            icon: 'i-lucide-file-scan',
+            key: 'demo-call-ringcentral',
+            label: t('ringcentral-demo'),
+            icon: 'i-lucide-phone',
+            description: t('ringcentral-demo-description'),
             to: localeRoute('/demo/ringcentral')?.path
           },
           {
-            label: 'Webcall Demo',
+            key: 'demo-call-webcall',
+            label: t('webcall-demo'),
             icon: 'i-lucide-file-scan',
+            description: t('webcall-demo-description'),
             to: localeRoute('/demo/webcall')?.path
           }
         ]
       },
       {
-        label: 'RPA Demo',
-        icon: 'i-lucide-cpu',
-        description: 'RPA',
-        to: localeRoute('/demo/rpa')?.path
-      },
-      {
-        label: 'Company Research',
+        key: 'demo-company-research',
+        label: t('company-research'),
         icon: 'i-lucide-brain',
-        description: 'Deep Research',
-        to: localeRoute('/research')?.path
-      },
-      {
-        label: 'Workflow Demo',
-        icon: 'i-lucide-workflow',
-        description: 'Home Sleep Study Workflow',
-        to: localeRoute('/demo/workflow')?.path
-      },
-      {
-        label: 'Report Assistant',
-        icon: 'i-lucide-table',
-        description: 'Ask questions about your reports',
-        to: localeRoute('/demo/report-assistant')?.path
+        description: t('company-research-description'),
+        to: localeRoute('/demo/company-research')?.path
       },
     ]
   },

@@ -51,7 +51,6 @@ import { useI18n } from 'vue-i18n'
 import { useAssistantState } from '@/composables/useAssistantState'
 
 const { t } = useI18n()
-const slideover = useSlideover()
 const { currentAssistant } = useAssistantState()
 
 const name = ref('')
@@ -64,7 +63,7 @@ const isValid = computed(() => {
 })
 
 const close = () => {
-  slideover.close()
+  emit('close')
   resetForm()
 }
 

@@ -1,8 +1,8 @@
 <template>
-  <USlideover title="Call Transcript">
+  <USlideover title="Call Transcript" v-model:open="open">
 
     <template #header>
-      <div class="flex justify-between items-center space-x-4 px-2">
+      <div class="flex justify-between items-center space-x-4 px-2 w-full">
         <div class="flex items-center gap-2">
           <UButton 
             :icon="isPlaying ? 'i-lucide-pause' : 'i-lucide-play'" 
@@ -169,14 +169,11 @@
 import { useCalls } from '@/composables/useCalls'
 import { useRecordingUrl } from '@/composables/useRecordingUrl'
 
+const open = defineModel<boolean>('open')
 const { selectedCall: call } = useCalls()
-const slideover = useSlideover()
 const { transformRecordingUrl } = useRecordingUrl()
 
-const emit = defineEmits(['close'])
-
 const close = () => {
-  slideover.close()
   emit('close')
 }
 
@@ -373,7 +370,7 @@ onBeforeUnmount(() => {
 })
 
 // Watch for slideover close
-watch(() => slideover.isOpen.value, (isOpen) => {
+watch(() => open, (isOpen) => {
   if (!isOpen) {
     cleanupAudio()
   }

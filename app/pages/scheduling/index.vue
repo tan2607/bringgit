@@ -96,10 +96,13 @@ import type { Job } from '@/composables/useJobState'
 import { useState } from '#app'
 import SchedulingSlideover from '~/components/SchedulingSlideover.vue'
 import JobDetailsSlideover from '~/components/JobDetailsSlideover.vue'
-const slideover = useSlideover()
+const overlay = useOverlay()
+
+const schedulingSlideover = overlay.create(SchedulingSlideover)
+const jobDetailsSlideover = overlay.create(JobDetailsSlideover)
 
 const openSlideover = () => {
-  slideover.open(SchedulingSlideover, {
+  schedulingSlideover.open({
     selectedDate: state.value.selectedDate
   })
 }
@@ -190,7 +193,7 @@ function handleDateChange(date: CalendarDate) {
 
 function showJobDetails(job: Job) {
   quickViewJob.value = job
-  slideover.open(JobDetailsSlideover, {
+  jobDetailsSlideover.open({
     jobId: quickViewJob.value.id
   })
 }
