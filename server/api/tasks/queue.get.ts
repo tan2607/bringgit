@@ -53,13 +53,14 @@ export default defineEventHandler(async (event) => {
         phoneNumber,
         name: parsedData.names[index],
         assistantId,
-        phoneNumberId,
+        phoneNumberId: "",
         retryCount: 0,
         scheduledAt: schedule,
         selectedTimeWindow: parsedData.timeWindow,
         status: "pending",
         delay: 0,
-        vapiId: null
+        vapiId: null,
+        phoneNumbers: phoneNumberId,
       }));
 
       await queueHandler.enqueueJobBatch(messages);

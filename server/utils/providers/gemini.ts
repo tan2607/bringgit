@@ -1,8 +1,4 @@
-// import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/genai"
-// import { GoogleAIFileManager } from "@google/genai/server"
 import { tmpdir } from 'os'
-import { patientDataSchema } from '#shared/forms/patientIntakeSchema'
-import { describeSchema, extractJsonFromText, validateWithSchema } from '~/utils/schema'
 import {GoogleGenAI, ContentListUnion} from '@google/genai';
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
@@ -83,8 +79,8 @@ export async function askGemini(prompt: string, model = 'gemini-2.5-flash-previe
 
 export class GeminiOCR {
   private genAI: any
-  private fileManager: any
   private model: any
+  private readonly schema: PatientSchema
 
   constructor(apiKey: string) {
     this.genAI = new GoogleGenerativeAI(apiKey)
@@ -94,26 +90,51 @@ export class GeminiOCR {
     })
   }
 
-  private async uploadToGemini(path: string, mimeType: string) {
-    const uploadResult = await this.fileManager.uploadFile(path, {
-      mimeType,
-      displayName: path,
-    })
-    const file = uploadResult.file
-    return file
+  private defineSchema(): PatientSchema {
+    return defineFHIRPatientSchema()
   }
 
-  private async waitForFilesActive(files: any[]) {
-    for (const name of files.map((file) => file.name)) {
-      let file = await this.fileManager.getFile(name)
-      while (file.state === "PROCESSING") {
-        await new Promise((resolve) => setTimeout(resolve, 2000))
-        file = await this.fileManager.getFile(name)
-      }
-      if (file.state !== "ACTIVE") {
-        throw Error(`File ${file.name} failed to process`)
-      }
+  private fileToGenerativePart(buffer: Buffer, mimeType: string) {
+    return {
+      inlineData: {
+        data: buffer.toString('base64'),
+        mimeType
+      },
     }
+  }
+
+  // Method to extract call variables from uploaded documents
+  async extractCallVariables(files: Array<{ buffer: Buffer, mimeType: string, type: string }>) {
+    try {
+      // Convert buffers to generative parts
+      const imageParts = files.map(file => this.fileToGenerativePart(file.buffer, file.mimeType))
+      
+      // Create a custom prompt for FHIR data extraction
+      const prompt = this.getFHIRExtractionPrompt()
+      
+      const result = await this.model.generateContent([
+        prompt,
+        ...imageParts
+      ])
+
+      const response = await result.response
+      const text = response.text()
+      const extractedData = extractJsonFromText(text)
+      
+      // Convert to FHIR if not already in FHIR format
+      const fhirData = extractFHIRFromText(extractedData)
+      
+      console.log("FHIR data: ", fhirData);
+      return fhirToCallVariables(fhirData)
+    } catch (error) {
+      console.error('Error in FHIR data extraction:', error)
+      throw error
+    }
+  }
+  
+  // Custom prompt for FHIR data extraction
+  private getFHIRExtractionPrompt(): string {
+    return createFHIRExtractionPrompt()
   }
 
   async processDocument(fileBuffer: Buffer, mimeType: string): Promise<any> {
@@ -127,7 +148,7 @@ export class GeminiOCR {
       await this.waitForFilesActive([file])
 
       // Generate schema description for the prompt
-      const schemaDescription = describeSchema(patientDataSchema)
+      const schemaDescription = describeSchema(BundleSchema)
       const prompt = `
 Schema Description:
 ${schemaDescription}
@@ -170,7 +191,7 @@ For phone numbers, use (XXX) XXX-XXXX format. For addresses, extract street, cit
       console.log('Extracted data:', extractedData);
 
       // Validate against schema
-      const validation = validateWithSchema(patientDataSchema, extractedData)
+      const validation = validateWithSchema(BundleSchema, extractedData)
       if (!validation.success) {
         throw new Error(`Validation failed: ${validation.error}`)
       }

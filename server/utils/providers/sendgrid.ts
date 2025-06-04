@@ -23,8 +23,8 @@ export class SendGridProvider extends BaseProvider {
     this.client.setApiKey(apiKey)
   }
 
-  public static override getInstance(apiKey: string): SendGridProvider {
-    return super.getInstance(apiKey)
+  public static override initialize(apiKey: string): SendGridProvider {
+    return super.initialize(apiKey)
   }
 
   async sendCalendarInvite(invite: CalendarInvite, recipientEmail: string): Promise<boolean> {
