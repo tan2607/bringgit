@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer, real } from 'drizzle-orm/sqlite-core'
+import { sqliteTable, text, integer, real, index } from 'drizzle-orm/sqlite-core'
 import { relations, sql } from 'drizzle-orm'
 
 
@@ -53,7 +53,9 @@ export const jobs = sqliteTable('jobs', {
   id: text('id').primaryKey(),
   name: text('name'),
   schedule: text('schedule').notNull(),
-  status: text('status', { enum: ['pending', 'running', 'paused', 'completed', 'failed'] }),
+  status: text('status', {
+    enum: ['pending', 'running', 'paused', 'completed', 'failed']
+  }),
   progress: integer('progress'),
   totalCalls: integer('total_calls'),
   completedCalls: integer('completed_calls'),
@@ -68,7 +70,14 @@ export const jobs = sqliteTable('jobs', {
   selectedTimeWindow: text('selected_time_window'),
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(strftime('%s', 'now'))`),
   updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().default(sql`(strftime('%s', 'now'))`)
-})
+}, (table) => {
+  return {
+    statusCreatedAtIdx: index('idx_jobs_status_createdat').on(
+      table.status,
+      table.createdAt
+    )
+  };
+});
 
 export const jobQueue = sqliteTable('job_queue', {
   id: text('id').primaryKey(),
@@ -80,14 +89,25 @@ export const jobQueue = sqliteTable('job_queue', {
   phoneNumberId: text('phone_number_id'),
   retryCount: integer('retry_count'),
   priority: integer('priority'),
-  status: text('status', { enum: ['pending', 'running', 'completed', 'failed'] }).notNull().default('pending'),
+  status: text('status', {
+    enum: ['pending', 'running', 'completed', 'failed']
+  }).notNull().default('pending'),
   delay: integer('delay'),
   scheduledAt: text('scheduled_at'),
   selectedTimeWindow: text('selected_time_window'),
   phoneNumbers: text('phone_numbers'),
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(strftime('%s', 'now'))`),
   updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().default(sql`(strftime('%s', 'now'))`)
-})
+}, (table) => {
+  return {
+    // Add index to improve filtering and sorting performance
+    jobIdStatusUpdatedAtIdx: index('idx_jobqueue_jobid_status_updatedat').on(
+      table.jobId,
+      table.status,
+      table.updatedAt
+    )
+  };
+});
 
 export const jobsRelations = relations(jobs, ({ many }) => ({
   jobQueues: many(jobQueue),
