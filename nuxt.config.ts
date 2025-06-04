@@ -3,6 +3,9 @@ const baseUrl = process.env.NUXT_PUBLIC_BASE_URL || process.env.CF_PAGES_URL || 
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-04-25',
+  compatibilityFlags: [
+    "nodejs_compat"
+  ],
   future: {
     compatibilityVersion: 4,
   },
@@ -176,6 +179,10 @@ export default defineNuxtConfig({
     scheduledTasks: {
     },
     preset: 'cloudflare_pages',
+    compatibilityDate: '2025-04-25',
+    compatibilityFlags: [
+      "nodejs_compat"
+    ],
     experimental: {
       openAPI: true,
       tasks: true,

@@ -124,7 +124,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
 
 // Define table columns
 const columns = [
