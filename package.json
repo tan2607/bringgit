@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node --max-old-space-size=4096 node_modules/nuxt/bin/nuxt.mjs build",
+    "build": "bun x nuxt build",
+    "buildHighRam": "node --max-old-space-size=4096 node_modules/nuxt/bin/nuxt.mjs build",
     "deploy": "npx nuxthub deploy",
     "dev": "nuxt dev",
     "preview": "nuxt preview",
@@ -28,7 +29,7 @@
     "@nuxt/icon": "latest",
     "@nuxt/ui-pro": "latest",
     "@nuxthub/core": "latest",
-    "@nuxtjs/i18n": "9.5.4",
+    "@nuxtjs/i18n": "9.5.5",
     "@nuxtjs/mdc": "latest",
     "@pinia/nuxt": "^0.11.0",
     "@ringcentral/sdk": "^5.0.4",
@@ -71,6 +72,6 @@
     "wrangler": "3.99.0"
   },
   "resolutions": {
-    "@typescript-eslint/typescript-estree": "8.18.2"
+    "@typescript-eslint/typescript-estree": "8.33.1"
   }
 }

@@ -6,9 +6,6 @@ export default defineNuxtConfig({
   compatibilityFlags: [
     "nodejs_compat"
   ],
-  future: {
-    compatibilityVersion: 4,
-  },
   debug: false,
   icon: {
     serverBundle: 'remote'
@@ -116,7 +113,6 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n',
     '@vueuse/motion/nuxt',
     '@hebilicious/authjs-nuxt',
-    '@nuxtjs/i18n',
     '@nuxtjs/mdc',
     '@nuxt/icon',
     '@nuxt/scripts',
@@ -150,6 +146,9 @@ export default defineNuxtConfig({
     langDir: 'locales',
     defaultLocale: 'en',
     strategy: 'prefix_except_default',
+    bundle: {
+      optimizeTranslationDirective: false,
+    },
     locales: [
       { code: 'en', file: 'en.ts', name: 'English' },
       { code: 'zh_hans', file: 'zh_hans.ts', name: '简体中文' },
@@ -179,7 +178,7 @@ export default defineNuxtConfig({
     scheduledTasks: {
     },
     preset: 'cloudflare_pages',
-    compatibilityDate: '2025-04-25',
+    compatibilityDate: '2025-06-04',
     compatibilityFlags: [
       "nodejs_compat"
     ],

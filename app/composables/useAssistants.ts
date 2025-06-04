@@ -18,7 +18,9 @@ export const useAssistants = () => {
   const fetchAssistants = async () => {
     isLoading.value = true
     try {
-      const { data } = await useFetch('/api/assistants')
+      const { data } = await useFetch('/api/assistants', {
+        deep: true
+      })
       assistants.value = (await Promise.all(data.value!.map(attachMeta))).filter(Boolean)
       return assistants.value;
     } finally {

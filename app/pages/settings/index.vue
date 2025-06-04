@@ -124,7 +124,7 @@
 
 <script setup lang="ts">
 import { modules, type Module } from "~/server/utils/settings";
-import { useSettingStore } from "~/stores/useSettingStore";
+import { useSettingStore } from "@/stores/useSettingStore";
 
 definePageMeta({ middleware: "auth" })
 

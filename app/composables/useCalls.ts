@@ -127,7 +127,9 @@ export const useCalls = () => {
     try {
       const queryParams = new URLSearchParams()
       queryParams.append('limit', "5")
-      const { data } = await useFetch(`/api/calls?${queryParams.toString()}`)
+      const { data } = await useFetch(`/api/calls?${queryParams.toString()}`, {
+        deep: true
+      })
       const newCalls = data?.value.calls || []
 
       calls.value = newCalls
