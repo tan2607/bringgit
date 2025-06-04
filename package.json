@@ -49,6 +49,7 @@
     "ical-generator": "^9.0.0",
     "nanoid": "^5.1.5",
     "nuxt": "^3.17.5",
+    "lodash": "^4.17.21",
     "openai": "latest",
     "soap": "^1.1.12",
     "turndown": "^7.2.0",
