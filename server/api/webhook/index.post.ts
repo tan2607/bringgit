@@ -39,6 +39,7 @@ export default defineEventHandler(async (event: H3Event) => {
           "customer-busy",
           "unknown-error",
           "call.in-progress.error-sip-telephony-provider-failed-to-connect-call",
+          "call.in-progress.error-providerfault-outbound-sip-480-temporarily-unavailable"
         ];
 
         if (status !== "ended") {
