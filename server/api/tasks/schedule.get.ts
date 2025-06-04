@@ -1,6 +1,7 @@
-import { and, or, eq, asc, not } from "drizzle-orm";
+import { and, or, eq, asc, not, inArray } from "drizzle-orm";
 import { jobQueue, jobs } from "~/server/database/schema";
 import { CallMessage, CallQueueHandler } from "~/server/utils/queue";
+import _ from "lodash";
 
 export default defineEventHandler(async (event) => {
   try {
@@ -15,53 +16,69 @@ export default defineEventHandler(async (event) => {
         not(eq(jobs.status, "completed")),
         not(eq(jobs.status, "paused"))
       ),
-      orderBy: asc(jobs.createdAt), // Ensure sorting at the job level
-      with: {
-        jobQueues: {
-          orderBy: asc(jobQueue.updatedAt), // Ensure sorting inside relations
-          limit: queueLimit,
-          where: not(eq(jobQueue.status, "completed")),
-        },
-      },
+      orderBy: asc(jobs.createdAt),
     });
 
+    const jobIds = pendingJobs.map(job => job.id);
+
+    const queues = await db.query.jobQueue.findMany({
+      where: and(
+        inArray(jobQueue.jobId, jobIds),
+        not(eq(jobQueue.status, "completed"))
+      ),
+      orderBy: asc(jobQueue.updatedAt),
+    });
+
+    const nextDay = new Date(today);
+    nextDay.setHours(23, 59, 59, 999);
+
+    const todayQueues = queues.filter(({ scheduledAt, status }) => {
+      const jobDate = new Date(scheduledAt || '');
+      return jobDate < nextDay && status !== "completed";
+    })
+
+    const queuesByJobId = _.groupBy(todayQueues, 'jobId');  
+    
+    const pendingJobsById = new Map(pendingJobs.map(job => [job.id, job]));
+
+    const jobIdsToProcess = Object.keys(queuesByJobId).map((jobId) => {
+      const jobQueues = queuesByJobId[jobId].slice(0, queueLimit);
+      const job = pendingJobsById.get(jobId);
+      return {
+        queues: jobQueues,
+        job,
+      };
+    });
     const config = useRuntimeConfig();
     const queueHandler = new CallQueueHandler(
       config.vapiApiKey,
       event.context.cloudflare.queue
     );
 
-    const nextDay = new Date(today);
-    nextDay.setHours(23, 59, 59, 999);
-
-    const pendingJobQueuesToday = pendingJobs.map((job) =>
-      job.jobQueues
-        .map((queue) => {
+    await Promise.all(
+      jobIdsToProcess.map((batch) => {
+        const messages = batch.queues.map((queue) => {
           const newQueue = {
             ...queue,
-            assistantId: job.assistantId,
-            scheduledAt: job.schedule,
-            selectedTimeWindow: job.selectedTimeWindow,
-            phoneNumbers: job.phoneNumberId,
+            assistantId: batch.job?.assistantId,
+            scheduledAt: batch.job?.schedule,
+            selectedTimeWindow: batch.job?.selectedTimeWindow,
+            phoneNumbers: batch.job?.phoneNumberId,
           };
           if (queue.status === "failed") {
             newQueue.retryCount = (queue.retryCount || 0) + 1;
           }
           return newQueue;
-        })
-        .filter(({ scheduledAt, status }) => {
-          const jobDate = new Date(scheduledAt || '');
-          return jobDate < nextDay && status !== "completed";
-        })
+        });
+    
+        return queueHandler.processBatch(messages);
+      })
     );
-
-    for (const batch of pendingJobQueuesToday) {
-      await queueHandler.processBatch(batch);
-    }
+    
 
     return {
       result: "success",
-      jobs: pendingJobQueuesToday,
+      queues: queuesByJobId,
       scheduledAt: new Date(),
     };
   } catch (error) {
