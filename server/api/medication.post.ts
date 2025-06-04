@@ -7,7 +7,7 @@ const LOG_PREFIX = '[MEDICATION-LLM]';
 const MEDICATION_DATA = medication.data.allM_Content_Medication.results.map(item => {
   item.medication_Title = item.medication_Title.trim();
   return item;
-});
+}).sort((a, b) => a.medication_Title.localeCompare(b.medication_Title));
 const TITLE_FIND_CHUNK_SIZE = 1000; // Max items per chunk for title finding LLM call
 const REQUEST_TIMEOUT_MS = 30000; // 30 seconds timeout
 
@@ -52,13 +52,13 @@ const exclusions = `If the user ask about Saxenda, or how to use suppositories, 
 
 // --- Prompt Templates ---
 const getTitleFindingPrompt = (chunk: string[], query: string, previousQuery?: string): string => `\
-You are a medication search expert based in Singapore, using mostly British English. I'll provide you with a list of medications and a user query.
-Your task is to identify the most relevant medication from the list that matches the user's query.
+You are a medication search expert based in Singapore, using mostly British English. I'll provide you with a list of articles and a user query.
+Your task is to identify the most relevant articles from the list that matches the user's query. The medication articles may include how to use, handling and storage, side effects, etc.
 
 ${exclusions}
 If the user's query is a brand name, convert it to its generic equivalent if it's in the list.
 If the query is already a generic name, find the exact match or closest match.
-If there's no good match, respond with "NO_MATCH_FOUND".
+If there's no match, respond with "NO_MATCH_FOUND".
 If there are multiple articles that may contain the answer, return each article title on a separate line, but do not use bullet points. Limit to at most 5 articles.
 Consider the previous query for follow-up questions.
 Do not add any explanation or additional text in your response.
@@ -146,42 +146,88 @@ ${tds.turndown(item.medication_UnstructureContent || '').trim()}`;
 
 /**
  * Step 1: Find the most relevant medication title using LLM.
+ * First tries with a short prompt (titles only) to save on tokens,
+ * then falls back to a more detailed prompt if needed.
  */
 async function findMedicationTitle(query: string, previousQuery?: string): Promise<string[]> {
   console.log(`${LOG_PREFIX} Processing query:`, query);
-
-  const medicationList = MEDICATION_DATA.map(item =>`
+  const sanitizedQuery = query; //.replace("throw", "");
+  
+  // Prepare both short and full medication lists
+  const medicationListShort = MEDICATION_DATA.map(item => item.medication_Title);
+  const medicationListFull = MEDICATION_DATA.map(item =>`
 # ${item.medication_Title}
 ${item.medication_ENKeywords ? `keywords: ${item.medication_ENKeywords}` : ''}
 ${item.medication_CategoryDesc ? `${item.medication_CategoryDesc}` : ''}`
   );
 
-  console.log(`${LOG_PREFIX} Processing ${medicationList.length} medications in a single request`);
+  console.log(`${LOG_PREFIX} Processing ${medicationListShort.length} medications`);
+  
+  // Try with short prompt first (titles only)
+  try {
+    const result = await tryFindMedicationWithPrompt(
+      medicationListShort, 
+      sanitizedQuery, 
+      previousQuery, 
+      'short'
+    );
+    
+    if (result !== null) {
+      return result;
+    }
+    
+    // If short prompt fails, try with the detailed prompt
+    console.log(`${LOG_PREFIX} Short prompt failed, trying with detailed prompt`);
+    const detailedResult = await tryFindMedicationWithPrompt(
+      medicationListFull, 
+      sanitizedQuery, 
+      previousQuery, 
+      'detailed'
+    );
+    
+    return detailedResult !== null ? detailedResult : [sanitizedQuery];
+  } catch (error) {
+    console.error(`${LOG_PREFIX} Error in findMedicationTitle:`, error);
+    return [sanitizedQuery]; 
+  }
+}
 
+/**
+ * Helper function to try finding medication with a specific prompt type
+ * @returns The matched titles or null if no match found
+ */
+async function tryFindMedicationWithPrompt(
+  medicationList: string[], 
+  query: string, 
+  previousQuery?: string,
+  promptType: 'short' | 'detailed'
+): Promise<string[] | null> {
   const prompt = getTitleFindingPrompt(medicationList, query, previousQuery);
-
-  console.log(`${LOG_PREFIX} Sending Title Search prompt (length: ${prompt.length})`);
-
+  console.log(`${LOG_PREFIX} Sending ${promptType} title search prompt (length: ${prompt.length})`);
+  
   try {
     const response = await askGemini(prompt);
-    const trimmedResponse = response.trim().split('\n').map(title => title.trim());
-
-    if (trimmedResponse !== "NO_MATCH_FOUND" && trimmedResponse !== "") {
-      const isValidTitle = trimmedResponse.some(title => MEDICATION_DATA.some(item => item.medication_Title === title));
-      if (isValidTitle) {
-        console.log(`${LOG_PREFIX} Found valid match:`, trimmedResponse);
-        return trimmedResponse;
-      } else {
-        console.warn(`${LOG_PREFIX} Response "${trimmedResponse}" is not a valid title. Falling back to query.`);
-        return query; 
-      }
+    const titles = response.trim().split('\n').map(title => title.trim());
+    
+    if (titles.length === 0 || titles[0] === "NO_MATCH_FOUND" || titles[0] === "") {
+      console.log(`${LOG_PREFIX} ${promptType} prompt response: NO_MATCH_FOUND`);
+      return null;
+    }
+    
+    const validTitles = titles.filter(title => 
+      MEDICATION_DATA.some(item => item.medication_Title === title)
+    );
+    
+    if (validTitles.length > 0) {
+      console.log(`${LOG_PREFIX} Found valid match with ${promptType} prompt:`, validTitles);
+      return validTitles;
     } else {
-      console.log(`${LOG_PREFIX} Response: NO_MATCH_FOUND. Falling back to query.`);
-      return query; 
+      console.warn(`${LOG_PREFIX} Response from ${promptType} prompt has no valid titles:`, titles);
+      return null;
     }
   } catch (error) {
-    console.error(`${LOG_PREFIX} Error finding medication title:`, error);
-    return query; 
+    console.error(`${LOG_PREFIX} Error with ${promptType} prompt:`, error);
+    return null;
   }
 }
 
