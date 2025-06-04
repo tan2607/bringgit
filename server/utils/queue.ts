@@ -34,7 +34,7 @@ export class CallQueueHandler {
     this.storage = storage
     this.rateLimiter = new RateLimiter({
       maxConcurrentCallsPerJob: 1,
-      maxGlobalConcurrentCalls: 10
+      maxGlobalConcurrentCalls: 40
     })
     
     // Initialize scheduler with default business hours
