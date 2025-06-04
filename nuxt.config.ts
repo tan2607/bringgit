@@ -115,7 +115,8 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxt/scripts',
     '@formkit/nuxt',
-    '@pinia/nuxt'
+    '@pinia/nuxt',
+    '@hebilicious/authjs-nuxt'
   ],
   hub: {
     database: true

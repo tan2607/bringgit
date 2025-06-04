@@ -3,6 +3,7 @@ import type { AuthConfig } from "@auth/core/types"
 import { auth0Management } from '@@/lib/auth0'
 import { AppMetadata, DEFAULT_APP_METADATA } from '@@/types/auth'
 import { domainUtils } from '@@/lib/domain'
+import { NuxtAuthHandler } from '#auth'
 
 const runtimeConfig = useRuntimeConfig()
 
@@ -113,3 +114,5 @@ const authConfig: AuthConfig = {
 }
 
 export const authOptions = authConfig
+
+export default NuxtAuthHandler(authConfig, runtimeConfig)
