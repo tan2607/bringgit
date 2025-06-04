@@ -1,6 +1,6 @@
 import { and, or, eq, asc, not } from "drizzle-orm";
 import { jobQueue, jobs } from "~/server/database/schema";
-import { CallQueueHandler } from "~/server/utils/queue";
+import { CallMessage, CallQueueHandler } from "~/server/utils/queue";
 
 export default defineEventHandler(async (event) => {
   try {
@@ -37,13 +37,17 @@ export default defineEventHandler(async (event) => {
     const pendingJobQueuesToday = pendingJobs.map((job) =>
       job.jobQueues
         .map((queue) => {
+          const newQueue = {
+            ...queue,
+            assistantId: job.assistantId,
+            scheduledAt: job.schedule,
+            selectedTimeWindow: job.selectedTimeWindow,
+            phoneNumbers: job.phoneNumberId,
+          };
           if (queue.status === "failed") {
-            return {
-              ...queue,
-              retryCount: (queue.retryCount || 0) + 1,
-            };
+            newQueue.retryCount = (queue.retryCount || 0) + 1;
           }
-          return queue;
+          return newQueue;
         })
         .filter(({ scheduledAt, status }) => {
           const jobDate = new Date(scheduledAt || '');

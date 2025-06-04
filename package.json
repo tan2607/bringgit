@@ -32,7 +32,7 @@
     "@nuxt/icon": "latest",
     "@nuxt/ui-pro": "3.0.0-alpha.12",
     "@nuxthub/core": "latest",
-    "@nuxtjs/i18n": "9.3.1",
+    "@nuxtjs/i18n": "9.5.4",
     "@nuxtjs/mdc": "latest",
     "@pinia/nuxt": "^0.10.1",
     "@ringcentral/sdk": "^5.0.3",

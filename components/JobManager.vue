@@ -150,7 +150,7 @@ const jobFormSchema = z.object({
 
 type JobFormSchema = z.output<typeof jobFormSchema>
 
-const { jobState, createJob, pauseJob, startJob, getJobs, deleteJob, loadMoreJobs, resumeJob } = useJobState()
+const { jobState, createJob, pauseJob, startJob, getJobs, deleteJob, loadMoreJobs, resumeJob, editJob } = useJobState()
 const { assistants, fetchAssistants } = useAssistants()
 const { numbers, fetchNumbers } = usePhoneNumbers()
 const { confirm } = useConfirm()
@@ -261,7 +261,15 @@ const columns = [
   { 
     accessorKey: 'progress', 
     header: 'Progress', 
-    cell: ({ row }: { row:any }) => `${row.getValue('progress')}%` 
+    cell: ({ row }: { row:any }) => {
+      let progress = row.getValue('progress');
+
+      if(progress > 100 ) {
+        progress = 100
+      }
+
+      return  `${progress}%`
+    }
   },
   {
     accessorKey: 'status',
@@ -396,14 +404,16 @@ const getJobActions = (job: Job) => {
       label: 'Quick View',
       icon: 'i-heroicons-eye',
       onSelect: () => handleJobAction('view', job)
-    },
-    {
+    }
+  ]
+  
+  if (currentJobStatus !== 'completed') {
+    actions.push({
       label: 'Edit',
       icon: 'i-heroicons-pencil-square',
       onSelect: () => handleJobAction('edit', job)
-    }
-  ]
-
+    })
+  }
   // Add status-based actions
   if (currentJobStatus === 'paused') {
     actions.push({
@@ -525,8 +535,21 @@ const handleJobSubmit = async (jobData: Job) => {
   isSubmitting.value = true
   try {
     if (editingJob.value) {
-      console.log(jobData);
-      // Implement edit
+      const response = await editJob(jobData)
+      if(response) {
+        toast.add({
+          title: 'Job updated',
+          description: 'Job updated successfully',
+          color: 'success'
+        })
+        filterJobs();
+      } else {
+        toast.add({
+          title: 'Job update failed',
+          description: 'Job update failed',
+          color: 'error'
+        })
+      }
     } else {
       await createJob(jobData)
     }

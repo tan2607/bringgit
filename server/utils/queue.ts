@@ -189,8 +189,6 @@ export class CallQueueHandler {
       return;
     }
 
-
-
     console.log("Processing call for job", jobId);    
 
     const job = await db.query.jobs.findFirst({ where: eq(jobs.id, jobId) })
@@ -380,7 +378,10 @@ export class CallQueueHandler {
       delay: message.delay || 0,
       vapiId: message.vapiId || null,
       scheduledAt: message.scheduledAt || null,
-      retryCount: message.retryCount || 0
+      retryCount: message.retryCount || 0,
+      selectedTimeWindow: JSON.stringify(message.selectedTimeWindow),
+      phoneNumberId: message.phoneNumberId,
+      assistantId: message.assistantId,
     }).where(eq(jobQueue.id, message.id as string))
   }
 }
