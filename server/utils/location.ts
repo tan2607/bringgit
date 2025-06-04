@@ -1,4 +1,4 @@
-import { Clinic, ClinicWithDistance, Coordinates } from '~/types/clinic'
+import { Clinic, ClinicWithDistance, Coordinates } from '@@/types/clinic'
 import clinicsData from '../data/clinics.json'
 import fs from 'fs'
 

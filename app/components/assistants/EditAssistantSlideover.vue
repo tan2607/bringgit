@@ -140,8 +140,8 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import type { Assistant } from '~/types/assistant'
-import { languageOptions, llmOptions } from '~/types/assistant'
+import type { Assistant } from '@@/types/assistant'
+import { languageOptions, llmOptions } from '@@/types/assistant'
 
 interface Props {
   modelValue: boolean

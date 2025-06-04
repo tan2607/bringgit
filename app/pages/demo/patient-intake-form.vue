@@ -169,7 +169,7 @@
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-import { getLanguageIcon, languages } from '@/i18n/languages'
+import { getLanguageIcon, languages } from '@@/i18n/languages'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()

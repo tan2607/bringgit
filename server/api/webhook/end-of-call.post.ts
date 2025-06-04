@@ -1,6 +1,6 @@
 import { H3Event } from 'h3'
-import { PromptEnhancer } from '~/server/utils/providers/copilot'
-import { SendGridProvider } from '~/server/utils/providers/sendgrid'
+import { PromptEnhancer } from '@@/server/utils/providers/copilot'
+import { SendGridProvider } from '@@/server/utils/providers/sendgrid'
 
 interface Message {
   role: 'assistant' | 'user'

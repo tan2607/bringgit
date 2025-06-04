@@ -1,4 +1,4 @@
-import type { PatientIntakeData } from '~/shared/forms/patientIntakeSchema'
+import type { PatientIntakeData } from '@@/shared/forms/patientIntakeSchema'
 
 export const useWorkflowState = () => {
   // Document states

@@ -5,12 +5,13 @@ export function useConfirm() {
   const resolveFn = useState<((value: boolean) => void) | null>('resolveFn', () => null)
   const message = useState<string>('message', () => '')
   
-  const modal = useModal()
+  const overlay = useOverlay()
 
+  const modal = overlay.create(ConfirmDialog)
 
   const confirm = (prompt: string): Promise<boolean> => {
     message.value = prompt
-    modal.open(ConfirmDialog)
+    modal.open()
 
     return new Promise((resolve) => {
       resolveFn.value = resolve

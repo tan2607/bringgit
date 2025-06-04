@@ -172,7 +172,7 @@ import CallSlideover from '@/components/CallSlideover.vue'
 import { upperFirst } from 'scule'
 import { useI18n } from 'vue-i18n'
 import { useRecordingUrl } from '@/composables/useRecordingUrl'
-import type { Assistant } from '~/types/assistant'
+import type { Assistant } from '@@/types/assistant'
 
 const UButton = resolveComponent('UButton')
 const UBadge = resolveComponent('UBadge')

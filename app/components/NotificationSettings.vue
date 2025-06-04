@@ -206,7 +206,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { NotificationConfig, NotificationChannel } from '~/types'
+import type { NotificationConfig, NotificationChannel } from '@@/types'
 
 const settings = useState('notificationSettings', () => ({
   channels: [],

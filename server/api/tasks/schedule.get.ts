@@ -1,6 +1,6 @@
 import { and, or, eq, asc, not } from "drizzle-orm";
-import { jobQueue, jobs } from "~/server/database/schema";
-import { CallMessage, CallQueueHandler } from "~/server/utils/queue";
+import { jobQueue, jobs } from "@@/server/database/schema";
+import { CallMessage, CallQueueHandler } from "@@/server/utils/queue";
 
 export default defineEventHandler(async (event) => {
   try {

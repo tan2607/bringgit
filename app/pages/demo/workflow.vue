@@ -366,7 +366,7 @@
 <script setup lang="ts">
 import DocumentUpload from '~/components/DocumentUpload.vue'
 import RpaTask from '~/components/RpaTask.vue'
-// import { patientIntakeFormSchema } from '~/shared/forms/patientIntakeSchema'
+// import { patientIntakeFormSchema } from '@@/shared/forms/patientIntakeSchema'
 
 const {
   patientData,

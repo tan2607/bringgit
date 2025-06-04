@@ -1,4 +1,4 @@
-import { PromptEnhancer } from '~/server/utils/providers/copilot';
+import { PromptEnhancer } from '@@/server/utils/providers/copilot';
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();

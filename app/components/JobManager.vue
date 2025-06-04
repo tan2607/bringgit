@@ -129,7 +129,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import type { Job } from '~/types'
+import type { Job } from '@@/types'
 import { z } from 'zod'
 import { useJobState } from '@/composables/useJobState'
 import JobFormModal from './JobFormModal.vue'

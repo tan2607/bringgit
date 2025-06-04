@@ -39,7 +39,7 @@
 
 <script lang="ts" setup>
 import type { User } from '@auth/core/types';
-import type { Assistant } from '~/types/assistant';
+import type { Assistant } from '@@/types/assistant';
 
 const props = defineProps<{
   isOpen: boolean

@@ -210,7 +210,7 @@
 </template>
 
 <script setup lang="ts">
-import { smsTemplates, categories, getTemplateIcon, getTemplateColor, generateAiTemplate, type AiTemplateRequest, type SmsResponse } from '~/data/smsTemplates'
+import { smsTemplates, categories, getTemplateIcon, getTemplateColor, generateAiTemplate, type AiTemplateRequest, type SmsResponse } from '@@/data/smsTemplates'
 import type { DateValue } from '@internationalized/date'
 
 const toast = useToast()

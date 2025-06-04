@@ -1,4 +1,4 @@
-import { settings } from "~/server/database/schema";
+import { settings } from "@@/server/database/schema";
 
 export default defineEventHandler(async (event) => {
   try {

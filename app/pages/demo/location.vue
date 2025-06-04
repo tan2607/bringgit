@@ -1,6 +1,6 @@
 <!-- Location Search Demo -->
 <script setup lang="ts">
-import { ClinicWithDistance } from '~/types/clinic'
+import { ClinicWithDistance } from '@@/types/clinic'
 
 const config = useRuntimeConfig()
 const searchForm = reactive({

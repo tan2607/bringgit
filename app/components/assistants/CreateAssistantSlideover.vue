@@ -54,8 +54,8 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { defaultAssistant } from '~/types/assistant'
-import type { Assistant } from '~/types/assistant'
+import { defaultAssistant } from '@@/types/assistant'
+import type { Assistant } from '@@/types/assistant'
 import { useAssistant } from '~/composables/useAssistant'
 
 interface Props {

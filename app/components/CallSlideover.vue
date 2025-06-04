@@ -9,7 +9,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import CallForm from './CallForm.vue'
-import type { Assistant } from '~/types/assistant'
+import type { Assistant } from '@@/types/assistant'
 
 const { t } = useI18n()
 const slideover = useSlideover()

@@ -24,7 +24,7 @@ export interface UpgradeRecommendation {
 const BEST_MODELS = {
   model: {
     'openai': 'gpt-4.1',
-    'google': 'gemini-2.0-flash'
+    'google': 'gemini-2.5-flash-preview-05-20'
     // Add more model providers and their best models here as needed
   },
   voice: {

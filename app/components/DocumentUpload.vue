@@ -101,7 +101,7 @@
 </template>
 
 <script setup lang="ts">
-// import { patientIntakeFormSchema } from '~/shared/forms/patientIntakeSchema'
+// import { patientIntakeFormSchema } from '@@/shared/forms/patientIntakeSchema'
 
 const {
   documentFile,

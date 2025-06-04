@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getLanguageIcon, languages } from '@/i18n/languages'
+import { getLanguageIcon, languages } from '@@/i18n/languages'
 import { hasClinicalContent, getClinicalWarningMessage } from '~/utils/clinicalDetection';
 
 const { t } = useI18n()

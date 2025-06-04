@@ -102,8 +102,8 @@ import { useAssistantState } from '@/composables/useAssistantState'
 import TestSlideover from './assistant/TestSlideover.vue'
 import CriteriaSlideover from './assistant/CriteriaSlideover.vue'
 
-import { languages } from '~/i18n/languages'
-import type { Assistant } from '~/types/assistant'
+import { languages } from '@@/i18n/languages'
+import type { Assistant } from '@@/types/assistant'
 
 const { t } = useI18n()
 const slideover = useSlideover()

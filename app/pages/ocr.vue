@@ -118,7 +118,7 @@
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-// import { patientIntakeFormSchema } from '~/shared/forms/patientIntakeSchema'
+// import { patientIntakeFormSchema } from '@@/shared/forms/patientIntakeSchema'
 
 const stepper = ref(null)
 const fileInput = ref(null)

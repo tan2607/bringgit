@@ -2,6 +2,9 @@
 const baseUrl = process.env.NUXT_PUBLIC_BASE_URL || process.env.CF_PAGES_URL || "http://localhost:3000"
 
 export default defineNuxtConfig({
+  future: {
+    compatibilityVersion: 4,
+  },
   compatibilityDate: '2025-04-25',
   compatibilityFlags: [
     "nodejs_compat"
@@ -23,7 +26,8 @@ export default defineNuxtConfig({
     },
     providers: {
       // Configure which providers to load on server start
-      enabled: (process.env.ENABLED_PROVIDERS || 'vapi,openai,whisper,sendgrid,cartesia,playai,perplexity,brightree,ringcentral,twilio,firecrawl,gemini').split(','),
+      // brightree,ringcentral,firecrawl,
+      enabled: (process.env.ENABLED_PROVIDERS || 'vapi,openai,whisper,sendgrid,cartesia,playai,perplexity,twilio,gemini').split(','),
     },
     // Provider API Keys
     openaiApiKey: process.env.OPENAI_API_KEY,
@@ -89,11 +93,6 @@ export default defineNuxtConfig({
     }
   },
   vite: {
-    resolve: {
-      alias: {
-        "electron/index.js": 'mocks/electron.js',
-      },
-    },
     optimizeDeps: {
       include: ['debug']
     },

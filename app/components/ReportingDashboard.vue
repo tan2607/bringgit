@@ -165,7 +165,7 @@ import {
   Legend,
   ArcElement
 } from 'chart.js'
-import type { AnalyticsFilters } from '~/server/utils/analytics'
+import type { AnalyticsFilters } from '@@/server/utils/analytics'
 
 // Register ChartJS components
 ChartJS.register(

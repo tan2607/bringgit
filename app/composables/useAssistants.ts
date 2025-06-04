@@ -1,4 +1,4 @@
-import type { Assistant } from '~/types/assistant'
+import type { Assistant } from '@@/types/assistant'
 import { parseMarkdown } from '@nuxtjs/mdc/runtime'
 
 async function attachMeta(assistant: Assistant) {

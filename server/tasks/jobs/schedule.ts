@@ -1,5 +1,5 @@
 import { gte, lt } from 'drizzle-orm';
-import { jobQueue } from "~/server/database/schema";
+import { jobQueue } from "@@/server/database/schema";
 
 export default defineTask({
 	meta: {

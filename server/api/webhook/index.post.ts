@@ -1,6 +1,6 @@
 import { H3Event } from "h3";
-import { jobQueue, jobs } from "~/server/database/schema";
-import { markPhoneNumberBusy, markPhoneNumberFree } from "~/server/utils/busyPhoneNumberCache";
+import { jobQueue, jobs } from "@@/server/database/schema";
+import { markPhoneNumberBusy, markPhoneNumberFree } from "@@/server/utils/busyPhoneNumberCache";
 
 interface WebhookPayLoad {
   message: {

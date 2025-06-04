@@ -1,4 +1,4 @@
-import { jobs } from "~/server/database/schema";
+import { jobs } from "@@/server/database/schema";
 import { CallQueueHandler, CallMessage } from "../../utils/queue";
 
 export default defineEventHandler(async (event) => {

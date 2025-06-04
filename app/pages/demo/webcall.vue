@@ -128,7 +128,7 @@
 <script setup lang="ts">
 import { watch, ref, onMounted, computed } from 'vue'
 import { useRoute } from '#imports'
-import { defaultCallVariables } from '~/server/utils/variableSchema'
+import { defaultCallVariables } from '@@/server/utils/variableSchema'
 
 // Import components
 import AppointmentAvailability from '~/components/AppointmentAvailability.vue'

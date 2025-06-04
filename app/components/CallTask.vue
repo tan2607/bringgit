@@ -52,7 +52,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import Vapi from "@vapi-ai/web"
-import { flattenVariables } from '~/server/utils/variableSchema'
+import { flattenVariables } from '@@/server/utils/variableSchema'
 
 const props = defineProps({
   variables: {

@@ -116,8 +116,8 @@ import AssistantSlideover from './AssistantSlideover.vue'
 import PromptSlideover from './PromptSlideover.vue'
 import CallSlideover from './CallSlideover.vue'
 import AnimatedCardBackground from './AnimatedCardBackground.vue'
-import type { Assistant } from '~/types/assistant'
-import { languages, getLanguageIcon } from '~/i18n/languages'
+import type { Assistant } from '@@/types/assistant'
+import { languages, getLanguageIcon } from '@@/i18n/languages'
 
 const UButton = resolveComponent('UButton')
 const UDropdownMenu = resolveComponent('UDropdownMenu')

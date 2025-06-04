@@ -21,8 +21,8 @@ a[aria-label="Nuxt UI Pro"] {
 </style>
 
 <script setup lang="ts">
-import { availableLocales, getLocaleIcon } from '@/i18n/config'
-import { useSettingStore } from '@/stores/useSettingStore'
+import { availableLocales, getLocaleIcon } from '@@/i18n/config'
+import { useSettingStore } from '~~/stores/useSettingStore'
 import { useUser } from '@/composables/useUser'
 
 // Apply auth middleware to all routes

@@ -129,12 +129,12 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import type { Job } from '~/types'
+import type { Job } from '@@/types'
 import type { FormSubmitEvent } from '#ui/types'
 import { z } from 'zod'
 import { CalendarDate, today } from '@internationalized/date'
 import type { Matcher } from '#ui/types'
-import type { Assistant } from '~/types/assistant'
+import type { Assistant } from '@@/types/assistant'
 import * as XLSX from 'xlsx'
 
 const props = defineProps<{

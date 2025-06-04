@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { availableLocales, getLocaleIcon } from '~/../i18n/config'
+import { availableLocales, getLocaleIcon } from '@@/i18n/config'
 
 const { locale, locales, setLocale, t } = useI18n()
 const { status, signOut, session } = useAuth()

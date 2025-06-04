@@ -1,4 +1,4 @@
-import { auth0Management } from '~/lib/auth0'
+import { auth0Management } from '@@/lib/auth0'
 
 export default defineEventHandler(async (event) => {
   try {

@@ -1,5 +1,5 @@
 import { Vapi } from '@vapi-ai/server-sdk'
-import type { Assistant } from '~/types/assistant'
+import type { Assistant } from '@@/types/assistant'
 
 interface AssistantTemplate {
   id: string

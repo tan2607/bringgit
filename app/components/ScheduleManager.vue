@@ -265,7 +265,7 @@
 </template>
 
 <script setup lang="ts">
-import type { BusinessHours, BlackoutPeriod, PriorityWindow } from '@/server/utils/scheduler'
+import type { BusinessHours, BlackoutPeriod, PriorityWindow } from '@@/server/utils/scheduler'
 
 const schedule = useState('schedule', () => ({
   businessHours: {

@@ -1,4 +1,4 @@
-import { jobs } from "~/server/database/schema";
+import { jobs } from "@@/server/database/schema";
 
 export default defineEventHandler(async (event) => {
   try {
