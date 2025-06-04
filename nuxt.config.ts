@@ -111,7 +111,6 @@ export default defineNuxtConfig({
     '@nuxthub/core',
     '@nuxtjs/i18n',
     '@vueuse/motion/nuxt',
-    '@hebilicious/authjs-nuxt',
     '@nuxtjs/mdc',
     '@nuxt/icon',
     '@nuxt/scripts',
