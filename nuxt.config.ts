@@ -119,7 +119,8 @@ export default defineNuxtConfig({
     '@hebilicious/authjs-nuxt'
   ],
   hub: {
-    database: true
+    database: true,
+    ai: true,
   },
   formkit: {
     // Experimental support for auto loading (see note):
@@ -176,11 +177,12 @@ export default defineNuxtConfig({
     },
     scheduledTasks: {
     },
+    cloudflare: {
+      deployConfig: true,
+      nodeCompat: true
+    },
     preset: 'cloudflare_pages',
     compatibilityDate: '2025-06-04',
-    compatibilityFlags: [
-      "nodejs_compat"
-    ],
     experimental: {
       openAPI: true,
       tasks: true,
