@@ -39,7 +39,7 @@
         "nanoid": "^5.1.5",
         "nuxt": "^3.17.5",
         "openai": "latest",
-        "soap": "1.1.8",
+        "soap": "1.1.10",
         "turndown": "^7.2.0",
         "vue": "latest",
         "vue-chartjs": "latest",
@@ -2487,7 +2487,7 @@
 
     "smob": ["smob@1.5.0", "", {}, "sha512-g6T+p7QO8npa+/hNx9ohv1E5pVCmWrVCUzUXJyLdMmftX6ER0oiWY/w9knEonLpnOp6b6FenKnMfR8gqwWdwig=="],
 
-    "soap": ["soap@1.1.8", "", { "dependencies": { "axios": "^1.7.9", "axios-ntlm": "^1.4.2", "debug": "^4.4.0", "formidable": "^3.5.2", "get-stream": "^6.0.1", "lodash": "^4.17.21", "sax": "^1.4.1", "strip-bom": "^3.0.0", "whatwg-mimetype": "4.0.0", "xml-crypto": "^6.0.0" } }, "sha512-fDNGyGsPkQP3bZX/366Ud5Kpjo9mCMh7ZKYIc3uipBEPPM2ZqCNkv1Z2/w0qpzpYFLL7do8WWwVUAjAwuUe1AQ=="],
+    "soap": ["soap@1.1.10", "", { "dependencies": { "axios": "^1.8.3", "axios-ntlm": "^1.4.3", "debug": "^4.4.0", "formidable": "^3.5.2", "get-stream": "^6.0.1", "lodash": "^4.17.21", "sax": "^1.4.1", "strip-bom": "^3.0.0", "whatwg-mimetype": "4.0.0", "xml-crypto": "^6.0.1" } }, "sha512-dqfX9qHhXup3ZLWsI5of6xJIJKeBCPnn3tTu9sKtASm2A53Zk6/u3drygLiUy+H1mmjRBptXfVkjY6pt8nhOjA=="],
 
     "socket.io-client": ["socket.io-client@4.8.1", "", { "dependencies": { "@socket.io/component-emitter": "~3.1.0", "debug": "~4.3.2", "engine.io-client": "~6.6.1", "socket.io-parser": "~4.2.4" } }, "sha512-hJVXfu3E28NmzGk8o1sHhN3om52tRvwYeidbj7xKy2eIIse5IoKX3USlS6Tqt3BHAtflLIkCQBkzVrEEfWUyYQ=="],
 

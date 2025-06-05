@@ -182,7 +182,7 @@ export default defineNuxtConfig({
       nodeCompat: true
     },
     preset: 'cloudflare_pages',
-    compatibilityDate: '2024-04-03',
+    compatibilityDate: '2025-06-05',
     experimental: {
       openAPI: true,
       tasks: true,

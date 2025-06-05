@@ -52,7 +52,7 @@
     "nanoid": "^5.1.5",
     "nuxt": "^3.17.5",
     "openai": "latest",
-    "soap": "1.1.8",
+    "soap": "1.1.10",
     "turndown": "^7.2.0",
     "vue": "latest",
     "vue-chartjs": "latest",
