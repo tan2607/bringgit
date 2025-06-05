@@ -1,5 +1,5 @@
 import { tmpdir } from 'os'
-import {GoogleGenAI, ContentListUnion, GoogleAIFileManager} from '@google/genai';
+import {GoogleGenAI, ContentListUnion} from '@google/genai';
 
 const config = useRuntimeConfig()
 const ai = new GoogleGenAI({vertexai: false, apiKey: config.geminiApiKey});
