@@ -1,4 +1,4 @@
-// import { z } from "zod";
+import { z } from "zod";
 
 // // Define input validation schema
 // const taskInputSchema = z.object({
@@ -10,7 +10,7 @@
 
 // type TaskInput = z.infer<typeof taskInputSchema>;
 
-// export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (event) => {
 //   try {
 //     // Get runtime config
 //     const config = useRuntimeConfig();
@@ -116,4 +116,4 @@
 //       data: error.data,
 //     });
 //   }
-// });
+});
