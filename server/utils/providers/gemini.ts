@@ -1,8 +1,8 @@
 import { tmpdir } from 'os'
-import {GoogleGenAI, ContentListUnion} from '@google/genai';
+import {GoogleGenAI, ContentListUnion, GoogleAIFileManager} from '@google/genai';
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const ai = new GoogleGenAI({vertexai: false, apiKey: GEMINI_API_KEY});
+const config = useRuntimeConfig()
+const ai = new GoogleGenAI({vertexai: false, apiKey: config.geminiApiKey});
 
 // Simple in-memory cache to avoid repeated identical queries
 const responseCache = new Map<string, { response: string, timestamp: number }>();
@@ -83,7 +83,7 @@ export class GeminiOCR {
   private readonly schema: PatientSchema
 
   constructor(apiKey: string) {
-    this.genAI = new GoogleGenerativeAI(apiKey)
+    this.genAI = new GoogleGenAI({vertexai: false, apiKey})
     this.fileManager = new GoogleAIFileManager(apiKey)
     this.model = this.genAI.getGenerativeModel({
       model: "gemini-2.5-flash-preview-05-20",

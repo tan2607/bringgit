@@ -23,7 +23,7 @@
     "@auth/core": "0.39.1",
     "@cartesia/cartesia-js": "2.2.3",
     "@formkit/nuxt": "^1.6.9",
-    "@google/genai": "^1.4.0",
+    "@google/genai": "0.7.0",
     "@internationalized/date": "^3.8.1",
     "@libsql/client": "^0.15.8",
     "@medplum/core": "^4.1.6",
