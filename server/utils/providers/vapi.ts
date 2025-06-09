@@ -1,6 +1,6 @@
 import { VapiClient } from "@vapi-ai/server-sdk";
 import { gte } from 'drizzle-orm';
-import { jobs } from '~/server/database/schema';
+import { jobs } from '@@/server/database/schema';
 import { AuthUser } from "@/server/utils/user";
 
 export class VapiProvider {
@@ -61,6 +61,7 @@ export class VapiProvider {
       startSpeakingPlan: assistant.startSpeakingPlan,
       stopSpeakingPlan: assistant.stopSpeakingPlan,
       monitorPlan: assistant.monitorPlan,
+      recordingEnabled: assistant.recordingEnabled,
       credentialIds: assistant.credentialIds
     }));
   }

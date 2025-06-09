@@ -1,5 +1,5 @@
 import { not } from "drizzle-orm";
-import { jobQueue, jobs } from "~/server/database/schema";
+import { jobQueue, jobs } from "@@/server/database/schema";
 
 export default defineEventHandler(async (event) => {
   try {

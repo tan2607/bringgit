@@ -1,6 +1,6 @@
-import { auth0Management } from '@/lib/auth0'
+import { auth0Management } from '@@/lib/auth0'
 import { H3Event } from 'h3'
-import { AuthUser } from '@/server/utils/user'
+import { AuthUser } from '@@/server/utils/user'
 
 export default defineEventHandler(async (event: H3Event) => {
   try {

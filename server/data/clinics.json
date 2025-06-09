@@ -1,124 +1,4169 @@
-{
-  "clinics": [
-    {
-      "name": "57 Medical Clinic (Geylang Bahru)",
-      "description": "Dr Kang Pei Lin",
-      "lat": 1.3234425,
-      "lon": 103.8690152
-    },
-    {
-      "name": "57 Medical Clinic (Kallang Airport)",
-      "description": "Dr Kwa Pei Wen Tammy",
-      "lat": 1.3094495,
-      "lon": 103.8839049
-    },
-    {
-      "name": "57 Medical Clinic (Parkway Centre)",
-      "description": "Dr Chen Yan Jun Jean",
-      "lat": 1.3018408,
-      "lon": 103.9060621
-    },
-    {
-      "name": "57 Medical Clinic (Pek Kio)",
-      "description": "Dr Loke Ea Ling",
-      "lat": 1.3154145,
-      "lon": 103.8498199
-    },
-    {
-      "name": "94 Dawson Family Clinic",
-      "description": "Dr Alycia Fang",
-      "lat": 1.296388,
-      "lon": 103.8110887
-    },
-    {
-      "name": "A Life Clinic",
-      "description": "Dr Choo Kay Wee",
-      "lat": 1.3211072,
-      "lon": 103.8443378
-    },
-    {
-      "name": "A Medical Clinic (Everton Park)",
-      "description": "Dr Han Xiao, Dr Sng Wei Rong Joshua",
-      "lat": 1.2774492,
-      "lon": 103.8400579
-    },
-    {
-      "name": "Advantage Medical Clinic (Geylang East)",
-      "description": "Dr Vivyan Tay",
-      "lat": 1.3178463,
-      "lon": 103.8864491
-    },
-    {
-      "name": "Anteh Dispensary",
-      "description": "Dr Chai Chwan, Dr Marie Li Meiyan",
-      "lat": 1.3128636,
-      "lon": 103.8824266
-    },
-    {
-      "name": "Apollo Medical Centre",
-      "description": "Dr Sorinder Singh",
-      "lat": 1.3079344,
-      "lon": 103.851763
-    },
-    {
-      "name": "Belief Family Clinic",
-      "description": "Dr Samuel Lau",
-      "lat": 1.3084036,
-      "lon": 103.8622518
-    },
-    {
-      "name": "Brighton Medical Clinic",
-      "description": "Dr Chow Yong Sheng",
-      "lat": 1.3357938,
-      "lon": 103.8479661
-    },
-    {
-      "name": "C3 Family Clinic@Aljunied Crescent",
-      "description": "Dr Cheong Siew Meng",
-      "lat": 1.3213517,
-      "lon": 103.8864088
-    },
-    {
-      "name": "Camry Medical Centre",
-      "description": "Dr Teo Boon See, Dr Tham Tuck Seng",
-      "lat": 1.3386965,
-      "lon": 103.849054
-    },
-    {
-      "name": "Chang Clinic",
-      "description": "Dr Janet Gouw",
-      "lat": 1.3389815,
-      "lon": 103.7788238
-    },
-    {
-      "name": "Chang Clinic & Surgery",
-      "description": "Dr Stephen Chang Chean Seng",
-      "lat": 1.2771303,
-      "lon": 103.8394721
-    },
-    {
-      "name": "Chinatown Wellness Clinic",
-      "description": "Dr Lai Li Cheng",
-      "lat": 1.2852713,
-      "lon": 103.8460894
-    },
-    {
-      "name": "Chung & Ee Medical Clinic",
-      "description": "Dr Chung Wing Hong",
-      "lat": 1.2778441,
-      "lon": 103.8197434
-    },
-    {
-      "name": "Clinic @ The Sail",
-      "description": "Dr Lim Chin Wei",
-      "lat": 1.2810307,
-      "lon": 103.8533909
-    },
-    {
-      "name": "Cornerstone Medical",
-      "description": "Dr Kevin Lim",
-      "lat": 1.3084094,
-      "lon": 103.784729
-    }
-  ]
-}
+[
+  {
+    "area": "Ang Mo Kio",
+    "gpName": "Dr Goh Chok Chin Rachel",
+    "clinicName": "Appletree Medical",
+    "clinicAddress": "416 Ang Mo Kio Avenue 10 #01-1003 Singapore 560416",
+    "clinicContact": "64548361",
+    "operatingHours": "Monday-Friday: 9:00am-12:00pm, 2:30pm-4:00pm\nSaturday-Sunday: 9:00am-12:00pm\nnotes: Closed on PH & Last Sun of the month",
+    "lat": 1.3645847,
+    "lon": 103.8550943
+  },
+  {
+    "area": "Ang Mo Kio",
+    "gpName": "Dr Lim Kai Yang",
+    "clinicName": "Atrio Family Clinic (Ang Mo Kio)",
+    "clinicAddress": "532 Ang Mo Kio Avenue 10 #01-2461 Singapore 560532",
+    "clinicContact": "64554282",
+    "operatingHours": "Monday-Friday: 8:00am-2:00pm, 5:30pm-9:30pm\nSaturday: 8:00am-2:00pm\nSunday: 9:00am-2:00pm\nnotes: Closed on PH",
+    "lat": 1.3739174,
+    "lon": 103.855121
+  },
+  {
+    "area": "Ang Mo Kio",
+    "gpName": [
+      "Dr Lincoln Yeo Kai Pheng",
+      "Dr Ban Vin Fei"
+    ],
+    "clinicName": "Beacon Clinic and Surgery",
+    "clinicAddress": "531 Ang Mo Kio Avenue 10 #01-2445 Singapore 560531",
+    "clinicContact": "69700802",
+    "operatingHours": "Monday-Sunday: 9:00am-9:00pm\nPublicHolidays: 9:00am-9:00pm",
+    "lat": 1.3732934,
+    "lon": 103.8545516
+  },
+  {
+    "area": "Ang Mo Kio",
+    "gpName": [
+      "Dr Sean Lee Jun Kiat",
+      "Dr Mark Chui Wai Mun",
+      "Dr Reyor Ko Teck Ee",
+      "Dr Jasmin Koh"
+    ],
+    "clinicName": "DA Clinic @ Ang Mo Kio",
+    "clinicAddress": "525 Ang Mo Kio Avenue 10 #01-2407 Cheng San Centre Singapore 560525",
+    "clinicContact": "31650147",
+    "operatingHours": "Monday-Sunday: 8:00am-12:00am\nnotes: PH: Please call the clinic to confirm",
+    "lat": 1.3728203,
+    "lon": 103.8539128
+  },
+  {
+    "area": "Ang Mo Kio",
+    "gpName": [
+      "Dr Wang Dingding",
+      "Dr Leong Hon Loong",
+      "Dr Anne Yeo Kwee Kee"
+    ],
+    "clinicName": "Frontier Medical Associates (Ang Mo Kio)",
+    "clinicAddress": "163 Ang Mo Kio Avenue 4 #01-426 Singapore 560163",
+    "clinicContact": "64532571",
+    "operatingHours": "Monday-Wednesday: 8:30am-4:30pm, 6:00pm-9:00pm\nThursday: 8:30am-1:00pm, 6:00pm-9:00pm\nFriday: 8:30am-4:30pm\nSaturday: 8:30am-1:00pm\nnotes: Closed on Sun & PH",
+    "lat": 1.3739465,
+    "lon": 103.8379045
+  },
+  {
+    "area": "Ang Mo Kio",
+    "gpName": "Dr Lim Wei Khoon",
+    "clinicName": "Intemedical Teck Gee",
+    "clinicAddress": "338 Ang Mo Kio Avenue 1 #01-1625 Singapore 560338",
+    "clinicContact": [
+      "69049579",
+      "80616220 (WhatsApp Only)"
+    ],
+    "operatingHours": "Monday-Saturday: 8:00am-10:00pm\nSunday: 8:00am-4:00pm\nPublicHolidays: 8:00am-10:00pm",
+    "lat": 1.3642681,
+    "lon": 103.8489073
+  },
+  {
+    "area": "Ang Mo Kio",
+    "gpName": "Dr Pang Yu Xian",
+    "clinicName": "Keystone Clinic & Surgery (Ang Mo Kio)",
+    "clinicAddress": "632 Ang Mo Kio Avenue 4 #01-966 Singapore 560632",
+    "clinicContact": "69046976",
+    "operatingHours": "Monday-Friday: 8:00am-8:00pm\nSaturday-Sunday: 9:00am-8:00pm\nPublicHolidays: 9:00am-8:00pm",
+    "lat": 1.3799829,
+    "lon": 103.8414166
+  },
+  {
+    "area": "Ang Mo Kio",
+    "gpName": "Dr Ki Yong Hao Alex",
+    "clinicName": "Ki Medical Clinic",
+    "clinicAddress": "416 Ang Mo Kio Avenue 10 #01-975 Singapore 560416",
+    "clinicContact": "64554475",
+    "operatingHours": "Monday-Thursday: 8:00am-12:00pm, 2:30pm-4:30pm, 6:00pm-9:00pm\nFriday: 8:00am-12:00pm, 6:00pm-9:00pm\nSaturday-Sunday: 8:00am-12:00pm, 6:00pm-9:00pm\nnotes: PH: 8:00am-12:00pm (Only on selected PH - To call the clinic to confirm)",
+    "lat": 1.3645847,
+    "lon": 103.8550943
+  },
+  {
+    "area": "Ang Mo Kio",
+    "gpName": "Dr Lim Kim Show",
+    "clinicName": "Life Family Clinic",
+    "clinicAddress": "713 Ang Mo Kio Avenue 6 #01-4052 Singapore 560713",
+    "clinicContact": [
+      "64563535",
+      "87339434 (WhatsApp Only)"
+    ],
+    "operatingHours": "Monday-Friday: 9:00am-9:00pm\nSaturday-Sunday: 9:00am-1:00pm\nnotes: Closed on PH",
+    "lat": 1.3714626,
+    "lon": 103.8467975
+  },
+  {
+    "area": "Ang Mo Kio",
+    "gpName": "Dr Woo Bo Jun",
+    "clinicName": "Loh & Loh Clinic and Surgery",
+    "clinicAddress": "531 Ang Mo Kio Avenue 10 #01-2447 Singapore 560531",
+    "clinicContact": "69700802",
+    "operatingHours": "Monday-Sunday: 9:00am-9:00pm\nPublicHolidays: 9:00am-9:00pm",
+    "lat": 1.3733106,
+    "lon": 103.8544609
+  },
+  {
+    "area": "Ang Mo Kio",
+    "gpName": "Dr Ong Guan Hong",
+    "clinicName": "Pancare Medical Clinic (Ang Mo Kio)",
+    "clinicAddress": "133 Ang Mo Kio Avenue 3 #01-1643 Singapore 560133",
+    "clinicContact": "62583186",
+    "operatingHours": "Monday: 8:00am-1:00pm, 2:00pm-5:00pm, 6:00pm-9:00pm\nTuesday-Friday: 8:00am-1:00pm, 2:00pm-5:00pm\nWednesday-Thursday: 8:00am-1:00pm, 6:00pm-9:00pm\nSaturday-Sunday: 8:00am-1:00pm\nPublicHolidays: 8:00am-1:00pm",
+    "lat": 1.3711623,
+    "lon": 103.8426375
+  },
+  {
+    "area": "Ang Mo Kio",
+    "gpName": "Dr Madeleine Tan Qiao Si",
+    "clinicName": "Procare GP Clinic",
+    "clinicAddress": "163 Ang Mo Kio Avenue 4 #01-436 Singapore 560163",
+    "clinicContact": [
+      "65139568",
+      "87994737 (WhatsApp Only)"
+    ],
+    "operatingHours": "Monday-Friday: 8:00am-2:00pm, 6:00pm-9:00pm\nSunday-PublicHolidays: 8:00am-1:00pm\nnotes: Closed on Sat",
+    "lat": 1.3737716,
+    "lon": 103.8376379
+  },
+  {
+    "area": "Ang Mo Kio",
+    "gpName": "Dr Tang Teck Ung",
+    "clinicName": "SATA CommHealth (Ang Mo Kio)",
+    "clinicAddress": "715 Ang Mo Kio Avenue 6 #01-4008/4010 Singapore 560715",
+    "clinicContact": "65545080",
+    "operatingHours": "Monday-Friday: 8:30am-12:30pm, 1:30pm-5:00pm\nSaturday: 8:30am-12:30pm\nnotes: Closed on Sun & PH. Currently closed for renovation: 8 October 2024 to February 2025",
+    "lat": 1.3712697,
+    "lon": 103.8458757
+  },
+  {
+    "area": "Ang Mo Kio",
+    "gpName": "Dr Yap Gim Hong",
+    "clinicName": "Summit Medical Clinic",
+    "clinicAddress": "632 Ang Mo Kio Avenue 4 #01-956 Singapore 560632",
+    "clinicContact": "64560060",
+    "operatingHours": "Monday-Friday: 8:30am-12:30pm, 1:30pm-3:30pm\nSaturday: 8:30am-12:30pm\nnotes: Closed on Sun & PH",
+    "lat": 1.3799829,
+    "lon": 103.8414166
+  },
+  {
+    "area": "Ang Mo Kio",
+    "gpName": [
+      "Dr Guo Yuxiao",
+      "Dr Chen Lin"
+    ],
+    "clinicName": "Vital-Care Clinic & Surgery Pte Ltd",
+    "clinicAddress": "525 Ang Mo Kio Avenue 10 #01-2399 Singapore 560525",
+    "clinicContact": "62565154",
+    "operatingHours": "Monday-Friday: 8:00am-1:00pm, 2:00pm-5:00pm\nSaturday: 8:00am-12:30pm\nnotes: Closed on Sun & PH",
+    "lat": 1.3726954,
+    "lon": 103.85404
+  },
+  {
+    "area": "Ang Mo Kio",
+    "gpName": "Dr Alvin Wong",
+    "clinicName": "Well Family Clinic & Surgery",
+    "clinicAddress": "555 Ang Mo Kio Avenue 10 #01-1948 Singapore 560555",
+    "clinicContact": "64549519",
+    "operatingHours": "Monday-Sunday: 9:00am-10:00pm\nPublicHolidays: 9:00am-10:00pm",
+    "lat": 1.3708772,
+    "lon": 103.857088
+  },
+  {
+    "area": "Ang Mo Kio",
+    "gpName": [
+      "Dr Lim Kai Hung",
+      "Dr Jovan Lai Jia Qing"
+    ],
+    "clinicName": "1 Medical Teck Ghee",
+    "clinicAddress": "410 Ang Mo Kio Avenue 10 #01-837 Singapore 560410",
+    "clinicContact": "62517030",
+    "operatingHours": "Monday-Sunday: 7:00am-1:00pm, 6:00pm-11:00pm\nPublicHolidays: 7:00am-1:00pm, 6:00pm-11:00pm",
+    "lat": 1.3626873,
+    "lon": 103.854642
+  },
+  {
+    "area": "Balestier",
+    "gpName": "Dr Wong Ted Min",
+    "clinicName": "Family Health Clinic & Surgery",
+    "clinicAddress": "2 Balestier Road #01-651 Singapore 320002",
+    "clinicContact": "62542440",
+    "operatingHours": "Mon-Fri: 9:00am-12:30pm, 2:00pm-5:30pm\nSat: 9:00am-12:30pm\nSun & PH: Closed",
+    "lat": 1.325893,
+    "lon": 103.8429309
+  },
+  {
+    "area": "Balestier",
+    "gpName": "Dr Fong Lian Im",
+    "clinicName": "Heal Medical Centre",
+    "clinicAddress": "262 Balestier Road #04-01/02 OKIO Building Singapore 329714",
+    "clinicContact": "62509550",
+    "operatingHours": "Mon-Fri: 9:00am-5:00pm\nSat: 9:00am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3221722,
+    "lon": 103.8532346
+  },
+  {
+    "area": "Balestier",
+    "gpName": "Dr Lim Kheng Teong",
+    "clinicName": "Healthify Medical Family Clinic",
+    "clinicAddress": "262 Balestier Road #01-04 OKIO Building Singapore 329714",
+    "clinicContact": "69779773",
+    "operatingHours": "Mon, Tues & Thurs: 8:30am-1:00pm, 2:00pm-5:00pm, 6:00pm-8:30pm\nWed & Fri: 8:30am-1:00pm, 2:00pm-5:00pm\nSat: 8:30am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3221722,
+    "lon": 103.8532346
+  },
+  {
+    "area": "Balestier",
+    "gpName": "Dr Chong Soon Thye",
+    "clinicName": "Livewell Medical Family Clinic",
+    "clinicAddress": "20 Ah Hood Road #01-08 Zhongshan Mall Singapore 329984",
+    "clinicContact": "69099888",
+    "operatingHours": "Mon & Wed: 8:30am-1:30pm, 6:00pm-9:30pm\nTues & Fri: 8:30am-1:30pm\nThurs: 8:30am-1:00pm, 2:00pm-5:30pm\nSat & Sun: 6:30pm-9:30pm\nPH: 6:30pm-9:30pm (Only on selected PH - To call the clinic to confirm)",
+    "lat": 1.3270618,
+    "lon": 103.8464431
+  },
+  {
+    "area": "Balestier",
+    "gpName": "Dr Kannan S/O Sunderaraj",
+    "clinicName": "mydoctor@Balestier",
+    "clinicAddress": "360 Balestier Road #01-01 Shaw Plaza Singapore 329783",
+    "clinicContact": "69048264",
+    "operatingHours": "Mon-Fri: 8:30am-1:00pm, 6:00pm-9:00pm\nSat & Sun: 8:30am-12:30pm\nPH: 8:30am-12:30pm",
+    "lat": 1.3239062,
+    "lon": 103.8515903
+  },
+  {
+    "area": "Balestier",
+    "gpName": "Dr Melody Jacquelyn, Dr Lim Chong Soon, Daniel",
+    "clinicName": "Oaklife Family Clinic",
+    "clinicAddress": "592G Balestier Road Singapore 329902",
+    "clinicContact": "69808568",
+    "operatingHours": "Mon-Fri: 8:30am-1:00pm, 4:00pm-8:30pm\nSat: 8:30am-1:00pm\nSun: 5:00pm-8:30pm\nPH: Closed",
+    "lat": 1.3267401,
+    "lon": 103.8424766
+  },
+  {
+    "area": "Balestier",
+    "gpName": "Dr Kee Bang Heng",
+    "clinicName": "Plushealth Medical Clinic & Surgery",
+    "clinicAddress": "89 Whampoa Drive #01-841 Singapore 320089",
+    "clinicContact": "62647845",
+    "operatingHours": "Mon-Thurs: 8:30am-12:30pm, 2:00pm-4:30pm, 6:00pm-9:00pm\nFri: 8:30am-12:30pm, 2:00pm-4:30pm\nSat & Sun: 9:00am-1:00pm\nPH: Closed",
+    "lat": 1.3236278,
+    "lon": 103.8549564
+  },
+  {
+    "area": "Bedok",
+    "gpName": "Dr Balkis Akbar Ali",
+    "clinicName": "Balkis Family Clinic",
+    "clinicAddress": "631 Bedok Reservoir Road #01-968 Singapore 470631",
+    "clinicContact": "64454711",
+    "operatingHours": "Mon-Thurs: 8:00am-12:00pm, 2:00pm-6:00pm\nFri-Sun: 9:00am-12:00pm\nPH: Closed",
+    "lat": 1.3332324,
+    "lon": 103.9148241
+  },
+  {
+    "area": "Bedok",
+    "gpName": "Dr Fong Khee Leng",
+    "clinicName": "Bedok Clinic and Surgery Family Medical Centre",
+    "clinicAddress": "17 Bedok South Road #01-565 Singapore 460017",
+    "clinicContact": "62410943",
+    "operatingHours": "Mon-Fri: 9:30am-1:00pm, 2:30pm-5:00pm, 6:00pm-8:00pm\nSat: 9:30am-12:30pm\nSun & PH: Closed",
+    "lat": 1.3201733,
+    "lon": 103.9360272
+  },
+  {
+    "area": "Bedok",
+    "gpName": "Dr Bok Teck Sun",
+    "clinicName": "Bok Family Clinic Pte Ltd",
+    "clinicAddress": "117 Bedok Reservoir Road #01-58 Singapore 470117",
+    "clinicContact": "67478200",
+    "operatingHours": "Mon-Thurs: 9:00am-12:30pm, 3:00pm-4:30pm, 8:00pm-9:00pm\nFri: 9:00am-12:30pm, 3:00pm-4:30pm\nSat & Sun: 9:00am-12:30pm\nPH: Closed",
+    "lat": 1.3314513,
+    "lon": 103.9087592
+  },
+  {
+    "area": "Bedok",
+    "gpName": "Dr Nam Min Fern Alvina",
+    "clinicName": "Clinic@Costa",
+    "clinicAddress": "84 Bayshore Road #01-35/36 Singapore 469994",
+    "clinicContact": "62433638",
+    "operatingHours": "Mon, Tues & Thurs: 8:30am-2:30pm, 6:30pm-9:00pm\nWed & Fri: 8:30am-2:30pm\nSat: 8:30am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3120371,
+    "lon": 103.9401803
+  },
+  {
+    "area": "Bedok",
+    "gpName": "Dr Fong Chiu Yan",
+    "clinicName": "Eastern Medical Centre",
+    "clinicAddress": "631 Bedok Reservoir Road #01-896 Singapore 470631",
+    "clinicContact": "64487628",
+    "operatingHours": "Mon, Tues & Thurs: 8:30am-1:00pm, 2:00pm-4:30pm\nWed, Fri & Sat: 8:30am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3332324,
+    "lon": 103.9148241
+  },
+  {
+    "area": "Bedok",
+    "gpName": "Dr Loo Chun Hao",
+    "clinicName": "EH Medical Family Clinic (Bedok South)",
+    "clinicAddress": "152A Bedok South Road #01-05 Singapore 461152",
+    "clinicContact": "63224226",
+    "operatingHours": "Mon-Thurs: 8:30am-2:00pm, 5:00pm-9:30pm\nFri: 8:30am-2:00pm\nSat & Sun: 8:30am-12:30pm\nPH: Closed",
+    "lat": 1.3180002,
+    "lon": 103.947786
+  },
+  {
+    "area": "Bedok",
+    "gpName": "Dr Chan Yandong Dave",
+    "clinicName": "Faith Clinic (Bedok)",
+    "clinicAddress": "746 Bedok Reservoir Road #01-3013 Singapore 470746",
+    "clinicContact": "67020820",
+    "operatingHours": "Mon-Fri: 8:30am-4:30pm, 6:30pm-9:00pm\nSat-Sun: 8:30am-1:00pm\nPH: 8:30am-1:00pm",
+    "lat": 1.3372346,
+    "lon": 103.9212743
+  },
+  {
+    "area": "Bedok",
+    "gpName": "Dr Dheeraj Khiatani",
+    "clinicName": "Famicare Bedok Clinic",
+    "clinicAddress": "158 Bedok South Avenue 3 #01-581 Singapore 460158",
+    "clinicContact": "64428373",
+    "operatingHours": "Mon-Thurs: 8:30am-3:00pm, 7:00pm-10:00pm\nFri: 8:30am-3:00pm\nSat & Sun: 8:30am-1:00pm\nPH: Closed",
+    "lat": 1.3187668,
+    "lon": 103.9450566
+  },
+  {
+    "area": "Bedok",
+    "gpName": "Dr Dina Quek",
+    "clinicName": "Healthplus Clinic & Surgery (Bedok)",
+    "clinicAddress": "631 Bedok Reservoir Road #01-898 Singapore 470631",
+    "clinicContact": "64460529",
+    "operatingHours": "Mon, Tues & Thurs: 9:00am-1:00pm, 6:00pm-9:00pm\nWed & Fri: 9:00am-1:00pm\nSat & Sun: 9:00am-1:00pm\nPH: Closed",
+    "lat": 1.3332324,
+    "lon": 103.9148241
+  },
+  {
+    "area": "Bedok",
+    "gpName": "Dr Tan Geok Jim",
+    "clinicName": "Healthway Medical Group NTC",
+    "clinicAddress": "59 New Upper Changi Road #01-1224 Singapore 461059",
+    "clinicContact": "64431784",
+    "operatingHours": "Mon, Tues, Fri: 9:00am-1:30pm, 3:30pm-6:00pm\nWed & Thurs: 9:00am-1:30pm\nSat & Sun: 9:00am-12:00pm\nPH: Closed",
+    "lat": 1.3240191,
+    "lon": 103.9407483
+  },
+  {
+    "area": "Bedok",
+    "gpName": "Dr Eddie Tan Tung Wee, Dr Felicia Ng Kai Lin",
+    "clinicName": "HeartlandHealth (Bedok Central)",
+    "clinicAddress": "418 Bedok North Avenue 2 #01-85 Singapore 460418",
+    "clinicContact": "64441104",
+    "operatingHours": "Mon-Sun: 8:00am-1:00pm, 6:00pm-11:00pm\nPH: 8:00am-1:00pm, 6:00pm-11:00pm",
+    "lat": 1.3287713,
+    "lon": 103.9299751
+  },
+  {
+    "area": "Bedok",
+    "gpName": "Dr Shahidah Bte Aziz, Dr Lee Kin Mun, Dr Eddie Tan Tung Wee, Dr Chua Zhi Wei Ignatius",
+    "clinicName": "HeartlandHealth (Bedok South)",
+    "clinicAddress": "18 Bedok South Road #01-69 Singapore 460018",
+    "clinicContact": "62418812",
+    "operatingHours": "Mon-Sun: 7:00am-1:00pm, 6:00pm-11:00pm\nPH: 7:00am-1:00pm, 6:00pm-11:00pm",
+    "lat": 1.3204283,
+    "lon": 103.9347642
+  },
+  {
+    "area": "Bedok",
+    "gpName": "Dr Kong Kah Shern Andy, Dr Chin Yuin Cheng, Dr Wong Janti Susanna, Dr Eddie Tan Tung Wee",
+    "clinicName": "HeartlandHealth (New Upper Changi)",
+    "clinicAddress": "59 New Upper Changi Road #01-1268 Singapore 461059",
+    "clinicContact": "64453100",
+    "operatingHours": "Mon-Fri: 7:00am-11:00pm\nSat & Sun: 7:00am-1:00pm, 6:00pm-11:00pm\nPH: 7:00am-11:00pm",
+    "lat": 1.324054,
+    "lon": 103.9406335
+  },
+  {
+    "area": "Bedok",
+    "gpName": "Dr Chao Chien Chih Steven",
+    "clinicName": "Iconcare Medical Clinic",
+    "clinicAddress": "150 Bedok Reservoir Road #01-1733 Singapore 470150",
+    "clinicContact": "68168800",
+    "operatingHours": "Mon-Fri: 9:00am-12:30pm, 2:30pm-4:30pm, 6:00pm-8:30pm\nSat: 9:00am-12:30pm\nSun: 9:00am-12:30pm, 6:00pm-8:30pm\nPH: Closed",
+    "lat": 1.3360624,
+    "lon": 103.9124743
+  },
+  {
+    "area": "Bedok",
+    "gpName": "Dr Penny Lo",
+    "clinicName": "Joy Family Clinic",
+    "clinicAddress": "703 Bedok Reservoir Road #01-3506 Singapore 470703",
+    "clinicContact": "64422483",
+    "operatingHours": "Mon, Tues & Fri: 9:00am-1:00pm, 2:00pm-4:00pm\nWed: 9:00am-1:00pm, 2:00pm-6:00pm\nThurs: 9:00am-1:00pm\nSat: 9:00am-12:00pm\nSun & PH: Closed",
+    "lat": 1.3370864,
+    "lon": 103.9199144
+  },
+  {
+    "area": "Bedok",
+    "gpName": "Dr Cheng Kah Ling Grace",
+    "clinicName": "JoyHealth Medical Clinic",
+    "clinicAddress": "744 Bedok Reservoir Road #01-3027 Singapore 470744",
+    "clinicContact": "67811868",
+    "operatingHours": "Mon: 9:00am-1:00pm, 2:30pm-7:00pm\nTues-Fri: 9:00am-1:00pm, 2:30pm-5:30pm\nSat: 9:00am-12:30pm\nSun & PH: Closed",
+    "lat": 1.3376314,
+    "lon": 103.9215019
+  },
+  {
+    "area": "Bedok",
+    "gpName": "Dr Jestin Chiew",
+    "clinicName": "JustCare Medical",
+    "clinicAddress": "203 Bedok North Street 1 #01-461 Singapore 460203",
+    "clinicContact": "65303356",
+    "operatingHours": "Mon-Fri: 8:30am-1:00pm, 6:00pm-10:00pm\nSat & Sun: 8:30am-1:00pm, 2:00pm-5:00pm, 6:00pm-10:00pm\nPH: 8:30am-1:00pm, 2:00pm-5:00pm, 6:00pm-10:00pm",
+    "lat": 1.3257,
+    "lon": 103.9291647
+  },
+  {
+    "area": "Bedok",
+    "gpName": "Dr Ho Ying Jie",
+    "clinicName": "Keystone Clinic & Surgery (Tanah Merah)",
+    "clinicAddress": "57A New Upper Changi Road #01-1396 Singapore 462057",
+    "clinicContact": "69043151",
+    "operatingHours": "Mon-Sun: 8:00am-8:00pm\nPH: 8:00am-8:00pm",
+    "lat": 1.323705,
+    "lon": 103.941309
+  },
+  {
+    "area": "Bedok",
+    "gpName": "Dr Leong Wai Hoe Justin",
+    "clinicName": "Liang Clinic",
+    "clinicAddress": "55 Siglap Road #B1-15/16 Singapore 455871",
+    "clinicContact": "62415944",
+    "operatingHours": "Mon-Fri: 8:30am-12:00pm, 2:00pm-5:00pm\nSat: 8:30am-12:00pm\nSun & PH: Closed",
+    "lat": 1.3125983,
+    "lon": 103.9231991
+  },
+  {
+    "area": "Bedok",
+    "gpName": "Dr Seah Chiew Wan",
+    "clinicName": "Lusumu Family Clinic",
+    "clinicAddress": "530 Bedok North Street 3 #01-638 Singapore 460530",
+    "clinicContact": "64459910",
+    "operatingHours": "Mon & Tues: 8:30am-12:30pm, 6:30pm-9:00pm\nWed-Sat: 8:30am-12:30pm\nSun & PH: Closed",
+    "lat": 1.3337144,
+    "lon": 103.9269518
+  },
+  {
+    "area": "Bedok",
+    "gpName": "Dr Yap Jun Jie Julian",
+    "clinicName": "Minmed Clinic (Bedok)",
+    "clinicAddress": "311 New Upper Changi Road #01-47/48 Bedok Mall Singapore 467360",
+    "clinicContact": "63830123",
+    "operatingHours": "Mon-Fri: 9:00am-1:00pm, 2:00pm-5:00pm, 6:00pm-9:00pm\nSat & Sun: 9:00am-1:00pm\nPH: 9:00am-1:00pm, 2:00pm-5:00pm",
+    "lat": 1.324592,
+    "lon": 103.9292631
+  },
+  {
+    "area": "Bedok",
+    "gpName": "Dr Song Majinyang, Dr Ding Xiao Liey",
+    "clinicName": "MyCare Medical Clinic",
+    "clinicAddress": "55 Chai Chee Drive #01-188 Singapore 460055",
+    "clinicContact": "60411205, 88826615 (WhatsApp Only)",
+    "operatingHours": "Mon-Fri: 9:00am-1:00pm, 5:00pm-9:00pm\nSat: 9:00am-1:00pm\nPH: 9:00am-1:00pm",
+    "lat": 1.3271729,
+    "lon": 103.9193384
+  },
+  {
+    "area": "Bedok",
+    "gpName": "Dr Wee Lay Kuan Amy",
+    "clinicName": "Northeast Medical Group (Bedok)",
+    "clinicAddress": "531 Bedok North Street 3 #01-692 Singapore 460531",
+    "clinicContact": "64412402",
+    "operatingHours": "Mon, Tues, Thurs, Fri: 9:00am-1:00pm, 2:00pm-6:00pm\nWed: 9:00am-1:00pm, 2:00pm-6:00pm, 7:00pm-10:00pm\nSat & Sun: 8:30am-12:00pm\nPH: Closed",
+    "lat": 1.3330256,
+    "lon": 103.926121
+  },
+  {
+    "area": "Bedok",
+    "gpName": "Dr Laura Kasenda, Dr Tho Ee Hunck, Dr Toh Khai San",
+    "clinicName": "SATA CommHealth Uttamram (Bedok)",
+    "clinicAddress": "351 Chai Chee Street SATA CommHealth Building Singapore 468982",
+    "clinicContact": "62446718",
+    "operatingHours": "Mon-Fri: 8:30am-12:30pm, 1:30pm-5:00pm\nSat: 8:30am-12:30pm\nSun & PH: Closed",
+    "lat": 1.3279741,
+    "lon": 103.9211413
+  },
+  {
+    "area": "Bedok",
+    "gpName": "Dr Sajeena Abdul Azeesu Kunju",
+    "clinicName": "SM Haneefa Clinic",
+    "clinicAddress": "11 Chai Chee Road #01-23 Singapore 460011",
+    "clinicContact": "62434237",
+    "operatingHours": "Mon-Thurs: 8:30am-1:00pm, 2.00pm-5:30pm\nFri-Sun: 8:30am-1:00pm\nPH: Closed",
+    "lat": 1.3268996,
+    "lon": 103.9250883
+  },
+  {
+    "area": "Bedok",
+    "gpName": "Dr Victor Sebastian",
+    "clinicName": "S T Medical Clinic",
+    "clinicAddress": "531 Bedok North Street 3 #01-694 Singapore 460531",
+    "clinicContact": "64440159",
+    "operatingHours": "Mon-Fri: 8:30am-12:00pm, 2:00pm-4:00pm\nSat: 8:30am-12:00pm\nSun: 9:30am-12:00pm\nPH: Closed",
+    "lat": 1.3329908,
+    "lon": 103.926048
+  },
+  {
+    "area": "Bedok",
+    "gpName": "Dr Liew Kert Chian",
+    "clinicName": "Temasek Clinic & Surgery",
+    "clinicAddress": "73 Bedok South Avenue 3 #01-460 Singapore 460073",
+    "clinicContact": "64436113",
+    "operatingHours": "Mon, Tues & Thurs: 8:45am-2:00pm, 6:00pm-9:00pm\nWed & Fri: 8:45am-2:00pm\nSat: 8:45am-12:00pm\nSun & PH: Closed",
+    "lat": 1.3198841,
+    "lon": 103.9440138
+  },
+  {
+    "area": "Bedok",
+    "gpName": "Dr Cheong Lee Ching",
+    "clinicName": "Thai Shen Family Clinic Pte Ltd",
+    "clinicAddress": "84 Bedok North Street 4, #01-65 Singapore 460084",
+    "clinicContact": "64448134",
+    "operatingHours": "Mon: 8.30am-12:00pm, 7:00pm-8:30pm\nTues, Wed & Fri: 8.30am-12:00pm, 1:00pm-3:00pm\nThurs: 8.30am-12:00pm, 1:00pm-3:00pm, 7:00pm-8:30pm\nSun: 8.30am-12:00pm\nSat & PH: Closed",
+    "lat": 1.3318915,
+    "lon": 103.9391824
+  },
+  {
+    "area": "Bedok",
+    "gpName": "Dr Toh Wen Xin Amanda",
+    "clinicName": "Treetop Medical",
+    "clinicAddress": "510 Bedok North Street 3 #01-03 Singapore 460510",
+    "clinicContact": "89579874",
+    "operatingHours": "Mon: 8:30am-1:30pm, 2:00pm-5:00pm, 5:30pm-8:30pm\nWed & Thurs: 8:30am-1:30pm, 5:30pm-8:30pm\nFri: 5:30pm-8:30pm\nSat: 9:00am-12:00pm\nSun & PH: Closed (include eve of PH)",
+    "lat": 1.3322416,
+    "lon": 103.9310472
+  },
+  {
+    "area": "Bedok",
+    "gpName": "Dr Rohani Saptu",
+    "clinicName": "Usrah Medical Clinic",
+    "clinicAddress": "510 Bedok North Street 3 #01-25 Singapore 460510",
+    "clinicContact": "64414139",
+    "operatingHours": "Mon-Fri: 9:00am-1:00pm, 2:00pm-5:00pm\nSat-Sun: 9:00am-1:00pm\nPH: Closed",
+    "lat": 1.3322416,
+    "lon": 103.9310472
+  },
+  {
+    "area": "Bedok",
+    "gpName": "Dr Lim Ein Lai",
+    "clinicName": "Wee's Clinic & Surgery",
+    "clinicAddress": "418 Bedok North Avenue 2 #01-79 Singapore 460418",
+    "clinicContact": "64445316",
+    "operatingHours": "Mon-Fri: 10.00am-1.00pm, 7.30pm-9.30pm\nSat & Sun: 10.00am-1.00pm\nPH: Closed",
+    "lat": 1.3281428,
+    "lon": 103.9299405
+  },
+  {
+    "area": "Bedok",
+    "gpName": "Dr Sam Yang Shi Yao, Dr Yap Theresa",
+    "clinicName": "Yang & Yap Clinic and Surgery Pte Ltd / Dr Yang Ing Hong Medical and Aesthetic Clinic",
+    "clinicAddress": "537 Bedok North Street 3 #01-571 Singapore 460537",
+    "clinicContact": "64412481",
+    "operatingHours": "Mon, Tues, Thurs & Fri: 9:00am-12:00pm, 2:00pm-7:00pm\nWed & Sat: 9:00am-12:00pm\nSun & PH: Closed",
+    "lat": 1.3317302,
+    "lon": 103.9240089
+  },
+  {
+    "area": "Bedok",
+    "gpName": "Dr Toh Mei Ling",
+    "clinicName": "1Doc Medical Centre Heartbeat @ Bedok",
+    "clinicAddress": "11 Bedok North Street 1 #01-12 Heartbeat @ Bedok Singapore 469662",
+    "clinicContact": "64631795",
+    "operatingHours": "Mon, Wed & Fri: 8:00am-1.30pm, 2:30pm-5:00pm\nTues & Thurs: 8:00am-1.30pm, 2:30pm-5:00pm, 6:00pm-8:00pm\nSat: 8:00am-12:00pm, 2:00pm-5:00pm\nSun & PH: Closed",
+    "lat": 1.3269753,
+    "lon": 103.9321493
+  },
+  {
+    "area": "Bencoolen",
+    "gpName": "Dr Lee Chu Ching",
+    "clinicName": "Singapura Clinic",
+    "clinicAddress": "27 Bencoolen Street #01-27 Singapore 189620",
+    "clinicContact": "63361181",
+    "operatingHours": "Mon-Fri: 9:00am-1:00pm, 2:30pm-6:00pm\nSat: 9:00am-1:00pm\nSun & PH: Closed",
+    "lat": 1.2989267,
+    "lon": 103.8498608
+  },
+  {
+    "area": "Bendemeer",
+    "gpName": "Dr Ong Nan Kai Clyde",
+    "clinicName": "My Family Clinic (St George)",
+    "clinicAddress": "2 St George’s Road Singapore 328023",
+    "clinicContact": "62922128",
+    "operatingHours": "Mon, Tues, Thurs: 8:00am-2:00pm, 6:00pm-9:00pm\nWed & Fri: 8:00am-2:00pm\nSat: 8:00am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3234305,
+    "lon": 103.8607688
+  },
+  {
+    "area": "Bendemeer",
+    "gpName": "Dr Lee Siew Khim",
+    "clinicName": "St Georges Clinic and Surgery Pte Ltd",
+    "clinicAddress": "3 St George’s Road #01-105 Singapore 320003",
+    "clinicContact": "62984833",
+    "operatingHours": "Mon, Tues & Thurs: 9:00am-1:00pm, 2:30pm-4:30pm, 7:00pm-9:00pm\nWed: 9:00am-1:00pm, 7:00pm-9:00pm\nFri: 9:00am-1:00pm, 2:30pm-4:30pm\nSat & Sun: 9:00am-1:00pm\nPH: Closed",
+    "lat": 1.3228459,
+    "lon": 103.8609747
+  },
+  {
+    "area": "Bishan",
+    "gpName": "Dr Tan Mian Yi",
+    "clinicName": "Dr Panda Medical Centre",
+    "clinicAddress": "20 Sin Ming Lane #01-65 Midview City Singapore 573968",
+    "clinicContact": "69807757",
+    "operatingHours": "Mon, Wed & Fri: 9:00am-1:00pm, 2:00pm-9:00pm\nTues & Thurs: 9:00am-1:00pm, 2:00pm-6:00pm\nSat: 9:00am-12:30pm\nSun: 9:00am-12:30pm, 6:00pm-9:00pm\nPH: Closed",
+    "lat": 1.3583591,
+    "lon": 103.8335451
+  },
+  {
+    "area": "Bishan",
+    "gpName": "Dr Tan Toon Wei, Dr Yan Shiyuan",
+    "clinicName": "Edgedale Medical Clinic (Bishan)",
+    "clinicAddress": "212 Bishan Street 23 #B1-257 Singapore 570212",
+    "clinicContact": "60150701",
+    "operatingHours": "Mon - Fri: 9:00am-1:00pm, 6:00pm-9:00pm\nSat & Sun: 9:00am-1:00pm\nPH: Closed",
+    "lat": 1.356668,
+    "lon": 103.8480574
+  },
+  {
+    "area": "Bishan",
+    "gpName": "Dr Lee Kai Xin",
+    "clinicName": "Goodhealth Medical & Surgery",
+    "clinicAddress": "116 Bishan Street 12 #01-34 Singapore 570116",
+    "clinicContact": "69512526",
+    "operatingHours": "Mon, Tues & Thurs: 8:30am-12:30pm, 2:00pm-8:00pm\nWed & Fri: 8:30am-12:30pm, 2:00pm-4:30pm\nSat: 8:30am-12:30pm\nSun & PH: Closed",
+    "lat": 1.347777,
+    "lon": 103.8493055
+  },
+  {
+    "area": "Bishan",
+    "gpName": "Dr Xu Yi Tong",
+    "clinicName": "Harmony Health Clinic & Surgery",
+    "clinicAddress": "23 Sin Ming Road #01-27 Singapore 570023",
+    "clinicContact": "69708098",
+    "operatingHours": "Mon-Sun: 9:00am-9:00pm\nPH: 9:00am-9:00pm",
+    "lat": 1.3543011,
+    "lon": 103.8358007
+  },
+  {
+    "area": "Bishan",
+    "gpName": "Dr Lee Eng Seng",
+    "clinicName": "Healthcare Family Clinic & Surgery",
+    "clinicAddress": "403 Sin Ming Avenue #01-311 Singapore 570403",
+    "clinicContact": "64542373",
+    "operatingHours": "Mon-Wed: 8:30am-12:00pm, 2:30pm-4:00pm, 7:30pm-9:00pm\nThurs-Fri: 8:30am-12:00pm, 2:30pm-4:00pm\nSat: 9:00am-12:00pm\nSun & PH: Closed",
+    "lat": 1.3628575,
+    "lon": 103.8332014
+  },
+  {
+    "area": "Bishan",
+    "gpName": "Dr Kenneth Loo",
+    "clinicName": "Kenneth Loo Family Clinic",
+    "clinicAddress": "152 Bishan Street 11 #01-215 Singapore 570152",
+    "clinicContact": "62503660",
+    "operatingHours": "Mon-Fri: 8:30am-12:00pm, 2:30pm-4:30pm\nSat & Sun: 9:00am-12:00pm\nPH: Closed",
+    "lat": 1.3457333,
+    "lon": 103.8545249
+  },
+  {
+    "area": "Bishan",
+    "gpName": "Dr Yong Fang Yue",
+    "clinicName": "OneCare Medical Clinic (Bishan)",
+    "clinicAddress": "279 Bishan Street 24 #01-44 Singapore 570279",
+    "clinicContact": "65133439",
+    "operatingHours": "Mon: 8:00am-3:00pm, 5:30pm-9:30pm\nTue - Fri: 8:00am-3:00pm, 5:30pm-9:30pm\nSat: 8:00am-1:00pm\nSun: 8:00am-1:00pm, 6:00pm-9:00pm\nPH: To call the clinic to confirm",
+    "lat": 1.3576948,
+    "lon": 103.844134
+  },
+  {
+    "area": "Bishan",
+    "gpName": "Dr Tan Kia Yong Paul",
+    "clinicName": "P Tan Family Medicine Clinic",
+    "clinicAddress": "503 Bishan Street 11 #01-464 Singapore 570503",
+    "clinicContact": "62557545",
+    "operatingHours": "Mon, Tue & Thu: 9:00am-12:30pm, 2:00pm-4:30pm, 6:00pm-8:30pm\nWed & Fri: 9:00am-12:30pm, 2:00pm-5:30pm\nSat: 9:00am-12:30pm\nPH & Sun: Closed",
+    "lat": 1.3485807,
+    "lon": 103.8479726
+  },
+  {
+    "area": "Bishan",
+    "gpName": "Dr Poh Jing Yu",
+    "clinicName": "1 Bishan Medical",
+    "clinicAddress": "283 Bishan Street 22 #01-191 Singapore 570283",
+    "clinicContact": "64561600",
+    "operatingHours": "Mon-Sun: 8:00am-1:00pm, 6:00pm-10:00pm\nPH: 8:00am-1:00pm, 6:00pm-10:00pm",
+    "lat": 1.3589816,
+    "lon": 103.8446827
+  },
+  {
+    "area": "Boon Lay",
+    "gpName": "Dr Chao Anthony Tar Liang, Dr Cynthia Chao",
+    "clinicName": "Boon Lay Clinic & Surgery Pte Ltd",
+    "clinicAddress": "221 Boon Lay Pl #01-240 Singapore 640221",
+    "clinicContact": "62655247",
+    "operatingHours": "Mon-Thurs: 8:00am-1:00pm, 2:00pm-5:00pm, 7:00pm-9:00pm\nFri: 8:00am-1:00pm, 2:00pm-5:00pm\nSat & Sun: 8:00am-1:00pm\nPH: Closed",
+    "lat": 1.346566,
+    "lon": 103.7120156
+  },
+  {
+    "area": "Bugis",
+    "gpName": "Dr Priscilla Ang",
+    "clinicName": "SATA CommHealth (Beach Road)",
+    "clinicAddress": "2 Beach Road #01-4777 Singapore 190002",
+    "clinicContact": "90490934",
+    "operatingHours": "Mon-Fri: 8:30am-12:30pm, 1:30pm-5:00pm\nSat: 8:30pm-12:30pm\nSun & PH: Closed",
+    "lat": 1.303862,
+    "lon": 103.8649245
+  },
+  {
+    "area": "Bukit Merah",
+    "gpName": "Dr Joanne Koay",
+    "clinicName": "Assure Family Clinic (Bukit Merah)",
+    "clinicAddress": "161 Bukit Merah Central #01-3739 Singapore 150161",
+    "clinicContact": "62528116, 96549112 (WhatsApp Only)",
+    "operatingHours": "Mon, Tues, Thurs & Fri: 9:00am-1:00pm, 1:30pm-4:30pm\nWed: 9:00am-1:00pm\nSat: 8:30am-12:30pm\nSun & PH: Closed",
+    "lat": 1.2841611,
+    "lon": 103.8160563
+  },
+  {
+    "area": "Bukit Merah",
+    "gpName": "Dr Tan Huali Valerie",
+    "clinicName": "Bridgepoint Health (Jalan Bukit Merah Clinic)",
+    "clinicAddress": "111 Jalan Bukit Merah #01-1682 Singapore 160111",
+    "clinicContact": "62702233",
+    "operatingHours": "Mon & Wed: 8:00am-1:30pm, 6:30pm-9:30pm\nTues, Thurs, Fri, Sat: 8:00am-1:30pm\nSun and PH: Closed",
+    "lat": 1.2799367,
+    "lon": 103.8263807
+  },
+  {
+    "area": "Bukit Merah",
+    "gpName": "Dr Chung Wing Hong",
+    "clinicName": "Chung & Ee Medical Clinic",
+    "clinicAddress": "10 Telok Blangah Crescent #01-151 Singapore 090010",
+    "clinicContact": "69963782",
+    "operatingHours": "Mon, Tues, Thurs & Fri: 9:00am-1:00pm, 3:00pm-5:30pm, 6:30pm-8:00pm\nWed & Sat: 9:00am-1:00pm\nSun & PH: Closed",
+    "lat": 1.2778441,
+    "lon": 103.8197434
+  },
+  {
+    "area": "Bukit Merah",
+    "gpName": "Dr Cheong Kwok Keong",
+    "clinicName": "Health Partnership Medical Centre",
+    "clinicAddress": "109 Bukit Purmei Road #01-145 Singapore 090109",
+    "clinicContact": "62782860",
+    "operatingHours": "Mon-Fri: 8:30am-11:00am, 12:30pm-4:00pm, 6:00pm-8:00pm\nSat & Sun: 8:30am-12:00pm\nPH: 8:30am-12:00pm except CNY",
+    "lat": 1.2739482,
+    "lon": 103.8252941
+  },
+  {
+    "area": "Bukit Merah",
+    "gpName": "Dr Kevin Khaw Beng Chin",
+    "clinicName": "Healthier GP Clinic",
+    "clinicAddress": "35 Telok Blangah Rise #01-287 Singapore 090035",
+    "clinicContact": "65179778",
+    "operatingHours": "Mon: 8:00am-3:00pm\nTues-Wed: 8:00am-1:00pm, 2:00pm-5:00pm\nThurs-Fri: 8:00am-1:00pm\nSat, Sun & PH: Closed (To call the clinic to confirm)",
+    "lat": 1.2730336,
+    "lon": 103.8221303
+  },
+  {
+    "area": "Bukit Merah",
+    "gpName": "Dr Tan Wei Jie, Dr Eddie Tan Tung Wee",
+    "clinicName": "HeartlandHealth (Telok Blangah)",
+    "clinicAddress": "77 Telok Blangah Drive #01-244 Singapore 100077",
+    "clinicContact": "69708422",
+    "operatingHours": "Mon-Sun: 8:00am-1:00pm, 6:00pm-11:00pm\nPH: 8:00am-1:00pm, 6:00pm-11:00pm",
+    "lat": 1.2739305,
+    "lon": 103.8089434
+  },
+  {
+    "area": "Bukit Merah",
+    "gpName": "Dr Soh Cheow Beng Aloysius",
+    "clinicName": "Keppel Medical Group",
+    "clinicAddress": "9 Telok Blangah Crescent #01-139 Singapore 090009",
+    "clinicContact": "62700846",
+    "operatingHours": "Mon-Fri: 9:00am-12:30pm\nSat, Sun & PH: Closed",
+    "lat": 1.277401,
+    "lon": 103.8192519
+  },
+  {
+    "area": "Bukit Merah",
+    "gpName": "Dr Tang Teck Nguong",
+    "clinicName": "Meridian Medical Centre",
+    "clinicAddress": "108 Depot Road #01-10 Depot Heights Shopping Centre Singapore 100108",
+    "clinicContact": "62780088",
+    "operatingHours": "Mon, Tues & Thurs: 9:00am-12:30pm, 2:00pm-4:30pm, 6:30pm-8:30pm\nWed: 9:00am-3:00pm\nFri: 9:00am-12:30pm, 2:00pm-4:30pm\nSat & Sun: 9:00am-12:30pm\nPH: Closed",
+    "lat": 1.2812742,
+    "lon": 103.8099871
+  },
+  {
+    "area": "Bukit Merah",
+    "gpName": "Dr Mabel Cheng Hong Ying",
+    "clinicName": "New Health Family Clinic Pte Ltd",
+    "clinicAddress": "108 Depot Road #01-08 Singapore 100108",
+    "clinicContact": "62786200",
+    "operatingHours": "Mon-Wed: 8:00am-1:00pm, 6:00pm-7:30pm\nThurs & Fri: 8:00am-1:00pm\nSat: 8:00am-11:30am\nSun & PH: Closed",
+    "lat": 1.2813034,
+    "lon": 103.8101301
+  },
+  {
+    "area": "Bukit Merah",
+    "gpName": "Dr Low Xhu Khie",
+    "clinicName": "Pancare Medical (Bukit Merah)",
+    "clinicAddress": "147 Silat Ave #01-32 Singapore 160147",
+    "clinicContact": "69702557",
+    "operatingHours": "Mon: 8:00am-1:00pm, 2:00pm-5:00pm\nTues & Thurs: 8:00am-1:00pm, 2:00pm-5:00pm, 6:00pm-9:00pm\nWed, Fri & Sat: 8:00am-1:00pm\nSun & PH: Closed",
+    "lat": 1.2773445,
+    "lon": 103.8310876
+  },
+  {
+    "area": "Bukit Panjang",
+    "gpName": "Dr Kwong Kum Hoong, Dr Ronald Ma",
+    "clinicName": "Anchor Health Family Clinic",
+    "clinicAddress": "445 Fajar Road #01-546 Fajar Shopping Centre Singapore 670445",
+    "clinicContact": "88500733",
+    "operatingHours": "Mon-Thurs: 8:30am-3:30pm, 6:30pm-9:00pm\nFri: 8:30am-3:30pm\nSat, Sun & PH: 8:30am-12:30pm",
+    "lat": 1.3838672,
+    "lon": 103.7705214
+  },
+  {
+    "area": "Bukit Panjang",
+    "gpName": "Dr Nicole Yap Ee-Jenn",
+    "clinicName": "Healthway Medical (Bukit Panjang)",
+    "clinicAddress": "1 Jelebu Road #01-62 Bukit Panjang Plaza Singapore 677743",
+    "clinicContact": "60165035",
+    "operatingHours": "Mon & Thurs: 8:30am-1:00pm, 2:00pm-5:00pm, 6:00pm-9:00pm\nTues & Wed: 8:30am-1:00pm, 2:00pm-5:00pm\nFri & Sat: 8:30am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3799653,
+    "lon": 103.7643089
+  },
+  {
+    "area": "Bukit Panjang",
+    "gpName": "Dr Choo Chee Hoe Ivan",
+    "clinicName": "Lifecare Family Clinic",
+    "clinicAddress": "524A Jelapang Road #02-15 Greenridge Shopping Centre Singapore 671524",
+    "clinicContact": "67698588",
+    "operatingHours": "Mon & Wed: 8:00am-12:00pm, 6:00pm-9:00pm\nTues, Thurs, Fri & Sat: 8:00am-12:00pm\nSun & PH: Closed",
+    "lat": 1.3854081,
+    "lon": 103.7663598
+  },
+  {
+    "area": "Bukit Panjang",
+    "gpName": "Dr Lim Zuo Yan",
+    "clinicName": "Neighbourhood Clinic (Bukit Panjang)",
+    "clinicAddress": "260 Bangkit Road #01-13 Singapore 670260",
+    "clinicContact": "67636515",
+    "operatingHours": "Mon-Fri: 8:00am-12:00pm, 2:00pm-4:00pm, 6:30pm-8:30pm\nSat, Sun & PH: 9:00am-12:00pm",
+    "lat": 1.3779482,
+    "lon": 103.7733395
+  },
+  {
+    "area": "Bukit Panjang",
+    "gpName": "Dr Azri Bohari",
+    "clinicName": "OneCare Clinic Bangkit",
+    "clinicAddress": "260 Bangkit Road #01-15 Singapore 670260",
+    "clinicContact": "65677458",
+    "operatingHours": "Mon-Sun: 8:00am-4:00pm, 5:00pm-10:00pm\nPH: Check with clinic website for latest updates for clinic's special opening hours on PH",
+    "lat": 1.3779482,
+    "lon": 103.7733395
+  },
+  {
+    "area": "Bukit Panjang",
+    "gpName": "Dr Azri Bohari",
+    "clinicName": "OneCare Clinic Senja 642",
+    "clinicAddress": "642 Senja Close #01-07 Singapore 670642",
+    "clinicContact": "65134307",
+    "operatingHours": "Mon-Thurs: 8:00am-3:00pm, 5:30pm-9:30pm\nFri: 8:00am-3:00pm\nSat & Sun: 8:00am-1:00pm\nPH: Check with clinic website for latest updates for clinic's special opening hours on PH",
+    "lat": 1.3877722,
+    "lon": 103.7614136
+  },
+  {
+    "area": "Bukit Panjang",
+    "gpName": "Dr Tan Swee Meng Robin",
+    "clinicName": "RC'S Family Clinic",
+    "clinicAddress": "635C Senja Road #01-03 Singapore 673636",
+    "clinicContact": "64688006",
+    "operatingHours": "Mon, Wed, & Thurs: 8:00am-3:00pm, 6:30pm-9:30pm\nTue & Fri: 8:00am-3:00pm\nSat: 8:00am-1:00pm\nSun: 5:30pm-9:30pm\nPH: Closed",
+    "lat": 1.3865714,
+    "lon": 103.7582146
+  },
+  {
+    "area": "Bukit Panjang",
+    "gpName": "Dr Bernard Cheong, Dr Jasvin Lee Weixian",
+    "clinicName": "Sunbeam Medical Clinic",
+    "clinicAddress": "443C Fajar Road #01-76 Singapore 673443",
+    "clinicContact": "66100968",
+    "operatingHours": "Mon-Fri: 8:30am-2:00pm, 6:00pm-10:00pm\nSat, Sun & PH: 8:30am-1:00pm",
+    "lat": 1.3804744,
+    "lon": 103.7698055
+  },
+  {
+    "area": "Bukit Timah",
+    "gpName": "Dr Janet Gouw",
+    "clinicName": "Chang Clinic",
+    "clinicAddress": "1 Jalan Anak Bukit #B1-08/09/10 Bukit Timah Plaza Singapore 588996",
+    "clinicContact": "64663811",
+    "operatingHours": "Mon, Tues, Thurs & Fri: 8:30am-12:30pm, 2:00pm-5:30pm\nWed: 8:30am-12:30pm\nSat: 8:30am-11:30am\nSun & PH: Closed",
+    "lat": 1.3386556,
+    "lon": 103.7788962
+  },
+  {
+    "area": "Bukit Timah",
+    "gpName": "Dr Siow Chun Siong",
+    "clinicName": "Parkway Shenton Medical Group (Toh Yi)",
+    "clinicAddress": "18 Toh Yi Drive #01-103 Singapore 590018",
+    "clinicContact": "62358926/ 62358917",
+    "operatingHours": "Mon-Fri: 8:30am-1:00pm, 2:00pm-5:30pm\nSat: 8:30am-12:30pm\nSun & PH: Closed",
+    "lat": 1.3400031,
+    "lon": 103.7731939
+  },
+  {
+    "area": "Bukit Timah",
+    "gpName": "Dr Low Tiong Keng William",
+    "clinicName": "Phoenix Medical Group (Hillview)",
+    "clinicAddress": "4 Hillview Rise HillV2 #02-20 Singapore 667979",
+    "clinicContact": "67107157",
+    "operatingHours": "Mon-Fri: 9.00am-4:30pm, 6:00pm-8:30pm\nSat: 9:00am-1:30pm\nSun: 2:00pm-8:30pm\nPH: Closed",
+    "lat": 1.3629411,
+    "lon": 103.7641958
+  },
+  {
+    "area": "Bukit Timah",
+    "gpName": "Dr Cai Gregory",
+    "clinicName": "Silver Cross Bukit Timah",
+    "clinicAddress": "3 Cheong Chin Nam Road Singapore 599728",
+    "clinicContact": "68751191",
+    "operatingHours": "Mon-Sat: 8.00am-1:00pm, 2:00pm-9:00pm\nSun & PH: 8.00am-1:00pm, 2:00pm-5:00pm",
+    "lat": 1.3420569,
+    "lon": 103.7754424
+  },
+  {
+    "area": "Bukit Timah",
+    "gpName": "Dr Gavin Tang Wen-Yu",
+    "clinicName": "Tang Family Clinic",
+    "clinicAddress": "84 Jalan Jurong Kechil Singapore 598593",
+    "clinicContact": "64680118",
+    "operatingHours": "Mon, Tues, & Thurs: 9:00am-2:30pm, 6:00pm-9:00pm\nWed, Fri & Sat: 9:00am-2:30pm\nSun: 9:00am-1:00pm\nPH: Closed",
+    "lat": 1.3404733,
+    "lon": 103.7731589
+  },
+  {
+    "area": "Buona Vista",
+    "gpName": "Dr Valerie Druon",
+    "clinicName": "Osler Health International @ Star Vista",
+    "clinicAddress": "1 Vista Exchange Green #B1-26/27 The Star Vista Singapore 138617",
+    "clinicContact": "63392727",
+    "operatingHours": "Mon-Fri: 8:30am-5:30pm\nSat: 8:30am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3068059,
+    "lon": 103.7884824
+  },
+  {
+    "area": "Chinatown",
+    "gpName": "Dr Huan Meng Wah",
+    "clinicName": "Huan Clinic",
+    "clinicAddress": "51 Chin Swee Road #03-111 Singapore 160051",
+    "clinicContact": "65357628",
+    "operatingHours": "Mon-Fri: 9:00am-1:00pm, 2:00pm-3:00pm\nSat: 9:00am-11:30am\nSun & PH: Closed",
+    "lat": 1.2872464,
+    "lon": 103.8423262
+  },
+  {
+    "area": "Chinatown",
+    "gpName": "Dr Lai Li Cheng",
+    "clinicName": "Chinatown Wellness Clinic",
+    "clinicAddress": "531 Upper Cross Street #02-01 Singapore 050531",
+    "clinicContact": "62267188",
+    "operatingHours": "Mon-Fri: 8:30am-1:00pm, 2:00pm-5:00pm\nSat: 9:00am-1:00pm\nSun & PH: Closed",
+    "lat": 1.2852713,
+    "lon": 103.8460894
+  },
+  {
+    "area": "Choa Chu Kang",
+    "gpName": "Dr Han Whie Kwang",
+    "clinicName": "Clover Medical Clinic",
+    "clinicAddress": "21 Choa Chu Kang North 6 #01-01 Yew Tee Point Singapore 689578",
+    "clinicContact": "65094480",
+    "operatingHours": "Mon-Thurs: 8:30am-5:00pm, 6:00pm-9:30pm\nFri: 9:00am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3973543,
+    "lon": 103.7464532
+  },
+  {
+    "area": "Choa Chu Kang",
+    "gpName": "Dr Siaw Tung Yeng",
+    "clinicName": "HealthLight Family Medicine Clinic",
+    "clinicAddress": "601 Choa Chu Kang Street 62 #01-09 Singapore 680601",
+    "clinicContact": "67672281",
+    "operatingHours": "Mon, Wed & Thurs: 8:30am-12:30pm, 2:30pm-5:00pm\nTues, Fri & Sat: 8:30am-12:30pm\nSun & PH: Closed",
+    "lat": 1.3969052,
+    "lon": 103.7448918
+  },
+  {
+    "area": "Choa Chu Kang",
+    "gpName": "Dr Teo Cheng Rong",
+    "clinicName": "Healthway Medical Clinic",
+    "clinicAddress": "533 Choa Chu Kang Street 51 #02-07 Limbang Shopping Centre Singapore 680533",
+    "clinicContact": "60165119",
+    "operatingHours": "Mon-Thurs: 8:30am-1:00pm, 2:00pm-5:00pm, 6:00pm-9:00pm\nFri: 8:30am-1:00pm, 2:00pm-5:00pm\nSat, Sun & PH: 8:30am-1:00pm",
+    "lat": 1.3922588,
+    "lon": 103.7431268
+  },
+  {
+    "area": "Choa Chu Kang",
+    "gpName": "Dr Josephine Lee",
+    "clinicName": "Jo-Lin Family Clinic & Surgery",
+    "clinicAddress": "533 Choa Chu Kang Street 51 #02-06 Limbang Shopping Centre Singapore 680533",
+    "clinicContact": "67606014",
+    "operatingHours": "Mon, Tues, & Thurs: 8:30am-12:30pm, 2:00pm-4:00pm, 6:30pm-9:30pm\nWed: 8:30am-12:30pm\nFri: 8:30am-12:30pm, 2:00pm-4:00pm, 6:30pm-9:30pm\nSat: 8:30am-12:30pm\nSun: 6:30pm-9:30pm\nPH: Closed",
+    "lat": 1.3922588,
+    "lon": 103.7431268
+  },
+  {
+    "area": "Choa Chu Kang",
+    "gpName": "Dr Audrey Khi, Dr Kenneth Gwee, Dr Sim Dominic, Dr Lim Kim Show",
+    "clinicName": "Life Vista Family Clinic Pte Ltd",
+    "clinicAddress": "309 Choa Chua Kang Avenue 4 #03-01 Singapore 680309",
+    "clinicContact": "67669119",
+    "operatingHours": "Mon to Sun: 8:00am-10:00pm",
+    "lat": 1.3851393,
+    "lon": 103.7457093
+  },
+  {
+    "area": "Choa Chu Kang",
+    "gpName": "Dr Kee Loo, Dr Tan Tze Lee",
+    "clinicName": "The Edinburgh Clinic",
+    "clinicAddress": "306 Choa Chu Kang Avenue 4 #01-685 Singapore 680306",
+    "clinicContact": "67634500",
+    "operatingHours": "Mon & Wed: 8:30am-12:30pm, 2:00pm-4:00pm, 6:30pm-9:30pm\nTues, Thurs, & Fri: 8:30am-12:30pm, 2:00pm-4:00pm\nSat: 8:30am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3849097,
+    "lon": 103.7430565
+  },
+  {
+    "area": "Bukit Batok",
+    "gpName": "Dr Amir Adhha Bin Abdullah",
+    "clinicName": "Ar-Raudhah Medical Clinic and Surgery",
+    "clinicAddress": "372 Bukit Batok Street 31 #01-386 Singapore 650372",
+    "clinicContact": "65677458",
+    "operatingHours": "Mon-Fri: 8:30am-12:30pm, 2:00pm-4:00pm, 6:00pm-9:00pm\nSat: 8:30am-12:30pm, 6:00pm-9:00pm\nSun: 8:30am-12:30pm\nPH: 8:30am-12:30pm",
+    "lat": 1.3587254,
+    "lon": 103.7510736
+  },
+  {
+    "area": "Bukit Batok",
+    "gpName": "Dr Shamit Amreena",
+    "clinicName": "Bukit Batok Family Clinic",
+    "clinicAddress": "432A Bukit Batok West Avenue 8 #01-05 Singapore 651432",
+    "clinicContact": "65924736",
+    "operatingHours": "Mon, Wed & Thurs: 8:30am-1.00pm, 6:00pm-9:00pm\nTues & Fri: 8.30am-1.00pm\nSat: 9.00am-12.00pm\nSun & PH: Closed",
+    "lat": 1.360014,
+    "lon": 103.7430476
+  },
+  {
+    "area": "Bukit Batok",
+    "gpName": "Dr Chua Guan Kiat",
+    "clinicName": "Chua Medical Clinic and Surgery",
+    "clinicAddress": "642 Bukit Batok Central #01-52 Singapore 650642",
+    "clinicContact": "98436958",
+    "operatingHours": "Mon, Wed, Fri, & Sat: 8:30am-4.30pm\nTues & Thurs: 3.00pm-9.00pm\nSun & PH: Closed",
+    "lat": 1.3491059,
+    "lon": 103.7516253
+  },
+  {
+    "area": "Bukit Batok",
+    "gpName": "Dr Daniel Lim Si Yuan, Dr Loh Hong Rong, Dr Seah Jun Jie",
+    "clinicName": "DA Clinic @ Bukit Batok",
+    "clinicAddress": "451 Bukit Batok West Avenue 6 #01-02 Singapore 650451",
+    "clinicContact": "31650143",
+    "operatingHours": "Mon-Fri: 8:30am-12:00pm, 1:00pm-4:00pm, 6:00pm-9:00pm\nSat & Sun: 8:30am-12:00pm\nPH: To call clinic to confirm",
+    "lat": 1.3530865,
+    "lon": 103.7434772
+  },
+  {
+    "area": "Bukit Batok",
+    "gpName": "Dr Zhao Jing",
+    "clinicName": "Distinct Clinic Bukit Batok Branch",
+    "clinicAddress": "467 Bukit Batok West Avenue 9 #01-09 Singapore 650467",
+    "clinicContact": "69807781",
+    "operatingHours": "Mon-Thurs: 8:30am-4:30pm\nFri & Sat: 8:30am-12:30pm\nSun & PH: Closed",
+    "lat": 1.3571595,
+    "lon": 103.7434517
+  },
+  {
+    "area": "Bukit Batok",
+    "gpName": "Dr Peck Ming-Hsin Stanley",
+    "clinicName": "Dr Stanley Peck Family Clinic",
+    "clinicAddress": "636 Bukit Batok Central #01-06 Singapore 650636",
+    "clinicContact": "69177889",
+    "operatingHours": "Mon & Wed: 8.00am-12.00pm, 6.00pm-8.00pm\nTue, Thurs, & Fri: 8.00am-12.00pm\nSat: 8.00am-11.30am\nSun & PH: Closed",
+    "lat": 1.3496154,
+    "lon": 103.7517743
+  },
+  {
+    "area": "Bukit Batok",
+    "gpName": "Dr Seow En Hao, Dr Shen Fengli Sharon",
+    "clinicName": "EH Medical Family Clinic (Bukit Batok)",
+    "clinicAddress": "292 Bukit Batok East Avenue 6 #01-07 Singapore 650292",
+    "clinicContact": "62551368",
+    "operatingHours": "Mon: 8:30am-1:00pm, 2:00pm-5:00pm\nTues-Fri: 8:30am-1:00pm, 2:00pm-5:00pm, 6:30pm-9:30pm\nSat & Sun: 8:30am-12:30pm\nPH: Closed",
+    "lat": 1.3444352,
+    "lon": 103.7558351
+  },
+  {
+    "area": "Bukit Batok",
+    "gpName": "Dr Grace Ong Hui Ni",
+    "clinicName": "Erena Family Clinic",
+    "clinicAddress": "280 Bukit Batok East Avenue 3 #01-317 Singapore 650280",
+    "clinicContact": "66126925",
+    "operatingHours": "Mon-Thurs: 8:00am-2:00pm, 6:00pm-9:00pm\nFri: 8:00am-2:00pm\nSat: 8:00am-12:00pm\nSun & PH: Closed",
+    "lat": 1.3478798,
+    "lon": 103.7568434
+  },
+  {
+    "area": "Bukit Batok",
+    "gpName": "Dr Lee Mei Sung, Dr Ng Guoxiong Louis, Dr Soh Xiyuan",
+    "clinicName": "Family Care Clinic",
+    "clinicAddress": "415 Bukit Batok West Avenue 4 #01-272 Singapore 650415",
+    "clinicContact": "65671775",
+    "operatingHours": "Mon, Tues, Thurs, & Fri: 8:30am-1:00pm, 2:00pm-4:30pm, 6:45pm-9:00pm\nWed & Sat: 8.30am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3632249,
+    "lon": 103.746585
+  },
+  {
+    "area": "Bukit Batok",
+    "gpName": "Dr Lim Hui Juan Sandra, Dr Lim Shu Min Amaris",
+    "clinicName": "Frontier Medical Associates (Bukit Batok West Ridges)",
+    "clinicAddress": "440 Bukit Batok West Avenue 8 #01-05 Singapore 650440",
+    "clinicContact": "63370061",
+    "operatingHours": "Mon, Wed, & Thurs: 8:30am-3:00pm, 6:00pm-9:30pm\nTues & Fri: 8:30am-3:00pm\nSat: 8:30am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3556661,
+    "lon": 103.7392906
+  },
+  {
+    "area": "Bukit Batok",
+    "gpName": "Dr Lim Shu Min Amaris",
+    "clinicName": "Frontier Medical Associates (Bukit Batok West Terra)",
+    "clinicAddress": "451 Bukit Batok West Avenue 6 #01-07 Singapore 650451",
+    "clinicContact": "62583035",
+    "operatingHours": "Mon & Wed: 8:00am-2:30pm, 6:00pm-9:30pm\nTues, Thurs & Fri: 8:30am-2:30pm\nSat: 8:00pm-1:00pm\nSun & PH: Closed",
+    "lat": 1.3530072,
+    "lon": 103.7434581
+  },
+  {
+    "area": "Bukit Batok",
+    "gpName": "Dr Yong Yuan Chen, Dr Xing Xiaohui",
+    "clinicName": "Healthlife Family Clinic",
+    "clinicAddress": "296A Bukit Batok Street 22 #01-64 Singapore 651296",
+    "clinicContact": "69048680",
+    "operatingHours": "Mon-Wed & Fri: 8:30am-1:00pm, 2:00pm-4:00pm, 6:00pm-9:00pm\nThurs & Sat: 8:30am-1:00pm\nSun: 6:00pm-9:00pm\nPH: Closed",
+    "lat": 1.3441002,
+    "lon": 103.7467395
+  },
+  {
+    "area": "Bukit Batok",
+    "gpName": "Dr Cindy Xie",
+    "clinicName": "Healthway Medical (Bukit Batok West)",
+    "clinicAddress": "446 Bukit Batok West Avenue 8 #01-03 Singapore 650446",
+    "clinicContact": "62565980",
+    "operatingHours": "Mon & Thurs: 8:30am-1:00pm, 2:00pm-5:00pm, 6:00pm-9:00pm\nTues & Fri: 8:30am-1:00pm, 2:00pm-5:00pm\nWed: 8:30am-1:00pm\nSat: 9:00am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3501678,
+    "lon": 103.739082
+  },
+  {
+    "area": "Bukit Batok",
+    "gpName": "Dr Lee Cheng Da, Dr Tan Wei Jie, Dr Lee Kin Mun",
+    "clinicName": "HeartlandHealth Bukit Batok",
+    "clinicAddress": "164 Bukit Batok Street 11 #01-152 Singapore 650164",
+    "clinicContact": "68732458",
+    "operatingHours": "Mon-Sun: 8:00am-1:00pm, 6:00pm-11:00pm\nPH: 8:00am-1:00pm, 6:00pm-11:00pm",
+    "lat": 1.3477688,
+    "lon": 103.7428396
+  },
+  {
+    "area": "Bukit Batok",
+    "gpName": "Dr Sim Dave Choon Seng",
+    "clinicName": "Health Partners Family Clinic",
+    "clinicAddress": "1 Bukit Batok Central #01-37 West Mall Singapore 658713",
+    "clinicContact": "68989031",
+    "operatingHours": "Mon-Fri: 8:30am-12:30pm, 1:30pm-3:30pm, 6:30pm-9:00pm\nSat: 8:30am-12:30pm\nSun: 9:30pm-1:30pm\nPH: Closed",
+    "lat": 1.3503642,
+    "lon": 103.7492783
+  },
+  {
+    "area": "Bukit Batok",
+    "gpName": "Dr Miao Jin, Dr Paul Jon Goh",
+    "clinicName": "Island Family Clinic (Bukit Batok)",
+    "clinicAddress": "447 Bukit Batok West Avenue 9 #01-05 Singapore 650447",
+    "clinicContact": "62501530",
+    "operatingHours": "Mon-Fri: 9:00am-1:00pm, 6:00pm-10:00pm\nSat & Sun: 9:00am-1:00pm\nPH: 8:00am-1:00pm",
+    "lat": 1.3527144,
+    "lon": 103.739845
+  },
+  {
+    "area": "Bukit Batok",
+    "gpName": "Dr Karen Lee Chien-Wen",
+    "clinicName": "Lee & Koh Family Clinic",
+    "clinicAddress": "359 Bukit Batok Street 31 #01-389 Singapore 650359",
+    "clinicContact": "66653323",
+    "operatingHours": "Mon-Fri: 8:30am-12:30pm, 2:00pm-4:00pm, 7:00pm-9:00pm\nSat: 8:30am-12:30pm\nSun & PH: 9:00am-12:00pm",
+    "lat": 1.3613129,
+    "lon": 103.7512281
+  },
+  {
+    "area": "Bukit Batok",
+    "gpName": "Dr Kenneth Gwee, Dr Audrey Khi",
+    "clinicName": "Concord Medical Clinic",
+    "clinicAddress": "213 Bukit Batok Street 21 Singapore 650213",
+    "clinicContact": "65632935",
+    "operatingHours": "Mon-Fri: 8:30am-1:00pm, 2:00pm-5:00pm, 6:00pm-9:00pm\nSat: 8:30am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3468324,
+    "lon": 103.7524974
+  },
+  {
+    "area": "Bukit Batok",
+    "gpName": "Dr Lim Lee Wei",
+    "clinicName": "Northeast Medical Group (Bukit Batok)",
+    "clinicAddress": "10 Bukit Batok Central #01-01 Bukit Batok MRT Station Singapore 659958",
+    "clinicContact": "62661442",
+    "operatingHours": "Mon-Fri: 8:00am-1:00pm, 2:00pm-10:00pm\nSat & Sun: 8:00am-1:00pm\nPH: 9:00am-1:00pm",
+    "lat": 1.3490747,
+    "lon": 103.7496176
+  },
+  {
+    "area": "Bukit Batok",
+    "gpName": "Dr Chia Daryl, Dr Lee Yanqing",
+    "clinicName": "OneCare Clinic (Bukit Batok West)",
+    "clinicAddress": "440 Bukit Batok West Avenue 8 #01-07 Singapore 650440",
+    "clinicContact": "69708649",
+    "operatingHours": "Mon-Fri: 8:00am-2:00pm, 6:00pm-9:00pm\nSat & Sun: 9:00am-12:00pm\nPH: Check clinic website",
+    "lat": 1.3556473,
+    "lon": 103.7394033
+  },
+  {
+    "area": "Bukit Batok",
+    "gpName": "Dr Ben Lee Yijing",
+    "clinicName": "Peak Medical West Plains",
+    "clinicAddress": "467 Bukit Batok West Avenue 9 #01-04 Singapore 650467",
+    "clinicContact": "60116650",
+    "operatingHours": "Mon-Fri: 8:00am-1:00pm, 6:00pm-10:00pm\nSat & Sun: 8:00am-1:00pm\nPH: 8:00am-1:00pm (Selected dates)",
+    "lat": 1.3571595,
+    "lon": 103.7434517
+  },
+  {
+    "area": "Bukit Batok",
+    "gpName": "Dr Meera Ravindran",
+    "clinicName": "Phoenix Medical Group",
+    "clinicAddress": "4 Hillview Rise #02-20 Hill V 2 Singapore 667979",
+    "clinicContact": "67107157",
+    "operatingHours": "Mon-Fri: 9:00am-4:30pm, 6:00pm-8:30pm\nSat: 9:00am-1:30pm\nSun: 2:00pm-8:30pm\nPH: Closed",
+    "lat": 1.3628676,
+    "lon": 103.764241
+  },
+  {
+    "area": "Bukit Batok",
+    "gpName": "Dr Andy Lo, Dr Leow Yao Guang",
+    "clinicName": "ProHealth Medical Group @ Bukit Batok",
+    "clinicAddress": "4 Bukit Batok Street 41 #01-76 Le Quest Mall Singapore 657991",
+    "clinicContact": "69708330",
+    "operatingHours": "Mon-Fri & Sun: 8:00am-3:00pm, 6:00am-9:00pm\nSat: 8:00am-1:00pm\nPH: Same as per usual operating hours",
+    "lat": 1.3557406,
+    "lon": 103.7408842
+  },
+  {
+    "area": "City Hall",
+    "gpName": "Dr Sorinder Singh",
+    "clinicName": "Drs Singh & Partners",
+    "clinicAddress": "252 North Bridge Road #02-16 Raffles City Shopping Centre Singapore 179103",
+    "clinicContact": "63388883",
+    "operatingHours": "Mon-Fri: 8:30am-12:30pm, 2:00pm-5:00pm\nSat: 8:30am-12:30pm\nSun & PH: Closed",
+    "lat": 1.2943312,
+    "lon": 103.8529095
+  },
+  {
+    "area": "City Hall",
+    "gpName": "Dr Thant Zin",
+    "clinicName": "Peninsula Medical Centre",
+    "clinicAddress": "111 North Bridge Road #04-36 Peninsula Plaza Singapore 179098",
+    "clinicContact": "62522251",
+    "operatingHours": "Mon-Fri: 11:00am-7:00pm\nSat & Sun: 11:00am-5:00pm\nPH: 11:00am-5:00pm",
+    "lat": 1.292485,
+    "lon": 103.85086
+  },
+  {
+    "area": "Clementi",
+    "gpName": "Dr Lee Jian Hao Edwin",
+    "clinicName": "Claremont Medical Clinic",
+    "clinicAddress": "3 Jalan Mas Puteh Singapore 128609",
+    "clinicContact": "69808565",
+    "operatingHours": "Mon & Tues: 8:30am-8:30pm\nWed: 8:30am-5:30pm\nThurs & Fri: 8:30am-12:00pm, 1:00pm-5:30pm (teleconsultation)\nSat & Sun: 8:30am-12:30pm\nPH: Closed",
+    "lat": 1.308503,
+    "lon": 103.7614888
+  },
+  {
+    "area": "Clementi",
+    "gpName": "Dr Conrad Chin En Loy",
+    "clinicName": "E. L. Chin Family Clinic and Surgery Pte Ltd",
+    "clinicAddress": "432 Clementi Avenue 3 #01-272 Singapore 120432",
+    "clinicContact": "67775182",
+    "operatingHours": "Mon, Tues, Thurs, & Fri: 9:00am-12:30pm, 2:00pm-4:30pm, 7:00pm-9:00pm\nWed: 9:00am-12:30pm, 2:00pm-4:30pm\nSat & Sun: 9:00am-12:30pm\nPH: Closed",
+    "lat": 1.3141135,
+    "lon": 103.7629328
+  },
+  {
+    "area": "Clementi",
+    "gpName": "Dr Li Chao, Dr Menxi",
+    "clinicName": "FairCare Family Clinic (Clementi)",
+    "clinicAddress": "345 Clementi Avenue 5 #01-94 Singapore 120345",
+    "clinicContact": "62503198",
+    "operatingHours": "Mon-Fri: 8:30am-1:00pm, 2:00pm-4:30pm, 6:30pm-9:30pm\nSat & Sun: 8:30am-1:00pm\nPH: Closed",
+    "lat": 1.3176728,
+    "lon": 103.7690165
+  },
+  {
+    "area": "Clementi",
+    "gpName": "Dr Koh Tingyi, Dr Koh Thuan Wee",
+    "clinicName": "Frontier Family Medicine Clinic (Clementi)",
+    "clinicAddress": "3151 Commonwealth Avenue West #04-01, Grantral Mall Singapore 129581",
+    "clinicContact": "67788366, 92994162 (WhatsApp/SMS only)",
+    "operatingHours": "Mon-Fri: 8:30am-1:00pm, 2:00pm-5:30pm\nSat: 8:30am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3125415,
+    "lon": 103.7747404
+  },
+  {
+    "area": "Clementi",
+    "gpName": "Dr Yap Chui Yin, Koh Min Jie",
+    "clinicName": "GoClinic Commonwealth",
+    "clinicAddress": "116 Commonwealth Crescent #01-133 Singapore 140116",
+    "clinicContact": "65923932",
+    "operatingHours": "Mon & Wed: 8:30am-3:00pm, 5:30pm-8:00pm\nTues, Thurs & Fri: 8:30am-3:00pm\nSat: 8:30am-12:30pm\nSun & PH: Closed",
+    "lat": 1.306986,
+    "lon": 103.8000618
+  },
+  {
+    "area": "Clementi",
+    "gpName": "Dr Lincoln Yeo Kai Pheng, Dr Jovina Summer Goh Si Ying, Lee Zhi Kang Niccol",
+    "clinicName": "Holistic Clinic & Surgery",
+    "clinicAddress": "501 West Coast Drive #01-284 Singapore 120501",
+    "clinicContact": "67767723",
+    "operatingHours": "Mon-Sun: 9:00am-9:00pm\nPH: 9:00am-9:00pm",
+    "lat": 1.3113986,
+    "lon": 103.7589225
+  },
+  {
+    "area": "Clementi",
+    "gpName": "Dr Lock Jing Zhan",
+    "clinicName": "Minmed Clinic (Clementi)",
+    "clinicAddress": "3155 Commonwealth Avenue #04-07 The Clementi Mall Singapore 129588",
+    "clinicContact": "67950123",
+    "operatingHours": "Mon-Sun: 9:00am-1:00pm, 2.00pm-5.00pm, 6.00pm-9.00pm\nPH: Closed",
+    "lat": 1.314918,
+    "lon": 103.7643089
+  },
+  {
+    "area": "Clementi",
+    "gpName": "Dr Chang Wei Tee, Dr Teoh Shin Ee",
+    "clinicName": "My Family Clinic (Clementi)",
+    "clinicAddress": "420A Clementi Avenue 1 #01-05 Singapore 121420",
+    "clinicContact": "66942574",
+    "operatingHours": "Mon-Fri: 8:00am-2:00pm, 6:00pm-10:00pm\nSat & Sun: 8:00am-1:00pm\nPH: Closed",
+    "lat": 1.309514,
+    "lon": 103.768408
+  },
+  {
+    "area": "Clementi",
+    "gpName": "Dr Tan Yan Yuan",
+    "clinicName": "Our West Coast Family Clinic",
+    "clinicAddress": "801 West Coast Crescent #01-03 Singapore 120801",
+    "clinicContact": "98338279",
+    "operatingHours": "Mon-Fri: 8:00am-2:00pm, 6:00pm-9:00pm\nSat: 2:00pm-6:00pm\nSun: 8:00am-1:00pm, 6:00pm-9:00pm\nPH: Closed",
+    "lat": 1.2999156,
+    "lon": 103.7642796
+  },
+  {
+    "area": "Clementi",
+    "gpName": "Dr Poh Zhongxian Adrian",
+    "clinicName": "OneCare Medical (Clementi)",
+    "clinicAddress": "449 Clementi Ave 3 #01-241, Lot C Singapore 120449",
+    "clinicContact": "69709300",
+    "operatingHours": "Mon-Thurs: 8:00am-3:00pm, 6:00pm-9:00pm\nFri: 8:00am-3:00pm\nSat: 8:00am-12:00pm\nSun: 8:00am-12:00pm, 6:00pm-9:00pm",
+    "lat": 1.3134143,
+    "lon": 103.7648974
+  },
+  {
+    "area": "Clementi",
+    "gpName": "Dr Li Ke",
+    "clinicName": "Unity Medical Clinic",
+    "clinicAddress": "501 West Coast Drive #01-250 Singapore 120501",
+    "clinicContact": "65189379",
+    "operatingHours": "Mon & Thurs: 8:00am-1.00pm, 2:00pm-5:00pm, 6:00pm-9:00pm\nWed: 8:00am-1:00pm\nTues & Fri: 8:00am-1:00pm, 2.00pm-5:00pm\nSat, Sun & PH: 8:00am-1:00pm",
+    "lat": 1.3113986,
+    "lon": 103.7589225
+  },
+  {
+    "area": "Clementi",
+    "gpName": "Dr Teo Roger Chee Yih",
+    "clinicName": "Love & Joy Family Clinic",
+    "clinicAddress": "105 Clementi Street 12 #01-24 Singapore 658713",
+    "clinicContact": "63203830",
+    "operatingHours": "Mon-Fri: 8:30am-1:00pm, 5:30pm-8:30pm\nSat, Sun & PH: 9:00am-1:00pm (subject to change for PH, call the clinic before visit)",
+    "lat": 1.349649,
+    "lon": 103.749107
+  },
+  {
+    "area": "Clementi",
+    "gpName": "Dr Seah Kwee Kang",
+    "clinicName": "Yarra Medical Clinic",
+    "clinicAddress": "1 West Coast Drive #01-11 Singapore 128020",
+    "clinicContact": "62643703",
+    "operatingHours": "Mon-Wed: 8:30am-1:00pm, 2:00pm-6:30pm\nThurs & Fri: 8:30am-1:00pm\nSat: 8:30am-12:30pm\nSun & PH: Closed",
+    "lat": 1.3162939,
+    "lon": 103.7572164
+  },
+  {
+    "area": "Eunos",
+    "gpName": "Dr Chan Cheow Ju",
+    "clinicName": "Caritas Clinic",
+    "clinicAddress": "304 Ubi Avenue 1 #01-127 Singapore 400304",
+    "clinicContact": "67489284",
+    "operatingHours": "Mon-Wed: 8:30am-4:00pm, 6:00pm-7:30pm\nThurs-Fri: 8:30am-4:00pm\nSat-Sun: 9:30am-12:00pm\nPH: Closed",
+    "lat": 1.3295154,
+    "lon": 103.9016255
+  },
+  {
+    "area": "Eunos",
+    "gpName": "Dr Wang Dingding",
+    "clinicName": "Frontier Medical Associates (Ubi)",
+    "clinicAddress": "304 Ubi Avenue 1 #01-87 Singapore 400304",
+    "clinicContact": "67460909",
+    "operatingHours": "Mon, Wed & Thurs: 8:30am-9:00pm\nTues: 8:30am-5:30pm\nFri & Sat: 8:30am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3295534,
+    "lon": 103.9015013
+  },
+  {
+    "area": "Eunos",
+    "gpName": "Dr Lim Wee Ni",
+    "clinicName": "Lim Clinic",
+    "clinicAddress": "295 Changi Road Singapore 419773",
+    "clinicContact": "67426335",
+    "operatingHours": "Mon, Tues, Thurs & Fri: 9:00am-1:00pm, 2:00pm-5:00pm\nWed: 9:00am-1:00pm\nSat: 9:00am-12:00pm\nSun & PH: Closed",
+    "lat": 1.3181712,
+    "lon": 103.9071036
+  },
+  {
+    "area": "Eunos",
+    "gpName": "Dr Neoh Swee San Linda, Dr Ong Kian Giap Daniel",
+    "clinicName": "Neoh & Ong Medical Clinic",
+    "clinicAddress": "2A Eunos Crescent #01-2447 Singapore 401002",
+    "clinicContact": "67423322",
+    "operatingHours": "Mon, Wed & Fri: 8:30am-12:15pm, 2:00pm-4:30pm\nSat: 8:30am-12:15pm\nTues, Thurs, Sun & PH: Closed",
+    "lat": 1.3201696,
+    "lon": 103.9030255
+  },
+  {
+    "area": "Eunos",
+    "gpName": "Dr Siti Sarina Sairazi",
+    "clinicName": "Saudara Clinic",
+    "clinicAddress": "228 Changi Road #01-01 Icon@Changi Singapore 419741",
+    "clinicContact": "62444485",
+    "operatingHours": "Mon-Fri: 8:45am-12:00pm, 2:00pm-6:00pm\nSat: 9:00am-12:00pm\nSun & PH: Closed",
+    "lat": 1.3172785,
+    "lon": 103.9047007
+  },
+  {
+    "area": "Geylang",
+    "gpName": "Dr Chai Chwan",
+    "clinicName": "Anteh Dispensary Pte Ltd",
+    "clinicAddress": "1 Lorong 22 Geylang #01-02 Grandview Suites Singapore 398664",
+    "clinicContact": "67441809",
+    "operatingHours": "Mon-Fri: 9:00am-12:00pm, 2:00pm-5:00pm, 7:00pm-11:00pm\nSat: 9:00am-12:00pm, 1:00pm-6:00pm, 7:00pm-11:00pm\nSun: 1:00pm-6:00pm, 7:00pm-11:00pm\nPH: 1:00pm-6:00pm, 7:00pm-11:00pm",
+    "lat": 1.3128636,
+    "lon": 103.8824266
+  },
+  {
+    "area": "Geylang",
+    "gpName": "Dr Teoh Liang Wei, Ryan, Dr Jonathan Ting",
+    "clinicName": "Bright View Clinic & Surgery",
+    "clinicAddress": "10 Haig Road #01-359 Haig View Singapore 430010",
+    "clinicContact": "65133700, 88027909 (WhatsApp Only)",
+    "operatingHours": "Mon-Sun: 9.00am-9.00pm\nPH: 9.00am-9.00pm (*Closed on Christmas & Chinese New Year Day 1)",
+    "lat": 1.3147649,
+    "lon": 103.8958251
+  },
+  {
+    "area": "Geylang",
+    "gpName": "Dr Bey Shimin, Dr Cheong Siew Meng, Dr Jee Yong Hing, Dr Lim Jing Fen, Dr Tan Mui Yen June",
+    "clinicName": "C3 Family Clinic @ Aljunied Crescent",
+    "clinicAddress": "95 Aljunied Crescent #01-509 Singapore 380095",
+    "clinicContact": "67422285",
+    "operatingHours": "Mon,Thurs & Sun: 7:30am-10:00pm\nTues: 7:30am-2:00pm, 5:30pm-9:00pm\nWed & Fri: 7:30am-1:30pm, 5:30pm-10:00pm\nSat: 7:30am-1:30pm\nPH: 7.30am-1.30pm, 5.30pm-10.00pm",
+    "lat": 1.3213517,
+    "lon": 103.8864088
+  },
+  {
+    "area": "Geylang",
+    "gpName": "Dr Ko Hong Beng Gregory",
+    "clinicName": "Ko Family Clinic",
+    "clinicAddress": "18 Upper Boon Keng Road #01-1133 Singapore 380018",
+    "clinicContact": "68421403",
+    "operatingHours": "Mon, Wed & Fri: 9:00am-1:00pm, 4:30pm-6:30pm\nTue & Thurs: 9:00am-1:00pm\nSat & Sun: 9:30am-12:00pm\nPH: Closed",
+    "lat": 1.3150764,
+    "lon": 103.8723988
+  },
+  {
+    "area": "Geylang",
+    "gpName": "Dr Hor Oi Lin",
+    "clinicName": "Minmed Clinic (Haig Road)",
+    "clinicAddress": "30 Haig Road Singapore 438737",
+    "clinicContact": "67410123",
+    "operatingHours": "Mon-Thurs: 9:00am-3:00pm, 6:00pm-9:00pm\nFri: 9:00am-3:00pm\nSat: 9:00am-1:00pm\nSun: 6:00pm-9:00pm\nPH: Closed",
+    "lat": 1.3132435,
+    "lon": 103.895708
+  },
+  {
+    "area": "Geylang",
+    "gpName": "Dr Loh Zhiming",
+    "clinicName": "Minmed Clinic (Paya Lebar)",
+    "clinicAddress": "10 Eunos Road 8 #02-122 Singapore Post Centre Singapore 408600",
+    "clinicContact": "67490123",
+    "operatingHours": "Mon-Fri: 9:00am-1:00pm, 2:00pm-5:00pm\nSat: 9:00am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3189418,
+    "lon": 103.8944605
+  },
+  {
+    "area": "Geylang",
+    "gpName": "Dr Lim Chien Chuan",
+    "clinicName": "Sims Drive Medical Clinic",
+    "clinicAddress": "53 Sims Place #01-174 Singapore 380053",
+    "clinicContact": "67411607",
+    "operatingHours": "Mon-Fri: 8:30am-12:30pm, 2:00pm-4:30pm, 7:00pm-9:00pm\nSat: 8:30am-12:30pm, 7:00pm-9:00pm\nSun: 8:30am-12:30pm\nPH: Closed",
+    "lat": 1.318068,
+    "lon": 103.8800092
+  },
+  {
+    "area": "Geylang",
+    "gpName": "Dr Nathan Tan Weiji",
+    "clinicName": "Tembusu Medical Clinic (Haig Road)",
+    "clinicAddress": "36 Haig Road Singapore 438740",
+    "clinicContact": "60221007",
+    "operatingHours": "Mon & Wed: 8:30am-2:00pm, 3:00pm-5:00pm, 6:00pm-9:00pm\nTues & Thurs: 8:30am-2:00pm, 6:00pm-9:00pm\nFri: 8:30am-2:00pm\nSat & Sun: 8:30am-1:00pm\nPH: Closed",
+    "lat": 1.3131083,
+    "lon": 103.8958532
+  },
+  {
+    "area": "Geylang",
+    "gpName": "Dr Goh Ruo Xuan",
+    "clinicName": "1 Aljunied Medical",
+    "clinicAddress": "389 Upper Aljunied Road Singapore 367874",
+    "clinicContact": "62861923",
+    "operatingHours": "Mon-Fri: 8:00am-2:00pm, 6:00am-9:00pm\nSun: 8:00am-2:00pm\nSat & PH: Closed",
+    "lat": 1.3331879,
+    "lon": 103.8788414
+  },
+  {
+    "area": "Geylang",
+    "gpName": "Dr Kang Pei Lin",
+    "clinicName": "57 Medical Clinic (Geylang Bahru)",
+    "clinicAddress": "57 Geylang Bahru #01-3505 Singapore 330057",
+    "clinicContact": "66947078",
+    "operatingHours": "Mon, Wed & Thurs: 8:00am-1:00pm, 6:00pm-9:00pm\nTues, Fri & Sat: 8:00am-1:00pm\nSun: 9:00am-12:00pm\nPH: 9:00am-12:00pm",
+    "lat": 1.3234504,
+    "lon": 103.8689366
+  },
+  {
+    "area": "Geylang",
+    "gpName": "Dr Kwa Pei Wen Tammy",
+    "clinicName": "57 Medical Clinic (Kallang Airport)",
+    "clinicAddress": "32 Cassia Crescent #01-62 Singapore 390032",
+    "clinicContact": "65189262",
+    "operatingHours": "Mon, Wed & Thurs: 8:00am-1:00pm, 6:00pm-9:00pm\nTues, Fri & Sat: 8:00am-1:00pm\nSun: 9:00am-12:00pm\nPH: 9:00am-12:00pm",
+    "lat": 1.3094495,
+    "lon": 103.8839049
+  },
+  {
+    "area": "Holland Village",
+    "gpName": "Dr Emily Kara, Dr Hina Kadwani, Dr Lim Hui Ling, Dr Catherine Phan, Dr Gandhi Paveena",
+    "clinicName": "International Medical Clinic (Holland Village)",
+    "clinicAddress": "Holland Piazza, No. 3 Lorong Liput #01-04/05/06 Singapore 277725",
+    "clinicContact": "64654440",
+    "operatingHours": "Mon-Thurs: 8:00am-5:30pm\nFri: 9:00am-5:30pm\nSat: 9:00am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3107037,
+    "lon": 103.795241
+  },
+  {
+    "area": "Holland Village",
+    "gpName": "Dr Dylen Mun Yit Cheung",
+    "clinicName": "Minmed Clinic (Holland Village)",
+    "clinicAddress": "7 Holland Village Way #03-05 One Holland Village Singapore 275748",
+    "clinicContact": "63200123",
+    "operatingHours": "Mon-Fri: 9:00am-9:30pm (Closed at 1.00pm-2.00pm, 5.00pm-6.00pm)\nSat & Sun: 9:00am-1:00pm\nPH: Closed",
+    "lat": 1.3117131619381845,
+    "lon": 103.79395188447897
+  },
+  {
+    "area": "Holland Village",
+    "gpName": "Dr Ryan Wong, Dr Edwin Yeo, Dr Norman Koh",
+    "clinicName": "OneDoctors Family Clinic (HV)",
+    "clinicAddress": "253 Holland Avenue #02-01 Singapore 278982",
+    "clinicContact": "64698938",
+    "operatingHours": "Mon-Fri: 9:00am-9:00pm\nSat & Sun: 9:00am-6:00pm\nPH: 9:00am-6:00pm (on selected PH, to contact clinic)",
+    "lat": 1.3114216,
+    "lon": 103.7956216
+  },
+  {
+    "area": "Holland Village",
+    "gpName": "Dr Low Tzuemn Ling",
+    "clinicName": "Raffles Medical Group (HV)",
+    "clinicAddress": "118 Holland Avenue Raffles Holland Village Mall #05-02/03/04 Singapore 278997",
+    "clinicContact": "62501411",
+    "operatingHours": "Mon-Fri: 8:30am-9:30pm\nSat, Sun & PH: 8:30am-1:00pm, 2:00pm-5:30pm, 6:30pm-9:30pm",
+    "lat": 1.3105584,
+    "lon": 103.7961823
+  },
+  {
+    "area": "Holland Village",
+    "gpName": "Dr Sylvia Tiong, Dr Wee Wei Chieh Nelson",
+    "clinicName": "Silver Cross Medical (Holland)",
+    "clinicAddress": "275A Holland Avenue Singapore 278993",
+    "clinicContact": "64622818",
+    "operatingHours": "Mon-Sun: 8:00am-9:00pm\nPH: 8:00am-9:00pm",
+    "lat": 1.311731,
+    "lon": 103.7952751
+  },
+  {
+    "area": "Hougang",
+    "gpName": "Dr Long Ai Sha",
+    "clinicName": "Dedicare Medical Practice & Surgery",
+    "clinicAddress": "419 Hougang Avenue 8 #01-K1 Singapore 530419",
+    "clinicContact": "69803066",
+    "operatingHours": "Mon & Thurs: 9:00am-12:30pm, 5:30pm-8:00pm\nTues & Wed: 5:30pm-8:00pm\nFri: 9:00am-12:30pm\nSat: 2:00pm-5:00pm\nSun & PH: Closed",
+    "lat": 1.3761292,
+    "lon": 103.8945357
+  },
+  {
+    "area": "Hougang",
+    "gpName": "Dr Lin Heng Jin Winston",
+    "clinicName": "Elissa Medical Clinic",
+    "clinicAddress": "1 Hougang Street 91 #01-21 Singapore 538692",
+    "clinicContact": "63122632",
+    "operatingHours": "Mon-Sun: 8:30am-1:00pm, 2:00pm-5:00pm, 6:00pm-9:00pm\nPH: 8:30am-1:00pm, 2:00pm-5:00pm, 6:00pm-9:00pm",
+    "lat": 1.3758021,
+    "lon": 103.8794307
+  },
+  {
+    "area": "Hougang",
+    "gpName": "Dr Jonathan Pang",
+    "clinicName": "Everhealth Medical Centre",
+    "clinicAddress": "540 Hougang Avenue 8 #B1-1235 Singapore 530540",
+    "clinicContact": "63850815",
+    "operatingHours": "Mon & Tues: 9:00am-12:30pm, 2:00pm-4:30pm, 6:00pm-8:00pm\nWed & Fri: 9:00am-12:30pm\nThurs: 9:00am-12:30pm, 6:00pm-8:00pm\nSat: 9:00am-12:00pm\nSun & PH: Closed",
+    "lat": 1.3778896,
+    "lon": 103.8912724
+  },
+  {
+    "area": "Hougang",
+    "gpName": "Dr Soh Yew Chye Albert",
+    "clinicName": "Excel Family Clinic",
+    "clinicAddress": "21 Hougang Street 51 #01-06 Hougang Green Shopping Mall Singapore 538719",
+    "clinicContact": "63865278",
+    "operatingHours": "Mon, Tues, Thurs & Fri: 9:00am-11:30am, 2:00pm-3:30pm\nSat: 9:00am-11:3apm\nWed, Sun & PH: Closed",
+    "lat": 1.3798065,
+    "lon": 103.888194
+  },
+  {
+    "area": "Hougang",
+    "gpName": "Dr Lok Ying Fang",
+    "clinicName": "Family Care Medical Centre",
+    "clinicAddress": "916 Hougang Avenue 9 #01-08 Singapore 530916",
+    "clinicContact": "63855177",
+    "operatingHours": "Mon, Tues, Thurs & Fri: 8:30am-12:30pm, 2:30pm-4:30pm\nWed & Sat: 8:30am-12:30pm\nSun & PH: Closed",
+    "lat": 1.3749313,
+    "lon": 103.8842941
+  },
+  {
+    "area": "Hougang",
+    "gpName": "Dr Annabelle Lim",
+    "clinicName": "iDoc Clinic Pte Ltd (Hougang Green)",
+    "clinicAddress": "21 Hougang Street 51 #01-43 Singapore 538719",
+    "clinicContact": "69093485",
+    "operatingHours": "Mon: 8:30am-12:00pm, 1:00pm-5:00pm, 6:30pm-8:30pm\nTues-Fri: 8:30am-12:00pm, 1:00pm-5:00pm\nSat: 8:30am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3792867,
+    "lon": 103.8878404
+  },
+  {
+    "area": "Hougang",
+    "gpName": "Dr Chong Wen Yu, Dr Soon Weiling Eileen",
+    "clinicName": "Intemedical Kovan",
+    "clinicAddress": "210 Hougang Street 21 #01-233 Singapore 530210",
+    "clinicContact": "62433036, 88799404 (WhatsApp Only)",
+    "operatingHours": "Mon-Sun: 8:00am-10:00pm\nPH: 8:00am-10:00pm",
+    "lat": 1.3594504,
+    "lon": 103.8865855
+  },
+  {
+    "area": "Hougang",
+    "gpName": "Dr Ang Yi Ning Renette, Dr Tan Jingxin Joel, Dr Lim Shi Wei, Dr Loh Zhang Wei Max",
+    "clinicName": "Keystone Family Clinic",
+    "clinicAddress": "377 Hougang Street 32 #01-03 Hougang Rivercourt Singapore 530377",
+    "clinicContact": "60160068, 88841068 (WhatsApp Only)",
+    "operatingHours": "Mon-Sat: 8:00am-9:00pm\nSun: 9:00am-11:00am\nPH: 8:00am-12:00pm (on certain PH; to call clinic to confirm)",
+    "lat": 1.3630413,
+    "lon": 103.8953761
+  },
+  {
+    "area": "Hougang",
+    "gpName": "Dr Lo Mun San",
+    "clinicName": "Lo & Lee Clinic & Surgery",
+    "clinicAddress": "134 Lor Ah Soo #01-462 Singapore 530134",
+    "clinicContact": "62855688",
+    "operatingHours": "Mon-Fri: 8:30am-4:00pm\nSat & Sun: 8:30am-12.30pm\nPH: Closed",
+    "lat": 1.3505308,
+    "lon": 103.8865051
+  },
+  {
+    "area": "Hougang",
+    "gpName": "Dr Josephine Lo",
+    "clinicName": "Norwood Medical (Hougang)",
+    "clinicAddress": "365B Upper Serangoon Road #01-1066 Singapore 532365",
+    "clinicContact": "65924532",
+    "operatingHours": "Mon, Wed & Fri: 8:00am-2:00pm, 6:00pm-7:30pm\nTues & Thurs: 8:00am-5:00pm\nSat: 8:00am-1:00pm\nSun: 2:00pm-6:00pm\nPH: 9:00am-1:00pm",
+    "lat": 1.3692293,
+    "lon": 103.8973844
+  },
+  {
+    "area": "Hougang",
+    "gpName": "Dr Low Jia Jun, Colin, Dr Ong Guan Hong",
+    "clinicName": "Pancare Medical Clinic (Hougang)",
+    "clinicAddress": "23 Hougang Avenue 3 #01-285 Singapore 530023",
+    "clinicContact": "62420104",
+    "operatingHours": "Mon & Wed: 8:00am-1:00pm, 2:00pm-5:00pm, 6:00pm-9:00pm\nTues, Thurs & Fri: 8:00am-1:00pm, 2:00pm-5:00pm\nSat: 8:00am-1:00pm\nSun: 2:00pm-8:00pm\nPH: 8:00am-1:00pm",
+    "lat": 1.3648919,
+    "lon": 103.8907921
+  },
+  {
+    "area": "Hougang",
+    "gpName": "Dr Chew Junwei Kenneth",
+    "clinicName": "Panhealth Family Clinic (Lor Ah Soo)",
+    "clinicAddress": "124 Hougang Avenue 1 #01-1448 Singapore 530124",
+    "clinicContact": "63223600",
+    "operatingHours": "Mon & Wed: 8:00am-1:00pm, 2:00pm-5:00pm, 6:00pm-9:00pm\nTues & Fri: 8:00am-1:00pm, 2:00pm-5:00pm\nThurs & Sat: 8:00am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3529174,
+    "lon": 103.886643
+  },
+  {
+    "area": "Hougang",
+    "gpName": "Dr Stephen Tan",
+    "clinicName": "Panhealth Family Clinic (Hougang)",
+    "clinicAddress": "932B Hougang Avenue 9 #01-02 Singapore 532932",
+    "clinicContact": "66101498",
+    "operatingHours": "Mon-Thurs: 8:30am-1:00pm, 5:00pm-9:30pm\nFri & Sat: 8:30am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3751251,
+    "lon": 103.8821599
+  },
+  {
+    "area": "Hougang",
+    "gpName": "Dr Zhu Meng",
+    "clinicName": "Pinnacle Family Clinic (Hougang)",
+    "clinicAddress": "356 Hougang Avenue 7 #01-791 Singapore 530356",
+    "clinicContact": "65189981, 82996316 (WhatsApp only)",
+    "operatingHours": "Mon, Wed & Thurs: 8:00am-3:00pm, 6:00pm-8:30pm\nTues & Fri: 8:00am-3:00pm\nSat: 9:00am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3725039,
+    "lon": 103.8987716
+  },
+  {
+    "area": "Jurong East",
+    "gpName": "Dr Loke Kam Weng, Dr Lim Chien Chuan",
+    "clinicName": "EJ Tan Clinic & Surgery",
+    "clinicAddress": "104 Jurong East Street 13 #01-100 Singapore 600104",
+    "clinicContact": "65606600",
+    "operatingHours": "Mon-Fri: 8:30am-12:30pm, 2:00pm-4:00pm, 7:00pm-9:30pm\nSat: 8:30am-12:30pm, 7:00pm-9:00pm\nSun: 7:00pm-9:00pm\nPH: Closed",
+    "lat": 1.3368683,
+    "lon": 103.7375926
+  },
+  {
+    "area": "Jurong East",
+    "gpName": "Dr Taranjit Singh Ram Singh",
+    "clinicName": "Healthveer Medical Clinic (Jurong East)",
+    "clinicAddress": "114 Jurong East Street 13 #01-406 Singapore 600114",
+    "clinicContact": "96667716",
+    "operatingHours": "Mon-Fri & Sun: 8:30am-2:00pm, 5:30am-10:00pm\nSat & PH: Closed",
+    "lat": 1.3392088,
+    "lon": 103.7345763
+  },
+  {
+    "area": "Jurong East",
+    "gpName": "Dr Moses Lai, Dr Tan Yeow Boon",
+    "clinicName": "Mary Medical Clinic and Surgery",
+    "clinicAddress": "252 Jurong East Street 24 #01-157 Singapore 600252",
+    "clinicContact": "65624721",
+    "operatingHours": "Mon, Tues & Thurs: 8:30am-12:30pm, 2:00pm-5:00pm, 7:00pm-9:00pm\nWed & Fri: 8:30am-12:30pm, 7:00pm-9:00pm\nSat & Sun: 8:30am-12:30pm\nPH: Closed",
+    "lat": 1.3429325,
+    "lon": 103.737924
+  },
+  {
+    "area": "Jurong East",
+    "gpName": "Dr Chan Ji Lup Samuel, Dr Eugene Loke",
+    "clinicName": "Pancare Medical Clinic (Jurong East)",
+    "clinicAddress": "104 Jurong East Street 13 #01-104 Singapore 600104",
+    "clinicContact": "65399987",
+    "operatingHours": "Mon & Thurs: 8:00am-9:00pm\nTues, Wed, Fri, & Sat: 8:00am-1:00pm\nSun: 2:00pm-5:00pm\nPH: 8:00am-1:00pm",
+    "lat": 1.3366371,
+    "lon": 103.7376509
+  },
+  {
+    "area": "Jurong East",
+    "gpName": "Dr Ooi Seong Thean, Dr Lin Zikai",
+    "clinicName": "Sata CommonHealth (Jurong Medical Centre)",
+    "clinicAddress": "135 Jurong Gateway Road #04-345 Singapore 600135",
+    "clinicContact": "62446688",
+    "operatingHours": "Mon-Fri: 8:30am-12:30pm, 1:30pm-5:00pm (Closed for lunch: 12.30pm-1.30pm)\nSat: 8:30am-1:00pm\nSun & PH: Closed",
+    "lat": 1.333949,
+    "lon": 103.740152
+  },
+  {
+    "area": "Jurong West",
+    "gpName": "Dr Magnus Lim",
+    "clinicName": "Advantage Medical Clinic (Jurong West)",
+    "clinicAddress": "492 Jurong West Street 41 #01-56 Singapore 640492",
+    "clinicContact": "60150107",
+    "operatingHours": "Mon-Fri: 9:00am-1:00pm, 2:00pm-9:00pm\nSat & Sun: 9:00am-1:00pm\nPH: Closed",
+    "lat": 1.350138,
+    "lon": 103.7247871
+  },
+  {
+    "area": "Jurong West",
+    "gpName": "Dr Zuraimi Bin Mohamed Dahlan",
+    "clinicName": "Banyan Clinic @ JW",
+    "clinicAddress": "502 Jurong West Avenue 1 #01-817 Singapore 640502",
+    "clinicContact": "68991161",
+    "operatingHours": "Mon-Sun: 8:30am-2:30pm, 6:00am-10:30pm",
+    "lat": 1.3504958,
+    "lon": 103.718206
+  },
+  {
+    "area": "Jurong West",
+    "gpName": "Dr Lim Cui Ling, Dr Lim Hsiu Yih Frances, Dr Choo Janice Huey-Ni",
+    "clinicName": "Caring Family Clinic",
+    "clinicAddress": "501 Jurong West Street 51 #01-271 Singapore 640501",
+    "clinicContact": "65645677",
+    "operatingHours": "Mon-Fri: 8:30am-12:00pm, 1:00pm-5:00pm\nSat: 8:30am-12:30pm\nSun & PH: Closed",
+    "lat": 1.3500718,
+    "lon": 103.719164
+  },
+  {
+    "area": "Jurong West",
+    "gpName": "Dr Hanson Wong Jun Chuen, Dr Jackson Huang Chengyu, Dr Reyor Ko Teck Ee, Dr Seah Jun Jie",
+    "clinicName": "DA Clinic @ Taman Jurong",
+    "clinicAddress": "140 Corporation Drive #01-03 Singapore 610410",
+    "clinicContact": "31650145",
+    "operatingHours": "Mon-Fri: 8:30am-12:00pm, 1:00pm-4:00pm, 6:00pm-9:00pm\nSat: 8:30am-12:30pm\nSun: 8:30am-12:00pm, 6:00pm-9:00pm\nPH: To call clinic to confirm",
+    "lat": 1.3268617,
+    "lon": 103.723396
+  },
+  {
+    "area": "Jurong West",
+    "gpName": "Dr Lim Wei Han",
+    "clinicName": "The Family Wellness Clinic",
+    "clinicAddress": "498 Jurong West Street 41 #01-482 Singapore 640498",
+    "clinicContact": "68939181",
+    "operatingHours": "Mon-Fri: 8:30am-12:30pm, 2:00pm-4:00pm, 6:00pm-8:30pm\nSat & Sun: 8:30am-12:00pm\nPH: Closed",
+    "lat": 1.3485542,
+    "lon": 103.724477
+  },
+  {
+    "area": "Jurong West",
+    "gpName": "Dr Lee Chun Fai",
+    "clinicName": "Family Doctors At 365",
+    "clinicAddress": "365 Corporation Drive #01-407 Singapore 610365",
+    "clinicContact": "62652968",
+    "operatingHours": "Mon-Fri: 8:30am-12:15pm, 2:00pm-4:45pm, 6:30pm-8:45pm\nSat: 8:30am-12:15pm, 6:30pm-8:45pm\nSun: 8:30am-12:00pm\nPH: 8:30am-12:00pm",
+    "lat": 1.3377466,
+    "lon": 103.7202842
+  },
+  {
+    "area": "Jurong West",
+    "gpName": "Dr Gostelow Martyn, Dr Goh Feng Ji Mervin",
+    "clinicName": "Faith Clinic (Jurong West)",
+    "clinicAddress": "762 Jurong West Street 75 #02-256D Gek Poh Shopping Centre, Singapore 640762",
+    "clinicContact": "67916780",
+    "operatingHours": "Mon-Fri: 8:30am-4.30pm, 6:30pm-9.00pm\nSat, Sun & PH: 8:30am-1.00pm",
+    "lat": 1.3487594,
+    "lon": 103.6974711
+  },
+  {
+    "area": "Jurong West",
+    "gpName": "Dr Sean Quek, Dr Koh Tingyi, Dr Quek Kai Liang Roy",
+    "clinicName": "Frontier Medical Associates (Jurong West)",
+    "clinicAddress": "678D Jurong West Street 64 #01-347 Singapore 644678",
+    "clinicContact": "68622340",
+    "operatingHours": "Mon-Thurs: 8:30am-3:00pm, 6:00pm-9:30pm\nFri: 8:30am-3:00pm\nSat: 8:30am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3450376,
+    "lon": 103.7032929
+  },
+  {
+    "area": "Jurong West",
+    "gpName": "Dr Kong Kah Shern Andy, Dr Wong Janti Susanna",
+    "clinicName": "HeartlandHealth Jurong West",
+    "clinicAddress": "463 Jurong West Street 41 #01-564 Singapore 640463",
+    "clinicContact": "68732420",
+    "operatingHours": "Mon-Sun: 8:00am-1:00pm, 6:00pm-11:00pm\nPH: 8:00am-1:00pm, 6:00pm-11:00pm",
+    "lat": 1.3505367,
+    "lon": 103.7233668
+  },
+  {
+    "area": "Jurong West",
+    "gpName": "Dr Poh Pei Ghim",
+    "clinicName": "iDOC Clinic (Hong Kah)",
+    "clinicAddress": "502 Jurong West Avenue 1 #01-813 Singapore 640502",
+    "clinicContact": "69099515",
+    "operatingHours": "Mon-Wed & Fri: 8:30am-9:30pm\nThurs: Closed\nSat: 9:00am-1:00pm\nSun: 6:30pm-9:30pm\nPH: Appointments (if open)",
+    "lat": 1.3504603,
+    "lon": 103.7180831
+  },
+  {
+    "area": "Jurong West",
+    "gpName": "Dr Wong Choo Wai",
+    "clinicName": "Jurong Day & Night Clinic",
+    "clinicAddress": "966 Jurong West Street 93 #01-219 Singapore 640966",
+    "clinicContact": "67922257",
+    "operatingHours": "Mon & Wed: 9:00am-12:30pm, 6:30pm-9:00pm\nTues & Thurs: 9:00am-12:30pm\nFri: Closed\nSat: (To contact clinic before visit)\nSun & PH: 6:30pm-8:30pm",
+    "lat": 1.3418907,
+    "lon": 103.6928084
+  },
+  {
+    "area": "Jurong West",
+    "gpName": "Dr Ow Zhen Quan",
+    "clinicName": "Minmed Clinic (Jurong West)",
+    "clinicAddress": "1 Jurong West Central 2 #01-17E/F/G/H Singapore 648886",
+    "clinicContact": "63370123",
+    "operatingHours": "Mon-Sun & PH: 24hrs except: 1:00pm-2:00pm, 5:00pm-6:00pm",
+    "lat": 1.3391858,
+    "lon": 103.706534
+  },
+  {
+    "area": "Jurong West",
+    "gpName": "Dr Loke Chok Loon",
+    "clinicName": "One Medical Clinic (Jurong West)",
+    "clinicAddress": "728 Jurong West Avenue 5 #01-K1 Singapore 640728",
+    "clinicContact": "67925793",
+    "operatingHours": "Mon-Thurs: 8:30am-2:00pm, 5:00pm-9:00pm\nFri: 8:30pm-2:00pm\nSat & Sun: 9:00am-12:30pm\nPH: Closed",
+    "lat": 1.346078,
+    "lon": 103.6975988
+  },
+  {
+    "area": "Jurong West",
+    "gpName": "Dr Dayrl Tan",
+    "clinicName": "ProHealth Medical Group @ Taman Jurong",
+    "clinicAddress": "399 Yung Sheng Road #01-56 Singapore 610399",
+    "clinicContact": "62682628",
+    "operatingHours": "Mon-Fri: 8:00am-3:00pm, 6:00pm-9:00pm\nSat: 8:00am-3:00pm\nSun: 8:00am-3:00pm, 6:00pm-9:00pm\nPH: As per non-PH operating hours",
+    "lat": 1.3348269,
+    "lon": 103.7204117
+  },
+  {
+    "area": "Jurong West",
+    "gpName": "Dr Mohamed Ghazali, Dr Muralidharan Palanisamy",
+    "clinicName": "Shifa Clinic (Jurong)",
+    "clinicAddress": "463 Jurong West Street 41 #01-558 Singapore 640463",
+    "clinicContact": "64698941",
+    "operatingHours": "Mon-Fri: 9:00am-4:30pm\nSat: 9:00am-12:30pm\nSun & PH: Closed",
+    "lat": 1.3506404,
+    "lon": 103.7231707
+  },
+  {
+    "area": "Jurong West",
+    "gpName": "Dr Sunil Joseph",
+    "clinicName": "Tayka Medical Family Clinic",
+    "clinicAddress": "526 Jurong West Street 52 #01-323 Singapore 640526",
+    "clinicContact": "65645528",
+    "operatingHours": "Mon-Fri: 9:00am-12:00pm, 2:00pm-4:00pm, 7:00pm-9:00pm\nSat: 9:00am-12:00pm\nSun: Closed",
+    "lat": 1.3475552,
+    "lon": 103.717067
+  },
+  {
+    "area": "Jurong West",
+    "gpName": "Dr Tammy Chan",
+    "clinicName": "TC Family Clinic Pte Ltd",
+    "clinicAddress": "526 Jurong West Street 52 #01-325 Singapore 640526",
+    "clinicContact": "65666687",
+    "operatingHours": "Mon: 9:00am-12:00pm, 6:30pm-9:00pm\nTues, Thurs, & Sat: 9:00am-12:00pm\nWed & Fri: 9:00am-12:00pm, 1:30pm-3:30pm\nSun & PH: Closed",
+    "lat": 1.3476775,
+    "lon": 103.7169859
+  },
+  {
+    "area": "Kallang",
+    "gpName": "Dr Endrina Salazar, Dr Muhammad Adib Malek, Dr Wu Ying Jie",
+    "clinicName": "Kindred Family Clinic (Kallang Bahru)",
+    "clinicAddress": "63 Kallang Bahru #01-435 Kallang Bahru Ville Singapore 330063",
+    "clinicContact": "69046642",
+    "operatingHours": "Mon-Thurs: 8:30am-12:30pm, 2:00pm-4:30pm, 6:00pm-9:00pm\nFri: 8:30am-12:30pm, 2:00pm-4:30pm\nSat & Sun: 8:30am-1:00pm\nPH: Closed",
+    "lat": 1.3212029,
+    "lon": 103.8686497
+  },
+  {
+    "area": "Kallang",
+    "gpName": "Dr Low Kee Hwe",
+    "clinicName": "Low Medical Clinic",
+    "clinicAddress": "67 Kallang Bahru #01-447 Singapore 330067",
+    "clinicContact": "62950805",
+    "operatingHours": "Mon-Fri: 8:00am-3:30pm\nSat: 8:00am-12:00pm\nSun & PH: Closed",
+    "lat": 1.3217528,
+    "lon": 103.8691372
+  },
+  {
+    "area": "Kallang",
+    "gpName": "Dr Tay Zhi Yan Clare, Dr Christine Yong Yoke Kuen",
+    "clinicName": "Northeast Medical Group (Kallang)",
+    "clinicAddress": "39 Jalan Tiga #01-01 Singapore 390039",
+    "clinicContact": "62413298",
+    "operatingHours": "Mon - Fri: 8:30am-1:00pm, 2:00pm-10:00pm\nSat & Sun: 8:30am-6:00pm\nPH: 8:30am-1:00pm",
+    "lat": 1.3077855,
+    "lon": 103.8851269
+  },
+  {
+    "area": "Kallang",
+    "gpName": "Dr Tan Yuan Zi",
+    "clinicName": "T Medical Clinic Kallang",
+    "clinicAddress": "5 Upper Boon Keng Road #01-14 Singapore 380005",
+    "clinicContact": "69700882",
+    "operatingHours": "Mon-Fri: 8:30am-12:30pm, 6:00pm-9:00pm\nSat: 9:00am-12:00pm\nSun: 5:00pm-9:00pm\nPH: Closed, unless otherwise stated (To call the clinic to confirm)",
+    "lat": 1.3126876,
+    "lon": 103.8726285
+  },
+  {
+    "area": "Kent Ridge",
+    "gpName": "Dr Dhaliwal Davinder Singh, Dr Lo Ying Tai",
+    "clinicName": "Kent Ridge Clinic",
+    "clinicAddress": "One@Kent Ridge 1 Lower Kent Ridge Road #01-40 Singapore 119082",
+    "clinicContact": "69110565",
+    "operatingHours": "Mon, Tues & Fri: 9:00am-1:00pm, 2:00pm-5:00pm, 6:00pm-9:00pm\nThurs: 9:00am-1:00pm\nWed, Sat, Sun & PH: Closed",
+    "lat": 1.2934297,
+    "lon": 103.784535
+  },
+  {
+    "area": "Lavender",
+    "gpName": "Dr Samuel Lau",
+    "clinicName": "Belief Family Clinic",
+    "clinicAddress": "809 French Road #02-32 Kitchener Complex Singapore 200809",
+    "clinicContact": "65924667",
+    "operatingHours": "Mon-Fri: 9:00am-4:30pm, 5:00pm-8:00pm\nSat: 9:00am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3084036,
+    "lon": 103.8622518
+  },
+  {
+    "area": "Lavender",
+    "gpName": "Dr Tang Lai Yee",
+    "clinicName": "Pancare Medical Clinic (Lavender)",
+    "clinicAddress": "465 North Bridge Road #01-5073 Singapore 191465",
+    "clinicContact": "65179986, 86868476 (WhatsApp only)",
+    "operatingHours": "Mon: 8:00am-1:00pm, 2:00pm-5:00pm, 6:00pm-9:00pm\nTues: 8:00am-1:00pm, 2:00pm-5:00pm\nWed-Sat: 8:00am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3052745,
+    "lon": 103.8631093
+  },
+  {
+    "area": "Lakeside",
+    "gpName": "Dr Yang Tuck Fook",
+    "clinicName": "Family Point Clinic and Surgery",
+    "clinicAddress": "399 Yung Sheng Road #01-55 Singapore 610399 (Taman Jurong Shopping Centre)",
+    "clinicContact": "62680232",
+    "operatingHours": "Mon-Fri: 8:30am-12:30pm, 2:00pm-4:30pm\nSat & Sun: 8:30am-12:30pm\nPH: Closed",
+    "lat": 1.3348368,
+    "lon": 103.7203356
+  },
+  {
+    "area": "Little India",
+    "gpName": "Dr Yan Shiyuan",
+    "clinicName": "Edgedale Medical Clinic (Cambridge)",
+    "clinicAddress": "40 Cambridge Road #01-115 Singapore 210040",
+    "clinicContact": "62921088",
+    "operatingHours": "Mon-Fri: 9:00am-12:00pm\nSat, Sun & PH: Closed",
+    "lat": 1.3155926,
+    "lon": 103.8488257
+  },
+  {
+    "area": "Little India",
+    "gpName": "Dr Chong Eric",
+    "clinicName": "ESC Cardiovascular & Medical Clinic",
+    "clinicAddress": "1 Farrer Park Station Road #15-01 Farrer Park Medical Centre Singapore 217562",
+    "clinicContact": "68220120, 90695542 (WhatsApp Only)",
+    "operatingHours": "Mon-Fri: 9:00am-5:00pm\nSat-Sun: 9:00am-1:00pm\nPH: Closed",
+    "lat": 1.3121617,
+    "lon": 103.8540179
+  },
+  {
+    "area": "Little India",
+    "gpName": "Dr Mohamed Baisal Abdul Nassar, Dr Mohamed Ghazali, Dr Mohan Mogilan, Dr Aliakbar Fazuludeen",
+    "clinicName": "Shifa Clinic and Surgery (Little India)",
+    "clinicAddress": "668 Chander Road #01-20 Singapore 210668",
+    "clinicContact": "62957667, 98120565 (WhatsApp Only)",
+    "operatingHours": "Mon-Fri: 9:00am-1:00pm, 2:00pm-9:00pm\nSat-Sun: 9:00am-1:00pm, 2:00pm-7:00pm\nPH: 9:00am-1:00pm, 2:00pm-7:00pm",
+    "lat": 1.3077601,
+    "lon": 103.8516781
+  },
+  {
+    "area": "Little India",
+    "gpName": "Dr Chu Wan Wing Vivian, Dr Sanjeev Shanker",
+    "clinicName": "HMI Medical Centre",
+    "clinicAddress": "12 Farrer Park Station Road Singapore 217565",
+    "clinicContact": "63226333, 96552101 (WhatsApp only)",
+    "operatingHours": "Mon-Sun: 8:00am-12:00am\nPH: 8:00am-12:00am",
+    "lat": 1.3121589,
+    "lon": 103.8546892
+  },
+  {
+    "area": "Little India",
+    "gpName": "Dr Serena Soosay",
+    "clinicName": "Stella Maris Family Clinic & Surgery",
+    "clinicAddress": "668 Chander Road #01-24 Singapore 210668",
+    "clinicContact": "62962777",
+    "operatingHours": "Mon, Tues, Thurs: 8:00am-1:00pm, 2:00pm-5:00pm\nWed: 8:00am-1:00pm, 2:00pm-6:30pm\nFri: 8:00am-1:00pm, 2:00pm-5:30pm\nSat: 9:00am-1:00pm, 4:00pm-6:30pm\nSun: 1:30pm-6:30pm\nPH: Closed on Friday & PH",
+    "lat": 1.3079344,
+    "lon": 103.851763
+  },
+  {
+    "area": "Little India",
+    "gpName": "Dr Loke Ea Ling",
+    "clinicName": "57 Medical Clinic (Pek Kio)",
+    "clinicAddress": "41 Cambridge Road #01-17 Singapore 210041",
+    "clinicContact": "65399237",
+    "operatingHours": "Mon, Wed & Thurs: 8:00am-1:00pm, 6:00pm-9:00pm\nTues, Fri & Sat: 8:00am-1:00pm\nSun: 9:00am-12:00pm\nPH: 9:00am-12:00pm",
+    "lat": 1.3154145,
+    "lon": 103.8498199
+  },
+  {
+    "area": "Macpherson",
+    "gpName": "Dr Pengiran Hishamuddin Bin Pengiran Badaruddin, Dr Faith Choo",
+    "clinicName": "Bartley Clinic",
+    "clinicAddress": "187 Upper Paya Lebar Road Singapore 534869",
+    "clinicContact": "60221661",
+    "operatingHours": "Mon-Fri: 8:30am-1:00pm, 2:00pm-5:00pm\nSat: 8:30am-12:30pm\nSun & PH: Closed",
+    "lat": 1.3401225,
+    "lon": 103.8850156
+  },
+  {
+    "area": "Macpherson",
+    "gpName": "Dr Aw Suet Chee",
+    "clinicName": "Bethesda Medical @MacPherson",
+    "clinicAddress": "601 Macpherson Road #01-03/04 Grantral Mall Singapore 368242",
+    "clinicContact": "69046678",
+    "operatingHours": "Mon-Fri: 8:30am-1:00pm, 2:00pm-5:30pm\nSat: 8:30am-1:00pm\nSun & PH: Closed (CNY Eve: 8:30am-1:00pm)",
+    "lat": 1.3335017,
+    "lon": 103.8871113
+  },
+  {
+    "area": "Macpherson",
+    "gpName": "Dr Ankita Dey",
+    "clinicName": "Care & Cure Medical Clinic and Surgery",
+    "clinicAddress": "76 Circuit Road #01-07 MacPherson Blossom Singapore 370076",
+    "clinicContact": "60220244, 89477590 (WhatsApp Only)",
+    "operatingHours": "Mon-Fri: 8:30am-3:30pm, 4:30pm-9:00pm\nSat & Sun: 5:00pm-9:00pm\nPH: Closed",
+    "lat": 1.3252421,
+    "lon": 103.8901822
+  },
+  {
+    "area": "Macpherson",
+    "gpName": "Dr Choo Chin Foo Denyna",
+    "clinicName": "Care For You Medical Clinic",
+    "clinicAddress": "86 Circuit Road #01-1003 Singapore 370086",
+    "clinicContact": "66127196",
+    "operatingHours": "Mon-Fri: 8:00am-1:00pm, 2:00pm-5:00pm\nSat: 8:00am-12:00pm\nSun & PH: Closed",
+    "lat": 1.3229261,
+    "lon": 103.8853414
+  },
+  {
+    "area": "Macpherson",
+    "gpName": "Dr Men Xi",
+    "clinicName": "FairCare Family Clinic (Macpherson)",
+    "clinicAddress": "76 Circuit Road #01-03 Macpherson Singapore 370076",
+    "clinicContact": "60220869",
+    "operatingHours": "Mon-Fri: 8:30am-9:00pm\nSat & Sun: 8:30am-1:00pm\nPH: Refer to google opening hours",
+    "lat": 1.3252421,
+    "lon": 103.8901822
+  },
+  {
+    "area": "Macpherson",
+    "gpName": "Dr Soh Yu Da",
+    "clinicName": "Frontier Family Medicine Clinic (Macpherson)",
+    "clinicAddress": "601 MacPherson Road #01-38/39 Grantral Mall/Complex Singapore 368242",
+    "clinicContact": "69500592",
+    "operatingHours": "Mon & Thurs: 8:30am-1:00pm, 2:00pm-5:30pm, 6:30pm-8:30pm\nTues, Wed & Fri: 8:30am-1:00pm, 2:00pm-5:30pm\nSat: 8:30am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3335017,
+    "lon": 103.8871113
+  },
+  {
+    "area": "Macpherson",
+    "gpName": "Dr Rodney Lim Soon Aun",
+    "clinicName": "Healthlink Medical Clinic & Surgery Pte Ltd",
+    "clinicAddress": "5 Upper Aljunied Lane #01-46 Singapore 360005",
+    "clinicContact": "62890885",
+    "operatingHours": "Mon-Thurs: 8:30am-12:30pm, 2:00pm-4:30pm, 6:30pm-9:00pm\nFri-Sun: 8:30am-12:30pm\nPH: 8:30am-12:30pm (except some PH; to call the clinic to confirm)",
+    "lat": 1.3337035,
+    "lon": 103.879825
+  },
+  {
+    "area": "Macpherson",
+    "gpName": "Dr Fairuz Bin Ahmad, Dr Wong Kai Zong",
+    "clinicName": "HeartlandHealth (Circuit Road)",
+    "clinicAddress": "88 Circuit Road #01-965 Singapore 370088",
+    "clinicContact": "65478840",
+    "operatingHours": "Mon-Sun: 7:00am-1:00pm, 6:00pm-11:00pm\nPH: 7:00am-1:00pm, 6:00pm-11:00pm",
+    "lat": 1.3235389,
+    "lon": 103.8858657
+  },
+  {
+    "area": "Macpherson",
+    "gpName": "Dr Lee Yik Voon",
+    "clinicName": "Lee & Tan Family Clinic and Surgery",
+    "clinicAddress": "72 Circuit Road #01-03 Singapore 370072",
+    "clinicContact": "67456877",
+    "operatingHours": "Mon-Fri: 9:00 am-12:00pm, 1:00pm-3:30pm, 7:00pm-9:30pm\nSat & Sun: 9:00am-12:00pm\nPH: Closed",
+    "lat": 1.3244969,
+    "lon": 103.8881732
+  },
+  {
+    "area": "Macpherson",
+    "gpName": "Dr Lee Wee Chieh",
+    "clinicName": "LifeCare Medical Centre",
+    "clinicAddress": "36 Circuit Road #01-416 Singapore 370036",
+    "clinicContact": "67461533",
+    "operatingHours": "Mon-Fri: 8:30am-3:00pm, 6:30pm-9:00pm\nSat: 8:30am-12:00pm\nSun & PH: Closed",
+    "lat": 1.3289041,
+    "lon": 103.8870212
+  },
+  {
+    "area": "Marine Parade",
+    "gpName": "Dr Alex Yeo, Dr Vivyan Tay, Dr Yap Kee Yang Brendan",
+    "clinicName": "Advantage Medical Clinic (Parkway Parade)",
+    "clinicAddress": "80 Marine Parade Road #06-01 & 02 Parkway Parade, Office Tower Singapore 449269",
+    "clinicContact": "60150207",
+    "operatingHours": "Mon-Fri: 9:00am-1:00pm, 2:00pm-6:00pm\nSat: 9:00am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3014702,
+    "lon": 103.9051552
+  },
+  {
+    "area": "Marine Parade",
+    "gpName": "Dr Yap Chiou Yung",
+    "clinicName": "Central [Clinic + Surgery] Marine Parade",
+    "clinicAddress": "81 Marine Parade Central #01-630 Singapore 440081",
+    "clinicContact": "63466277",
+    "operatingHours": "Mon-Sat: 8:00am-6:00pm\nSun: 8:00am-1:00pm\nPH: Closed",
+    "lat": 1.302434,
+    "lon": 103.9072633
+  },
+  {
+    "area": "Marine Parade",
+    "gpName": "Dr Kwong Seh Meng",
+    "clinicName": "DR+ Medical & Paincare East Coast",
+    "clinicAddress": "146 East Coast Road Singapore 428835",
+    "clinicContact": "63200116",
+    "operatingHours": "Mon, Wed & Thurs: 8:00am-2:00pm, 6:00pm-9:00pm\nTues & Fri: 8:00am-2:00pm\nSat: 8:00am-12:00pm\nSun: 10:00am-1:00pm\nPH: Closed",
+    "lat": 1.306243,
+    "lon": 103.905611
+  },
+  {
+    "area": "Marine Parade",
+    "gpName": "Dr Kiran Kashyap, Dr Simrit Kaur Dang, Dr Sujatha Sathiamurthy, Dr Trisha Upadhyaya",
+    "clinicName": "East Coast Family Clinic",
+    "clinicAddress": "121 Meyer Road #01-05 The Makena Singapore 437932",
+    "clinicContact": "64404556",
+    "operatingHours": "Mon, Tues & Thurs: 8:30am-3:00pm, 6:30pm-8:30pm\nWed: 8:30am-12:30pm\nFri: 8:30am-3:00pm\nSat & Sun: 9:00am-12:30pm\nPH: On selected PH (To call the clinic to confirm)",
+    "lat": 1.2978044,
+    "lon": 103.8944904
+  },
+  {
+    "area": "Marine Parade",
+    "gpName": "Dr Hoo Chee How, Dr Loh Wei Liang, Dr Tan Yingze",
+    "clinicName": "Inspire Medical Clinic (Jalan Batu)",
+    "clinicAddress": "8 Jalan Batu #01-11 Singapore 431008",
+    "clinicContact": "88157214",
+    "operatingHours": "Mon-Fri: 9:00am-9:00pm (last registration at 8.30pm)\nSat & Sun: 9:00am-3:00pm (last registration at 3.00pm)\nPH: On selected PH (To call the clinic to confirm)",
+    "lat": 1.3026541,
+    "lon": 103.8831808
+  },
+  {
+    "area": "Marine Parade",
+    "gpName": "Dr Charu Malik Narayanan, Dr Khor Teik Heng, Dr Maria Tang, Dr Vinodhini Elangovan",
+    "clinicName": "International Medical Clinic (Katong)",
+    "clinicAddress": "88 East Coast Road #02-07 Katong Square Singapore 423371",
+    "clinicContact": "63424440",
+    "operatingHours": "Mon-Fri: 9:00am-5:30pm\nSat: 9:00am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3047255,
+    "lon": 103.9046894
+  },
+  {
+    "area": "Marine Parade",
+    "gpName": "Dr Kong Kum Leng, Dr Kong Jun Cheong",
+    "clinicName": "Marine Parade Clinic",
+    "clinicAddress": "59 Marine Terrace #01-81 Singapore 440059",
+    "clinicContact": "62419065",
+    "operatingHours": "Mon: 8:30am-9:00pm\nTues-Fri: 8:30am-6:00pm\nSat & Sun: 8:30am-12:30pm\nPH: Closed",
+    "lat": 1.305798,
+    "lon": 103.9147262
+  },
+  {
+    "area": "Marine Parade",
+    "gpName": "Dr Ong Chong Sen",
+    "clinicName": "Marine Terrace Family Clinic",
+    "clinicAddress": "57 Marine Terrace #01-129 Singapore 440057",
+    "clinicContact": "64420188",
+    "operatingHours": "Mon-Thurs: 7:30am-10:00am, 3:30pm-8:00pm\nFri: 7:30am-10:00am\nSat: 7:30am-8:30am\nSun: 7:30am-12:00pm\nPH: Closed",
+    "lat": 1.3064898,
+    "lon": 103.9155541
+  },
+  {
+    "area": "Marine Parade",
+    "gpName": "Dr Chen Yan Jun Jean",
+    "clinicName": "57 Medical Clinic (Parkway Centre)",
+    "clinicAddress": "1 Marine Parade Central #02-05 Singapore 449408",
+    "clinicContact": "62149612",
+    "operatingHours": "Mon, Wed & Thurs: 8:00am-1:00pm, 2:00pm-5:00pm, 6:00pm-9:00pm\nTues, Fri & Sat: 8:00am-1:00pm\nSun: 9:00am-12:00pm\nPH: 9:00am-12:00pm",
+    "lat": 1.3018408,
+    "lon": 103.9060621
+  },
+  {
+    "area": "Novena",
+    "gpName": "Dr Lim Hwee Woon",
+    "clinicName": "Dr Lim Lean Huat & Associates",
+    "clinicAddress": "101 Irrawaddy Road #21-04 Royal Square at Novena Singapore 259928",
+    "clinicContact": "63233861",
+    "operatingHours": "Mon-Fri: 8:30am-12:30pm, 2:30pm-5:30pm\nSat: 8:30am-12:30pm\nSun & PH: Closed",
+    "lat": 1.3206053,
+    "lon": 103.8432372
+  },
+  {
+    "area": "Novena",
+    "gpName": "Dr Asri Budiman Bin Ahmad Said, Dr Seng Yi Feng Melvin",
+    "clinicName": "HeartlandHealth (Whampoa)",
+    "clinicAddress": "87 Whampoa Drive #01-869 Singapore 320087",
+    "clinicContact": "62521070",
+    "operatingHours": "Mon-Fri: 7:00am-11:00pm\nSat & Sun: 7:00am-1:00pm, 6:00pm-11:00pm\nPH: 7.00am-11:00pm",
+    "lat": 1.3231454,
+    "lon": 103.8556192
+  },
+  {
+    "area": "Novena",
+    "gpName": "Dr Raymond Ong",
+    "clinicName": "Mount Alvernia 24 Hour Outpatient Department",
+    "clinicAddress": "820 Thomson Road Singapore 574623",
+    "clinicContact": "63476663",
+    "operatingHours": "Mon-Sun: 12:00am-12:00am\nPH: 12:00am-12:00am",
+    "lat": 1.3416368,
+    "lon": 103.8372638
+  },
+  {
+    "area": "Novena",
+    "gpName": "Dr Chan Wei Chyet Rick, Dr Lin Shijun Cheryl",
+    "clinicName": "Phoenix Medical Group (Novena)",
+    "clinicAddress": "275 Thomson Road #01-05 Novena Regency Singapore 307645",
+    "clinicContact": "62543862",
+    "operatingHours": "Mon, Tues, Wed & Fri: 9:00am-2:30pm, 6:00pm-8:30pm\nThurs: 9:00am-2:30pm\nSat: 9:00am-1:30pm\nSun: 2:00pm-8:30pm\nPH: Closed",
+    "lat": 1.3212596,
+    "lon": 103.8416884
+  },
+  {
+    "area": "Novena",
+    "gpName": "Dr Lim Dale",
+    "clinicName": "The Tenteram Clinic",
+    "clinicAddress": "116B Jalan Tenteram #01-549 Singapore 322116",
+    "clinicContact": "62507991",
+    "operatingHours": "Mon-Thurs: 9:00am-12:00pm, 7:00pm-9:00pm\nFri & Sat: 9:00am-12:00pm\nSun & PH: Closed",
+    "lat": 1.3278032,
+    "lon": 103.8609358
+  },
+  {
+    "area": "Novena",
+    "gpName": "Dr Abdul Kadir Abdul Bashir",
+    "clinicName": "24-Hr Family Clinic, Thomson Medical Centre",
+    "clinicAddress": "339 Thomson Road Singapore 307677",
+    "clinicContact": "63508812",
+    "operatingHours": "Mon- Sun: 12:00am-12:00am\nPH: 12:00am-12:00am",
+    "lat": 1.3254629,
+    "lon": 103.8414575
+  },
+  {
+    "area": "One-north",
+    "gpName": "Dr Yeo Ling Sui Jocelyn",
+    "clinicName": "Carelite Medical Clinic (Dover Medical Centre)",
+    "clinicAddress": "1 Fusionopolis Way #03-05 Connexis Singapore 138632",
+    "clinicContact": "88285500",
+    "operatingHours": "Mon-Fri: 8:30am-12:30pm, 1:30pm-5:45pm\nSat, Sun & PH: Closed",
+    "lat": 1.298866,
+    "lon": 103.7873964
+  },
+  {
+    "area": "Orchard",
+    "gpName": "Dr Chrystal Fong Chern Ying",
+    "clinicName": "Asia Health Partners",
+    "clinicAddress": "304 Orchard Road #05-06 Lucky Plaza Singapore 238863",
+    "clinicContact": "62357888",
+    "operatingHours": "Mon-Fri: 8:30am-5:30pm\nSat: 8:30am-12:30pm\nSun & PH: Closed",
+    "lat": 1.3045795,
+    "lon": 103.8340621
+  },
+  {
+    "area": "Orchard",
+    "gpName": "Dr Loo Hui Voon",
+    "clinicName": "Forum Medical Clinic",
+    "clinicAddress": "583 Orchard Road #10-02 Forum Office Tower Singapore 238884",
+    "clinicContact": "60150090",
+    "operatingHours": "Mon-Fri: 9:00am-6:00pm\nSat: 9:00am-1:00pm\nSun & PH: Closed",
+    "lat": 1.306069,
+    "lon": 103.8286
+  },
+  {
+    "area": "Orchard",
+    "gpName": "Dr Yasuyo Yoshikuni",
+    "clinicName": "Healthway Japanese Medical",
+    "clinicAddress": "176 Orchard Road #06-05 The Centrepoint Singapore 238843",
+    "clinicContact": "67339785",
+    "operatingHours": "Mon-Fri: 9:00am-1:00pm, 2:00pm-6:00pm\nSat: 9:00am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3019805,
+    "lon": 103.839695
+  },
+  {
+    "area": "Orchard",
+    "gpName": "Dr Tan Lih Yi",
+    "clinicName": "International Medical Clinic",
+    "clinicAddress": "1 Orchard Boulevard #14-06 Camden Medical Centre Singapore 248649",
+    "clinicContact": "67334440",
+    "operatingHours": "Mon-Fri: 8:00am-5:30pm\nSat: 9:00am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3031867,
+    "lon": 103.8238072
+  },
+  {
+    "area": "Orchard",
+    "gpName": "Dr Chin Yi Yao Brendan",
+    "clinicName": "MSC Clinic",
+    "clinicAddress": "1 Orchard Boulevard #12-03 Camden Medical Centre Singapore 248649",
+    "clinicContact": "63359146",
+    "operatingHours": "Mon-Fri: 9:30am-6:00pm\nSat: 9:30am-4:00pm\nSun & PH: Closed",
+    "lat": 1.3031867,
+    "lon": 103.8238072
+  },
+  {
+    "area": "Pasir Ris",
+    "gpName": "Dr Lee Jing Kun",
+    "clinicName": "Caring Medical Clinic",
+    "clinicAddress": "735 Pasir Ris West Plaza Street 72 #02-328/329/330",
+    "clinicContact": "60380228",
+    "operatingHours": "Mon-Fri & Sun: 8:30am-2:00pm, 6:00pm-9:00pm\nSat: 8:30am-12:00pm\nPH: Closed",
+    "lat": 1.3796235,
+    "lon": 103.9360945
+  },
+  {
+    "area": "Pasir Ris",
+    "gpName": "Dr Quek Genevieve Lorraine",
+    "clinicName": "Clinic10",
+    "clinicAddress": "644 Pasir Ris Drive 10 #01-20 Singapore 510644",
+    "clinicContact": "65825123",
+    "operatingHours": "Mon-Fri: 8:30am-4:30pm\nSun: 9:00am-12:00pm\nSat & PH: Closed",
+    "lat": 1.3781338,
+    "lon": 103.9375592
+  },
+  {
+    "area": "Pasir Ris",
+    "gpName": "Dr Ang Pherng Ming, Phamelia",
+    "clinicName": "Fullerton Health Hub @ Pasir Ris",
+    "clinicAddress": "7 Pasir Ris Central #02-44 Pasir Ris Mall Singapore 519612",
+    "clinicContact": "60118090",
+    "operatingHours": "Mon-Sun: 8:30am-12:30pm, 1:30pm-5:30pm, 6:30pm-8:30pm\nPH: 8:30am-12:30pm, 1:30pm-5:30pm, 6:30pm-8:30pm",
+    "lat": 1.3720644,
+    "lon": 103.9495328
+  },
+  {
+    "area": "Pasir Ris",
+    "gpName": "Dr Hamid Bin Ahmad",
+    "clinicName": "Hamid Family Clinic & Surgery",
+    "clinicAddress": "156 Pasir Ris Street 13 #01-35 Singapore 510156",
+    "clinicContact": "65848804",
+    "operatingHours": "Mon, Wed, Fri: 9:00am-12:00pm, 1:30pm-3:30pm, 7:00pm-9:00pm\nTues & Thurs: 9:00am-12:00pm, 1:30pm-3:30pm\nSat: 9:00am-12:00pm\nSun & PH: Closed",
+    "lat": 1.3640079,
+    "lon": 103.9630076
+  },
+  {
+    "area": "Pasir Ris",
+    "gpName": "Dr Ng Su Lyn Lynette, Dr Wong Jiayi",
+    "clinicName": "Minmed Clinic (Pasir Ris)",
+    "clinicAddress": "1 Pasir Ris Central Street 3 #05-09 White Sands Singapore 518457",
+    "clinicContact": "65850123",
+    "operatingHours": "Mon- Fri: 8:30am-1.00pm, 2:00pm-9:00pm\nSat & Sun: 9:00am-5:00pm\nPH: 8:30am-9:00pm",
+    "lat": 1.3724166,
+    "lon": 103.9496584
+  },
+  {
+    "area": "Pasir Ris",
+    "gpName": "Dr Adelina Mah, Dr Tan Yean Choon Thaddaeus",
+    "clinicName": "Our Family Clinic + Surgery",
+    "clinicAddress": "221 Pasir Ris Street 21 #01-116 Singapore 510221",
+    "clinicContact": "65851859",
+    "operatingHours": "Mon-Tues: 8:30am-12:00pm, 1:00pm-3:00pm, 6:00pm-9:00pm\nWed-Fri: 8:30am-12:00pm, 1:00pm-3:00pm\nSat: 9:00am-12:00pm\nSun & PH: Closed",
+    "lat": 1.3703134,
+    "lon": 103.9616335
+  },
+  {
+    "area": "Pasir Ris",
+    "gpName": "Dr Law Kung How",
+    "clinicName": "O2 Medical Clinic",
+    "clinicAddress": "527D Pasir Ris Street 51 #01-05 Singapore 514527",
+    "clinicContact": "63849443",
+    "operatingHours": "Mon-Fri: 8:30am-4:00pm, 6:00pm-9:00pm\nSat & Sun: 9:00am-1:00pm\nPH: Closed",
+    "lat": 1.3696063,
+    "lon": 103.9478702
+  },
+  {
+    "area": "Pasir Ris",
+    "gpName": "Dr Eugene Kan, Dr Lim Geok Bin",
+    "clinicName": "Pasir Ris Clinic and Surgery",
+    "clinicAddress": "442 Pasir Ris Drive 6 #01-28 Singapore 510442",
+    "clinicContact": "65820504",
+    "operatingHours": "Mon, Tues & Thurs: 8:30am-12:30pm, 2:00pm-4:30pm, 7:00pm-9:00pm\nWed: 8:30am-12:30pm, 7:00pm-9:00pm\nFri: 8:30am-12:30pm, 2:00pm-4:30pm\nSat: 8:30am-12:30pm\nSun & PH: Closed",
+    "lat": 1.3690061,
+    "lon": 103.9577223
+  },
+  {
+    "area": "Pasir Ris",
+    "gpName": "Dr Khwaja Asif",
+    "clinicName": "Uniq Medical Clinic",
+    "clinicAddress": "933 Upper Changi Road #02-02 North LIV@Changi Singapore 506785",
+    "clinicContact": "69808979",
+    "operatingHours": "Mon-Fri: 9:00am-1:00pm, 6.00pm-9.00pm\nSat & PH: 9:00am-1:00pm\nSun: Closed",
+    "lat": 1.3586422,
+    "lon": 103.9693864
+  },
+  {
+    "area": "Punggol",
+    "gpName": "Dr Tan Puay Wee Steve",
+    "clinicName": "Calrose Medical Family Clinic",
+    "clinicAddress": "231A Sumang Lane #01-05 Matilda Court Singapore 821231",
+    "clinicContact": "69571750",
+    "operatingHours": "Mon-Fri: 8:30am-1:00pm, 6:00pm-9:30pm\nSat: 8:30am-1:00pm\nSun: 6:00pm-9:30pm\nPH: Closed",
+    "lat": 1.4022717,
+    "lon": 103.8920634
+  },
+  {
+    "area": "Punggol",
+    "gpName": "Dr Yan Shiyuan, Dr Ng Zi Hao",
+    "clinicName": "Edgedale Medical Clinic (Punggol)",
+    "clinicAddress": "122A Edgedale Plains #01-187 Singapore 821122",
+    "clinicContact": "66352272",
+    "operatingHours": "Mon-Fri: 9:00am-4:00pm, 6:00pm-10:00pm\nSat & Sun: 9:00am-1:00pm, 6:00pm-10:00pm\nPH: 9:00am-12:00pm",
+    "lat": 1.3935603,
+    "lon": 103.9094059
+  },
+  {
+    "area": "Punggol",
+    "gpName": "Dr Lucienne Tan",
+    "clinicName": "Healthmark Family Clinic (Punggol)",
+    "clinicAddress": "639 Punggol Drive #01-06 Singapore 820639",
+    "clinicContact": "68756696",
+    "operatingHours": "Mon-Thurs: 8.30am-2:00pm, 6.00pm-9.00pm\nFri: 8.30am-2:00pm\nSat: 8:30am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3995756,
+    "lon": 103.9160078
+  },
+  {
+    "area": "Punggol",
+    "gpName": "Dr Tay Woon Hian",
+    "clinicName": "Healthway Medical (Punggol Field)",
+    "clinicAddress": "168 Punggol Field #02-07A Punggol Plaza Singapore 820168",
+    "clinicContact": "63153493",
+    "operatingHours": "Mon-Fri: 8:30am-12:30pm, 2:00pm-5:00pm, 6:00pm-10:00pm\nSat: 8:30am-12:30pm\nSun: 9:00am-12:30pm\nPH: Closed",
+    "lat": 1.3941746,
+    "lon": 103.9130396
+  },
+  {
+    "area": "Punggol",
+    "gpName": "Dr Tan Kian Wee Kenneth",
+    "clinicName": "Kenneth Tan Medical Clinic",
+    "clinicAddress": "658 Punggol East #01-04 Singapore 820658",
+    "clinicContact": "63124589",
+    "operatingHours": "Mon, Tues, Thurs & Fri: 8:00am-1:00pm, 6:00pm-8:30pm\nWed, Sat & Sun: 8:00am-1:00pm\nPH: Closed",
+    "lat": 1.4002847,
+    "lon": 103.9191534
+  },
+  {
+    "area": "Punggol",
+    "gpName": "Dr Goh Tze Chien Kelvin",
+    "clinicName": "Northeast Medical Group (Punggol)",
+    "clinicAddress": "653A Punggol Drive #01-05 Singapore 821653",
+    "clinicContact": "63203775",
+    "operatingHours": "Mon-Fri: 9:00am-1:00pm, 2:00pm-6:00pm\nSat: 9:00am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3980195,
+    "lon": 103.9193741
+  },
+  {
+    "area": "Punggol",
+    "gpName": "Dr Wong Weng Hong, Dr Estelle Yeak",
+    "clinicName": "Northshore Family Clinic",
+    "clinicAddress": "421C Northshore Drive #01-04 Singapore 823421",
+    "clinicContact": "65183176",
+    "operatingHours": "Mon-Fri: 8:30am-2:30pm, 5:30pm-9:00pm\nSat & Sun: 9:00am-9:00pm\nPH: 9:00am-9:00pm",
+    "lat": 1.4190858,
+    "lon": 103.9051911
+  },
+  {
+    "area": "Punggol",
+    "gpName": "Dr David Yuen Chao Wei",
+    "clinicName": "Northshore Family Clinic (Punggol Point)",
+    "clinicAddress": "432B Northshore Drive #01-03 Singapore 822432",
+    "clinicContact": "65135620",
+    "operatingHours": "Mon-Fri: 8:30am-1:30pm, 5:30pm-9:00pm\nSat & Sun: 9:00am-1:30pm, 5:30pm-9:00pm\nPH: 9:00am-1:30pm, 5:00pm-9:00pm",
+    "lat": 1.4168672,
+    "lon": 103.9111952
+  },
+  {
+    "area": "Punggol",
+    "gpName": "Dr Lim Zheyuan Daniel",
+    "clinicName": "OneCare Clinic (Punggol Sumang)",
+    "clinicAddress": "218 Sumang Walk #01-05 Singapore 820218",
+    "clinicContact": "65133092",
+    "operatingHours": "Mon-Fri: 8:00am-2:00pm, 6:00pm-9:00pm\nSat-Sun: 8:00am-12:00pm\nPH: To call the clinic to confirm",
+    "lat": 1.4033078,
+    "lon": 103.895282
+  },
+  {
+    "area": "Punggol",
+    "gpName": "Dr Cathryn Cai, Dr Soh Wah Ngee",
+    "clinicName": "OneDoctors Family Clinic (Punggol)",
+    "clinicAddress": "83 Punggol Central #02-17 Waterway Point Singapore 828761",
+    "clinicContact": "63858018",
+    "operatingHours": "Mon-Fri: 9:00am-9:00pm\nSat: 9:00am-3:00pm, 5:00pm-9:00pm\nSun & PH: 9:00am-3:00pm",
+    "lat": 1.4065853,
+    "lon": 103.9016322
+  },
+  {
+    "area": "Punggol",
+    "gpName": "Dr Laurel Yip, Dr Loh Wei Jie",
+    "clinicName": "Panhealth Family Clinic",
+    "clinicAddress": "312B Sumang Link #01-03 Singapore 822312",
+    "clinicContact": "69660595",
+    "operatingHours": "Mon-Fri: 8:30am-12:15pm, 2:30pm-4:15pm, 6:30pm-9:15pm\nSat-Sun: 8:30 am-12:15pm\nPH: Closed",
+    "lat": 1.411233,
+    "lon": 103.9006538
+  },
+  {
+    "area": "Punggol",
+    "gpName": "Dr Chua Zhi Wei Ignatius",
+    "clinicName": "Parkway Shenton Medical Clinic (Punggol Oasis)",
+    "clinicAddress": "681 Punggol Drive #01-01 Oasis Terraces Singapore 820681",
+    "clinicContact": "62448324",
+    "operatingHours": "Mon-Sun: 8:00am-1:00pm, 2:00pm-5:00pm, 7:00pm-10:00pm\nPH: 8:00am-1:00pm, 2:00pm-5:00pm, 7:00pm-10:00pm",
+    "lat": 1.4026301,
+    "lon": 103.9129247
+  },
+  {
+    "area": "Punggol",
+    "gpName": "Dr Teoh Pui Pui",
+    "clinicName": "Punggol Ripples Family Clinic",
+    "clinicAddress": "211D Punggol Walk #01-667 Singapore 824211",
+    "clinicContact": "65383707, 88221443 (WhatsApp Only)",
+    "operatingHours": "Mon-Fri: 9:00am-4:00pm\nSat: 9:00am-12:00pm\nSun & PH: Closed",
+    "lat": 1.400912,
+    "lon": 103.8992535
+  },
+  {
+    "area": "Punggol",
+    "gpName": "Dr Arianto Yuwono",
+    "clinicName": "ProHealth Medical Group @ Punggol Damai",
+    "clinicAddress": "612 Punggol Drive #01-05 Singapore 820612",
+    "clinicContact": "65091580",
+    "operatingHours": "Mon-Sun: 8:00am-3:00pm, 6:00pm-9:00pm\nPH: 8:00am-3:00pm, 6:00pm-9:00pm",
+    "lat": 1.4048084,
+    "lon": 103.9086648
+  },
+  {
+    "area": "Punggol",
+    "gpName": "Dr Koh Wei Thye",
+    "clinicName": "Vitacare Family Clinic (Punggol Central)",
+    "clinicAddress": "622D Punggol Central #01-05 Punggol Spectra Singapore 824622",
+    "clinicContact": "66360805, 89339421 (WhatsApp only)",
+    "operatingHours": "Mon, Tues, Thurs & Fri: 8:00am-1:00pm, 6:00pm-10:00pm\nWed: 8:00am-1:00pm\nSat: 8:00am-12:00pm\nSun: 8:00am-3:00pm\nPH: Closed",
+    "lat": 1.4005366,
+    "lon": 103.9103623
+  },
+  {
+    "area": "Punggol",
+    "gpName": "Dr Ang Teng Soon, Paul, Dr Ang Kai Kok",
+    "clinicName": "Zenith Medical Clinic",
+    "clinicAddress": "266C Punggol Way #01-374 Singapore 823266",
+    "clinicContact": "64433678",
+    "operatingHours": "Mon-Fri: 8:00am-1:00pm, 6:00pm-9:30pm\nSat: 8:00am-1:00pm\nSun: 6:00pm-9.30pm\nPH: Closed",
+    "lat": 1.4051522,
+    "lon": 103.897574
+  },
+  {
+    "area": "Queenstown",
+    "gpName": "Dr Alycia Fang, Dr Soh Xiyuan, Dr Shamit Amreena, Dr Tan Khee Ming",
+    "clinicName": "94 Dawson Family Clinic",
+    "clinicAddress": "94 Dawson Road #01-01 Singapore 142094",
+    "clinicContact": "69041729",
+    "operatingHours": "Mon-Wed: 8:30am-1:00pm, 2:00pm-4:30pm, 6:00pm-10:00pm\nThurs & Fri: 8:30am-1:00pm, 6:00pm-10:00pm\nSat: 9:00am-12:00pm\nSun: 6:00pm-10:00pm\nPH: Closed",
+    "lat": 1.296388,
+    "lon": 103.8110887
+  },
+  {
+    "area": "Queenstown",
+    "gpName": "Dr Lim Shu Chuin Shaun",
+    "clinicName": "171 Stirling Family Clinic",
+    "clinicAddress": "171 Stirling Road #01-1101 Singapore 140171",
+    "clinicContact": "62506551",
+    "operatingHours": "Mon-Fri: 8:30am-12:30pm, 6:00pm-9:00pm\nSat: 8:30am-12:30pm\nSun: 6:00pm-9:00pm\nPH: Closed",
+    "lat": 1.2909855,
+    "lon": 103.8037994
+  },
+  {
+    "area": "Queenstown",
+    "gpName": "Dr Adrian Tan, Dr Lim Shu Fen",
+    "clinicName": "Babysteps Medical",
+    "clinicAddress": "25 Ghim Moh Link",
+    "clinicContact": "88391322",
+    "operatingHours": "Open 24hrs: ",
+    "lat": 1.3081737,
+    "lon": 103.7862821
+  },
+  {
+    "area": "Queenstown",
+    "gpName": "Dr Jolene Tay, Dr Kevin Lim",
+    "clinicName": "Cornerstone Medical",
+    "clinicAddress": "29A Ghim Moh Link #01-03 Singapore 271029",
+    "clinicContact": "62620018",
+    "operatingHours": "Mon, Tues & Fri: 9:00am-3:00pm, 6:00pm-9:00pm\nWed & Fri: 9:00am-3:00pm\nSat: 9:00am-1:00pm\nSun: 6:00pm-9:00pm\nPH: Closed",
+    "lat": 1.3084432,
+    "lon": 103.784602
+  },
+  {
+    "area": "Queenstown",
+    "gpName": "Dr Pauline Neow",
+    "clinicName": "Mei Ling Clinic-Queenstown",
+    "clinicAddress": "158 Mei Ling Street #01-80 Singapore 140158",
+    "clinicContact": "64741782",
+    "operatingHours": "Mon-Fri: 8:30am-12:30pm, 6:00pm-8:30pm\nSat & Sun: 8:30am-11:30am\nPH: Closed",
+    "lat": 1.2927077,
+    "lon": 103.802897
+  },
+  {
+    "area": "Queenstown",
+    "gpName": "Dr Shannon Ching",
+    "clinicName": "Virtue Medical Clinic (Mei Ling)",
+    "clinicAddress": "158 Mei Ling Street #01-92 Singapore 140158",
+    "clinicContact": "69098577",
+    "operatingHours": "Mon-Fri: 8:00am-1:00pm, 5:30pm-9:00pm\nSat: 9:00am-1:00pm\nSun: 9:00am-1:00pm, 6:00pm-9:00pm",
+    "lat": 1.2926445,
+    "lon": 103.8027646
+  },
+  {
+    "area": "Raffles Place",
+    "gpName": "Dr Esther Pang, Dr Lin Shengyang Nicholas",
+    "clinicName": "Crawfurd Medical Centre",
+    "clinicAddress": "3 Temasek Boulevard #02-482 Suntec City Mall (North Wing between Tower 1 & 2) Singapore 038983",
+    "clinicContact": "68049580",
+    "operatingHours": "Mon-Fri: 8:30am-12:30pm, 2:00pm-5:30pm\nSat: 8:30am-12:30pm\nSun & PH: Closed",
+    "lat": 1.2957055,
+    "lon": 103.8597298
+  },
+  {
+    "area": "Raffles Place",
+    "gpName": "Dr Lim Chin Wei",
+    "clinicName": "Clinic @ The Sail",
+    "clinicAddress": "2 Marina Boulevard B1-11/12 Singapore 018987",
+    "clinicContact": "62255410",
+    "operatingHours": "Mon-Fri: 8:15am-1:00pm, 2:00pm-4:50pm\nSat, Sun & PH: Closed",
+    "lat": 1.2810263,
+    "lon": 103.8533908
+  },
+  {
+    "area": "Raffles Place",
+    "gpName": "Dr Chik Hui Shan",
+    "clinicName": "Northeast Medical Group (Raffles Place)",
+    "clinicAddress": "22 Malacca Street #13-03 RB Capital Building Singapore 048980",
+    "clinicContact": "65572770",
+    "operatingHours": "Mon-Fri: 8:30am-1:00pm, 2:00pm-6:00pm\nSat, Sun & PH: Closed",
+    "lat": 1.2839977,
+    "lon": 103.8507512
+  },
+  {
+    "area": "Redhill",
+    "gpName": "Dr Kao Wei Hung",
+    "clinicName": "Pacific Family Clinic",
+    "clinicAddress": "75D Redhill Road #01-116 Singapore 154075",
+    "clinicContact": "64740343",
+    "operatingHours": "Mon-Fri: 8:00am-12:00pm, 1:00pm-3:30pm, 6:00pm-9:00pm\nSat: 8:00am-1:00pm\nSun: 9:00am-1:00pm\nPH: Closed",
+    "lat": 1.2884325,
+    "lon": 103.8155337
+  },
+  {
+    "area": "Redhill",
+    "gpName": "Dr Lim Kai Hung, Dr Eddie Tan Tung Wee",
+    "clinicName": "HeartlandHealth (Redhill)",
+    "clinicAddress": "86 Redhill Close #01-600 Singapore 150086",
+    "clinicContact": "68733165",
+    "operatingHours": "Mon-Sun: 8:00am-1:00pm, 6:00pm-11:00pm\nPH: 8:00am-1:00pm, 6:00pm-11:00pm",
+    "lat": 1.2869157,
+    "lon": 103.8187735
+  },
+  {
+    "area": "Sembawang",
+    "gpName": "Dr Habeeb Shakila Banu",
+    "clinicName": "Bestmed Family Clinic and Home Care",
+    "clinicAddress": "126 Canberra Street #01-04 Multi Storey Carpark Singapore 750126",
+    "clinicContact": "65184268",
+    "operatingHours": "Mon, Wed, & Fri: 8:30am-12:30pm, 2:30pm-4:30pm, 6:00pm-9:00pm\nTues & Thurs: 8:30am-12:30pm, 2:30pm-4:30pm\nSun: 6:00pm-9:00pm\nSat & PH: Closed",
+    "lat": 1.4461798,
+    "lon": 103.834442
+  },
+  {
+    "area": "Sembawang",
+    "gpName": "Dr Chew So Phia",
+    "clinicName": "Canberra Care Medical Clinic",
+    "clinicAddress": "120 Canberra Crescent #01-04 Singapore 750120",
+    "clinicContact": "64831128",
+    "operatingHours": "Mon, Tue & Thurs: 8:30am-1:00pm, 2:00pm-4:00pm, 6:30pm-9:00pm\nWed & Fri: 8:30am-1:00pm, 2:00pm-4:00pm\nSat: 8:30am-1:00pm\nSun & PH: Closed",
+    "lat": 1.4453085,
+    "lon": 103.8310053
+  },
+  {
+    "area": "Sembawang",
+    "gpName": "Dr Amaris Lim Shu Min, Dr Lim Xiu Mei Laura, Dr Koh Thuan Wee",
+    "clinicName": "Frontier Medical Associates (Canberra)",
+    "clinicAddress": "105 Canberra Street #01-11 Singapore 750105",
+    "clinicContact": "62665080",
+    "operatingHours": "Mon-Thurs: 8:00am-2:00pm, 6:00pm-9:00pm\nFri: 8:00am-3:00pm\nSat: 8:00am-1:00pm\nSun & PH: Closed",
+    "lat": 1.4488354,
+    "lon": 103.8323588
+  },
+  {
+    "area": "Sembawang",
+    "gpName": "Dr Liau Kah Han, Dr Wong Janti Susanna",
+    "clinicName": "Healthwerkz Medical Centre (Sembawang)",
+    "clinicAddress": "355 Sembawang Way #01-02 Singapore 750355",
+    "clinicContact": "67557115",
+    "operatingHours": "Mon-Sun: 8:00am-10:00pm\nPH: 8:00am-10:00pm (To call clinic to confirm)",
+    "lat": 1.4495794,
+    "lon": 103.8189544
+  },
+  {
+    "area": "Sembawang",
+    "gpName": "Dr Yeang Ming Sheng",
+    "clinicName": "MyDoctor@Canberra",
+    "clinicAddress": "133 Canberra View #03-10/11 Singapore 750133",
+    "clinicContact": "69701002, 96205284 (WhatsApp Only)",
+    "operatingHours": "Mon-Fri: 8:30am-12:30pm, 5:30pm-8:00pm\nSat, Sun & PH: Closed",
+    "lat": 1.4430728,
+    "lon": 103.8306357
+  },
+  {
+    "area": "Sembawang",
+    "gpName": "Dr Lee Yanqing",
+    "clinicName": "OneCare Clinic (Canberra)",
+    "clinicAddress": "105 Canberra Street #01-09 Singapore 750105",
+    "clinicContact": "62513778",
+    "operatingHours": "Mon-Fri: 8:00am-2:00pm, 5:00pm-9:00pm\nSat: 8:00am-12:00pm\nSun: 8:00am-12:00pm, 6:00pm-9:00pm\nPH: Open at selected timing (To call the clinic to confirm)",
+    "lat": 1.4490445,
+    "lon": 103.8320459
+  },
+  {
+    "area": "Sembawang",
+    "gpName": "Dr Muhammad Fadhli Bin Mohamad Ikbal",
+    "clinicName": "Pinnacle Family Clinic (Sembawang)",
+    "clinicAddress": "604 Sembawang Road #B1-03 Sembawang Shopping Centre Singapore 758459",
+    "clinicContact": "65703768, 98382718 (WhatsApp Only)",
+    "operatingHours": "Mon-Thurs: 9:00am-3:30pm, 5:30pm-8:30pm\nFri: 9:00am-12:00pm, 2:00pm-4:00pm\nSat: 9:00am-1:00pm\nSun & PH: Closed",
+    "lat": 1.4414712,
+    "lon": 103.8245883
+  },
+  {
+    "area": "Sembawang",
+    "gpName": "Dr Tan Yuan Zi",
+    "clinicName": "T Medical Clinic Canberra",
+    "clinicAddress": "115 Canberra Walk #01-05 Singapore 750115",
+    "clinicContact": "69097550",
+    "operatingHours": "Mon-Fri: 8:30am-1:00pm, 2:00pm-4:30pm, 6:00pm-9:30pm\nSat & Sun: 9:00am-12:00pm\nPH: Open at selected timing (To call the clinic to confirm)",
+    "lat": 1.4460972,
+    "lon": 103.8286826
+  },
+  {
+    "area": "Sengkang",
+    "gpName": "Dr Andrew Chen",
+    "clinicName": "Acumed Medical Group (Sengkang)",
+    "clinicAddress": "215C Compassvale Drive #01-02 Singapore 543215",
+    "clinicContact": "63850113",
+    "operatingHours": "Mon & Wed: 8:30am-1:00pm, 2:00pm-8:00pm\nTue, Thurs & Fri: 8:30am-1:00pm\nSat: 8:30am-1:00pm\nSun: 9:00am-12:00pm\nPH: 9:00am-12:00pm",
+    "lat": 1.3898952,
+    "lon": 103.8929833
+  },
+  {
+    "area": "Sengkang",
+    "gpName": "Dr Yvonne Loke, Dr Lai Kah Ho",
+    "clinicName": "DR+ Medical & Paincare (Fernvale)",
+    "clinicAddress": "467B Fernvale Link #01-529 Singapore 792467",
+    "clinicContact": "68162900",
+    "operatingHours": "Mon-Fri: 8:00am-12:00pm, 6:00pm-10:00pm\nSat & Sun: 8:30am-12:30pm\nPH: Closed",
+    "lat": 1.3982425,
+    "lon": 103.8779436
+  },
+  {
+    "area": "Sengkang",
+    "gpName": "Dr Osman Fathiyah Diyana, Dr Woo Han Yang, Dr Woo Shi Min, Dr Jasmin Koh",
+    "clinicName": "DA Clinic @ Anchorvale",
+    "clinicAddress": "351 Anchorvale Road #01-01 Singapore 540351",
+    "clinicContact": "31650144",
+    "operatingHours": "Mon-Fri: 8:30am-12:00pm, 1:00pm-9:00pm\nSat & Sun: 8:30am-12:00pm\nPH: Please call the clinic to confirm",
+    "lat": 1.3933646,
+    "lon": 103.887093
+  },
+  {
+    "area": "Sengkang",
+    "gpName": "Dr Lee Alice",
+    "clinicName": "Fernvale Family Clinic",
+    "clinicAddress": "405C Fernvale Lane #01-101 Singapore 793405",
+    "clinicContact": "68756182",
+    "operatingHours": "Mon & Tues: 8:30am-12:30pm, 2:00pm-4:30pm, 6:00pm-9:00pm\nWed-Fri: 8:30am-12:30pm, 2:00pm-4:30pm\nSat: 8:30am-12:30pm\nSun & PH: Closed",
+    "lat": 1.3893384,
+    "lon": 103.8733742
+  },
+  {
+    "area": "Sengkang",
+    "gpName": "Dr Tang Kim Lian",
+    "clinicName": "Healthway Medical (Rivervale)",
+    "clinicAddress": "118 Rivervale Drive #02-17 Rivervale Plaza Singapore 540118",
+    "clinicContact": "68812689",
+    "operatingHours": "Mon-Sat: 8:00am-1:00pm, 2:00pm-5:00pm, 6:00pm-10:00pm\nSun: 8:00am-1:00pm, 6:00pm-10:00pm\nPH: 8:00am-1:00pm, 6:00pm-10:00pm",
+    "lat": 1.3852099,
+    "lon": 103.9014273
+  },
+  {
+    "area": "Sengkang",
+    "gpName": "Dr Allagarsamy Karpagavalli",
+    "clinicName": "Holistic Care Family Clinic",
+    "clinicAddress": "455 Sengkang West Avenue #01-10 Singapore 790454",
+    "clinicContact": "65134757",
+    "operatingHours": "Mon, Tues & Fri: 9:00am-1:00pm, 2:30pm-4:30pm\nWed & Thurs: 9:00am-1:00pm, 2:30pm-6:30pm\nSat: 9:00am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3920647,
+    "lon": 103.8711952
+  },
+  {
+    "area": "Sengkang",
+    "gpName": "Dr Glenn Goh",
+    "clinicName": "Island Family Clinic (Seletar)",
+    "clinicAddress": "455 Sengkang West Avenue #01-14 Singapore 790455",
+    "clinicContact": "69088280",
+    "operatingHours": "Mon-Fri: 9:00am-1:00pm, 6:00pm-10:00pm\nSat & Sun: 9:00am-1:00pm\nPH: Please call the clinic to confirm",
+    "lat": 1.3920922,
+    "lon": 103.8712853
+  },
+  {
+    "area": "Sengkang",
+    "gpName": "Dr Sim Chee Yong Mark",
+    "clinicName": "Island Family Clinic (Sengkang)",
+    "clinicAddress": "279 Sengkang East Avenue #01-05 Singapore 540279",
+    "clinicContact": "63842759",
+    "operatingHours": "Mon-Fri: 9:00am-1:00pm, 6:00pm-10:00pm\nSat & Sun: 9:00am-1:00pm\nPH: Closed",
+    "lat": 1.3860351,
+    "lon": 103.8932861
+  },
+  {
+    "area": "Sengkang",
+    "gpName": "Dr Wan Wei Hwang",
+    "clinicName": "Medivene Clinic & Surgery",
+    "clinicAddress": "330 Anchorvale Street #01-05 Singapore 540330",
+    "clinicContact": "63850441",
+    "operatingHours": "Mon-Thurs: 8:30am-2:00pm, 6:30pm-8:30pm\nFri: 8:30am-2:00pm\nSat: 9:00am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3968471,
+    "lon": 103.8891611
+  },
+  {
+    "area": "Sengkang",
+    "gpName": "Dr Au Min Wei Leonard",
+    "clinicName": "My Family Clinic (Anchorvale)",
+    "clinicAddress": "326A Anchorvale Road #01-260 Singapore 541326",
+    "clinicContact": "67023963",
+    "operatingHours": "Mon, Wed & Thurs: 8:00am-2:00pm, 6:00pm-9:00pm\nTues, Fri & Sat: 8:00am-2:00pm\nSun & PH: Closed",
+    "lat": 1.3949409,
+    "lon": 103.8879999
+  },
+  {
+    "area": "Sengkang",
+    "gpName": "Dr Chee Boon Ping, Dr Lim Shiau Lin, Dr Wong Chin Shing Sam",
+    "clinicName": "Northeast Medical Group (Sengkang)",
+    "clinicAddress": "5 Sengkang Square #01-05 Sengkang MRT Station Singapore 545062",
+    "clinicContact": "68755911",
+    "operatingHours": "Mon-Sun: 8:00am-10:00pm\nPH: 10:00am-6:00pm",
+    "lat": 1.3914004,
+    "lon": 103.895835
+  },
+  {
+    "area": "Sengkang",
+    "gpName": "Dr Chuah Hui En, Dr Li Tingfang",
+    "clinicName": "One Wellness Medical @ Sengkang Grand Mall",
+    "clinicAddress": "70 Compassvale Bow #02-06 Sengkang Grand Mall Singapore 544692",
+    "clinicContact": "69041671",
+    "operatingHours": "Mon-Fri: 9:00am-5:00pm\nSat: 9:00am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3818605,
+    "lon": 103.8927256
+  },
+  {
+    "area": "Sengkang",
+    "gpName": "Dr Tan Yan Yuan",
+    "clinicName": "Our Fernvale Family Clinic",
+    "clinicAddress": "465 Fernvale Road #01-04 Singapore 790465",
+    "clinicContact": "65929833",
+    "operatingHours": "Mon-Fri: 8:00am-1:00pm, 5:30pm-9:00pm\nSat: 3:00pm-6:00pm\nSun: 8:00am-1:00pm, 5:30pm-9:00pm\nPH: Closed",
+    "lat": 1.3981504,
+    "lon": 103.8766551
+  },
+  {
+    "area": "Sengkang",
+    "gpName": "Dr Chan Hui Min Jaclyn",
+    "clinicName": "Pinnacle Family Clinic (Sengkang)",
+    "clinicAddress": "170A Sengkang East Drive #01-06 Singapore 541170",
+    "clinicContact": "69700587, 97862189 (WhatsApp Only)",
+    "operatingHours": "Mon, Tues, Thurs: 8:00am-3:00pm, 6:00pm-9:00pm\nWed & Fri: 8:00am-3:00pm\nSat: 9:00am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3864308,
+    "lon": 103.9086524
+  },
+  {
+    "area": "Sengkang",
+    "gpName": "Dr Eileen Tan",
+    "clinicName": "ProHealth Medical Group @ Buangkok",
+    "clinicAddress": "275D Compassvale Link #01-01 (Unit 12) Singapore 544275",
+    "clinicContact": "64818066",
+    "operatingHours": "Mon-Sun: 8:00am-10:00pm\nPH: 9:00am-10:00pm",
+    "lat": 1.3824442,
+    "lon": 103.8940208
+  },
+  {
+    "area": "Sengkang",
+    "gpName": "Dr Choi Sai Wai",
+    "clinicName": "ProHealth Medical Group @ Fernvale",
+    "clinicAddress": "33 Sengkang West Avenue B1-18 The Seletar Mall Singapore 797653",
+    "clinicContact": "68864780",
+    "operatingHours": "Mon-Sun: 8:00am-10:00pm\nPH: 9:00am-10:00pm",
+    "lat": 1.3915208,
+    "lon": 103.8760834
+  },
+  {
+    "area": "Sengkang",
+    "gpName": "Dr Chen Qianming",
+    "clinicName": "ProHealth Medical Group @ LRT Fernvale",
+    "clinicAddress": "437 Fernvale Road #01-04 Singapore 790437",
+    "clinicContact": "64411672",
+    "operatingHours": "Mon-Sun: 8:00am-10:00pm\nPH: 9:00am-10:00pm",
+    "lat": 1.3926519,
+    "lon": 103.8761231
+  },
+  {
+    "area": "Sengkang",
+    "gpName": "Dr Wan Wei Hwang",
+    "clinicName": "RCMC Rivervale Crescent Medical Centre",
+    "clinicAddress": "182A Rivervale Crescent #01-04 Singapore 541182",
+    "clinicContact": "68860772",
+    "operatingHours": "Mon-Thurs: 9:00am-2:00pm, 6:30pm-9:30pm\nFri: 9:00am-2:00pm\nSat: 9:00am-1:00pm\nSun: 9:00am-12:00pm\nPH: Closed",
+    "lat": 1.3904531,
+    "lon": 103.9091611
+  },
+  {
+    "area": "Sengkang",
+    "gpName": "Dr Shariffa Syahidah Chishty",
+    "clinicName": "SATA CommHealth Community Hub@Sengkang",
+    "clinicAddress": "Blk 447B Jln Kayu #01-01 Singapore 792447",
+    "clinicContact": "62361028",
+    "operatingHours": "Mon-Fri: 8:30am-12:30pm, 1:30pm-5:00pm\nSat: 8:30am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3925531,
+    "lon": 103.8732221
+  },
+  {
+    "area": "Sengkang",
+    "gpName": "Dr Tiffany Yap",
+    "clinicName": "Shenton Medical (Buangkok)",
+    "clinicAddress": "10 Sengkang Central #01-04 Buangkok MRT Station Singapore 545061",
+    "clinicContact": "63153671",
+    "operatingHours": "Mon-Thurs: 8:30am-1:00pm, 2:00pm-5:30pm, 6:30pm-9:00pm\nFri: 8:30am-1:00pm, 2:00pm-5:30pm\nSat & Sun: 8:30am-12:30pm\nPH: Closed",
+    "lat": 1.3829416,
+    "lon": 103.8932323
+  },
+  {
+    "area": "Sengkang",
+    "gpName": "Dr Bernard Cheong Zheng Loong, Dr Jasvin Lee Weixian",
+    "clinicName": "Sunbeam Medical Clinic",
+    "clinicAddress": "318B Anchorvale link #01-257 Singapore 542318",
+    "clinicContact": "68023642",
+    "operatingHours": "Mon-Fri: 8:30am-1:00pm, 6:30pm-9:30pm\nSat-Sun: 8:30am-12:30pm\nPH: Closed",
+    "lat": 1.394076,
+    "lon": 103.8888578
+  },
+  {
+    "area": "Sengkang",
+    "gpName": "Dr Ong Lin Min, Dr Teoh Shin Ee",
+    "clinicName": "Suncare Medical Clinic (Sengkang West)",
+    "clinicAddress": "455 Sengkang West Avenue #01-08 Singapore 790455",
+    "clinicContact": "69706570",
+    "operatingHours": "Mon-Fri: 8:30am-1:30pm, 4:30pm-7:30pm\nSat & Sun: 9:00am-12:00pm\nPH: Closed",
+    "lat": 1.3913936,
+    "lon": 103.8709559
+  },
+  {
+    "area": "Serangoon",
+    "gpName": "Dr Hilda Hee, Dr Kevin Lim Wen Siang",
+    "clinicName": "Cornerstone Medical Bidadari",
+    "clinicAddress": "106A Bidadari Park Drive #01-03 Singapore 341106",
+    "clinicContact": "67075660",
+    "operatingHours": "Mon-Fri: 9:00am-3:00pm\nSat: 9:00am-1:00pm\nSun & PH: Closed",
+    "lat": 1.33454,
+    "lon": 103.8714989
+  },
+  {
+    "area": "Serangoon",
+    "gpName": "Dr Fang Hao Sen Andrew, Dr Lim Wan Ting, Dr Sim Tzi Ling, Dr Seah Jun Jie",
+    "clinicName": "DA Clinic @ Potong Pasir",
+    "clinicAddress": "51 Upper Serangoon Road #01-53 The Poiz Centre Singapore 347697",
+    "clinicContact": "31650139",
+    "operatingHours": "Mon-Fri: 8:30am-12:00pm, 1:00pm-4:00pm, 6:00pm-9:00pm\nSat & Sun: 8:30am-12:00pm\nPH: To call the clinic to confirm",
+    "lat": 1.3321537,
+    "lon": 103.8687368
+  },
+  {
+    "area": "Serangoon",
+    "gpName": "Dr Chai Joon Yi, Dr Koh Min Jie",
+    "clinicName": "GoClinic Serangoon",
+    "clinicAddress": "301 Serangoon Avenue 2 #01-340 Singapore 550301",
+    "clinicContact": "65926882",
+    "operatingHours": "Mon, Tues & Thurs: 8:30am-3:00pm, 6:00pm-9:00pm\nWed & Fri: 8:30am-3:00pm\nSat: 8:30am-12:30pm\nSun & PH: Closed",
+    "lat": 1.3532356,
+    "lon": 103.8678688
+  },
+  {
+    "area": "Serangoon",
+    "gpName": "Dr Erwin Kay",
+    "clinicName": "Healthwerkz Medical Center @ Centrium",
+    "clinicAddress": "320 Serangoon Road #16-04 Centrium Square Singapore 218108",
+    "clinicContact": "67345987",
+    "operatingHours": "Mon-Thurs: 9:00am-6:00pm\nSat: 9:00am-12:00pm\nFri, Sun & PH: Closed",
+    "lat": 1.3107908,
+    "lon": 103.8547913
+  },
+  {
+    "area": "Serangoon",
+    "gpName": "Dr Bennett Ong",
+    "clinicName": "Intemedical Potong Pasir",
+    "clinicAddress": "51 Upper Serangoon Road #01-29 The Poiz Centre Singapore 347697",
+    "clinicContact": "62426384, 80223129 (WhatsApp)",
+    "operatingHours": "Mon-Sun: 8:00am-10:00pm\nPH: 8:00am-10:00pm",
+    "lat": 1.3321537,
+    "lon": 103.8687368
+  },
+  {
+    "area": "Serangoon",
+    "gpName": "Dr Gandhi Paveena",
+    "clinicName": "International Medical Clinic (Serangoon Garden)",
+    "clinicAddress": "77 Serangoon Garden Way Singapore 555973 (Next to UOB Privilege Banking)",
+    "clinicContact": "67334440",
+    "operatingHours": "Mon-Fri: 9:00am-5:30pm\nSat: 9:00am-1:00pm\nSun & PH: Closed",
+    "lat": 1.363842,
+    "lon": 103.865124
+  },
+  {
+    "area": "Serangoon",
+    "gpName": "Dr Jowell Cheng, Dr Goh Shao Jie",
+    "clinicName": "J Medical",
+    "clinicAddress": "212 Bidadari Park Drive #03-06 Singapore 360212",
+    "clinicContact": "65137698, 96123567 (WhatsApp Only)",
+    "operatingHours": "Mon: 9:00am-9:00pm\nTues-Fri: 9:00am-2:00pm, 5:00pm-9:00pm\nSat: 9:00am-2:00pm\nSun: 9:00am-9:00pm\nPH: Closed",
+    "lat": 1.3423931,
+    "lon": 103.8757319
+  },
+  {
+    "area": "Serangoon",
+    "gpName": "Dr Chew Wei Ting Clara, Dr Jackie Lam Jing Kai, Dr Quek Qian Min Simone",
+    "clinicName": "Keystone Clinic & Surgery (Serangoon)",
+    "clinicAddress": "304 Serangoon Avenue 2 #01-10 Singapore 550304",
+    "clinicContact": "60220772, 88893375 (WhatsApp Only)",
+    "operatingHours": "Mon-Sun: 8:00am-8:00pm\nPH: 8:00am-8:00pm",
+    "lat": 1.3538702,
+    "lon": 103.867706
+  },
+  {
+    "area": "Serangoon",
+    "gpName": "Dr Eugene Loke",
+    "clinicName": "Mediline Wei Min Clinic (Serangoon Gardens)",
+    "clinicAddress": "14 Kensington Park Road Singapore 557265",
+    "clinicContact": "62886029",
+    "operatingHours": "Mon-Thurs: 8:00am-2.00pm, 3:00pm-7.00pm\nFri-Sun: 8:00am-2.00pm, 3:00pm-6.00pm\nPH: 8:00am-2.00pm, 3:00pm-6.00pm",
+    "lat": 1.3652387,
+    "lon": 103.8660795
+  },
+  {
+    "area": "Serangoon",
+    "gpName": "Dr Tan Kah Wei, Dr Yang Chyan Han Jasper",
+    "clinicName": "OneDoctors Medical Centre (Serangoon Nex)",
+    "clinicAddress": "23 Serangoon Central #01-54/55 Serangoon Nex Singapore 556083",
+    "clinicContact": "66344918",
+    "operatingHours": "Mon-Wed: 9:00am-9:00pm\nThurs & Fri: 9:00am-6:00pm\nSat: 9:00am-9:00pm\nSun: 9:00am-6:00pm\nPH: 1:00pm-6:00pm",
+    "lat": 1.3506853,
+    "lon": 103.8719911
+  },
+  {
+    "area": "Serangoon",
+    "gpName": "Dr Tang Lai Yee, Dr Germaine Tan",
+    "clinicName": "Pancare Medical (Serangoon)",
+    "clinicAddress": "3 Lorong Liew Lian #01-70 Singapore 531003",
+    "clinicContact": "68580025",
+    "operatingHours": "Mon & Thurs: 8:00am-1:00pm, 2:00pm-5:00pm, 6:00pm-9:00pm\nTues, Wed & Fri: 8:00am-1:00pm, 2:00pm-5:00pm\nSat: 8:00am-1:00pm\nSun: 2:00pm-8:00pm\nPH: To call the clinic to confirm",
+    "lat": 1.350475,
+    "lon": 103.8761202
+  },
+  {
+    "area": "Serangoon",
+    "gpName": "Dr Chang Qi Chang Tricia, Dr Luke Tan, Dr Tan Eng Liang Melvin",
+    "clinicName": "Parkway MediCentre (The Woodleigh Mall)",
+    "clinicAddress": "11 Bidadari Park Drive #02-25/26/27 The Woodleigh Mall Singapore 367803",
+    "clinicContact": "62296888, 91779045 (WhatsApp Only)",
+    "operatingHours": "Mon-Sat: 8:00am-12:30pm, 1:30pm-6:00pm, 7:00pm-9:30pm\nSun: 8:00am-12:30pm, 1:30pm-6:00pm\nPH: Closed",
+    "lat": 1.3379191,
+    "lon": 103.87233
+  },
+  {
+    "area": "Serangoon",
+    "gpName": "Dr Raina Loh Hui Wen",
+    "clinicName": "Phoenix Medical Group (Potong Pasir)",
+    "clinicAddress": "2 Tai Thong Crescent #01-16 The Venue Shoppes Singapore 347836",
+    "clinicContact": "62411780",
+    "operatingHours": "Mon, Wed & Thurs: 9:00am-3:00pm, 6:00pm-9:00pm\nTues & Fri: 9:00am-3:00pm\nSat: 9:00am-2:00pm\nSun & PH: Closed",
+    "lat": 1.3292466,
+    "lon": 103.8689931
+  },
+  {
+    "area": "Serangoon",
+    "gpName": "Dr Yap Soon Boon Raymond",
+    "clinicName": "Q & M Medical Family Clinic",
+    "clinicAddress": "261 Serangoon Central Drive #01-29 Singapore 550261",
+    "clinicContact": "64882336",
+    "operatingHours": "Mon, Wed, Fri: 8:00am-1:00pm, 2:00pm-5:00pm\nTues & Thurs: 8:00am-1:00pm, 2:00pm-5:00pm, 6:00pm-9:30pm\nSat: 8:00am-1:00pm\nSun & PH: Closed",
+    "lat": 1.3543173,
+    "lon": 103.8725647
+  },
+  {
+    "area": "Serangoon",
+    "gpName": "Dr Chong Yixian Calista",
+    "clinicName": "Redwood @ TPY Clinic and Surgery Pte Ltd",
+    "clinicAddress": "263 Serangoon Central Drive #01-51 Singapore 550263",
+    "clinicContact": "62805222",
+    "operatingHours": "Mon: 8:00am-1:00pm, 3:00pm-8:30pm\nTues-Fri: 8:00am-1:00pm, 3:00pm-6:30pm\nSat & Sun: 8:30am-12:30pm\nPH: Closed",
+    "lat": 1.3542138,
+    "lon": 103.8719522
+  },
+  {
+    "area": "Serangoon",
+    "gpName": "Dr Yuen Zhao Yi",
+    "clinicName": "RiverSage Family Clinic",
+    "clinicAddress": "476 Upper Serangoon View #02-08 Singapore 530476",
+    "clinicContact": "65688661, 87575947 (WhatsApp Only)",
+    "operatingHours": "Mon-Fri: 8:00am-1:00pm, 6:00pm-9:30pm\nSat & Sun: 8:00am-12:00pm\nPH: Closed",
+    "lat": 1.3773773,
+    "lon": 103.9037958
+  },
+  {
+    "area": "Serangoon",
+    "gpName": "Dr Suresh Ramchand Mahtani",
+    "clinicName": "S G Clinic Family Practice",
+    "clinicAddress": "84 Serangoon Garden Way Singapore 555980",
+    "clinicContact": "63821988",
+    "operatingHours": "Mon-Fri: 9:00am-12:30pm, 2:00pm-4:30pm, 6:30pm-8:30pm\nSat &Sun: 9:00am-12:30pm\nPH: 9:00am-12:30pm",
+    "lat": 1.364314,
+    "lon": 103.8649485
+  },
+  {
+    "area": "Serangoon",
+    "gpName": "Dr Clara Lau-Chew",
+    "clinicName": "Sterling Clinic and Surgery",
+    "clinicAddress": "3 Lorong Lew Lian #01-64 Singapore 531003",
+    "clinicContact": "62849971",
+    "operatingHours": "Mon -- Fri: 9:00am-12:30pm, 2:00pm-4:30pm\nSat-Sun: 9:00am-12:30pm\nPH: Open at selected timing (To call the clinic to confirm)",
+    "lat": 1.3505449,
+    "lon": 103.8761981
+  },
+  {
+    "area": "Serangoon",
+    "gpName": "Dr Michael Wong Kien Yee, Dr Shermaine Ng, Dr Tan Yeow Boon",
+    "clinicName": "Union Medical Clinic & Surgery (Serangoon North)",
+    "clinicAddress": "152 Serangoon North Avenue 1 #01-330 Singapore 550152",
+    "clinicContact": "62823357",
+    "operatingHours": "Mon-Fri: 8:30am-12:30pm, 2:00pm-4:30pm, 6:30pm-8:30pm\nSat: 8:30am-12:30pm\nSun: 9:00am-12:00pm\nPH: Closed",
+    "lat": 1.3697398,
+    "lon": 103.8726988
+  },
+  {
+    "area": "Serangoon",
+    "gpName": "Dr Bey Shimin, Dr Cheong Siew Meng, Dr Jee Yong Hing, Dr Lim Jing Fen, Dr Tan Mui Yen June, Dr Toh Wen Xin Amanda",
+    "clinicName": "Woodleigh Care Family Clinic",
+    "clinicAddress": "11 Bidadari Park Drive #02-13 The Woodleigh Mall Singapore 367803",
+    "clinicContact": "60158092",
+    "operatingHours": "Mon-Fri & Sun: 8:00am-5:00pm, 6:00am-10:00pm\nSat: 8:00am-6:00pm\nPH: 8:00am-10:00pm (To call clinic to confirm)",
+    "lat": 1.3386593,
+    "lon": 103.8717689
+  },
+  {
+    "area": "Simei",
+    "gpName": "Dr Amirah Wasilah Binte Abdul Wahid, Dr Ong Wen Chong, Dr Osman Fathiyah Diyana",
+    "clinicName": "DA Clinic @ Simei",
+    "clinicAddress": "248 Simei Street 3 #01-128 Multi Storey Carpark Singapore 520248",
+    "clinicContact": "31650146",
+    "operatingHours": "Mon-Fri: 8:30am-12:00pm, 1:00pm-9:00pm\nSat & Sun: 8:30am-12:00pm\nPH: Please call the clinic to confirm",
+    "lat": 1.3435809,
+    "lon": 103.9533838
+  },
+  {
+    "area": "Simei",
+    "gpName": "Dr Goh Tze Chien Kelvin",
+    "clinicName": "Northeast Medical Group (Simei)",
+    "clinicAddress": "30 Simei Street 3 #02-01 Simei MRT Station Singapore 529888",
+    "clinicContact": "67838638",
+    "operatingHours": "Mon-Sun: 8:00am-1:00pm, 2:00pm-10:00pm\nPH: 10:00am-6:00pm",
+    "lat": 1.3431473,
+    "lon": 103.9534205
+  },
+  {
+    "area": "Simei",
+    "gpName": "Dr Jennifer Loh Su Lin, Dr Ng Liling",
+    "clinicName": "St Andrew's Mission Hospital Clinic (Simei)",
+    "clinicAddress": "8 Simei Street 3 Singapore 529895",
+    "clinicContact": "65861025",
+    "operatingHours": "Mon-Fri: 8:00am-1:00pm, 2:00pm-5:00pm\nSat, Sun & PH: Closed",
+    "lat": 1.3418922,
+    "lon": 103.9490238
+  },
+  {
+    "area": "Woodlands",
+    "gpName": "Dr Juliana Kiu Oi Nah",
+    "clinicName": "Acumed Medical Group (Woodlands)",
+    "clinicAddress": "111 Woodlands Street 13 #01-78 Singapore 730111",
+    "clinicContact": "63627789",
+    "operatingHours": "Mon-Fri: 8:30am-1:00pm, 2:00pm-5:00pm\nSat: 8:30am-12:00pm\nSun & PH: Closed",
+    "lat": 1.4379153,
+    "lon": 103.7820991
+  },
+  {
+    "area": "Woodlands",
+    "gpName": "Dr Low Chee Wah Mark",
+    "clinicName": "Doctors Clinic and Surgery",
+    "clinicAddress": "305 Woodlands Street 31 #01-91 Singapore 730305",
+    "clinicContact": "62691017",
+    "operatingHours": "Mon-Fri: 8:30am-12:00pm, 2:00pm-4:30pm, 6:30pm-9:00pm\nSat & Sun: 8:30am-12:00pm\nPH: Closed",
+    "lat": 1.4304822,
+    "lon": 103.7744732
+  },
+  {
+    "area": "Woodlands",
+    "gpName": "Dr Jeffrey Loh",
+    "clinicName": "Dr+ Medical & Paincare Marsiling",
+    "clinicAddress": "18 Marsiling Lane #01-269 Singapore 730018",
+    "clinicContact": "62697435",
+    "operatingHours": "Mon-Fri: 8:00am-12:30pm, 1:30pm-4:30pm, 7:00pm-9:00pm\nSat: 8:00am-12:30pm\nSun & PH: Closed",
+    "lat": 1.443392,
+    "lon": 103.7778664
+  },
+  {
+    "area": "Woodlands",
+    "gpName": "Dr Seow En Hao",
+    "clinicName": "EH Medical Woodlands",
+    "clinicAddress": "785E Woodlands Rise #01-12 Singapore 735785",
+    "clinicContact": "62511526",
+    "operatingHours": "Mon-Thurs: 8:00am-2:00pm, 5:30pm-9:00pm\nFri: 8:00am-2:00pm\nSat & Sun: 8:00am-12:30pm\nPH: Closed",
+    "lat": 1.4469237,
+    "lon": 103.805523
+  },
+  {
+    "area": "Woodlands",
+    "gpName": "Dr Leong Hon Loong, Dr Ong Jin Ee",
+    "clinicName": "Frontier Medical Associates (Admiralty)",
+    "clinicAddress": "691 Woodlands Drive 73 #01-04 Singapore 730691",
+    "clinicContact": "63141098",
+    "operatingHours": "Mon & Wed: 8:00am-3:00pm, 6:00pm-9:00pm\nTues, Thurs & Fri: 8:00am-3:00pm\nSat: 8:00am-12:00pm\nSun & PH: Closed",
+    "lat": 1.4407349,
+    "lon": 103.8062709
+  },
+  {
+    "area": "Woodlands",
+    "gpName": "Dr Lau Xin Rou, Dr Quek Khai Wen",
+    "clinicName": "GoClinic Marsiling",
+    "clinicAddress": "18 Marsiling Lane #01-267 Singapore 730018",
+    "clinicContact": "63203626",
+    "operatingHours": "Mon: 8:00am-3:00pm, 6:00pm-9:00pm\nTues-Fri: 8:00am-3:00pm\nSat: 8:00am-12:30pm\nSunday & PH: Closed",
+    "lat": 1.443392,
+    "lon": 103.7778664
+  },
+  {
+    "area": "Woodlands",
+    "gpName": "Dr Benedick Lau",
+    "clinicName": "Martin Medical Centre",
+    "clinicAddress": "111 Woodlands Street 13 #01-80 Singapore 730111",
+    "clinicContact": "62692446",
+    "operatingHours": "Mon- Fri: 8:30am-12:30pm, 2:00pm-4:30pm, 7:00pm-9:00pm\nSat & Sun: 8:30am-12:30pm\nPH: 8:30am-12:30pm (To call clinic to confirm)",
+    "lat": 1.4378613,
+    "lon": 103.7820693
+  },
+  {
+    "area": "Woodlands",
+    "gpName": "Dr Muhammad Ilman Bin Mohd Adil, Dr Huang Sian Wei Djoni",
+    "clinicName": "MD Family Clinic",
+    "clinicAddress": "187C Marsiling Road #01-02 Singapore 733187",
+    "clinicContact": "65924762",
+    "operatingHours": "Mon-Thurs: 8:30am-1:30pm, 6:00pm-9:30pm\nFri: 8:30am-12:30pm, 6:00pm-9:30pm\nSat, Sun: 9:00am-1:00pm\nPH: 9:00am-1:00pm",
+    "lat": 1.4381319,
+    "lon": 103.7749098
+  },
+  {
+    "area": "Woodlands",
+    "gpName": "Dr Chew May Ling",
+    "clinicName": "Medipoint Medical Center (Woodlands Branch)",
+    "clinicAddress": "548 Woodlands Drive 44 #02-24 Vista Point Singapore 730548",
+    "clinicContact": "68938776",
+    "operatingHours": "Mon-Fri: 8:30am-1:30pm\nSat: 8:30am-12:00pm\nSun & PH: Closed",
+    "lat": 1.43111,
+    "lon": 103.79373
+  },
+  {
+    "area": "Woodlands",
+    "gpName": "Dr Leong Yan Hoi",
+    "clinicName": "Millennium Medical Group",
+    "clinicAddress": "849 Woodlands Street 82 #01-215 Singapore 730849",
+    "clinicContact": "63680386",
+    "operatingHours": "Mon-Fri: 9:00am-12:30pm, 2:00pm-4:00pm, 7:00pm-9:00pm\nSat: 9:00am-12:30pm\nSun & PH: Closed",
+    "lat": 1.4413065,
+    "lon": 103.7920313
+  },
+  {
+    "area": "Woodlands",
+    "gpName": "Dr Cheng Ke Yi, Dr Li Shaoqun",
+    "clinicName": "Northlink (Woodlands) Clinic Pte Ltd",
+    "clinicAddress": "11 Woodlands Square #B1-32 Woodlands MRT Station Singapore 737736",
+    "clinicContact": "65130608",
+    "operatingHours": "Mon-Fri: 8:00am-1:00pm, 2:00pm-5:00pm, 6:00pm-9:00pm\nSat & Sun: 8:00am-1:00pm, 2:00pm-5:00pm\nPH: 8:00am-1:00pm, 2:00pm-5:00pm",
+    "lat": 1.4371555,
+    "lon": 103.7874791
+  },
+  {
+    "area": "Woodlands",
+    "gpName": "Dr Neoh Jia Quan Leon",
+    "clinicName": "Norwood Medical Clinic",
+    "clinicAddress": "785E Woodlands Rise #01-02 Singapore 735785",
+    "clinicContact": "69373576",
+    "operatingHours": "Mon, Tues, Thurs, Fri: 8:00am-1:00pm, 6:00pm-7:30pm\nWed & Sat: 8:00am-1:00pm\nSun: 9:00am-1:00pm\nPH: Closed",
+    "lat": 1.4470608,
+    "lon": 103.8048721
+  },
+  {
+    "area": "Woodlands",
+    "gpName": "Dr Phipps Mary Ann",
+    "clinicName": "Royal Medical Centre",
+    "clinicAddress": "111 Woodlands Street 13 #01-84 Singapore 730111",
+    "clinicContact": "63656855",
+    "operatingHours": "Mon-Fri: 8:30am-1:00pm, 2:00pm-4:00pm, 6.30pm-9:00pm\nSat: 8:30am-12:30pm\nSun & PH: Closed",
+    "lat": 1.4379871,
+    "lon": 103.7820707
+  },
+  {
+    "area": "Woodlands",
+    "gpName": "Dr Fariz Sazadilla Binti Hamzah, Dr Tan Wen Hui",
+    "clinicName": "SATA CommHealth (Woodlands)",
+    "clinicAddress": "900 South Woodlands Drive #04-01 Woodlands Civic Centre Singapore 730900",
+    "clinicContact": "67671701",
+    "operatingHours": "Mon-Fri: 8:30am-12:30pm, 1:30pm-5:00pm\nSat: 8:30am-12:30pm\nSun & PH: Closed",
+    "lat": 1.435152,
+    "lon": 103.787195
+  },
+  {
+    "area": "Woodlands",
+    "gpName": "Dr Tan Ru Yuh",
+    "clinicName": "Victoria Medical House",
+    "clinicAddress": "888 Woodlands Drive 50 #02-739 888 Plaza Singapore 730888",
+    "clinicContact": "63646551",
+    "operatingHours": "Mon & Thurs: 9:00am-12:00pm, 6:30pm-8:30pm\nTues, Weds, Fri & Sat: 9:00am-12:00pm\nSun & PH: Closed",
+    "lat": 1.438178,
+    "lon": 103.7955224
+  },
+  {
+    "area": "Woodlands",
+    "gpName": "Dr Sorinder Singh",
+    "clinicName": "Woodlands Medical Center",
+    "clinicAddress": "210 Marsiling Crescent #01-09 Singapore 730210",
+    "clinicContact": "62698888",
+    "operatingHours": "Mon-Fri: 2:00pm-4:30pm, 6:00pm-8:30pm\nSun: 8:30am-12:00pm\nSat & PH: Closed",
+    "lat": 1.4461708,
+    "lon": 103.7736971
+  },
+  {
+    "area": "Woodlands",
+    "gpName": "Dr Yim Li Jen Jean",
+    "clinicName": "Yim Medical Centre (Admiralty MRT)",
+    "clinicAddress": "678A Woodlands Avenue 6 #03-16 Admiralty Place Singapore 731678",
+    "clinicContact": "68939181",
+    "operatingHours": "Mon, Tues, Thurs: 8:30am-1:00pm, 2:00pm-5:00pm\nFri & Sat: 8:30am-1:00pm\nWed, Sun & PH: Closed",
+    "lat": 1.4404732,
+    "lon": 103.8017717
+  },
+  {
+    "area": "Woodlands",
+    "gpName": "Dr Mumtaz Mohamed Yusoff",
+    "clinicName": "57 Medical Clinic (Woodlands)",
+    "clinicAddress": "166 Woodlands Street 13 #01-533 Singapore 730166",
+    "clinicContact": "65399236",
+    "operatingHours": "Mon-Thurs: 8:00am-1:00pm, 6:00pm-9:00pm\nFri & Sat: 8:00am-1:00pm\nSun & PH: 9:00am-12:00pm",
+    "lat": 1.4336992,
+    "lon": 103.7753992
+  },
+  {
+    "area": "Yishun",
+    "gpName": "Dr Ang An Xuan",
+    "clinicName": "Apex Medical Group (Yishun)",
+    "clinicAddress": "844 Yishun Street 81 #01-162 Singapore 760844",
+    "clinicContact": "67535621",
+    "operatingHours": "Mon, Wed, Thurs, Fri: 8:30am-12:30pm, 2:30pm-4:00pm, 7.00pm-9.00pm\nTues: 8:30am-12:30pm, 2:30pm-4:00pm\nSat: 8:30am-12:30pm\nSun & PH: Closed",
+    "lat": 1.4154505,
+    "lon": 103.8351118
+  },
+  {
+    "area": "Yishun",
+    "gpName": "Dr Lim Kai Yang, Dr Tay Junmin",
+    "clinicName": "Atrio Family Clinic (Yishun)",
+    "clinicAddress": "291 Yishun Street 22 #01-349 Singapore 760291",
+    "clinicContact": "67520838",
+    "operatingHours": "Mon-Sat: 8:00am-2:00pm, 5:30pm-9:30pm\nSun: 9:00am-2:00pm, 5.30pm-9.30pm\nPH: Closed",
+    "lat": 1.4357891,
+    "lon": 103.8369322
+  },
+  {
+    "area": "Yishun",
+    "gpName": "Dr Soumya Suresh",
+    "clinicName": "Bethesda Medical @ Yishun",
+    "clinicAddress": "293 Yishun Street 22 #01-223 Singapore 760293",
+    "clinicContact": "64286081",
+    "operatingHours": "Mon-Fri: 9:00am-3:00pm\nSat, Sun & PH: Closed",
+    "lat": 1.4363967,
+    "lon": 103.8379745
+  },
+  {
+    "area": "Yishun",
+    "gpName": "Dr Michael Chee Yen Kit",
+    "clinicName": "DA Clinic @ Yishun",
+    "clinicAddress": "18 Yishun Avenue 9 #01-34 Junction Nine Singapore 768897",
+    "clinicContact": "31586928",
+    "operatingHours": "Mon-Fri: 8:30am-12:00pm, 1:00pm-4:00pm, 6:00pm-9:00pm\nSat & Sun: 8:30am-12:00pm\nPH: To call the clinic to confirm",
+    "lat": 1.433182,
+    "lon": 103.841643
+  },
+  {
+    "area": "Yishun",
+    "gpName": "Dr Fang Xiao Cong, Dr Zhao Tian",
+    "clinicName": "FairCare Family Clinic (Yishun)",
+    "clinicAddress": "103 Yishun Ring Road #01-73 Singapore 760103",
+    "clinicContact": "69709691",
+    "operatingHours": "Mon-Fri: 8:30am-1:00pm, 2:00pm-5:00pm, 6:00pm-9:00pm\nSat & Sun: 8:30am-1:00pm\nPH: Closed",
+    "lat": 1.4315241,
+    "lon": 103.829399
+  },
+  {
+    "area": "Yishun",
+    "gpName": "Dr Tan Keng Yang",
+    "clinicName": "Faith Medical Clinic (Yishun)",
+    "clinicAddress": "598 Yishun Ring Road #01-11 Wisteria Mall Singapore 768698",
+    "clinicContact": "63391129",
+    "operatingHours": "Mon-Fri: 8:30am-12:30pm, 2:00pm-4:30pm, 6:30pm-9:00pm\nSat & Sun: 8:30am-1:00pm\nPH: 8:30am-1:00pm",
+    "lat": 1.4183525,
+    "lon": 103.8411119
+  },
+  {
+    "area": "Yishun",
+    "gpName": "Dr Quek Khai Wen, Dr Crystabelle Tan",
+    "clinicName": "GoClinic Yishun",
+    "clinicAddress": "769 Yishun Avenue 3 #01-283 Singapore 760769",
+    "clinicContact": "65399935",
+    "operatingHours": "Mon, Wed & Fri: 8:00am-2:00pm, 6:00pm-9:00pm\nTues & Thurs: 8:00am-2:00pm\nSat: 8:00am-1:00pm\nSun & PH: Closed",
+    "lat": 1.424656,
+    "lon": 103.8332462
+  },
+  {
+    "area": "Yishun",
+    "gpName": "Dr Lee Kwang How",
+    "clinicName": "Heartland Family Clinic",
+    "clinicAddress": "333C Yishun Street 31 #01-167 Singapore 763333",
+    "clinicContact": "62500655",
+    "operatingHours": "Mon, Tues & Thurs: 8:00am-12:30pm, 2:00pm-4:00pm, 6:30pm-9:00pm\nWed: 8:00am-12:30pm, 2:00pm-4:00pm\nFri: 8:00am-12:30pm\nSat-Sun: 8:30am-12:00pm\nPH: Closed",
+    "lat": 1.431751,
+    "lon": 103.845616
+  },
+  {
+    "area": "Yishun",
+    "gpName": "Dr Geetika Verma, Dr Tan Siew Ming, Dr Damian Chong Wei Hngs",
+    "clinicName": "Intemedical Yishun",
+    "clinicAddress": "419 Yishun Avenue 11 #01-381 Singapore 760419",
+    "clinicContact": "65131201, 80809253 (WhatsApp Only)",
+    "operatingHours": "Mon-Sun: 8:00am-10:00pm\nPH: 8:00am-10:00pm",
+    "lat": 1.4237738,
+    "lon": 103.8472688
+  },
+  {
+    "area": "Yishun",
+    "gpName": "Dr Endrina Salazar, Dr Low Yi Ling Elaine, Dr Wu Ying Jie",
+    "clinicName": "Kindred Family Clinic (Yishun)",
+    "clinicAddress": "172 Yishun Avenue 7 #01-787 Singapore 760172",
+    "clinicContact": "65924504",
+    "operatingHours": "Mon, Wed-Fri: 8:30am-1:00pm, 2:00pm-5:00pm, 6:00pm-9:00pm\nTues: 8:30am-1:00pm, 2:00pm-5:00pm\nSat & Sun: 8:30am-1:00pm\nPH: Closed",
+    "lat": 1.4368965,
+    "lon": 103.8317924
+  },
+  {
+    "area": "Yishun",
+    "gpName": "Dr Woon Chee Hong",
+    "clinicName": "Lifeline Yishun Ring Medical Clinic",
+    "clinicAddress": "846 Yishun Ring Road #01-3615 Singapore 760846",
+    "clinicContact": "67522017",
+    "operatingHours": "Mon, Wed & Fri: 8:30am-12:30pm, 2:00pm-4:30pm\nTues & Thurs: 8:30am-12:30pm, 2:00pm-4:30pm, 7:00pm-9:00pm\nSat: 9:00am-12:00pm\nSun & PH: Closed",
+    "lat": 1.417311,
+    "lon": 103.8346708
+  },
+  {
+    "area": "Yishun",
+    "gpName": "Dr Niraj Mohan",
+    "clinicName": "Lion Health Clinic & Surgery (Yishun)",
+    "clinicAddress": "931 Yishun Central 1 #01-107 Singapore 760931",
+    "clinicContact": "65189360",
+    "operatingHours": "Mon-Sun: 8:00am-12:00am\nPH: 8:00am-12:00am",
+    "lat": 1.4266417,
+    "lon": 103.8371531
+  },
+  {
+    "area": "Yishun",
+    "gpName": "Dr Phua Mei Fang",
+    "clinicName": "Medivale Medical Clinic",
+    "clinicAddress": "236 Yishun Ring Road #01-1012 Singapore 760236",
+    "clinicContact": "62570141",
+    "operatingHours": "Mon-Fri: 8:30am-12:30pm, 2.00pm-4:00pm, 6:00pm-9:00pm\nSat & Sun: 8:30am-12:30pm\nPH: Closed",
+    "lat": 1.4341913,
+    "lon": 103.8389404
+  },
+  {
+    "area": "Yishun",
+    "gpName": "Dr Lee Yanqing",
+    "clinicName": "OneCare Clinic (Yishun)",
+    "clinicAddress": "431 Yishun Avenue 1 #01-04 Singapore 760431",
+    "clinicContact": "63342373",
+    "operatingHours": "Mon: 8:30am-3:30pm, 6:00pm-9:30pm\nTues-Fri: 8:30am-3:30pm, 6:00pm-9:00pm\nSat: 8:30am-1:00pm\nSun: 8:30am-1:00pm, 6:00pm-9:00pm\nPH: Open at selected timing (To call the clinic to confirm)",
+    "lat": 1.420492,
+    "lon": 103.8475438
+  },
+  {
+    "area": "Yishun",
+    "gpName": "Dr Kan Dee Ching Elena",
+    "clinicName": "Pacific Medical and Dental Group",
+    "clinicAddress": "716 Yishun Street 71 #01-270 Singapore 760716",
+    "clinicContact": "67524050",
+    "operatingHours": "Mon, Wed & Fri: 8:30am-3:00pm, 6:30pm-9:30pm\nTues & Thurs: 8:30am-3:00pm\nSat: 8:30am-12:30pm\nSun & PH: Closed",
+    "lat": 1.4260879,
+    "lon": 103.8275646
+  },
+  {
+    "area": "Yishun",
+    "gpName": "Dr Chew Adrian",
+    "clinicName": "Parkway Shenton Medical Group (Yishun Central)",
+    "clinicAddress": "160 Yishun Street 11 #01-200 Singapore 760160",
+    "clinicContact": "68516233",
+    "operatingHours": "Mon & Thurs: 8:30am-1:00pm, 2:00pm-5:30pm, 6:30pm-9:00pm\nTues, Wed & Fri: 8:30am-1:00pm, 2:00pm-5:30pm\nSat: 8:30am-12:30pm\nSun & PH: Closed",
+    "lat": 1.4324308,
+    "lon": 103.8334122
+  },
+  {
+    "area": "Yishun",
+    "gpName": "Dr Chionh Eng Hoe",
+    "clinicName": "Psalms Family Clinic",
+    "clinicAddress": "293 Yishun Street 22 #01-217 Singapore 760293",
+    "clinicContact": "67583309",
+    "operatingHours": "Mon-Fri: 8:30am-1:00pm, 2:00pm-4:00pm\nSat: 8:30am-12:00pm\nSun & PH: Closed",
+    "lat": 1.4362649,
+    "lon": 103.8382056
+  },
+  {
+    "area": "Yishun",
+    "gpName": "Dr Jam Sou Lai, Dr Lui Woei Sen",
+    "clinicName": "The Family Medical Centre (Yishun) Pte Ltd",
+    "clinicAddress": "411 Yishun Ring Road #01-1827 Singapore 760411",
+    "clinicContact": "62574522",
+    "operatingHours": "Mon-Fri: 8:30am-12:30pm, 7:00pm-9:00pm\nSat: 8:30am-12:30pm, 6:00pm-8:00pm\nSun: 8:30am-12:30pm\nPH: Closed",
+    "lat": 1.4257773,
+    "lon": 103.8474426
+  },
+  {
+    "area": "Yishun",
+    "gpName": "Dr Fung Soon Yong Gerald, Dr Dawa",
+    "clinicName": "Unihealth 24-Hours Clinic (Yishun)",
+    "clinicAddress": "103 Yishun Ring Road #01-99 Singapore 760103",
+    "clinicContact": "65179598",
+    "operatingHours": "Mon-Sun: 24 hours\nPH: 24 hours",
+    "lat": 1.4318134,
+    "lon": 103.8290229
+  },
+  {
+    "area": "Yishun",
+    "gpName": "Dr Rohit Ramakant Singru",
+    "clinicName": "Uniq Medical Clinic (Yishun)",
+    "clinicAddress": "925 Yishun Central 1 #01-231 Singapore 760925",
+    "clinicContact": "90224505",
+    "operatingHours": "Mon-Fri: 9:00am-1:00pm, 6:00pm-9:00pm\nSat & PH: 9:00am-1:00pm\nSun: Closed",
+    "lat": 1.4278026,
+    "lon": 103.8372267
+  },
+  {
+    "area": "Yishun",
+    "gpName": "Dr Lis Hosanna",
+    "clinicName": "57 Medical Clinic (Yishun)",
+    "clinicAddress": "618 Yishun Ring Road #01-3238 Singapore 760618",
+    "clinicContact": "62353490",
+    "operatingHours": "Mon-Thurs: 8:00am-1:00pm, 6:00pm-9:00pm\nFri & Sat: 8:00am-1:00pm\nSun & PH: 9:00am-12:00pm",
+    "lat": 1.4188027,
+    "lon": 103.8356195
+  },
+  {
+    "area": "Tanjong Pagar",
+    "gpName": "Dr Han Xiao, Dr Melissa Tan Si Hui, Dr Robyn Hay, Dr Sng Wei Rong Joshua",
+    "clinicName": "A Medical Clinic",
+    "clinicAddress": "1 Everton Park #01-27 Singapore 081001",
+    "clinicContact": "62262066",
+    "operatingHours": "Mon-Thurs: 8:00am-2:00pm, 6:30pm-10:00pm\nFri-Sun: 8:00am-2:00pm\nPH: To call the clinic to confirm",
+    "lat": 1.2775429,
+    "lon": 103.840307
+  },
+  {
+    "area": "Tanjong Pagar",
+    "gpName": "Dr Yan Shi Michael",
+    "clinicName": "AscendCare Medical Clinic",
+    "clinicAddress": "11 Kee Seng Street #01-02 Onze @ Tanjong Pagar Singapore 089218",
+    "clinicContact": "89590102",
+    "operatingHours": "Mon-Fri (excluding PH): 9:00am-12:30pm, 1:30pm-5:00pm\nSat, Sun & PH: Closed",
+    "lat": 1.2750074,
+    "lon": 103.8421186
+  },
+  {
+    "area": "Tanjong Pagar",
+    "gpName": "Dr Tan Huali Valerie",
+    "clinicName": "Bridgepoint Health (Everton Park Clinic)",
+    "clinicAddress": "1 Everton Park #01-41 Singapore 081001",
+    "clinicContact": "62262066, 88153360 (WhatsApp only)",
+    "operatingHours": "Mon & Wed: 8:00am-1:30pm, 2:30pm-5:30pm, 6.30pm-9:30pm\nTues, Thurs: 8:00am-1:30pm, 6.30pm-9:30pm\nFri: 8:00am-1:30pm, 2:30pm-5:30pm\nSat & Sun: 8:00am-1:30pm\nPH: Closed",
+    "lat": 1.2774397,
+    "lon": 103.8400926
+  },
+  {
+    "area": "Tanjong Pagar",
+    "gpName": "Dr Stephen Chang Chean Seng",
+    "clinicName": "Chang Clinic & Surgery",
+    "clinicAddress": "7 Everton Park #01-21 Singapore 080007",
+    "clinicContact": "62216955",
+    "operatingHours": "Mon, Wed, Fri: 9:00am-12:00pm, 2:00pm-4:00pm\nTues & Thurs: 9:00am-12:00pm, 2:00pm-4:00pm, 6:00pm-8:00pm\nSat: 9:00am-1:00pm\nSun & PH: Closed",
+    "lat": 1.2771239,
+    "lon": 103.8393785
+  },
+  {
+    "area": "Tanjong Pagar",
+    "gpName": "Dr Lily Lie",
+    "clinicName": "Everton Clinic",
+    "clinicAddress": "7 Everton Park #01-17 Singapore 080007",
+    "clinicContact": "62207872",
+    "operatingHours": "Mon, Tues & Thurs: 8:30am-1:00pm, 2:00pm-5:00pm, 6:00pm-8:30pm\nFri & Sun: 8:30am-1:00pm\nWed & Sat: Closed\nPH: To call the clinic to confirm",
+    "lat": 1.2770881,
+    "lon": 103.8392427
+  },
+  {
+    "area": "Tanjong Pagar",
+    "gpName": "Dr Mehara Kumi",
+    "clinicName": "Healthway Japanese Medical Downtown",
+    "clinicAddress": "6A Shenton Way #02-15 Downtown Gallery Singapore 068815",
+    "clinicContact": "67339785",
+    "operatingHours": "Mon-Fri: 8:30am-1:00pm, 2:00pm-5:30pm\nSat, Sun & PH: Closed",
+    "lat": 1.2777849,
+    "lon": 103.8489777
+  },
+  {
+    "area": "Tampines",
+    "gpName": "Dr Lee Jinfeng Natalie",
+    "clinicName": "Acumed Medical Group (Tampines West)",
+    "clinicAddress": "801 Tampines Avenue 4 #01-269 Singapore 520801",
+    "clinicContact": "62231070",
+    "operatingHours": "Mon-Fri: 8:30am-2:00pm\nSat, Sun & PH: Closed",
+    "lat": 1.3471893,
+    "lon": 103.93801
+  },
+  {
+    "area": "Tampines",
+    "gpName": "Dr Ong Shu Min, Dr Quah Soon Wee",
+    "clinicName": "Crossroads Family Clinic",
+    "clinicAddress": "601B Tampines Avenue 9 #01-10 Singapore 522601",
+    "clinicContact": "65927080",
+    "operatingHours": "Mon & Wed: 8:00am-12:30pm, 2:00pm-4:00pm, 5:30pm-8:30pm\nTues & Fri: 8:00am-12:30pm, 2:00pm-4:00pm\nThurs & Sat: 8:00am-12:30pm\nSun & PH: Closed",
+    "lat": 1.3495907,
+    "lon": 103.9567879
+  },
+  {
+    "area": "Tampines",
+    "gpName": "Dr Chiang Wing Chiong",
+    "clinicName": "Dayspring Medical Clinic (Tampines)",
+    "clinicAddress": "2 Tampines Central 5 #04-09 Century Square Singapore 529509",
+    "clinicContact": "67890123",
+    "operatingHours": "Mon-Fri: 9:00am-1:00pm, 2:00pm-5:00pm, 6:00pm-9:00pm\nSat-Sun: 9:00am-1:00pm\nPH: Closed",
+    "lat": 1.3523888,
+    "lon": 103.9438567
+  },
+  {
+    "area": "Tampines",
+    "gpName": "Dr Yan Shiyuan",
+    "clinicName": "Edgedale Medical Clinic (Tampines)",
+    "clinicAddress": "614 Tampines North Drive 1 #01-01 Singapore 520614",
+    "clinicContact": "69800440",
+    "operatingHours": "Mon-Fri: 9:00am-1:00pm, 6:00pm-9:00pm\nSat: 9:00am-1:00pm\nSun & PH: Closed",
+    "lat": 1.365567,
+    "lon": 103.9366465
+  },
+  {
+    "area": "Tampines",
+    "gpName": "Dr Chiang Swee Kiat Clarence, Dr Jeremy Goh Chin Guan",
+    "clinicName": "Faith Healthcare (Tampines)",
+    "clinicAddress": "11 Tampines Street 32 #01-11 Tampines Mart Singapore 529287",
+    "clinicContact": "64433843",
+    "operatingHours": "Mon-Fri: 8:30am-4:30pm, 7:00pm-9:30pm\nSat & Sun: 8:30am-1:00pm\nPH: 8:30am-1:00pm",
+    "lat": 1.3544637,
+    "lon": 103.9600121
+  },
+  {
+    "area": "Tampines",
+    "gpName": "Dr Seng Yi Feng Melvin, Dr Wei Enli Wycliffe",
+    "clinicName": "Good Medical Clinic",
+    "clinicAddress": "462 Tampines Street 44 #01-74 Singapore 520462",
+    "clinicContact": "63227762",
+    "operatingHours": "Mon-Sun: 8:00am-12:00pm, 6:00pm-10:00pm\nPH: To call the clinic to confirm",
+    "lat": 1.3592591,
+    "lon": 103.9552063
+  },
+  {
+    "area": "Tampines",
+    "gpName": "Dr Poon Zhi Min, Dr Hong Wei Li",
+    "clinicName": "Greenhealth Family Clinic",
+    "clinicAddress": "138 Tampines Street 11 #01-142 Singapore 521138",
+    "clinicContact": "65924458, 88977868 (WhatsApp Only)",
+    "operatingHours": "Mon-Thurs: 8:30am-1:30pm, 2:30pm-4:30pm, 7:00pm-9:00pm\nFri: 8:30am-1:30pm, 2:30pm-4:30pm\nSat: 8:30am-12:30pm\nSun: 9:00am-12:00pm\nPH: Closed",
+    "lat": 1.3452869,
+    "lon": 103.9454513
+  },
+  {
+    "area": "Tampines",
+    "gpName": "Dr Fairuz Bin Ahmad, Dr Thambiah Matthew Dhanaraj, Dr Stella Kong San San, Dr Jovan Lai Jia Qing",
+    "clinicName": "HeartlandHealth (Tampines)",
+    "clinicAddress": "730 Tampines Street 71 #01-51 Singapore 520730",
+    "clinicContact": "65887833",
+    "operatingHours": "Mon-Sun: 8:00am-1:00pm, 6:00pm-11:00pm\nPH: 8:00am-1:00pm, 6:00pm-11:00pm",
+    "lat": 1.3566555,
+    "lon": 103.9336168
+  },
+  {
+    "area": "Tampines",
+    "gpName": "Dr Arjunan Muthu Kumaran",
+    "clinicName": "Intemedical Tampines",
+    "clinicAddress": "201E Tampines Street 23 #01-96 Singapore 527201",
+    "clinicContact": "62233803, 80650191 (WhatsApp Only)",
+    "operatingHours": "Mon-Sun: 8:00am-10:00pm\nPH: 8:00am-10:00pm",
+    "lat": 1.3531703,
+    "lon": 103.9541458
+  },
+  {
+    "area": "Tampines",
+    "gpName": "Dr Leslie Tay Choon Mong",
+    "clinicName": "Karri Family Clinic",
+    "clinicAddress": "866A Tampines Street 83 #03-05 Singapore 521866",
+    "clinicContact": "67850311",
+    "operatingHours": "Mon-Wed: 8:30am-1:00pm, 6:30pm-9:00pm\nThurs & Fri: 8:30am-1:00pm\nSat: 8:30am-12:30pm\nSun & PH: Closed",
+    "lat": 1.3552714,
+    "lon": 103.9345836
+  },
+  {
+    "area": "Tampines",
+    "gpName": "Dr Low Yi Ling Elaine, Dr Wong Wooi Seng",
+    "clinicName": "Kindred Family Clinic (Tampines)",
+    "clinicAddress": "494 Tampines Street 45 #01-02 Singapore 523494",
+    "clinicContact": "62327893",
+    "operatingHours": "Mon, Tues, Thurs & Fri: 8.30am-12.30pm, 2:00pm-4:30pm, 6:00pm-8:30pm\nWed: 8:30am-12.30pm, 2:00pm-4:30pm\nSat: 8:30am-12:30pm\nSun & PH: Closed",
+    "lat": 1.3629675,
+    "lon": 103.9557987
+  },
+  {
+    "area": "Tampines",
+    "gpName": "Dr Chai Chwan",
+    "clinicName": "Little Cross Family Clinic Pte Ltd",
+    "clinicAddress": "929 Tampines Street 91 #01-445 Singapore 520929",
+    "clinicContact": "65440040",
+    "operatingHours": "Mon-Fri: 8:30am-3:00pm, 7:00pm-9:00pm\nSat: 8:30am-12:30pm, 7:00pm-9:00pm\nSun: Closed\nPH: 8:30am-12:30pm",
+    "lat": 1.3462877,
+    "lon": 103.9396514
+  },
+  {
+    "area": "Tampines",
+    "gpName": "Dr Suraidah Bte Ahmat",
+    "clinicName": "Medina Medical Centre",
+    "clinicAddress": "479 Tampines Street 44 #01-231 Singapore 520479",
+    "clinicContact": "65882756",
+    "operatingHours": "Mon-Fri: 8:00am-12:30am, 2:00pm-5:00pm\nSat & Sun: 8:00am-12:30am\nPH: Closed",
+    "lat": 1.3615084,
+    "lon": 103.9536373
+  },
+  {
+    "area": "Tampines",
+    "gpName": "Dr Chang Wei Tee, Dr Koh Siew Ling",
+    "clinicName": "Northeast Medical Group (Tampines)",
+    "clinicAddress": "20 Tampines Central 1 #01-25/26 Tampines MRT Station Singapore 529538",
+    "clinicContact": "67867848",
+    "operatingHours": "Mon-Sun: 8:00am-1:00pm, 2:00pm-10:00pm\nPH: 8:00am-1:00pm",
+    "lat": 1.3533339,
+    "lon": 103.9452211
+  },
+  {
+    "area": "Tampines",
+    "gpName": "Dr Muhammad Azmi Hezan Bin Abdul Latiff, Dr Tan Sei Tai",
+    "clinicName": "Our Family Physician Clinic & Surgery",
+    "clinicAddress": "829 Tampines Street 81 #01-292 Singapore 520829",
+    "clinicContact": "67850147",
+    "operatingHours": "Mon-Sun: 8:00am-11:00pm\nPH: 8:00am-11:00pm",
+    "lat": 1.349197,
+    "lon": 103.93507
+  },
+  {
+    "area": "Tampines",
+    "gpName": "Dr Nicholas Ong Wei Rong, Dr Tan Yan Yuan",
+    "clinicName": "Our Tampines Family Clinic",
+    "clinicAddress": "622A Tampines Avenue 12 #01-08 Singapore 521622",
+    "clinicContact": "69085418, 83083135 (WhatsApp Only)",
+    "operatingHours": "Mon-Fri: 8:00am-2:00pm, 5:00pm-10:00pm\nSat: 2:00pm-6:00pm\nSun: 8:00am-1:00pm\nPH: Closed",
+    "lat": 1.3610418,
+    "lon": 103.940227
+  },
+  {
+    "area": "Tampines",
+    "gpName": "Dr Yeo Li Tian",
+    "clinicName": "Parkway Shenton Medical Group (Tampines West)",
+    "clinicAddress": "801 Tampines Avenue 4 #01-261 Singapore 520801",
+    "clinicContact": "62231309",
+    "operatingHours": "Mon & Thurs: 8:00am-1:00pm, 2:00pm-5:00pm, 6:30pm-9:00pm\nTues, Wed & Fri: 8:00am-1:00pm, 2:00pm-5:00pm\nSat & Sun: 8:00am-1:00pm\nPH: Closed",
+    "lat": 1.3470057,
+    "lon": 103.9380753
+  },
+  {
+    "area": "Tampines",
+    "gpName": "Dr Ek Jen Lih",
+    "clinicName": "Praise Family Clinic",
+    "clinicAddress": "717 Tampines Street 72 #01-75 Singapore 520717",
+    "clinicContact": "67843785",
+    "operatingHours": "Mon, Tues & Thurs: 8:30am-1:00pm, 2:00pm-5:00pm\nWed & Fri: 8:30am-1:00pm\nSat: 8:30am-12:30pm\nSun & PH: Closed",
+    "lat": 1.3588867,
+    "lon": 103.9350624
+  },
+  {
+    "area": "Tampines",
+    "gpName": "Dr Lim Jia Qing",
+    "clinicName": "ProHealth Medical Group @ Tampines",
+    "clinicAddress": "610 Tampines North Drive 1 #01-03 Tampines Greenweave Singapore 520610",
+    "clinicContact": "69707114",
+    "operatingHours": "Mon-Fri & Sun: 8:00am-9:00pm\nSat: 8:00am-9:00pm\nPH: 8:00am-9:00pm",
+    "lat": 1.364417,
+    "lon": 103.9366997
+  },
+  {
+    "area": "Tampines",
+    "gpName": "Dr Lee See Chung",
+    "clinicName": "Shenton Family Medical Clinic (Tampines)",
+    "clinicAddress": "201D Tampines Street 21 #01-1137 Singapore 524201",
+    "clinicContact": "67845291",
+    "operatingHours": "Mon-Wed: 8:30am-1:00pm, 2:00pm-5:00pm, 7:00pm-9:00pm\nThurs & Fri: 8:30am-1:00pm, 2:00pm-5:00pm\nSat: 8:30am-12:30pm\nSun & PH: Closed",
+    "lat": 1.3525661,
+    "lon": 103.953947
+  },
+  {
+    "area": "Tampines",
+    "gpName": "Dr Mohamed Ghazali",
+    "clinicName": "Shifa Clinic (Tampines)",
+    "clinicAddress": "138 Tampines Street 11 #01-126 Singapore 521138",
+    "clinicContact": "67816694, 87303670 (WhatsApp Only)",
+    "operatingHours": "Mon-Fri: 9:00am-12:30pm, 2.00pm-4.30pm\nSat: 9:00am-12:30pm\nSun & PH: Closed",
+    "lat": 1.3454615,
+    "lon": 103.9456244
+  },
+  {
+    "area": "Tampines",
+    "gpName": "Dr Gan Tek Kah, Dr Jeriel Tan Li-Siang",
+    "clinicName": "Street 21 Clinic Tampines Pte Ltd",
+    "clinicAddress": "201B Tampines Street 21 #02-1097 Singapore 522201",
+    "clinicContact": "67857888",
+    "operatingHours": "Mon-Fri: 8:30am-12:30pm, 4:30pm-7:30pm\nSat: 8:30am-12:30pm\nSun: 3:00pm-6:00pm\nPH: 8:30am-12:30pm",
+    "lat": 1.353532,
+    "lon": 103.9528688
+  },
+  {
+    "area": "Tampines",
+    "gpName": "Dr Low Jin Kheng",
+    "clinicName": "Street 11 Clinic",
+    "clinicAddress": "139 Tampines Street 11 #01-18 Singapore 521139",
+    "clinicContact": "65882139",
+    "operatingHours": "Mon, Tues, Thurs & Fri: 8:00am-1:00pm, 1:30pm-3:00pm, 6:00pm-9:00pm\nWed: 8:00am-1:00pm, 6:00pm-9:00pm\nSat: 8:30am-1:00pm\nSun & PH: Closed",
+    "lat": 1.346771,
+    "lon": 103.94475
+  },
+  {
+    "area": "Tiong Bahru",
+    "gpName": "Dr Christopher Gn",
+    "clinicName": "Havelock Family Clinic",
+    "clinicAddress": "22 Havelock Road #01-709 Singapore 160022",
+    "clinicContact": "62724242",
+    "operatingHours": "Mon, Tues & Thurs: 9:00am-12:30pm, 2:00pm-4:00pm, 7:00pm-9:00pm\nWed, Fri & Sat: 9:00am-12:30pm, 2:00pm-4:00pm\nSun & PH: Closed",
+    "lat": 1.2889964,
+    "lon": 103.8283684
+  },
+  {
+    "area": "Tiong Bahru",
+    "gpName": "Dr Yeo Ee jie",
+    "clinicName": "Healthway Medical (Jalan Membina)",
+    "clinicAddress": "18 Jalan Membina #02-08 Singapore 164018",
+    "clinicContact": "60167258",
+    "operatingHours": "Mon & Thurs: 8:30am-1:00pm, 2:00pm-5:00pm, 6:00pm-9:00pm\nTues, Wed & Fri: 8:30am-1:00pm, 2:00pm-5:00pm\nSat: 8:30am-1:00pm\nSun & PH: Closed",
+    "lat": 1.2853947,
+    "lon": 103.8267269
+  },
+  {
+    "area": "Tiong Bahru",
+    "gpName": "Dr Kao Wei Hsing, Dr Loh Sook Heng",
+    "clinicName": "Kao & Tan Family Medical Centre & Surgery (Prohealth Medical Group Of Clinics)",
+    "clinicAddress": "18 Jalan Membina #02-03 Singapore 164018",
+    "clinicContact": "62727880",
+    "operatingHours": "Mon-Sun: 7:00am-10:00pm\nPH: 7:00am-10:00pm *To call clinic to confirm",
+    "lat": 1.285539,
+    "lon": 103.826902
+  },
+  {
+    "area": "Tiong Bahru",
+    "gpName": "Dr Lai Wern Sheng",
+    "clinicName": "The Good Clinic",
+    "clinicAddress": "11A Boon Tiong Road #01-13 Singapore 161011",
+    "clinicContact": "69081931",
+    "operatingHours": "Mon-Fri: 8:00am-2:00pm, 5:00pm-8:00pm\nSat & Sun: 8:00am-12:00pm\nPH: Closed",
+    "lat": 1.286422,
+    "lon": 103.8291559
+  },
+  {
+    "area": "Toa Payoh",
+    "gpName": "Dr Chow Yong Sheng, Dr Kang Jun Kai Julius",
+    "clinicName": "Brighton Medical Clinic",
+    "clinicAddress": "83 Toa Payoh Lorong 2 #01-449 Singapore 310083",
+    "clinicContact": "65141716",
+    "operatingHours": "Mon-Sat: 8:30am-1:00pm, 2:00pm-5:00pm, 6:30pm-11:00pm\nSun: 8:30am-1:00pm, 2:00pm-5:00pm\nPH: 8:30am-1:00pm, 2:00pm-5:00pm, 6:30pm-11:00pm",
+    "lat": 1.3357938,
+    "lon": 103.8479661
+  },
+  {
+    "area": "Toa Payoh",
+    "gpName": "Dr Teo Boon See, Dr Tham Tuck Seng",
+    "clinicName": "Camry Medical Centre",
+    "clinicAddress": "95 Toa Payoh Lorong 4 #01-66 Singapore 310095",
+    "clinicContact": "62580553",
+    "operatingHours": "Mon-Fri: 8:30am-12:00pm, 1:00pm-4:00pm\nSat: 8:30am-12:00pm\nSun & PH: Closed",
+    "lat": 1.3386965,
+    "lon": 103.849054
+  },
+  {
+    "area": "Toa Payoh",
+    "gpName": "Dr Seng Sheh Ling Joyce",
+    "clinicName": "Dr Joyce & Partners Family Clinic",
+    "clinicAddress": "178 Toa Payoh Central #01-224 Singapore 310178",
+    "clinicContact": "68023507",
+    "operatingHours": "Mon-Thurs: 8:30am-1:00pm, 6:00pm-8:30pm\nFri: 8:30am-1:00pm\nSat: 2:00pm-4:00pm (Please call the clinic to confirm)\nSun & PH: Closed",
+    "lat": 1.3335739,
+    "lon": 103.8492063
+  },
+  {
+    "area": "Toa Payoh",
+    "gpName": "Dr Chin Yuin Cheng",
+    "clinicName": "HeartlandHealth (Braddell Medical Clinic)",
+    "clinicAddress": "124 Toa Payoh Lorong 1 #01-489 Singapore 310124",
+    "clinicContact": "62536288",
+    "operatingHours": "Mon-Sun: 8:00am-1:00pm, 6:00pm-11:00pm\nPH: 8:00am-1:00pm, 6:00pm-11:00pm",
+    "lat": 1.3386911,
+    "lon": 103.8450002
+  },
+  {
+    "area": "Toa Payoh",
+    "gpName": "Dr Lee Chuan Shing, Dr Eddie Tan Tung Wee",
+    "clinicName": "HeartlandHealth (Toa Payoh)",
+    "clinicAddress": "66 Toa Payoh Lorong 4 #01-315 Singapore 310066",
+    "clinicContact": "62528223",
+    "operatingHours": "Mon-Sun: 8:00am-1:00pm, 6:00pm-11:00pm\nPH: 8:00am-1:00pm, 6:00pm-11:00pm",
+    "lat": 1.3350402,
+    "lon": 103.8517304
+  },
+  {
+    "area": "Toa Payoh",
+    "gpName": "Dr Zhang Qi",
+    "clinicName": "Kingsway Medical Clinic (Braddell MRT)",
+    "clinicAddress": "109 Toa Payoh Lorong 1 #01-316 Singapore 310109",
+    "clinicContact": "69171055, 88033070 ((WhatsApp Only)",
+    "operatingHours": "Mon-Sat: 8:30am-1:00pm, 2:00pm-5:30pm, 6:00pm-10:00pm\nSun: 1:00pm-10:00pm\nPH: Closed",
+    "lat": 1.3412056,
+    "lon": 103.8463972
+  },
+  {
+    "area": "Toa Payoh",
+    "gpName": "Dr Tan Yan Yuan",
+    "clinicName": "Our Woodleigh Family Clinic",
+    "clinicAddress": "115B Alkaff Crescent #01-05 Alkaff Lake View Singapore 342115",
+    "clinicContact": "69700560",
+    "operatingHours": "Mon-Fri: 8:30am-2:30pm, 5:30pm-9:00pm\nSat: 8:30am-12:30pm\nSun: 8:30am-12:30pm, 5:30pm-9:00pm\nPH: Closed",
+    "lat": 1.3370601,
+    "lon": 103.8726077
+  },
+  {
+    "area": "Toa Payoh",
+    "gpName": "Dr Michelle Sim Wei Qian",
+    "clinicName": "The Bidadari Clinic",
+    "clinicAddress": "115B Alkaff Crescent #01-11 Alkaff Lake View Singapore 342115",
+    "clinicContact": "65183868",
+    "operatingHours": "Mon-Fri: 8:30am-12:30pm, 1:00pm-5:00pm\nSat: 8:30am-12:30pm\nSun & PH: Closed",
+    "lat": 1.3370601,
+    "lon": 103.8726077
+  },
+  {
+    "area": "Toa Payoh",
+    "gpName": "Dr Michael Wong Kien Yee, Dr Tan Yeow Boon",
+    "clinicName": "Union Medical Clinic & Surgery (Toa Payoh)",
+    "clinicAddress": "148 Toa Payoh Lorong 1 #01-917 Singapore 310148",
+    "clinicContact": "69633148",
+    "operatingHours": "Mon-Fri: 8:30am-2:00pm, 6:00pm-9:00pm\nSat: 8:30am-1:00pm\nPH: Closed",
+    "lat": 1.3347074,
+    "lon": 103.8438599
+  },
+  {
+    "area": "Thomson",
+    "gpName": "Dr Abdul Kadir Abdul Bashir",
+    "clinicName": "24-Hr Family Clinic, Thomson Medical Centre",
+    "clinicAddress": "339 Thomson Road Singapore 307677",
+    "clinicContact": "63508812",
+    "operatingHours": "Mon- Sun: 12:00am-12:00am\nPH: 12:00am-12:00am",
+    "lat": 1.3254629,
+    "lon": 103.8414575
+  }
+]

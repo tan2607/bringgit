@@ -1,5 +1,5 @@
-import { settings } from "~/server/database/schema";
-import { modules } from "~/server/utils/settings";
+import { settings } from "@@/server/database/schema";
+import { modules } from "@@/server/utils/settings";
 
 export default defineEventHandler(async (event) => {
   try {

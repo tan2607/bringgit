@@ -5,6 +5,8 @@ import { validateFhirResource } from '../utils/medplum/client'
 import { fhirToCallVariables } from '../utils/medplum/mapper'
 import type { Bundle } from '../utils/medplum/fhirTypes'
 
+const config = useRuntimeConfig()
+
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 const ALLOWED_MIME_TYPES = [
   'application/pdf',
@@ -25,7 +27,7 @@ export default defineEventHandler(async (event) => {
       })
     }
     
-    const gemini = new GeminiOCR(process.env.GEMINI_API_KEY as string)
+    const gemini = new GeminiOCR(config.geminiApiKey)
     // Process the files to extract call variables
     const result = await gemini.extractCallVariables(body.files)
     

@@ -1,5 +1,5 @@
 import { gte } from 'drizzle-orm'
-import { jobs, jobQueue } from '~/server/database/schema'
+import { jobs, jobQueue } from '@@/server/database/schema'
 
 export default defineEventHandler(async (event) => {
   try {

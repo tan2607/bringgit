@@ -1,7 +1,7 @@
 import { H3Event } from 'h3'
 import { getServerSession } from '#auth'
-import { authOptions } from '@/server/api/auth/[...]'
-import { AppMetadata, DEFAULT_APP_METADATA } from '@/types/auth'
+import { authOptions } from '@@/server/api/auth/[...]'
+import { AppMetadata, DEFAULT_APP_METADATA } from '@@/types/auth'
 
 export class AuthUser {
     constructor(

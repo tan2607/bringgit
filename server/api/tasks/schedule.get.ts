@@ -1,6 +1,6 @@
 import { and, or, eq, asc, not, inArray } from "drizzle-orm";
-import { jobQueue, jobs } from "~/server/database/schema";
-import { CallMessage, CallQueueHandler } from "~/server/utils/queue";
+import { jobQueue, jobs } from "@@/server/database/schema";
+import { CallMessage, CallQueueHandler } from "@@/server/utils/queue";
 import _ from "lodash";
 
 export default defineEventHandler(async (event) => {

@@ -1,4 +1,4 @@
-import { findNearestClinics } from '~/server/utils/location'
+import { findNearestClinics } from '@@/server/utils/location'
 
 export default defineEventHandler(async (event) => {
   try {

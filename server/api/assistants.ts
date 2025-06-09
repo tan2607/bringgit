@@ -1,6 +1,6 @@
 // pages/api/assistants.ts
-import { VapiProvider } from '@/server/utils/providers/vapi'
-import { AuthUser } from '@/server/utils/user'
+import { VapiProvider } from '@@/server/utils/providers/vapi'
+import { AuthUser } from '@@/server/utils/user'
 
 export default defineEventHandler(async (event) => {
   try {

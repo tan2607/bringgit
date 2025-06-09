@@ -2,7 +2,7 @@ import { createError } from 'h3'
 import { readFiles } from 'h3-formidable'
 import { GeminiOCR } from '../utils/providers/gemini'
 import { readFile } from 'fs/promises'
-// import { patientDataSchema } from '~/shared/forms/patientIntakeSchema'
+// import { patientDataSchema } from '@@/shared/forms/patientIntakeSchema'
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 const ALLOWED_MIME_TYPES = [

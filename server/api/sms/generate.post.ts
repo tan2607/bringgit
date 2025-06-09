@@ -1,4 +1,4 @@
-import { PromptEnhancer } from '~/server/utils/providers/copilot'
+import { PromptEnhancer } from '@@/server/utils/providers/copilot'
 
 const config = useRuntimeConfig()
 const promptEnhancer = new PromptEnhancer(config.groqApiKey)
