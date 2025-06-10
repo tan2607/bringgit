@@ -1,11 +1,11 @@
 <script setup>
 import { useConfirm } from '~/composables/useConfirm'
 
-const { close, message } = useConfirm()
+const { close, message, visible } = useConfirm()
 </script>
 
 <template>
-  <UModal>
+  <UModal v-model:open="visible">
       <template #header>
         <h3 class="text-lg font-semibold">Confirm Action</h3>
       </template>

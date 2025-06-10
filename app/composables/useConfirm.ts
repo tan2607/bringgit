@@ -1,17 +1,11 @@
-import { ref } from 'vue'
-import ConfirmDialog from '~/components/ConfirmDialog.vue'
-
 export function useConfirm() {
   const resolveFn = useState<((value: boolean) => void) | null>('resolveFn', () => null)
   const message = useState<string>('message', () => '')
-  
-  const overlay = useOverlay()
-
-  const modal = overlay.create(ConfirmDialog)
+  const visible = useState<boolean>('visible', () => false)
 
   const confirm = (prompt: string): Promise<boolean> => {
     message.value = prompt
-    modal.open()
+    visible.value = true
 
     return new Promise((resolve) => {
       resolveFn.value = resolve
@@ -23,8 +17,8 @@ export function useConfirm() {
       resolveFn.value(result)
       resolveFn.value = null
     }
-    modal.close()
+    visible.value = false
   }
 
-  return { confirm, close, message }
+  return { confirm, close, message, visible }
 }
