@@ -79,6 +79,7 @@ export default defineEventHandler(async (event) => {
     return {
       result: "success",
       queues: jobIdsToProcess,
+      totalQueues: jobIdsToProcess.length,
       scheduledAt: new Date(),
     };
   } catch (error) {
