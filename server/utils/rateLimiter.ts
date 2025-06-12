@@ -50,6 +50,14 @@ export class RateLimiter {
     }
   }
 
+  increaseGlobalConcurrentCalls(): void {
+    this.totalActiveCalls++;
+  }
+
+  decreaseGlobalConcurrentCalls(): void {
+    this.totalActiveCalls--;
+  }
+
   getCurrentJobCalls(jobId: string): number {
     return this.activeJobCalls.get(jobId) || 0;
   }
