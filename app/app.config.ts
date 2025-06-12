@@ -7,7 +7,7 @@ export default defineAppConfig({
     slideover: {
       slots: {
         content: "sm:max-w-7xl",
-        wrapper: 'fixed inset-0 flex z-50',
+        wrapper: 'fixed inset-0 flex',
         overlay: {
           base: 'fixed inset-0 bg-gray-950/50 transition-opacity',
           background: 'bg-gray-950/50'

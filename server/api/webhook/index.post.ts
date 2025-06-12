@@ -53,6 +53,7 @@ export default defineEventHandler(async (event: H3Event) => {
         }
 
         if(status === "ended") {
+          console.log("Marking phone number free", phoneNumberId)
           markPhoneNumberFree(phoneNumberId || "")
 
           if (callRetryReasons.includes(endedReason) || endedReason.startsWith("call.in-progress.error")) {

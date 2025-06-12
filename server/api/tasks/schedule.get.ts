@@ -10,7 +10,6 @@ export default defineEventHandler(async (event) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0); // Set to start of the day
 
-    const queueLimit = 1;
     const pendingJobs = await db.query.jobs.findMany({
       where: and(
         not(eq(jobs.status, "completed")),
@@ -42,8 +41,12 @@ export default defineEventHandler(async (event) => {
     const pendingJobsById = new Map(pendingJobs.map(job => [job.id, job]));
 
     const jobIdsToProcess = Object.keys(queuesByJobId).map((jobId) => {
-      const jobQueues = queuesByJobId[jobId].slice(0, queueLimit);
+      
       const job = pendingJobsById.get(jobId);
+      const phoneNumberIds = JSON.parse(job?.phoneNumberId || '[]');
+      const queueLimit = phoneNumberIds.length > 0 ? phoneNumberIds.length : 1;
+
+      const jobQueues = queuesByJobId[jobId].slice(0, queueLimit);
       return {
         queues: jobQueues,
         job,
