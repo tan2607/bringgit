@@ -58,6 +58,31 @@ export default defineEventHandler(async (event) => {
       try {
         // Handle different tools
         switch (name) {
+          case 'send_appointment_confirmation': {
+            const customerNumber = message.customer?.number || message.call?.customer?.number || parameters.to
+            const appointment_date = parameters.appointment_date
+            const appointment_time = parameters.appointment_time
+
+            if (!customerNumber) {
+              throw createError({
+                statusCode: 400,
+                message: 'Customer phone number not found'
+              })
+            }
+
+            // Call the WhatsApp endpoint
+            await $fetch('/api/whatsapp/send', {
+              method: 'POST',
+              body: {
+                to: customerNumber,
+                appointment_date,
+                appointment_time
+              }
+            })
+
+            result = `Confirmation sent successfully to ${customerNumber}`
+            break
+          }
           case 'sendSMS': {
             const customerNumber = message.customer?.number || message.call?.customer?.number || parameters.to
 

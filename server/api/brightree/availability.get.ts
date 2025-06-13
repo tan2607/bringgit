@@ -1,4 +1,4 @@
-import { BrightreeProvider } from '~/server/utils/providers/brightree'
+import { BrightreeProvider } from '@@/server/utils/providers/brightree'
 
 export default defineEventHandler(async (event) => {
   try {

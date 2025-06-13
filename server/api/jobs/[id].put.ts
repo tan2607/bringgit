@@ -1,7 +1,7 @@
 import { defineEventHandler, readBody } from 'h3';
 import { eq } from 'drizzle-orm';
-import { useDrizzle } from '~/server/utils/drizzle';
-import { jobs } from '~/server/database/schema';
+import { useDrizzle } from '@@/server/utils/drizzle';
+import { jobs } from '@@/server/database/schema';
 
 export default defineEventHandler(async (event) => {
   try {

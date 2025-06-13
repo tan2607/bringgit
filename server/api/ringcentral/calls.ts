@@ -1,4 +1,4 @@
-import { RingCentralProvider } from '~/server/utils/providers/ringcentral'
+import { RingCentralProvider } from '@@/server/utils/providers/ringcentral'
 
 export default defineEventHandler(async (event) => {
   try {

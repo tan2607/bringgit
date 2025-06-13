@@ -1,4 +1,4 @@
-import { PromptEnhancer } from '~/server/utils/providers/copilot';
+import { PromptEnhancer } from '@@/server/utils/providers/copilot';
 // const procCodes = [
 //     "A7030", "A7035", "A7037", "A7038", "A7046", "E0562", "E0601", "A7034", "95705", "A4604", "A7031", "98960",
 //     "95806", "95723", "A7032", "E0470", "95800", "A7033", "95819", "A9900"

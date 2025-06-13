@@ -1,25 +1,80 @@
-import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai"
-import { definePatientSchema, createExtractionPrompt } from '../variableSchema'
-import { patientDataSchema } from '#shared/forms/patientIntakeSchema'
-import { describeSchema, extractJsonFromText, validateWithSchema } from '~/utils/schema'
-import { extractFHIRFromText, createFHIRExtractionPrompt, defineFHIRPatientSchema, fhirToCallVariables } from '../medplum/mapper'
-import type { Bundle } from '../medplum/fhirTypes'
-import { validateFhirResource } from '../medplum/client'
+import { tmpdir } from 'os'
+import {GoogleGenAI, ContentListUnion} from '@google/genai';
 
-interface FileInput {
-  buffer: Buffer
-  mimeType: string
+const config = useRuntimeConfig()
+const ai = new GoogleGenAI({vertexai: false, apiKey: config.geminiApiKey});
+
+// Simple in-memory cache to avoid repeated identical queries
+const responseCache = new Map<string, { response: string, timestamp: number }>();
+const CACHE_TTL = 1000 * 60 * 60; // 1 hour cache TTL
+
+export async function askMedication(query: string, context: string) {
+  try {
+    // Add the file to the contents.
+    const contents: ContentListUnion = [
+      {
+        parts: [{
+          text: context,
+        },
+        {
+          text: `Answer the user question strictly based on the information provided. You will be graded on comprehensiveness and accuracy. If the information is not available in the provided content, say so clearly. Format your response in markdown with appropriate headings, bullet points, and emphasis. Always use full url in citation at the end of response. HealthHub Reference: https://www.healthhub.sg/a-z/medications/{url_slug}`
+        }],
+        role: "model"
+      },
+      {
+        parts: [{
+          text: query
+        }],
+        role: "user"
+      },
+    ];
+
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash-preview-05-20',
+      contents,
+      generationConfig: {
+        temperature: 0.1, // Lower temperature for more factual responses
+        topP: 0.8,
+        topK: 40,
+        maxOutputTokens: 512,
+      }
+    });
+
+    return response.text;
+  } catch (error) {
+    console.error('Error in askMedication:', error);
+    throw new Error(`Failed to get medication information: ${error.message || 'Unknown error'}`);
+  }
 }
 
-interface PatientSchema {
-  description: string
-  type: SchemaType
-  properties: Record<string, {
-    type: SchemaType
-    description: string
-    nullable: boolean
-  }>
-  required: string[]
+export async function askGemini(prompt: string, model = 'gemini-2.5-flash-preview-05-20') {
+  try {
+    // Add the file to the contents.
+    const contents: ContentListUnion = [
+      {
+        parts: [{
+          text: prompt
+        }],
+        role: "user"
+      }
+    ];
+
+    const response = await ai.models.generateContent({
+      model,
+      contents,
+      generationConfig: {
+        temperature: 0.1, // Lower temperature for more factual responses
+        topP: 0.8,
+        topK: 40,
+        maxOutputTokens: 1024,
+      }
+    });
+
+    return response.text;
+  } catch (error) {
+    console.error('Error in askGemini:', error);
+    throw new Error(`Failed to get medication information: ${error.message || 'Unknown error'}`);
+  }
 }
 
 export class GeminiOCR {
@@ -28,18 +83,10 @@ export class GeminiOCR {
   private readonly schema: PatientSchema
 
   constructor(apiKey: string) {
-    this.genAI = new GoogleGenerativeAI(apiKey)
-    this.schema = this.defineSchema()
-    this.model = this.initializeModel(apiKey)
-  }
-
-  private initializeModel(apiKey: string) {
-    return this.genAI.getGenerativeModel({
-      model: "gemini-2.0-flash",
-      generationConfig: {
-        responseMimeType: "application/json",
-        responseSchema: this.schema,
-      },
+    this.genAI = new GoogleGenAI({vertexai: false, apiKey})
+    this.fileManager = new GoogleAIFileManager(apiKey)
+    this.model = this.genAI.getGenerativeModel({
+      model: "gemini-2.5-flash-preview-05-20",
     })
   }
 

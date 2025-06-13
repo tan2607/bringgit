@@ -2,6 +2,13 @@
 const baseUrl = process.env.NUXT_PUBLIC_BASE_URL || process.env.CF_PAGES_URL || "http://localhost:3000"
 
 export default defineNuxtConfig({
+  future: {
+    compatibilityVersion: 4,
+  },
+  compatibilityDate: '2025-04-25',
+  compatibilityFlags: [
+    "nodejs_compat"
+  ],
   debug: false,
   icon: {
     serverBundle: 'remote'
@@ -19,7 +26,8 @@ export default defineNuxtConfig({
     },
     providers: {
       // Configure which providers to load on server start
-      enabled: (process.env.ENABLED_PROVIDERS || 'vapi,openai,whisper,sendgrid,cartesia,playai,perplexity,brightree,ringcentral,twilio,firecrawl,gemini').split(','),
+      // brightree,ringcentral,firecrawl,
+      enabled: (process.env.ENABLED_PROVIDERS || 'vapi,openai,whisper,sendgrid,cartesia,playai,perplexity,twilio,gemini').split(','),
     },
     // Provider API Keys
     openaiApiKey: process.env.OPENAI_API_KEY,
@@ -33,6 +41,7 @@ export default defineNuxtConfig({
     sendgridApiKey: process.env.SENDGRID_API_KEY,
     firecrawlApiKey: process.env.FIRECRAWL_API_KEY,
     geminiApiKey: process.env.GEMINI_API_KEY,
+    demoApiKey: process.env.DEMO_API_KEY,
     perplexityApiKey: process.env.PERPLEXITY_API_KEY,
     // Brightree API configuration
     brightree: {
@@ -83,16 +92,7 @@ export default defineNuxtConfig({
       }
     }
   },
-  future: {
-    compatibilityVersion: 4,
-  },
-  compatibilityDate: '2024-04-03',
   vite: {
-    resolve: {
-      alias: {
-        "electron/index.js": 'mocks/electron.js',
-      },
-    },
     optimizeDeps: {
       include: ['debug']
     },
@@ -111,16 +111,16 @@ export default defineNuxtConfig({
     '@nuxthub/core',
     '@nuxtjs/i18n',
     '@vueuse/motion/nuxt',
-    '@hebilicious/authjs-nuxt',
-    '@nuxtjs/i18n',
     '@nuxtjs/mdc',
     '@nuxt/icon',
     '@nuxt/scripts',
     '@formkit/nuxt',
-    '@pinia/nuxt'
+    '@pinia/nuxt',
+    '@hebilicious/authjs-nuxt'
   ],
   hub: {
-    database: true
+    database: true,
+    ai: true,
   },
   formkit: {
     // Experimental support for auto loading (see note):
@@ -146,6 +146,9 @@ export default defineNuxtConfig({
     langDir: 'locales',
     defaultLocale: 'en',
     strategy: 'prefix_except_default',
+    bundle: {
+      optimizeTranslationDirective: false,
+    },
     locales: [
       { code: 'en', file: 'en.ts', name: 'English' },
       { code: 'zh_hans', file: 'zh_hans.ts', name: '简体中文' },
@@ -167,11 +170,19 @@ export default defineNuxtConfig({
   ssr: false,
   devtools: { enabled: true },
   nitro: {    
-  
+    esbuild: {
+      options: {
+        target: 'esnext'
+      }
+    },
     scheduledTasks: {
     },
+    cloudflare: {
+      deployConfig: true,
+      nodeCompat: true
+    },
     preset: 'cloudflare_pages',
-    compatibilityDate: '2024-09-02',
+    compatibilityDate: '2025-06-05',
     experimental: {
       openAPI: true,
       tasks: true,
@@ -185,9 +196,9 @@ export default defineNuxtConfig({
     },
     openAPI: {
       meta: {
-        title: 'KeyReply Voice AI',
-        description: 'KeyReply Voice AI API endpoints',
-        version: '1.0',
+        title: 'KeyReply',
+        description: 'KeyReply AI API endpoints',
+        version: '1.1',
       },
       ui: {
         scalar: {

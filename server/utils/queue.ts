@@ -26,13 +26,13 @@ export interface CallMessage {
 export class CallQueueHandler {
   private vapi: VapiProvider
   private storage: JobStorage
-  private rateLimiter: RateLimiter
+  private globalRateLimiter: RateLimiter
   private scheduler: Scheduler
 
   constructor(vapiApiKey: string, storage: JobStorage) {
     this.vapi = new VapiProvider(vapiApiKey)
     this.storage = storage
-    this.rateLimiter = new RateLimiter({
+    this.globalRateLimiter = new RateLimiter({
       maxConcurrentCallsPerJob: 1,
       maxGlobalConcurrentCalls: 40
     })
@@ -185,8 +185,12 @@ export class CallQueueHandler {
       return
     }
 
+    const rateLimiter = new RateLimiter({
+      maxConcurrentCallsPerJob: allowedPhoneNumbers.length || 1,
+      maxGlobalConcurrentCalls: 40
+    })
     // Try to acquire a slot for this job
-    if (!await this.rateLimiter.acquireJobSlot(jobId)) {
+    if (!await rateLimiter.acquireJobSlot(jobId)) {
       // If we can't get a slot, requeue the message with a delay
       await this.sendToQueue(message, { delay: 5 })
       // await message.ack()
@@ -225,6 +229,9 @@ export class CallQueueHandler {
       }
       
       console.log(`Processing call for job ${jobId} to number ${phoneNumber} with variables:`, {name, greeting})
+
+      markPhoneNumberBusy(availablePhoneNumber);
+      this.globalRateLimiter.increaseGlobalConcurrentCalls();
       
       const call = await this.vapi.client.calls.create({
         assistantId,
@@ -279,7 +286,8 @@ export class CallQueueHandler {
 
       // await message.ack()
     } finally {
-      await this.rateLimiter.releaseJobSlot(jobId)
+      this.globalRateLimiter.decreaseGlobalConcurrentCalls();
+      await rateLimiter.releaseJobSlot(jobId)
     }
   }
 

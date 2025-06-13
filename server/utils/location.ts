@@ -1,8 +1,9 @@
-import { Clinic, ClinicWithDistance, Coordinates } from '~/types/clinic'
+import { Clinic, type ClinicWithDistance, type Coordinates } from '@@/types/clinic'
 import clinicsData from '../data/clinics.json'
+import fs from 'fs'
 
 // Get clinics data
-export const clinics: Clinic[] = clinicsData.clinics
+export const clinics: Clinic[] = clinicsData
 
 const config = useRuntimeConfig()
 
@@ -30,12 +31,13 @@ export async function getCoordinatesFromQuery(query: string): Promise<Coordinate
   const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodedQuery}&key=${config.public.googleApiKey}`);
   const data = await response.json();
 
-  console.log(data)
+  
   if (data.results && data.results.length > 0) {
     const location = data.results[0].geometry.location;
     return { lat: location.lat, lon: location.lng };
   } else {
-    throw new Error('Location not found');
+    console.log(data)
+    return { lat: 0, lon: 0 };
   }
 }
 
@@ -58,3 +60,50 @@ export async function findNearestClinics(
   // Return the nearest 'limit' number of clinics
   return clinicsWithDistance.slice(0, limit)
 }
+
+// let running = false;
+// // Geocode clinic list
+// export async function geocodeClinics(): Promise<ClinicWithDistance[]> {
+//   if (running) return;
+//   running = true;
+
+//   const clinicsWithoutLatLon = clinics.filter(clinic => !clinic.lat || !clinic.lon)
+//   const clinicsWithLatLon = clinics.filter(clinic => clinic.lat && clinic.lon)
+
+//   // Percentage geocoded
+//   const percentageGeocoded = (clinicsWithLatLon.length / clinics.length) * 100
+//   console.log(percentageGeocoded, "Percentage geocoded")
+
+//   if (clinicsWithoutLatLon.length === 0) {
+//     return clinicsWithLatLon
+//   }
+
+//   // Geocode clinics without lat/lon
+//   // do it in small batches with pauses to avoid rate limit
+//   const batchSize = 10
+//   for (let i = 0; i < clinicsWithoutLatLon.length; i += batchSize) {
+//     console.log(i, "Geocoding batch")
+//     const batch = clinicsWithoutLatLon.slice(i, i + batchSize)
+//     const batchResults = await Promise.all(batch.map(async clinic => {
+//       const coords = await getCoordinatesFromQuery(clinic.clinicAddress)
+//       return {
+//         ...clinic,
+//         lat: coords.lat,
+//         lon: coords.lon
+//       }
+//     }))
+//     clinicsWithLatLon.push(...batchResults)
+
+//     await new Promise(resolve => setTimeout(resolve, 2000))
+//   }
+
+//   // Persist to file
+//   await fs.promises.writeFile('new_clinics.json', JSON.stringify(clinicsWithLatLon, null, 2))
+
+//   return clinicsWithLatLon
+// }
+
+// Geocode clinics
+// geocodeClinics().then(() => {
+//   console.log("Geocoding completed")
+// })

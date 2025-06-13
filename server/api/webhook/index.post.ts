@@ -1,6 +1,6 @@
 import { H3Event } from "h3";
-import { jobQueue, jobs } from "~/server/database/schema";
-import { markPhoneNumberBusy, markPhoneNumberFree } from "~/server/utils/busyPhoneNumberCache";
+import { jobQueue, jobs } from "@@/server/database/schema";
+import { markPhoneNumberBusy, markPhoneNumberFree } from "@@/server/utils/busyPhoneNumberCache";
 
 interface WebhookPayLoad {
   message: {
@@ -34,12 +34,14 @@ export default defineEventHandler(async (event: H3Event) => {
         const endedReason = message.endedReason;
         const callId = message.call?.id;
 
-        const callRetryReasons = [
+  const callRetryReasons = [
           "sip-gateway-failed-to-connect-call",
           "customer-busy",
           "unknown-error",
           "call.in-progress.error-sip-telephony-provider-failed-to-connect-call",
-          "call.in-progress.error-providerfault-outbound-sip-480-temporarily-unavailable"
+          "call.in-progress.error-providerfault-outbound-sip-480-temporarily-unavailable",
+          "call.in-progress.error-providerfault-outbound-sip-503-service-unavailable",
+          "call.in-progress.error-assistant-did-not-receive-customer-audio",
         ];
 
         if (status !== "ended") {
@@ -51,9 +53,10 @@ export default defineEventHandler(async (event: H3Event) => {
         }
 
         if(status === "ended") {
+          console.log("Marking phone number free", phoneNumberId)
           markPhoneNumberFree(phoneNumberId || "")
 
-          if (callRetryReasons.includes(endedReason)) {
+          if (callRetryReasons.includes(endedReason) || endedReason.startsWith("call.in-progress.error")) {
             const targetQueue = await db.query.jobQueue.findFirst({
               where: (jobQueue, { eq }) => eq(jobQueue.vapiId, callId),
             });

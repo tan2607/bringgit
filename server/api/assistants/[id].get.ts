@@ -1,4 +1,4 @@
-import { VapiProvider } from '@/server/utils/providers/vapi';
+import { VapiProvider } from '@@/server/utils/providers/vapi';
 
 export default defineEventHandler(async (event) => {
   try {

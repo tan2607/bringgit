@@ -1,4 +1,4 @@
-import { DEFAULT_APP_METADATA, type AppMetadata } from "@/types/auth"
+import { DEFAULT_APP_METADATA, type AppMetadata } from "@@/types/auth"
 
 export class Auth0ManagementClient {
     private accessToken: string | null = null
