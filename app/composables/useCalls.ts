@@ -55,6 +55,7 @@ export const useCalls = () => {
         if (error.value || signal.aborted) return;
   
         filteredResults.push(...data?.value.calls);
+        filteredResults = filterCalls(filteredResults, startDate);
         totalFilteredCalls = filteredResults.length;
         
         fetchingProgress.value = calculateProgress(totalFilteredCalls, totalCalls.value);
@@ -63,9 +64,9 @@ export const useCalls = () => {
       }
   
       if (loadMore) {
-        calls.value = filterCalls([...calls.value, ...filteredResults], startDate);
+        calls.value = [...calls.value, ...filteredResults];
       } else {
-        calls.value = filterCalls(filteredResults, startDate);
+        calls.value = filteredResults;
       }
   
     } finally {
