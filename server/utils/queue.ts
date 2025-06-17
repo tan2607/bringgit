@@ -144,6 +144,7 @@ export class CallQueueHandler {
   }
 
   async processMessage(message: QueueMessage<CallMessage>) {
+    console.log("Processing call for job", message.jobId);
     const { jobId, phoneNumber, assistantId, phoneNumberId, retryCount = 0, id: queueId, delay, scheduledAt, name, phoneNumbers } = message;
     const db = useDrizzle();
 
@@ -207,8 +208,6 @@ export class CallQueueHandler {
       return;
     }
 
-    console.log("Processing call for job", jobId);    
-
     const job = await db.query.jobs.findFirst({ where: eq(jobs.id, jobId) })
     if (job?.status === "pending") {
       await db.update(jobs).set({ status: "running" }).where(eq(jobs.id, jobId))
@@ -228,7 +227,6 @@ export class CallQueueHandler {
         greeting = "Good Night";
       }
       
-      console.log(`Processing call for job ${jobId} to number ${phoneNumber} with variables:`, {name, greeting})
 
       markPhoneNumberBusy(availablePhoneNumber);
       this.globalRateLimiter.increaseGlobalConcurrentCalls();
@@ -263,8 +261,6 @@ export class CallQueueHandler {
       })
       
     } catch (error: any) {
-      console.error(`Error processing call for job ${jobId}:`, error)
-
       // If we haven't exceeded max retries, requeue the message
       if (retryCount < 3) {
         const nextTime = this.scheduler.getNextAvailableTime()
@@ -302,8 +298,11 @@ export class CallQueueHandler {
   }
 
   async processBatch(batch: QueueMessage<CallMessage>[]) {
-    if(batch.length === 0) return;
-    await Promise.all(batch.map(msg => this.processMessage(msg)))
+    if (batch.length === 0) return;
+  
+    for (const msg of batch) {
+      await this.processMessage(msg);
+    }
   }
 
   private async updateJobProgress(jobId: string, update: {

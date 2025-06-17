@@ -1,0 +1,1 @@
+CREATE INDEX `idx_jobqueue_vapiid` ON `job_queue` (`vapi_id`);--> statement-breakpoint
