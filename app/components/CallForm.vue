@@ -80,11 +80,13 @@ const makeCall = async (event: FormSubmitEvent<any>) => {
 
   try {
     isLoading.value = true
+
+    const phoneNumberId = typeof state.from === 'string' ? state.from : state.from[0]
     const { data: response } = await useFetch('/api/call', {
       method: 'POST',
       body: {
         assistantId: props.assistantId,
-        phoneNumberId: state.from,
+        phoneNumberId,
         phoneNumber: state.to
       }
     })
