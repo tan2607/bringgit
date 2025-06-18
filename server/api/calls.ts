@@ -72,6 +72,9 @@ function parseCall(call: any) {
   return {
     ...call,
     id: call.callId,
+    createdAt: new Date(call.createdAt),
+    startedAt: new Date(call.startedAt),
+    endedAt: new Date(call.endedAt),
     messages: safeParse(call.messages),
     structuredData: safeParse(call.structuredData),
     tags: safeParse(call.tags),
