@@ -45,7 +45,7 @@ export default defineEventHandler(async (event) => {
     const latest = new Date(lastCall.createdAt);
     startDate = new Date(latest.getTime() + 10 * 1000);
 
-    if (++loop > 50) break; // infinite loop protection
+    if (++loop > 10) break; // infinite loop protection
   }
 
   await setLastSyncedAt(db, startDate);
