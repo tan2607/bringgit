@@ -1,3 +1,4 @@
+import { vapiCallData } from "~~/server/database/schema";
 import { VapiProvider } from "../../../utils/providers/vapi";
 
 export default defineEventHandler(async (event) => {
@@ -11,12 +12,12 @@ export default defineEventHandler(async (event) => {
       throw new Error("Call ID is required");
     }
 
-    const vapi = VapiProvider.getInstance();
+    const db = useDrizzle();
 
     const body = await readBody(event);
-    const call = await vapi.client.calls.update(callId, {
-      name: body.name,
-    });
+    const call = await db.update(vapiCallData).set({
+      review: body.name,
+    }).where(eq(vapiCallData.callId, callId));
 
     return {
       success: true,
