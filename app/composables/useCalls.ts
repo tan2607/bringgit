@@ -17,15 +17,48 @@ export const useCalls = () => {
     if (abortController) {
       abortController.abort();
     }
-
+  
     abortController = new AbortController();
     const signal = abortController.signal;
+  
     try {
       isLoading.value = true;
       fetchingProgress.value = 0;
-      const { data, error } = await fetchData(startDate, endDate, signal);
-      calls.value = data.value;
-      totalCalls.value = calls.value.length;
+      calls.value = [];
+      totalCalls.value = 0;
+  
+      const batchDurationMs = 6 * 60 * 60 * 1000; // 6 hour
+      const start = new Date(startDate).getTime();
+      const end = new Date(endDate).getTime();
+  
+      const totalBatches = Math.ceil((end - start) / batchDurationMs);
+      let fetchedCalls = [];
+  
+      for (let i = 0; i < totalBatches; i++) {
+        const batchStart = new Date(start + i * batchDurationMs).toISOString();
+        const batchEnd = new Date(Math.min(start + (i + 1) * batchDurationMs, end)).toISOString();
+  
+        // Exit early if aborted
+        if (signal.aborted) return;
+  
+        const { data, error } = await fetchData(batchStart, batchEnd, signal);
+  
+        if (data.value && Array.isArray(data.value)) {
+          fetchedCalls = [...fetchedCalls, ...data.value];
+  
+          if (limit && fetchedCalls.length >= limit) {
+            fetchedCalls = fetchedCalls.slice(0, limit);
+            fetchingProgress.value = 100;
+            break;
+          }
+        }
+  
+        // Progress calculation
+        fetchingProgress.value = Math.round(((i + 1) / totalBatches) * 100);
+      }
+  
+      calls.value = fetchedCalls;
+      totalCalls.value = fetchedCalls.length;
     } finally {
       if (signal.aborted) return;
       isLoading.value = false;
