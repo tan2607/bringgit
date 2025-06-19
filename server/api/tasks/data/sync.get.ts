@@ -44,7 +44,7 @@ export default defineEventHandler(async (event) => {
       await insertData(db, formattedCalls);
       insertedCount += formattedCalls.length;
 
-      if (++loop > 5) break;
+      if (++loop > 2) break;
     }
 
     await setLastSyncedAt(db, startDate);
@@ -77,11 +77,17 @@ export default defineEventHandler(async (event) => {
 });
 
 async function insertData(db: ReturnType<typeof useDrizzle>, rows: any[]) {
-  const chunkSize = 5; // Safe size for SQLite/D1 (avoid variable limit)
+  const FIELD_COUNT_PER_ROW = 17;
+  const MAX_SQLITE_VARIABLES = 100;
+  const chunkSize = Math.floor(MAX_SQLITE_VARIABLES / FIELD_COUNT_PER_ROW);
+  console.log("chunkSize", chunkSize);
 
-  console.log("Inserting data", rows.length);
   for (let i = 0; i < rows.length; i += chunkSize) {
     const chunk = rows.slice(i, i + chunkSize);
-    await db.insert(vapiCallData).values(chunk).onConflictDoNothing(); // skip duplicates
+    try {
+      await db.insert(vapiCallData).values(chunk).onConflictDoNothing();
+    } catch (err) {
+      console.error(`Failed at chunk ${i}-${i + chunkSize}:`, err.message);
+    }
   }
 }
