@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX `uniq_vapicalldata_callid` ON `vapi_call_data` (`call_id`);

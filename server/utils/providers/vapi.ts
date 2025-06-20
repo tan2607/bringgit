@@ -252,12 +252,27 @@ export class VapiProvider {
     };
   }
 
-  async syncCalls(callParams: any) {
+  async syncCalls({createdAtGe, createdAtLe}: {createdAtGe: string, createdAtLe: string}) {
     const [calls, phoneNumbers, assistants] = await Promise.all([
-      this.client.calls.list(callParams),
+      this.client.calls.list({createdAtGe, createdAtLe, limit: 1000}),
       this.client.phoneNumbers.list(),
       this.client.assistants.list(),
     ]);
+
+    const calls_analytics = await this.client.analytics.get({
+      queries: [{
+        table: "call",
+        name: "calls",
+        operations: [{operation: "count", column: "id"}],
+        timeRange: {
+          start: createdAtGe,
+          end: createdAtLe
+        },
+        groupBy: ["assistantId"]
+      }]
+    });
+
+    const totalCalls = calls_analytics[0].result.reduce((sum, row) => sum + parseInt(row?.countId), 0);
 
     const callResults = calls.map((call) => {
       const phoneNumber = phoneNumbers.find((phoneNumber) => phoneNumber.id === call.phoneNumberId);
@@ -298,9 +313,14 @@ export class VapiProvider {
         endedReason: call.endedReason,
         botPhoneNumber: phoneNumber?.name ?  `${phoneNumber?.name} (${phoneNumber?.number})` : 'N/A',
         review: call.name || '',
+        botPhoneNumberId: call.phoneNumberId,
+        botAssistantId: call.assistantId,
       };
     }); 
 
-    return callResults;
+    return {
+      calls: callResults,
+      count: totalCalls,
+    };
   }
 }

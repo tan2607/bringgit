@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
   let startDate = await getLastSyncedAt(db);
 
   try {
-    const timeWindowMinutes = 30;
+    const timeWindowMinutes = 10;
 
     const now = new Date();
 
@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
 
       if (endDate > now) break;
 
-      const calls = await syncCalls(
+      const {calls, count} = await syncCalls(
         startDate.toISOString(),
         endDate.toISOString()
       );
@@ -39,7 +39,7 @@ export default defineEventHandler(async (event) => {
 
       const lastCall = formattedCalls[formattedCalls.length - 1];
       const latest = new Date(lastCall.createdAt);
-      startDate = new Date(latest.getTime() + 10 * 1000);
+      startDate = new Date(latest.getTime() + 5 * 1000);
 
       await insertData(db, formattedCalls);
       insertedCount += formattedCalls.length;
@@ -76,11 +76,10 @@ export default defineEventHandler(async (event) => {
   }
 });
 
-async function insertData(db: ReturnType<typeof useDrizzle>, rows: any[]) {
-  const FIELD_COUNT_PER_ROW = 17;
+export async function insertData(db: ReturnType<typeof useDrizzle>, rows: any[]) {
+  const FIELD_COUNT_PER_ROW = 19;
   const MAX_SQLITE_VARIABLES = 100;
   const chunkSize = Math.floor(MAX_SQLITE_VARIABLES / FIELD_COUNT_PER_ROW);
-  console.log("chunkSize", chunkSize);
 
   for (let i = 0; i < rows.length; i += chunkSize) {
     const chunk = rows.slice(i, i + chunkSize);

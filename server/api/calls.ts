@@ -53,9 +53,9 @@ export default defineEventHandler(async (event) => {
       (call) =>
         user.isAdmin() ||
         (allowedAssistants.some(
-          (assistant) => assistant.id === call.assistantId
+          (assistant) => assistant.name === call.assistant
         ) &&
-          allowedPhoneNumbers.some((phone) => phone.id === call.botPhoneNumber))
+          allowedPhoneNumbers.some((phone) => `${phone.name} (${phone.number})` === call.botPhoneNumber))
     );
 
     const formattedCalls = filteredCalls.map(parseCall);
@@ -73,8 +73,8 @@ function parseCall(call: any) {
     ...call,
     id: call.callId,
     createdAt: new Date(call.createdAt),
-    startedAt: new Date(call.startedAt),
-    endedAt: new Date(call.endedAt),
+    startedAt: call.startedAt ? new Date(call.startedAt) : null,
+    endedAt: call.endedAt ? new Date(call.endedAt) : null,
     messages: safeParse(call.messages),
     structuredData: safeParse(call.structuredData),
     tags: safeParse(call.tags),

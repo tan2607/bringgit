@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer, real, index } from 'drizzle-orm/sqlite-core'
+import { sqliteTable, text, integer, real, index, unique } from 'drizzle-orm/sqlite-core'
 import { relations, sql } from 'drizzle-orm'
 
 
@@ -151,11 +151,14 @@ export const vapiCallData = sqliteTable('vapi_call_data', {
     summary: text('summary'),
     tags: text('tags'),
     transcript: text('transcript'),
+    botAssistantId: text('bot_assistant_id'),
+    botPhoneNumberId: text('bot_phone_number_id'),
 }, (table) => {
     return {
         callIdIdx: index('idx_vapicalldata_callid').on(table.callId),
         createdAtIdx: index('idx_vapicalldata_createdat').on(table.createdAt),
         assistantIdx: index('idx_vapicalldata_assistant').on(table.assistant),
+        uniqueCallId: unique('uniq_vapicalldata_callid').on(table.callId)
     }
 })
 

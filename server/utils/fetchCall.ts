@@ -39,6 +39,7 @@ export const formatCalls = (calls: any) => {
   return calls.map((call: any) => ({
     callId: call.id,
     assistant: call.assistant,
+    botAssistantId: call.botAssistantId,
     messages: JSON.stringify(call.messages),
     status: call.status,
     createdAt: new Date(call.createdAt).getTime(),
@@ -53,6 +54,7 @@ export const formatCalls = (calls: any) => {
     assistantOverrides: JSON.stringify(call.assistantOverrides),
     endedReason: call.endedReason,
     botPhoneNumber: call.botPhoneNumber,
+    botPhoneNumberId: call.botPhoneNumberId,
     review: call.review,
   }));
 };
