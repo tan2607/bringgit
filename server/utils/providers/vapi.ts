@@ -251,4 +251,76 @@ export class VapiProvider {
       jobs: allJobs.length,
     };
   }
+
+  async syncCalls({createdAtGe, createdAtLe}: {createdAtGe: string, createdAtLe: string}) {
+    const [calls, phoneNumbers, assistants] = await Promise.all([
+      this.client.calls.list({createdAtGe, createdAtLe, limit: 1000}),
+      this.client.phoneNumbers.list(),
+      this.client.assistants.list(),
+    ]);
+
+    const calls_analytics = await this.client.analytics.get({
+      queries: [{
+        table: "call",
+        name: "calls",
+        operations: [{operation: "count", column: "id"}],
+        timeRange: {
+          start: createdAtGe,
+          end: createdAtLe
+        },
+        groupBy: ["assistantId"]
+      }]
+    });
+
+    const totalCalls = calls_analytics[0].result.reduce((sum, row) => sum + parseInt(row?.countId), 0);
+
+    const callResults = calls.map((call) => {
+      const phoneNumber = phoneNumbers.find((phoneNumber) => phoneNumber.id === call.phoneNumberId);
+      const duration = (() => {
+        const start = new Date(call.startedAt ?? new Date());
+        const end = new Date(call.endedAt ?? new Date());
+        const diff = (end.getTime() - start.getTime()) / 1000;
+        const minutes = Math.floor(diff / 60);
+        const seconds = Math.floor(diff % 60);
+        return `${minutes}m ${seconds}s`;
+      })();
+
+      const structuredData: Record<string, any> =
+        call.analysis && call.analysis.structuredData ? call.analysis.structuredData : {}
+      const tagList = Object.keys(structuredData)
+        .filter((key) => typeof structuredData[key] !== 'object')
+        .map((key) => `${key}: ${structuredData[key]}`)
+
+
+      return {
+        id: call.id,
+        assistant: assistants.find((assistant) =>
+          assistant.id === call.assistantId
+        )?.name,
+        customer: call.customer,
+        messages: call.messages,
+        status: call.status,
+        createdAt: call.createdAt,
+        startedAt: call.startedAt,
+        endedAt: call.endedAt,
+        duration: duration,
+        transcript: (call as any).transcript ?? '',
+        summary: (call as any).summary ?? '',
+        recordingUrl: (call as any).recordingUrl ?? '',
+        structuredData,
+        tags: tagList,
+        assistantOverrides: call.assistantOverrides,
+        endedReason: call.endedReason,
+        botPhoneNumber: phoneNumber?.name ?  `${phoneNumber?.name} (${phoneNumber?.number})` : 'N/A',
+        review: call.name || '',
+        botPhoneNumberId: call.phoneNumberId,
+        botAssistantId: call.assistantId,
+      };
+    }); 
+
+    return {
+      calls: callResults,
+      count: totalCalls,
+    };
+  }
 }

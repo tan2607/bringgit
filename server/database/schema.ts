@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer, real, index } from 'drizzle-orm/sqlite-core'
+import { sqliteTable, text, integer, real, index, unique } from 'drizzle-orm/sqlite-core'
 import { relations, sql } from 'drizzle-orm'
 
 
@@ -131,3 +131,39 @@ export const settings = sqliteTable('settings', {
   updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().default(sql`(strftime('%s', 'now'))`)
 })
 
+
+export const vapiCallData = sqliteTable('vapi_call_data', {
+    id: integer('id').primaryKey({ autoIncrement: true }),
+    callId: text('call_id').notNull(),
+    assistant: text('assistant_id'),
+    assistantOverrides: text('assistant_overrides'),
+    botPhoneNumber: text('bot_phone_number'),
+    createdAt: integer('created_at'),
+    duration: text('duration'),
+    endedAt: integer('ended_at'),
+    endedReason: text('ended_reason'),
+    messages: text('messages'),
+    recordingUrl: text('recording_url'),
+    review: text('review'),
+    startedAt: integer('started_at'),
+    status: text('status'),
+    structuredData: text('structured_data'),
+    summary: text('summary'),
+    tags: text('tags'),
+    transcript: text('transcript'),
+    botAssistantId: text('bot_assistant_id'),
+    botPhoneNumberId: text('bot_phone_number_id'),
+}, (table) => {
+    return {
+        callIdIdx: index('idx_vapicalldata_callid').on(table.callId),
+        createdAtIdx: index('idx_vapicalldata_createdat').on(table.createdAt),
+        assistantIdx: index('idx_vapicalldata_assistant').on(table.assistant),
+        uniqueCallId: unique('uniq_vapicalldata_callid').on(table.callId)
+    }
+})
+
+
+export const syncState = sqliteTable("sync_state", {
+  key: text("key").primaryKey(), // e.g., 'lastSyncedAt'
+  value: text("value").notNull(), // ISO timestamp
+});
