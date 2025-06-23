@@ -40,6 +40,7 @@ export const formatCalls = (calls: any) => {
     callId: call.id,
     assistant: call.assistant,
     botAssistantId: call.botAssistantId,
+    customer: JSON.stringify(call.customer),
     messages: JSON.stringify(call.messages),
     status: call.status,
     createdAt: new Date(call.createdAt).getTime(),
