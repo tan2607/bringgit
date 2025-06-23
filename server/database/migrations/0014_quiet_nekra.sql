@@ -1,0 +1,1 @@
+ALTER TABLE `vapi_call_data` ADD `customer` text;

@@ -135,6 +135,7 @@ export const settings = sqliteTable('settings', {
 export const vapiCallData = sqliteTable('vapi_call_data', {
     id: integer('id').primaryKey({ autoIncrement: true }),
     callId: text('call_id').notNull(),
+    customer: text('customer'),
     assistant: text('assistant_id'),
     assistantOverrides: text('assistant_overrides'),
     botPhoneNumber: text('bot_phone_number'),

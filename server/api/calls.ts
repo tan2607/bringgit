@@ -79,5 +79,6 @@ function parseCall(call: any) {
     structuredData: safeParse(call.structuredData),
     tags: safeParse(call.tags),
     assistantOverrides: safeParse(call.assistantOverrides),
+    customer: safeParse(call.customer),
   };
 }

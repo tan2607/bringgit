@@ -86,7 +86,14 @@ export async function insertData(db: ReturnType<typeof useDrizzle>, rows: any[])
   for (let i = 0; i < rows.length; i += chunkSize) {
     const chunk = rows.slice(i, i + chunkSize);
     try {
-      await db.insert(vapiCallData).values(chunk).onConflictDoNothing();
+      await db.insert(vapiCallData).values(chunk).onConflictDoUpdate({
+        target: vapiCallData.callId,
+        set: {
+          botPhoneNumberId: sql.raw(`excluded.${vapiCallData.botPhoneNumberId.name}`),
+          botAssistantId: sql.raw(`excluded.${vapiCallData.botAssistantId.name}`),
+          customer: sql.raw(`excluded.${vapiCallData.customer.name}`),
+        },
+      });
     } catch (err) {
       console.error(`Failed at chunk ${i}-${i + chunkSize}:`, err.message);
     }
