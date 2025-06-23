@@ -34,6 +34,8 @@ export default defineEventHandler(async (event) => {
         } else {
           startDate = new Date(endDate.getTime() + 5 * 1000); // +5 seconds
         }
+        loop++;
+        if (loop > 24) break;
         continue;
       }
 
