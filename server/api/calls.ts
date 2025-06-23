@@ -55,7 +55,9 @@ export default defineEventHandler(async (event) => {
         (allowedAssistants.some(
           (assistant) => assistant.name === call.assistant
         ) &&
-          allowedPhoneNumbers.some((phone) => `${phone.name} (${phone.number})` === call.botPhoneNumber))
+          allowedPhoneNumbers.some(
+            (phone) => `${phone.name} (${phone.number})` === call.botPhoneNumber
+          ))
     );
 
     const formattedCalls = filteredCalls.map(parseCall);
@@ -79,6 +81,6 @@ function parseCall(call: any) {
     structuredData: safeParse(call.structuredData),
     tags: safeParse(call.tags),
     assistantOverrides: safeParse(call.assistantOverrides),
-    customer: safeParse(call.customer),
+    customer: call.customer ? safeParse(call.customer) : null,
   };
 }
