@@ -5,11 +5,7 @@ import { insertData } from "./sync.get";
 export default defineEventHandler(async (event) => {
   const db = useDrizzle();
   // get start end date from body
-  let { date } = await readBody(event);
-  // the start and the end of date by date with format YYYY-MM-DD
-  let startDate = new Date(date);
-  let endDate = new Date(date);
-  endDate.setHours(23, 59, 59, 999);
+  let { startDate, endDate } = await readBody(event);
 
   let insertedCount = 0;
   const { calls, count } = await syncCalls(startDate.toISOString(), endDate.toISOString());
