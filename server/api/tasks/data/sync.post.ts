@@ -8,14 +8,14 @@ export default defineEventHandler(async (event) => {
   let { startDate, endDate } = await readBody(event);
 
   let insertedCount = 0;
-  const { calls, count } = await syncCalls(startDate.toISOString(), endDate.toISOString());
+  const { calls, count } = await syncCalls(startDate, endDate);
 
   const formattedCalls = formatCalls(calls);
   await insertData(db, formattedCalls);
   insertedCount += formattedCalls.length;
 
   while (insertedCount < count) {
-    const { calls  } = await syncCalls(startDate.toISOString(), endDate.toISOString());
+    const { calls  } = await syncCalls(startDate, endDate);
     if (!calls || calls.length === 0) break;
     const formattedCalls = formatCalls(calls);
     await insertData(db, formattedCalls);
