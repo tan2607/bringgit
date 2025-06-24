@@ -47,16 +47,17 @@ export default defineEventHandler(async (event) => {
           lte(vapiCallData.createdAt, endDateTime)
         )
       )
+      .orderBy(desc(vapiCallData.createdAt))
       .limit(limit);
 
     const filteredCalls = calls.filter(
       (call) =>
         user.isAdmin() ||
         (allowedAssistants.some(
-          (assistant) => assistant.name === call.assistant
+          (assistant) => assistant.id === call.botAssistantId
         ) &&
           allowedPhoneNumbers.some(
-            (phone) => `${phone.name} (${phone.number})` === call.botPhoneNumber
+            (phone) => phone.id === call.botPhoneNumberId
           ))
     );
 
