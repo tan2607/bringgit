@@ -56,8 +56,8 @@ export const useCalls = () => {
         // Progress calculation
         fetchingProgress.value = Math.round(((i + 1) / totalBatches) * 100);
       }
-  
-      calls.value = fetchedCalls;
+
+      calls.value = sortCalls(fetchedCalls);
       totalCalls.value = fetchedCalls.length;
     } finally {
       if (signal.aborted) return;
@@ -85,6 +85,10 @@ export const useCalls = () => {
       `/api/calls?startDate=${startDate}&endDate=${endDate}`,
       { signal }
     );
+  };
+
+  const sortCalls = (calls: any[]) => {
+    return calls.sort((a, b) => new Date(b.createdAt).getTime() -  new Date(a.createdAt).getTime());
   };
 
   const calculateTotalDates = (startDate: string, endDate: string) => {
