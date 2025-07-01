@@ -138,8 +138,6 @@ const handleLoadFirst = async () => {
 
   const startDate = start.getTime()
   const endDate = end.getTime()
-  const tz = getLocalTimeZone();
-  console.log("Date range:", startDate, endDate, tz);
 
   await fetchCalls(startDate, endDate)
   resetPreviousEndDates()
@@ -213,7 +211,6 @@ watch(dateRange, async (newRange) => {
 
   const startDate = start.getTime()
   const endDate = end.getTime()
-  console.log("Date range:", startDate, endDate, tz);
 
   await fetchCalls(startDate, endDate)
   resetPreviousEndDates()
