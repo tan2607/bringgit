@@ -30,25 +30,23 @@ export const useCalls = () => {
       const batchDurationMs = 6 * 60 * 60 * 1000; // 6 hour
       const start = startDate; // already a timestamp
       const end = endDate;
-      console.log("Selected ranges", start, end);
 
       const totalBatches = Math.ceil((end - start) / batchDurationMs);
-      let fetchedCalls = [];
+      let fetchedCalls: any[] = [];
 
       for (let i = 0; i < totalBatches; i++) {
         const batchStart = new Date(start + i * batchDurationMs).getTime();
         const batchEnd = new Date(
           Math.min(start + (i + 1) * batchDurationMs, end)
         ).getTime();
-        console.log("Test range", batchStart, batchEnd);
 
         // Exit early if aborted
         if (signal.aborted) return;
 
-        const { data, error } = await fetchData(batchStart, batchEnd, signal);
+        const resp = await fetchData(batchStart, batchEnd, signal);
 
-        if (data.value && Array.isArray(data.value)) {
-          fetchedCalls = [...fetchedCalls, ...data.value];
+        if (resp && Array.isArray(resp)) {
+          fetchedCalls = [...fetchedCalls, ...resp];
 
           if (limit && fetchedCalls.length >= limit) {
             fetchedCalls = fetchedCalls.slice(0, limit);
@@ -85,10 +83,9 @@ export const useCalls = () => {
     endDate: number,
     signal: AbortSignal
   ) => {
-    return await useFetch(
-      `/api/calls?startDate=${startDate}&endDate=${endDate}`,
-      { signal }
-    );
+    return await $fetch(`/api/calls?startDate=${startDate}&endDate=${endDate}`, {
+      signal,
+    });
   };
 
   const sortCalls = (calls: any[]) => {
