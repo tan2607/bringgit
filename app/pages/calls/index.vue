@@ -133,12 +133,15 @@ const handleLoadPrevious = async () => {
 }
 
 const handleLoadFirst = async () => {
-  const startDateTime = dateRange.value.start.toDate(getLocalTimeZone())
+  const tz = getLocalTimeZone();
+  
+  const startDateTime = dateRange.value.start.toDate(tz)
   startDateTime.setHours(0, 0, 0, 0)
-  const endDateTime = dateRange.value.end?.toDate(getLocalTimeZone())
+  const endDateTime = dateRange.value.end?.toDate(tz)
   endDateTime?.setHours(23, 59, 59, 999)
   const startDate = startDateTime.toISOString()
   const endDate = endDateTime.toISOString()
+  console.log("Date range:", startDate, endDate, tz);
   await fetchCalls(startDate, endDate)
   resetPreviousEndDates()
   page.value = 1
@@ -207,14 +210,16 @@ watch(dateRange, async (newRange) => {
   
   resetCalls()
   
-  const startDateTime = newRange.start.toDate(getLocalTimeZone())
+  const tz = getLocalTimeZone();
+  const startDateTime = newRange.start.toDate(tz)
   startDateTime.setHours(0, 0, 0, 0)
   
-  const endDateTime = newRange.end.toDate(getLocalTimeZone())
+  const endDateTime = newRange.end.toDate(tz)
   endDateTime.setHours(23, 59, 59, 999)
   
   const startDate = startDateTime.toISOString()
   const endDate = endDateTime.toISOString()
+  console.log("Date range:", startDate, endDate, tz);
   await fetchCalls(startDate, endDate)
   resetPreviousEndDates()
   page.value = 1
