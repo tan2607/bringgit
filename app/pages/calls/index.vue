@@ -133,12 +133,12 @@ const handleLoadPrevious = async () => {
 }
 
 const handleLoadFirst = async () => {
-  const startDateTime = dateRange.value.start.toDate(getLocalTimeZone())
-  startDateTime.setHours(0, 0, 0, 0)
-  const endDateTime = dateRange.value.end?.toDate(getLocalTimeZone())
-  endDateTime?.setHours(23, 59, 59, 999)
-  const startDate = startDateTime.toISOString()
-  const endDate = endDateTime.toISOString()
+  const start = new Date(dateRange.value.start.year, dateRange.value.start.month - 1, dateRange.value.start.day, 0, 0, 0, 0)
+  const end = new Date(dateRange.value.end.year, dateRange.value.end.month - 1, dateRange.value.end.day, 23, 59, 59, 999)
+
+  const startDate = start.getTime()
+  const endDate = end.getTime()
+
   await fetchCalls(startDate, endDate)
   resetPreviousEndDates()
   page.value = 1
@@ -204,17 +204,14 @@ const exportToExcelFile = async (dataToExport?: any[]) => {
 
 watch(dateRange, async (newRange) => {
   if (!newRange.start || !newRange.end) return
-  
   resetCalls()
-  
-  const startDateTime = newRange.start.toDate(getLocalTimeZone())
-  startDateTime.setHours(0, 0, 0, 0)
-  
-  const endDateTime = newRange.end.toDate(getLocalTimeZone())
-  endDateTime.setHours(23, 59, 59, 999)
-  
-  const startDate = startDateTime.toISOString()
-  const endDate = endDateTime.toISOString()
+  const tz = getLocalTimeZone();
+  const start = new Date(newRange.start.year, newRange.start.month - 1, newRange.start.day, 0, 0, 0, 0)
+  const end = new Date(newRange.end.year, newRange.end.month - 1, newRange.end.day, 23, 59, 59, 999)
+
+  const startDate = start.getTime()
+  const endDate = end.getTime()
+
   await fetchCalls(startDate, endDate)
   resetPreviousEndDates()
   page.value = 1
