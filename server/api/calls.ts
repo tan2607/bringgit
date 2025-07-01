@@ -10,12 +10,8 @@ export default defineEventHandler(async (event) => {
     const query = getQuery(event);
     const { startDate, endDate, limit, loadMore } = query;
     // Ensure dates are in ISO 8601 format
-    const startDateTime = startDate
-      ? new Date(startDate as string).getTime()
-      : undefined;
-    const endDateTime = endDate
-      ? new Date(endDate as string).getTime()
-      : undefined;
+    const startDateTime = Number(startDate); // UNIX timestamp in ms
+    const endDateTime = Number(endDate);
 
     const user = await AuthUser.fromRequest(event);
     const vapiProvider = VapiProvider.getInstance();
