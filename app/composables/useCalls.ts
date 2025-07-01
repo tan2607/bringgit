@@ -30,6 +30,7 @@ export const useCalls = () => {
       const batchDurationMs = 6 * 60 * 60 * 1000; // 6 hour
       const start = new Date(startDate).getTime();
       const end = new Date(endDate).getTime();
+      console.log("Selected ranges", start, end);
   
       const totalBatches = Math.ceil((end - start) / batchDurationMs);
       let fetchedCalls = [];
@@ -38,6 +39,7 @@ export const useCalls = () => {
         const batchStart = new Date(start + i * batchDurationMs).toISOString();
         const batchEnd = new Date(Math.min(start + (i + 1) * batchDurationMs, end)).toISOString();
   
+        console.log("Test range", batchStart, batchEnd);
         // Exit early if aborted
         if (signal.aborted) return;
   
