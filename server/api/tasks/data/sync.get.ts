@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
       const formattedCalls = formatCalls(calls);
 
       if (formattedCalls.length === 0) {
-        if (endDate.getHours() >= 19 || endDate.getHours() < 8) {
+        if (endDate.getHours() >= 21 || endDate.getHours() < 8) {
           startDate = new Date(endDate.getTime() + 60 * 60 * 1000); // +1 hour
         } else {
           startDate = new Date(endDate.getTime() + 5 * 1000); // +5 seconds

@@ -169,12 +169,24 @@ const exportToExcelFile = async (dataToExport?: any[]) => {
           hour12: false
         }) : ''
 
+
+        const createdAt = call.createdAt ? new Date(call.createdAt) : undefined
+        const formattedCreatedAt = createdAt ? createdAt.toLocaleString('en-US', {
+          year: 'numeric',
+          day: 'numeric',
+          month: 'short',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false
+        }) : ''
+
         return {
           'ID': call.id || '',
           'Assistant': call.assistant || '',
           'Phone Number': call.customer?.number || '',
           'Bot Phone Number': call.botPhoneNumber || '',
           'Name': call.assistantOverrides?.variableValues?.name || '',
+          'Created At': formattedCreatedAt,
           'Call Received': formattedStartTime,
           'Recording URL': call.recordingUrl ? transformRecordingUrl(call.recordingUrl) : '',
           'Duration': call.duration || '',
