@@ -338,6 +338,24 @@ const columns = computed(() => {
       }
     },
     {
+      accessorKey: 'createdAt',
+      header: () => 'Created At',
+      sortable: true,
+      cell: (row) => {
+        if (!row.getValue('createdAt')) return '';
+        
+        const time = new Date(row.getValue('createdAt'));
+        const timeAgo = formatTimeAgo(time)
+        return time.toLocaleString('en-US', {
+          day: 'numeric',
+          month: 'short',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false
+        }) + ` (${timeAgo})`
+      }
+    },
+    {
       accessorKey: 'startedAt',
       header: () => t('table.callReceived'),
       sortable: true,
