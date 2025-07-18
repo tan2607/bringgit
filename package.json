@@ -33,6 +33,7 @@
     "@nuxthub/core": "0.8.27",
     "@nuxtjs/i18n": "9.5.5",
     "@nuxtjs/mdc": "0.17.0",
+    "@nuxtjs/supabase": "^1.5.3",
     "@pinia/nuxt": "^0.11.0",
     "@ringcentral/sdk": "^5.0.4",
     "@sendgrid/mail": "^8.1.5",

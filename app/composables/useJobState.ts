@@ -15,6 +15,8 @@ export interface Job {
   lastProcessedAt?: Date
   selectedTimeWindow: string
   notes?: string
+  createdAt?: Date
+  updatedAt?: Date
 }
 
 interface JobState {
