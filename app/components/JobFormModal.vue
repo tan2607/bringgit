@@ -44,18 +44,17 @@
           label="Phone Numbers"
         >
           <div class="space-y-2">
-            <UTextarea
+            <div v-if="jobForm.phoneNumbers">
+              <UTextarea
               v-model="jobForm.phoneNumbers"
-              placeholder="Enter phone numbers (one per line)"
               rows="4"
               class="w-full"
               readonly
             />
-            <div class="text-xs text-gray-500">
-              {{ getPhoneNumberCount() }} numbers entered
+              <div class="text-xs text-gray-500">
+                {{ getPhoneNumberCount() }} numbers 
+              </div>
             </div>
-
-            <!-- Upload new phone numbers -->
             <UButton
               color="primary"
               icon="i-heroicons-document-text"
@@ -201,6 +200,9 @@ const jobForm = ref({
 const scheduleDate = ref(currentDate);
 // Update jobForm.schedule when scheduleDate changes
 watch(scheduleDate, (newDate) => {
+  if(!newDate){
+    return
+  }
   jobForm.value.schedule = new Date(newDate.year, newDate.month - 1, newDate.day)
 })
 
@@ -222,14 +224,14 @@ const handleSubmit = async (event: FormSubmitEvent<JobFormSchema>) => {
 
     const jobData = {
       ...event.data,
-      phoneNumbers: JSON.stringify(phoneNumbers),
-      names: JSON.stringify(jobForm.value.names),
-      phoneNumberId: JSON.stringify(jobForm.value.phoneNumberId),
-      selectedTimeWindow: JSON.stringify({
+      phoneNumbers: phoneNumbers,
+      names: jobForm.value.names,
+      phoneNumberId: jobForm.value.phoneNumberId,
+      selectedTimeWindow: {
         start: jobForm.value.selectedTimeWindow.start,
         end: jobForm.value.selectedTimeWindow.end,
         allowWeekends: jobForm.value.allowWeekends
-      }),
+      },
       totalCalls: phoneNumbers.length,
     }
     emit('submit', jobData)
@@ -276,9 +278,11 @@ async function processFile(file: File) {
     if (!('phone_number' in firstRow)) {
       throw new Error('File must contain a phone_number column')
     }
-
-    // Push phone numbers to jobForm.phoneNumbers
-    jobForm.value.phoneNumbers += '\n' + rows.map((row: any) => `+${row.phone_number}`).join('\n')
+    if(!jobForm.value.phoneNumbers){
+      jobForm.value.phoneNumbers += rows.map((row: any) => `+${row.phone_number}`).join('\n')
+    } else {
+      jobForm.value.phoneNumbers += '\n' + rows.map((row: any) => `+${row.phone_number}`).join('\n')
+    }
     jobForm.value.names.push(...rows.map((row: any) => row.name))
     
   } catch (error: any) {
