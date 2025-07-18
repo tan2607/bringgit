@@ -1,0 +1,1 @@
+CREATE INDEX `idx_jobqueue_createdat` ON `job_queue` (`created_at`);

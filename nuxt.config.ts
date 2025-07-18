@@ -114,6 +114,7 @@ export default defineNuxtConfig({
     '@nuxtjs/mdc',
     '@nuxt/icon',
     '@nuxt/scripts',
+    '@nuxtjs/supabase',
     '@formkit/nuxt',
     '@pinia/nuxt',
     '@hebilicious/authjs-nuxt'
@@ -221,5 +222,9 @@ export default defineNuxtConfig({
   alias: {
     "process/": "process",
     cookie: "cookie",
+  },
+  supabase: {
+    // Options
+    redirect: false,
   }
 })

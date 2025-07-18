@@ -108,6 +108,9 @@ export const jobQueue = sqliteTable('job_queue', {
     ),
     vapiIdIdx: index('idx_jobqueue_vapiid').on(
       table.vapiId
+    ),
+    createdAtIdx: index('idx_jobqueue_createdat').on(
+      table.createdAt
     )
   };
 });
