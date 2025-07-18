@@ -552,7 +552,21 @@ const handleJobSubmit = async (jobData: Job) => {
         })
       }
     } else {
-      await createJob(jobData)
+      const response = await createJob(jobData)
+      if(response) {
+        toast.add({
+          title: 'Job created',
+          description: 'Job created successfully',
+          color: 'success'
+        })
+        filterJobs();
+      } else {
+        toast.add({
+          title: 'Job creation failed',
+          description: 'Job creation failed',
+          color: 'error'
+        })
+      }
     }
 
     showCreateModal.value = false
