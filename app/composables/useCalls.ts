@@ -10,10 +10,10 @@ export const useCalls = () => {
   const pageSize = 1000;
   const previousEndDates = useState("previousEndDates", () => []);
   const fetchingProgress = useState("fetchingProgress", () => 0);
-  const callsLimitInit = 30000;
+  const callsLimitInit = 1000;
   let abortController: AbortController | null = null;
 
-  const fetchCalls = async (startDate, endDate, limit, loadMore = false) => {
+  const fetchCalls = async (startDate: number, endDate: number, limit = callsLimitInit, loadMore = false) => {
     if (abortController) {
       abortController.abort();
     }
@@ -43,7 +43,7 @@ export const useCalls = () => {
         // Exit early if aborted
         if (signal.aborted) return;
 
-        const resp = await fetchData(batchStart, batchEnd, signal);
+        const resp = await fetchData(batchStart, batchEnd, limit, signal);
 
         if (resp && Array.isArray(resp)) {
           fetchedCalls = [...fetchedCalls, ...resp];
@@ -68,22 +68,13 @@ export const useCalls = () => {
       abortController = null;
     }
   };
-
-  const buildQueryParams = (startDate, endDate, limit, loadMore) => {
-    const queryParams = new URLSearchParams();
-    if (startDate) queryParams.append("startDate", startDate);
-    if (endDate) queryParams.append("endDate", endDate);
-    if (limit) queryParams.append("limit", limit.toString());
-    if (loadMore) queryParams.append("loadMore", "true");
-    return queryParams;
-  };
-
   const fetchData = async (
     startDate: number,
     endDate: number,
+    limit: number,
     signal: AbortSignal
   ) => {
-    return await $fetch(`/api/calls?startDate=${startDate}&endDate=${endDate}`, {
+    return await $fetch(`/api/calls?startDate=${startDate}&endDate=${endDate}&limit=${limit}`, {
       signal,
     });
   };
@@ -93,14 +84,6 @@ export const useCalls = () => {
       (a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
-  };
-
-  const calculateTotalDates = (startDate: string, endDate: string) => {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    const diffTime = Math.abs(end.getTime() - start.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
   };
 
   const fetchRecentCalls = async () => {
@@ -113,11 +96,11 @@ export const useCalls = () => {
     try {
       const queryParams = new URLSearchParams();
       queryParams.append("limit", "5");
-      const { data } = await useFetch(`/api/calls?${queryParams.toString()}`, {
+      const data = await $fetch(`/api/calls?${queryParams.toString()}`, {
         deep: true,
         signal,
       });
-      const newCalls = data?.value.calls || [];
+      const newCalls = data || [];
 
       calls.value = newCalls;
     } catch (error) {
@@ -168,6 +151,7 @@ export const useCalls = () => {
   };
 
   const togglePlayAudio = (audioUrl: string, id: string) => {
+    console.log(audioUrl, id);
     if (currentPlayingId.value === id) {
       stopCurrentAudio();
       return;

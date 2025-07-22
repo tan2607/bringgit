@@ -34,18 +34,26 @@ export default defineEventHandler(async (event) => {
         );
 
     const db = useDrizzle();
-    const calls = await db
-      .select()
-      .from(vapiCallData)
-      .where(
-        and(
-          gte(vapiCallData.createdAt, startDateTime),
-          lte(vapiCallData.createdAt, endDateTime)
+    let calls;
+    if (!startDate || !endDate) {
+      calls = await db
+        .select()
+        .from(vapiCallData)
+        .orderBy(desc(vapiCallData.createdAt))
+        .limit(limit);
+    } else {
+      calls = await db
+        .select()
+        .from(vapiCallData)
+        .where(
+          and(
+            gte(vapiCallData.createdAt, startDateTime),
+            lte(vapiCallData.createdAt, endDateTime)
+          )
         )
-      )
-      .orderBy(desc(vapiCallData.createdAt))
-      .limit(limit);
-
+        .orderBy(desc(vapiCallData.createdAt))
+        .limit(limit);
+    }
     const filteredCalls = calls.filter(
       (call) =>
         user.isAdmin() ||

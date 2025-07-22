@@ -313,11 +313,14 @@ const columns = computed(() => {
       accessorKey: "assistant",
       header: () => t('table.assistant'),
       enableColumnFilter: true,
-      filterFn: (row, columnId, filterValue) => {
+      filterFn: (row: any, columnId: any, filterValue: any) => {
         const value = row.getValue(columnId) || ''
-        return value.toLowerCase().includes(filterValue.toLowerCase())
+        console.log(row)
+        const phoneNumber = row.getValue("customer")?.number
+        console.log(phoneNumber)
+        return value.toLowerCase().includes(filterValue.toLowerCase()) || phoneNumber.toLowerCase().includes(filterValue.toLowerCase())
       },
-      cell: (row) => row.getValue("assistant")
+      cell: (row: any) => row.getValue("assistant")
     },
     {
       accessorKey: "customer",
@@ -376,9 +379,9 @@ const columns = computed(() => {
     {
       accessorKey: "recordingUrl",
       header: () => t('table.recording'),
-      cell: (row) => {
-        const isPlaying = computed(() => currentPlayingId.value === row.getValue('id'))
-        const proxyUrl = transformRecordingUrl(row.getValue('recordingUrl'))
+      cell: ({row}) => {
+        const isPlaying = computed(() => currentPlayingId.value === row.original.id)
+        const proxyUrl = transformRecordingUrl(row.original.recordingUrl)
         return h('div', { class: 'flex gap-2' }, [
           h(UButton, {
             icon: isPlaying.value ? 'i-lucide-pause-circle' : 'i-lucide-play-circle',
@@ -386,7 +389,7 @@ const columns = computed(() => {
             color: isPlaying.value ? 'error' : 'primary',
             variant: isPlaying.value ? 'solid' : 'ghost',
             class: 'hover:scale-110 transition-transform',
-            onClick: () => togglePlayAudio(proxyUrl, row.getValue('id'))
+            onClick: () => togglePlayAudio(proxyUrl, row.original.id)
           }),
           h(UButton, {
             icon: 'i-lucide-share-2',
@@ -414,7 +417,7 @@ const columns = computed(() => {
             onClick: () => {
               const link = document.createElement('a')
               link.href = proxyUrl
-              link.download = `recording-${row.getValue('id')}.mp3`
+              link.download = `recording-${row.original.id}.mp3`
               link.click()
             }
           })
@@ -562,11 +565,12 @@ const quickViewColumns = computed(() => {
       accessorKey: "assistant",
       header: () => t('table.assistant'),
       enableColumnFilter: true,
-      filterFn: (row, columnId, filterValue) => {
+      filterFn: (row: any, columnId: any, filterValue: any) => {
         const value = row.getValue(columnId) || ''
+        console.log(row);
         return value.toLowerCase().includes(filterValue.toLowerCase())
       },
-      cell: (row) => {
+      cell: (row: any) => {
         const assistant = row.getValue('assistant')
         if(!assistant) {
           return "N/A"
@@ -639,12 +643,13 @@ const quickViewColumns = computed(() => {
     {
       accessorKey: "recordingUrl",
       header: () => t('table.recording'),
-      cell: (row) => {
-        const recordingUrl = row.getValue('recordingUrl')
+      cell: ({row}) => {
+        const recordingUrl = row.original.recordingUrl
+        console.log(row.original)
         if(!recordingUrl) {
           return "N/A"
         }
-        const isPlaying = computed(() => currentPlayingId.value === row.getValue('id'))
+        const isPlaying = computed(() => currentPlayingId.value === row.original.id)
         const proxyUrl = transformRecordingUrl(recordingUrl)
         return h('div', { class: 'flex gap-2' }, [
           h(UButton, {
@@ -653,7 +658,7 @@ const quickViewColumns = computed(() => {
             color: isPlaying.value ? 'error' : 'primary',
             variant: isPlaying.value ? 'solid' : 'ghost',
             class: 'hover:scale-110 transition-transform',
-            onClick: () => togglePlayAudio(proxyUrl, row.getValue('id'))
+            onClick: () => togglePlayAudio(proxyUrl, row.original.id)
           }),
           h(UButton, {
             icon: 'i-lucide-share-2',
@@ -681,7 +686,7 @@ const quickViewColumns = computed(() => {
             onClick: () => {
               const link = document.createElement('a')
               link.href = proxyUrl
-              link.download = `recording-${row.getValue('id')}.mp3`
+              link.download = `recording-${row.original.id}.mp3`
               link.click()
             }
           })

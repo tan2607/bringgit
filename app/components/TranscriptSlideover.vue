@@ -169,6 +169,7 @@
 import { useCalls } from '@/composables/useCalls'
 import { useRecordingUrl } from '@/composables/useRecordingUrl'
 
+const emit = defineEmits<{ close: [] }>()
 const open = defineModel<boolean>('open')
 const { selectedCall: call } = useCalls()
 const { transformRecordingUrl } = useRecordingUrl()
