@@ -315,9 +315,7 @@ const columns = computed(() => {
       enableColumnFilter: true,
       filterFn: (row: any, columnId: any, filterValue: any) => {
         const value = row.getValue(columnId) || ''
-        console.log(row)
         const phoneNumber = row.getValue("customer")?.number
-        console.log(phoneNumber)
         return value.toLowerCase().includes(filterValue.toLowerCase()) || phoneNumber.toLowerCase().includes(filterValue.toLowerCase())
       },
       cell: (row: any) => row.getValue("assistant")
@@ -567,8 +565,8 @@ const quickViewColumns = computed(() => {
       enableColumnFilter: true,
       filterFn: (row: any, columnId: any, filterValue: any) => {
         const value = row.getValue(columnId) || ''
-        console.log(row);
-        return value.toLowerCase().includes(filterValue.toLowerCase())
+        const phoneNumber = row.getValue("phoneNumber")
+        return value.toLowerCase().includes(filterValue.toLowerCase()) || phoneNumber.toLowerCase().includes(filterValue.toLowerCase())
       },
       cell: (row: any) => {
         const assistant = row.getValue('assistant')
@@ -645,7 +643,6 @@ const quickViewColumns = computed(() => {
       header: () => t('table.recording'),
       cell: ({row}) => {
         const recordingUrl = row.original.recordingUrl
-        console.log(row.original)
         if(!recordingUrl) {
           return "N/A"
         }
