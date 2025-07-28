@@ -13,7 +13,7 @@ export const useCalls = () => {
   const callsLimitInit = 1000;
   let abortController: AbortController | null = null;
 
-  const fetchCalls = async (startDate: number, endDate: number, limit = callsLimitInit, loadMore = false) => {
+  const fetchCalls = async (startDate: number, endDate: number, limit: number, loadMore = false) => {
     if (abortController) {
       abortController.abort();
     }

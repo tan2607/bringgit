@@ -114,7 +114,16 @@ export default {
     status: 'الحالة',
     actions: 'الإجراءات',
     assistant: 'المساعد',
-    id: 'الرقم'
+    id: 'الرقم',
+    retryCount: 'عدد المحاولات',
+    scheduledAt: 'تاريخ الجدول',
+    tags: 'العلامات',
+    review: 'مراجعة',
+    endedReason: 'سبب الانتهاء',
+    createdAt: 'تاريخ الإنشاء',
+    phoneNumber: 'رقم الهاتف',
+    botPhoneNumber: 'رقم الهاتف للبوت',
+    name: 'اسم',
   },
 
   // Scheduling

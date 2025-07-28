@@ -179,7 +179,16 @@ export default {
       status: '상태',
       actions: '작업',
       assistant: '어시스턴트',
-      id: '번호'
+      id: '번호',
+      retryCount: '재시도 횟수',
+      scheduledAt: '예약 일시',
+      tags: '태그',
+      review: '리뷰',
+      endedReason: '종료 이유',
+      createdAt: '생성일',
+      phoneNumber: '전화번호',
+      botPhoneNumber: '봇 전화번호',
+      name: '이름',
     },
 
     // Prompt Editor

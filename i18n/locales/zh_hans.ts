@@ -179,7 +179,16 @@ export default {
     status: '状态',
     actions: '操作',
     assistant: '助手',
-    id: '编号'
+    id: '编号',
+    retryCount: '重试次数',
+    scheduledAt: '预约时间',
+    tags: '标签',
+    review: '审核',
+    endedReason: '结束原因',
+    createdAt: '创建时间',
+    phoneNumber: '电话号码',
+    botPhoneNumber: '机器人电话号码',
+    name: '名称',
   },
 
   // Patient Intake Form
