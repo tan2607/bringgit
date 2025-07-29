@@ -167,6 +167,15 @@ export default {
     assistant: 'Assistant',
     id: '#',
     filterAssistant: 'Filter Assistant',
+    retryCount: 'Retry Count',
+    scheduledAt: 'Scheduled At',
+    tags: 'Tags',
+    review: 'Review',
+    endedReason: 'Ended Reason',
+    createdAt: 'Created At',
+    phoneNumber: 'Phone Number',
+    botPhoneNumber: 'Bot Phone Number',
+    name: 'Name',
   },
 
   // Calls

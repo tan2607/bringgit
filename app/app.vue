@@ -65,18 +65,18 @@ const localeDropdown = computed(() => {
 const moduleSettings = ref<any[]>([]);
 
 // Base items that all users can access
-const baseItems = [
-  {
-    key: 'calls',
-    label: t('calls'),
-    icon: 'i-lucide-phone',
-    description: t('manage-calls'),
-    to: localeRoute('/calls')?.path
-  }
-]
+const baseItems = computed(() => [
+      {
+        key: 'calls',
+        label: t('calls'),
+        icon: 'i-lucide-phone',
+        description: t('manage-calls'),
+        to: localeRoute('/calls')?.path
+      }
+])
 
 // Admin-only items
-const adminItems = [
+const adminItems = computed(() => [
   {
     key: null,
     label: t('home'),
@@ -284,8 +284,8 @@ const adminItems = [
     label: t('access-control.title'),
     icon: 'i-lucide-lock',
     to: localeRoute('/access-control')?.path
-  },
-]
+  }
+])
 
 // Profile menu items
 const profileMenu = computed(() => ({
@@ -328,12 +328,12 @@ const profileMenu = computed(() => ({
 
 // Combine items based on user role
 const items = computed(() => {
-  if (isAdmin.value && adminItems.length > 0) {
-    const firstAdminItem = adminItems[0];
-    const remainingAdminItems = adminItems?.slice(1);
+  if (isAdmin.value && adminItems.value.length > 0) {
+    const firstAdminItem = adminItems.value[0];
+    const remainingAdminItems = adminItems.value.slice(1);
     return [
       firstAdminItem,
-      ...baseItems,
+      ...baseItems.value,
       ...remainingAdminItems,
       profileMenu.value,
       localeDropdown.value,
@@ -345,7 +345,7 @@ const items = computed(() => {
   }
   
   return [
-    ...baseItems,
+    ...baseItems.value,
     profileMenu.value, 
     localeDropdown.value,
     {

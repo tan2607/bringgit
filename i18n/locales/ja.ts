@@ -178,7 +178,16 @@ export default {
     status: 'ステータス',
     actions: 'アクション',
     assistant: 'アシスタント',
-    id: '番号'
+    id: '番号',
+    retryCount: '試行回数',
+    scheduledAt: 'スケジュール日時',
+    tags: 'タグ',
+    review: 'レビュー',
+    endedReason: '終了理由',
+    createdAt: '作成日時',
+    phoneNumber: '電話番号',
+    botPhoneNumber: 'ボット電話番号',
+    name: '名前',
   },
 
   // Prompt Editor

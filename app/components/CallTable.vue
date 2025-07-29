@@ -315,26 +315,24 @@ const columns = computed(() => {
       enableColumnFilter: true,
       filterFn: (row: any, columnId: any, filterValue: any) => {
         const value = row.getValue(columnId) || ''
-        console.log(row)
         const phoneNumber = row.getValue("customer")?.number
-        console.log(phoneNumber)
         return value.toLowerCase().includes(filterValue.toLowerCase()) || phoneNumber.toLowerCase().includes(filterValue.toLowerCase())
       },
       cell: (row: any) => row.getValue("assistant")
     },
     {
       accessorKey: "customer",
-      header: () => 'Phone Number',
+      header: () => t('table.phoneNumber'),
       cell: (row) => row.getValue("customer")?.number
     },
     {
       accessorKey: "botPhoneNumber",
-      header: () => 'Bot Phone Number',
+      header: () => t('table.botPhoneNumber'),
       cell: (row) => row.getValue("botPhoneNumber")
     },
     {
       accessorKey: "assistantOverrides",
-      header: () => 'Name',
+      header: () => t('table.name'),
       cell: (row) => {
         const overrides = row.getValue("assistantOverrides")
         return overrides?.variableValues?.name
@@ -342,7 +340,7 @@ const columns = computed(() => {
     },
     {
       accessorKey: 'createdAt',
-      header: () => 'Created At',
+      header: () => t('table.createdAt'),
       sortable: true,
       cell: (row) => {
         if (!row.getValue('createdAt')) return '';
@@ -455,7 +453,7 @@ const columns = computed(() => {
 
   baseColumns.push({
     accessorKey: "endedReason",
-    header: () => "Ended Reason",
+    header: () => t('table.endedReason'),
     cell: (row) => {
       const reason = row.getValue('endedReason')
       if (!reason) return ''
@@ -476,7 +474,7 @@ const columns = computed(() => {
   // add Review column
   baseColumns.push({
     accessorKey: "review",
-    header: () => "Review",
+    header: () => t('table.review'),
     cell: ({row}) => {
       if(!row.original.review) {
         return h(UButton, { 
@@ -508,7 +506,7 @@ const columns = computed(() => {
 
   baseColumns.push({
     accessorKey: "tags",
-    header: () => "Tags",
+    header: () => t('table.tags'),
     cell: ({row}) => {
       const tags = row.original.tags;
       return h(
@@ -556,19 +554,19 @@ const columns = computed(() => {
 
 const quickViewColumns = computed(() => {
   const baseColumns = [  
-  { accessorKey: 'name', header: 'Name', cell: ({ row }) => {
+  { accessorKey: 'name', header: () => t('table.name'), cell: ({ row }) => {
     return h('div', { class: 'text-sm text-gray-500' }, row.original.name || "N/A")
   } },
-  { accessorKey: 'phoneNumber', header: 'Phone Number' },
-  { accessorKey: 'botPhoneNumber', header: 'Bot Phone Number' },
+  { accessorKey: 'phoneNumber', header: () => t('table.phoneNumber') },
+  { accessorKey: 'botPhoneNumber', header: () => t('table.botPhoneNumber') },
   {
       accessorKey: "assistant",
       header: () => t('table.assistant'),
       enableColumnFilter: true,
       filterFn: (row: any, columnId: any, filterValue: any) => {
         const value = row.getValue(columnId) || ''
-        console.log(row);
-        return value.toLowerCase().includes(filterValue.toLowerCase())
+        const phoneNumber = row.getValue("phoneNumber")
+        return value.toLowerCase().includes(filterValue.toLowerCase()) || phoneNumber.toLowerCase().includes(filterValue.toLowerCase())
       },
       cell: (row: any) => {
         const assistant = row.getValue('assistant')
@@ -578,8 +576,8 @@ const quickViewColumns = computed(() => {
         return assistant
       }
   },
-  { accessorKey: 'retryCount', header: 'Retry Count' },
-  { accessorKey: 'scheduledAt', header: 'Job Scheduled At', cell: ({ row }) => {
+  { accessorKey: 'retryCount', header: () => t('table.retryCount') },
+  { accessorKey: 'scheduledAt', header: () => t('table.scheduledAt'), cell: ({ row }) => {
     const time = new Date(row.getValue('scheduledAt'));
     const timeAgo = formatTimeAgo(time)
     return time.toLocaleString('en-US', {
@@ -602,7 +600,7 @@ const quickViewColumns = computed(() => {
   },
   {
       accessorKey: "endedReason",
-      header: () => "Ended Reason",
+      header: () => t('table.endedReason'),
       cell: (row) => {
         const reason = row.getValue('endedReason')
         if (!reason) return ''
@@ -645,7 +643,6 @@ const quickViewColumns = computed(() => {
       header: () => t('table.recording'),
       cell: ({row}) => {
         const recordingUrl = row.original.recordingUrl
-        console.log(row.original)
         if(!recordingUrl) {
           return "N/A"
         }
@@ -711,7 +708,7 @@ const quickViewColumns = computed(() => {
 
     baseColumns.push({
       accessorKey: "tags",
-      header: () => "Tags",
+      header: () => t('table.tags'),
       cell: (row) => {
           const tags = row.getValue('tags');
           if(!tags) {

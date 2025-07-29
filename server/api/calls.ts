@@ -40,7 +40,7 @@ export default defineEventHandler(async (event) => {
         .select()
         .from(vapiCallData)
         .orderBy(desc(vapiCallData.createdAt))
-        .limit(limit);
+        .limit(Number(limit));
     } else {
       calls = await db
         .select()
@@ -52,7 +52,7 @@ export default defineEventHandler(async (event) => {
           )
         )
         .orderBy(desc(vapiCallData.createdAt))
-        .limit(limit);
+        .limit(Number(limit));
     }
     const filteredCalls = calls.filter(
       (call) =>

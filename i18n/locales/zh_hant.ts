@@ -175,7 +175,16 @@ export default {
     status: '狀態',
     actions: '操作',
     assistant: '助理',
-    id: '編號'
+    id: '編號',
+    retryCount: '重試次數',
+    scheduledAt: '預約時間',
+    tags: '標籤',
+    review: '審核',
+    endedReason: '結束原因',
+    createdAt: '建立時間',
+    phoneNumber: '電話號碼',
+    botPhoneNumber: '機器人電話號碼',
+    name: '姓名',
   },
 
   // Prompt Editor

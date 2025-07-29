@@ -74,7 +74,16 @@ export default {
     status: 'Status',
     actions: 'Tindakan',
     assistant: 'Pembantu',
-    id: 'No'
+    id: 'No',
+    retryCount: 'Jumlah Cobaan',
+    scheduledAt: 'Waktu Dijadwalkan',
+    tags: 'Tag',
+    review: 'Review',
+    endedReason: 'Alasan Selesai',
+    createdAt: 'Waktu Dibuat',
+    phoneNumber: 'Nomor Telepon',
+    botPhoneNumber: 'Nomor Telepon Bot',
+    name: 'Nama',
   },
 
   // Calls
