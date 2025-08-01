@@ -75,7 +75,8 @@ export const useJobState = () => {
           assistantId: job.assistantId,
           phoneNumberId: JSON.stringify(job.phoneNumberId),
           scheduledAt: job.schedule,
-          selectedTimeWindow: job.selectedTimeWindow
+          selectedTimeWindow: job.selectedTimeWindow,
+          maxRetries: job.maxRetries
         }
       })
 

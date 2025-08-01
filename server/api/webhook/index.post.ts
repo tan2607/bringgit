@@ -66,8 +66,9 @@ export default defineEventHandler(async (event: H3Event) => {
             }
   
             const targetRetryCount = (targetQueue.retryCount || 0);
+            const maxRetries = (targetQueue.maxRetries || 3);
   
-            if (targetRetryCount >= 3) {
+            if (targetRetryCount >= maxRetries) {
               return { success: true, message: "Max retry count reached" };
             }
          

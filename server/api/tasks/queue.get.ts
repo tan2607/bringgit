@@ -19,6 +19,7 @@ export default defineEventHandler(async (event) => {
       phoneNumberId: jobs.phoneNumberId,
       schedule: jobs.schedule,
       selectedTimeWindow: jobs.selectedTimeWindow,
+      maxRetries: jobs.maxRetries,
       totalCalls: jobs.totalCalls,
       totalJobQueues: sql<number>`COUNT(${jobQueue.id})`
     })
@@ -37,7 +38,7 @@ export default defineEventHandler(async (event) => {
 
     // Process jobs in parallel with batched messages
     await Promise.all(jobsToProcess.map(async job => {
-      const { jobId, phoneNumbers, names, assistantId, phoneNumberId, schedule, selectedTimeWindow } = job;
+      const { jobId, phoneNumbers, names, assistantId, phoneNumberId, schedule, selectedTimeWindow, maxRetries } = job;
       const queueLength = job.totalJobQueues ?? 0;
       
       // Parse job data
@@ -61,6 +62,7 @@ export default defineEventHandler(async (event) => {
         delay: 0,
         vapiId: null,
         phoneNumbers: phoneNumberId,
+        maxRetries
       }));
 
       await queueHandler.enqueueJobBatch(messages);

@@ -67,6 +67,7 @@ export const jobs = sqliteTable('jobs', {
   phoneNumberId: text('phone_number_id'),
   lastProcessedAt: text('last_processed_at'),
   notes: text('notes'),
+  maxRetries: integer('max_retries'),
   selectedTimeWindow: text('selected_time_window'),
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(strftime('%s', 'now'))`),
   updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().default(sql`(strftime('%s', 'now'))`)
@@ -96,6 +97,7 @@ export const jobQueue = sqliteTable('job_queue', {
   scheduledAt: text('scheduled_at'),
   selectedTimeWindow: text('selected_time_window'),
   phoneNumbers: text('phone_numbers'),
+  maxRetries: integer('max_retries'),
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(strftime('%s', 'now'))`),
   updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().default(sql`(strftime('%s', 'now'))`)
 }, (table) => {

@@ -14,6 +14,7 @@ export default defineEventHandler(async (event) => {
 			phoneNumberId,
 			scheduledAt,
 			selectedTimeWindow,
+			maxRetries
 		} = body;
 
 		if (!jobId || !phoneNumbers || !assistantId || !phoneNumberId) {
@@ -32,7 +33,8 @@ export default defineEventHandler(async (event) => {
 			retryCount: 0,
 			scheduledAt,
 			selectedTimeWindow,
-			phoneNumbers: phoneNumberId
+			phoneNumbers: phoneNumberId,
+			maxRetries
 		}));
 
 		await processMessages(queueHandler, messages);
