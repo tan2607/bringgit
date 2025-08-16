@@ -15,6 +15,8 @@ export interface Job {
   lastProcessedAt?: Date
   selectedTimeWindow: string
   notes?: string
+  createdAt?: Date
+  updatedAt?: Date
 }
 
 interface JobState {
@@ -211,7 +213,6 @@ export const useJobState = () => {
         method: 'POST',
         body: newJob
       })
-
       if (response.success) {
         jobState.value.jobs.push(newJob)
         await startJob(newJob.id)
@@ -235,16 +236,23 @@ export const useJobState = () => {
 
   const editJob = async (jobData: Job) => {
     try {
+      let formatJobData = {
+        ...jobData,
+        phoneNumberId: JSON.stringify(jobData.phoneNumberId),
+        selectedTimeWindow: JSON.stringify(jobData.selectedTimeWindow),
+        names: JSON.stringify(jobData.names),
+        phoneNumbers: JSON.stringify(jobData.phoneNumbers)
+      }
       const response = await $fetch(`/api/jobs/${jobData.id}`, {
         method: 'PUT',
-        body: jobData
+        body: formatJobData
       })
 
       if (response.success) {
         // update Job
         const jobIndex = jobState.value.jobs.findIndex(job => job.id === jobData.id)
         if (jobIndex !== -1) {
-          jobState.value.jobs[jobIndex] = jobData
+          jobState.value.jobs[jobIndex] = formatJobData
         }
         return true
       }

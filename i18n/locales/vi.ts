@@ -106,7 +106,16 @@ export default {
     status: 'Trạng thái',
     actions: 'Thao tác',
     assistant: 'Trợ lý',
-    id: 'Số'
+    id: 'Số',
+    retryCount: 'Số lần thử',
+    scheduledAt: 'Thời gian lên lịch',
+    tags: 'Thẻ',
+    review: 'Đánh giá',
+    endedReason: 'Lý do kết thúc',
+    createdAt: 'Thời gian tạo',
+    phoneNumber: 'Số điện thoại',
+    botPhoneNumber: 'Số điện thoại bot',
+    name: 'Tên',
   },
 
   // Calls

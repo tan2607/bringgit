@@ -128,8 +128,8 @@ const assistantRecommendations = computed(() => {
     recs[assistant.id] = getUpgradeRecommendations({
       modelProvider: assistant.model.provider,
       model: assistant.model.model,
-      voiceProvider: assistant.voice.provider,
-      voiceModel: assistant.voice.model,
+      voiceProvider: assistant.voice?.provider,
+      voiceModel: assistant.voice?.model,
       transcriberModel: assistant.transcriber?.model,
       transcriberLanguage: assistant.transcriber?.language,
       transcriberProvider: assistant.transcriber?.provider,
@@ -201,7 +201,7 @@ async function applyRecommendations(assistant: any) {
     } else if (rec.type === 'model' && rec.provider === assistant.model.provider) {
       // Use provider-specific target model from the recommendation
       patch.model = rec.targetModel
-    } else if (rec.type === 'voice' && rec.provider === assistant.voice.provider) {
+    } else if (rec.type === 'voice' && rec.provider === assistant.voice?.provider) {
       // Use provider-specific voice model
       patch.voiceModel = rec.targetModel
     } else if (rec.type === 'transcriber' && rec.provider === assistant.transcriber?.provider) {

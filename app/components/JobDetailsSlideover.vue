@@ -179,9 +179,10 @@ onMounted(async () => {
 	if(props.jobId) {
 		jobQueues.value = await getJobQueueByJobId(props.jobId)
 		const firstJobQueue = jobQueues.value[0]
+		const lastJobQueue = jobQueues.value[jobQueues.value.length - 1]
 		const isQueueInCalls = calls.value.some((call) => call.id === firstJobQueue?.vapiId)
 		if(!isQueueInCalls) {
-			const startDate = new Date(quickViewJob.value?.createdAt).toISOString()
+			const startDate = new Date(quickViewJob.value?.createdAt).getTime()
 			await fetchCalls(startDate)
 		}
 
@@ -200,8 +201,9 @@ watch(() => props.jobId, async () => {
 	// Check if the job queues are in the calls value
 	const firstJobQueue = jobQueues.value[0]
 	const isQueueInCalls = calls.value.some((call) => call.id === firstJobQueue.vapiId)
+	console.log(isQueueInCalls)
 	if(!isQueueInCalls) {
-		const startDate = new Date(quickViewJob.value?.createdAt).toISOString()
+		const startDate = new Date(quickViewJob.value?.createdAt).getTime()
 		await fetchCalls(startDate)
 	}
 

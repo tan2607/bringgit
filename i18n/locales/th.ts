@@ -205,7 +205,16 @@ export default {
     status: 'สถานะ',
     actions: 'การดำเนินการ',
     assistant: 'ผู้ช่วย',
-    id: 'เลขที่'
+    id: 'เลขที่',
+    retryCount: 'จำนวนการลอง',
+    scheduledAt: 'กำหนดเวลา',
+    tags: 'แท็ก',
+    review: 'รีวิว',
+    endedReason: 'เหตุผลที่สิ้นสุด',
+    createdAt: 'สร้างเมื่อ',
+    phoneNumber: 'หมายเลขโทรศัพท์',
+    botPhoneNumber: 'หมายเลขโทรศัพท์บอท',
+    name: 'ชื่อ',
   },
 
   // Translation page specific keys

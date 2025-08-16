@@ -165,7 +165,16 @@ export default {
     status: 'Status',
     actions: 'Tindakan',
     assistant: 'Asisten',
-    id: 'No'
+    id: 'No',
+    retryCount: 'Jumlah Cobaan',
+    scheduledAt: 'Waktu Dijadwalkan',
+    tags: 'Tag',
+    review: 'Review',
+    endedReason: 'Alasan Selesai',
+    createdAt: 'Waktu Dibuat',
+    phoneNumber: 'Nomor Telepon',
+    botPhoneNumber: 'Nomor Telepon Bot',
+    name: 'Nama',
   },
 
   // Form Fields
