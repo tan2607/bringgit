@@ -20,7 +20,7 @@
                   <UInput class="w-full" v-model="assistant.name" />
                 </UFormField>
 
-                <UFormField :label="t('assistant.transcriber.language')" required>
+                <UFormField :label="t('assistant.transcriber-language')" required>
                   <USelect 
                   class="w-full"
                   v-model="assistant.transcriber.language" :items="languageOptions" option-attribute="label" />
@@ -105,6 +105,8 @@ import CriteriaSlideover from './assistant/CriteriaSlideover.vue'
 import { languages } from '@@/i18n/languages'
 import type { Assistant } from '@@/types/assistant'
 
+const emit = defineEmits(["updated", "close"]);
+const toast = useToast();
 const { t } = useI18n()
 const overlay = useOverlay()
 const testSlideover = overlay.create(TestSlideover)
@@ -117,6 +119,14 @@ const props = defineProps<{
 }>()
 
 const assistant = ref<Assistant>(props.assistant)
+
+if (!assistant.value.transcriber) {
+  assistant.value.transcriber = {
+    language: 'en',
+    model: 'gpt-4o-transcribe',
+    provider: 'openai'
+  }
+}
 
 const isLoading = ref(false)
 
@@ -153,12 +163,27 @@ const close = () => {
 const save = async () => {
   if (!isValid.value) return
 
+  isLoading.value = true
   try {
-    isLoading.value = true
     // Save assistant logic here
-    close()
+    const updatedAssistant = await $fetch("/api/assistants/" + assistant.value.id, {
+      method: "PATCH",
+      body: assistant,
+    });
+    emit("updated", updatedAssistant)
+    emit("close");
+    toast.add({
+      title: "Assistant created",
+      description: "Assistant created successfully",
+      color: "success",
+    });
   } catch (error: any) {
     console.error('Save assistant error:', error)
+    toast.add({
+      title: "Assistant update failed",
+      description: error.message,
+      color: "error",
+    });
   } finally {
     isLoading.value = false
   }

@@ -112,6 +112,14 @@ async function createAgent() {
   isCreating.value = true;
   try {
     const { id, orgId, createdAt, updatedAt, ...newAssistant } = newAgent;
+
+    if (!newAssistant.transcriber) {
+      newAssistant.transcriber = {
+        language: 'en',
+        model: 'gpt-4o-transcribe',
+        provider: 'openai'
+      }
+    }
     const createdAssistant = await $fetch("/api/assistants/create", {
       method: "POST",
       body: newAssistant,
