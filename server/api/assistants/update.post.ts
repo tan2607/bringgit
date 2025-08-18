@@ -30,7 +30,7 @@ export default defineEventHandler(async (event) => {
     if (model) {
       updateData.model = {
         ...currentAssistant.model,
-        model: model
+        ...model
       };
     }
     

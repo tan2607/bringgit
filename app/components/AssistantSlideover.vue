@@ -41,7 +41,7 @@
                 <UFormField :label="t('assistant.systemPrompt')" required>
                   <UTextarea 
                   class="w-full"
-                  v-model="assistant.model.messages[0].content" :rows="10" autoresize :maxrows="30" />
+                  v-model="assistant.prompt" :rows="10" autoresize :maxrows="30" />
                   <template #help>
                     {{ t('assistant.systemPrompt-help') }}
                   </template>
@@ -165,22 +165,26 @@ const save = async () => {
 
   isLoading.value = true
   try {
+    assistant.value.model = {
+      ...assistant.value.model,
+      model: "gpt-5",
+    };
     // Save assistant logic here
-    const updatedAssistant = await $fetch("/api/assistants/" + assistant.value.id, {
-      method: "PATCH",
-      body: assistant,
+    const updatedAssistant = await useFetch("/api/assistants/update", {
+      method: "POST",
+      body: assistant.value,
     });
     emit("updated", updatedAssistant)
     emit("close");
     toast.add({
-      title: "Assistant created",
-      description: "Assistant created successfully",
+      title: "Assistant saved",
+      description: "Assistant saved successfully",
       color: "success",
     });
   } catch (error: any) {
     console.error('Save assistant error:', error)
     toast.add({
-      title: "Assistant update failed",
+      title: "Assistant save failed",
       description: error.message,
       color: "error",
     });
