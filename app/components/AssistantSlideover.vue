@@ -177,14 +177,14 @@ const save = async () => {
     emit("updated", updatedAssistant)
     emit("close");
     toast.add({
-      title: "Assistant updated",
-      description: "Assistant updated successfully",
+      title: "Assistant saved",
+      description: "Assistant saved successfully",
       color: "success",
     });
   } catch (error: any) {
     console.error('Save assistant error:', error)
     toast.add({
-      title: "Assistant update failed",
+      title: "Assistant save failed",
       description: error.message,
       color: "error",
     });
