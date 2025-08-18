@@ -116,6 +116,7 @@ function openCreateSlideover() {
 }
 
 const sortedAssistants = computed(() => {
+  console.log(assistants.value);
   if(!assistants.value) return []
   return assistants.value.sort((a, b) => a.name.localeCompare(b.name))
 })
