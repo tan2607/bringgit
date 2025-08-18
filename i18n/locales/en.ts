@@ -78,6 +78,7 @@ export default {
     'firstMessage': 'First Message',
     'firstMessage-help': 'The initial message the assistant will send',
     'language-help': 'The primary language for the assistant',
+    'transcriber-language': 'Transcriber Language',
     'systemPrompt': 'System Prompt',
     'systemPrompt-help': 'Instructions that define the assistant\'s behavior',
     'tokenLimit': 'Token Limit',
