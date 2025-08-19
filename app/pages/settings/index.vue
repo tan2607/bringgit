@@ -212,8 +212,12 @@ const tagKeys = ref([
 ]);
 
 const tagValues = ref([
-  { label: 'Success', value: 'Success' },
-  { label: 'Failed', value: 'Failed' },
+  { label: 'Follow Up', value: 'Follow Up' },
+  { label: 'Interested', value: 'Interested' },
+  { label: 'No Intent', value: 'No Intent' },
+  { label: 'Not Interested', value: 'Not Interested' },
+  { label: 'Other Language', value: 'Other Language' },
+  { label: 'Voicemail', value: 'Voicemail' },
 ]);
 
 const callVariables = ref([
