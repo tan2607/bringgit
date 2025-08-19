@@ -103,13 +103,14 @@
         <template #header>
           <h2 class="text-xl font-semibold">Post Call Settings</h2>
         </template>
-        <UForm :state="postCallForm" class="space-y-4" @submit="savePostCallSettings">
+        <UForm :state="postCallForm" class="space-y-4 w-1/2" @submit="savePostCallSettings">
           <UFormField label="Criteria">
+           <div class="flex gap-2">
             <USelect
               v-model="postCallForm.tagKey"
               :items="tagKeys"
               placeholder="Select Tag Key"
-              class="w-50"
+              class="w-1/2"
               option-attribute="label"
               value-attribute="value"
             />
@@ -117,10 +118,11 @@
               v-model="postCallForm.tagValue"
               :items="tagValues"
               placeholder="Select Tag Value"
-              class="w-50"
+              class="w-1/2"
               option-attribute="label"
               value-attribute="value"
             />
+           </div>
           </UFormField>
           <UFormField label="Server Address">
             <UInput 
@@ -128,6 +130,7 @@
               type="url" 
               placeholder="https://your-instance.keyrepy.com"
               icon="i-heroicons-link" 
+              class="w-full"
             />
           </UFormField>
           <UFormField label="Business Phone Number">
@@ -135,6 +138,7 @@
               v-model="postCallForm.businessPhoneNumber" 
               type="text" 
               placeholder="1234567890"
+              class="w-full"
             />
           </UFormField>
           <UFormField label="Template Message ID">
@@ -142,23 +146,29 @@
               v-model="postCallForm.templateMessageId" 
               type="text" 
               placeholder="template_id_123"
-            />
-          </UFormField>
-          <UFormField label="Variables">
-            <UCard v-for="variable in postCallForm.variables" :key="postCallForm.variables.indexOf(variable)" class="flex justify-center"> 
-              <div>&#123;&#123;{{ postCallForm.variables.indexOf(variable) + 1 }}&#125;&#125;</div>
-              <USelect
-                v-model="postCallForm.variables[postCallForm.variables.indexOf(variable)]"
-                :key="postCallForm.variables.indexOf(variable)"
-              :items="callVariables"
-              placeholder="Select Variable"
               class="w-full"
-              option-attribute="label"
-              value-attribute="value"
             />
-            </UCard>
-            <UButton type="button" color="primary" @click="addVariable">Add Variable</UButton>
           </UFormField>
+          <div class="border border-muted p-4 border-dashed">
+            <UFormField label="Variables" class="space-y-4">
+            <div class="space-y-2">
+              <div v-for="variable,index in postCallForm.variables" :key="index" class="flex justify-center items-center gap-2"> 
+                <div>&#123;&#123;{{ index + 1 }}&#125;&#125;</div>
+                <USelect
+                  v-model="postCallForm.variables[index]"
+                  :key="index"
+                :items="callVariables"
+                placeholder="Select Variable"
+                class="w-full"
+                option-attribute="label"
+                value-attribute="value"
+              />
+              <UButton type="button" size="sm" class="cursor-pointer" color="error" @click="removeVariable(index)" icon="i-heroicons-trash"></UButton>
+              </div>
+              <UButton class="my-2" type="button" color="primary" @click="addVariable">Add Variable</UButton>
+            </div>
+            </UFormField>
+          </div>
           <UButton type="submit" color="primary" :loading="loading.app">Save Settings</UButton>
         </UForm>
       </UCard>
@@ -410,4 +420,9 @@ async function saveModuleSettings() {
   }
 
 }
+
+function removeVariable(index: number) {
+  postCallForm.value.variables.splice(index, 1)
+}
+
 </script>
