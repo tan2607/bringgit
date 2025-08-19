@@ -13,7 +13,10 @@ export const useUser = () => {
     return session.value?.user?.app_metadata?.permissions?.includes(permission) || false
   }
 
-  const user = computed(() => session.value?.user)
+  const user = computed(() => ({
+    ...session.value?.user,
+    notifPhone: session.value?.user?.app_metadata?.notifPhone || null
+  }))
 
   const isPermissionSuperAdmin = computed(() => {
     return user.value?.app_metadata?.permissions?.includes('superadmin')
