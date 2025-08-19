@@ -5,6 +5,7 @@ export interface AppMetadata {
   roles: UserRole[]
   assistants: string[]
   botPhoneNumbers: string[]
+  notifPhone: string
 }
 
 export interface UserSession {

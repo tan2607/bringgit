@@ -63,6 +63,7 @@ const localeDropdown = computed(() => {
 
 // Navigation items
 const moduleSettings = ref<any[]>([]);
+const postCallSettings = ref<any>({});
 
 // Base items that all users can access
 const baseItems = computed(() => [
@@ -395,9 +396,21 @@ async function fetchModuleSettings() {
   settingStore.finishReload()
 }
 
+async function fetchPostCallSettings() {
+  const response = await fetch('/api/settings/postCall');
+  const data = await response.json();
+
+  if (data.success) {
+    postCallSettings.value = data.postCallSettings;
+  } else {
+    postCallSettings.value = {};
+  }
+}
+
 watch(() => settingStore.reload, (newValue, oldValue) => {
   if (newValue) {
     fetchModuleSettings();
+    fetchPostCallSettings();
   }
 });
 

@@ -71,10 +71,19 @@ export const useUserManagement = () => {
     })
   }
 
+  const updateUserNotifPhone = async (phoneNumber: string) => {
+    return await fetch(`/api/profile/update`, {
+      method: 'POST',
+      body: JSON.stringify({ phoneNumber }),
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+
   return {
     fetchUsers,
     updateUserAssistants,
     updateUserRole,
-    updateUserBotPhoneNumbers
+    updateUserBotPhoneNumbers,
+    updateUserNotifPhone
   }
 }

@@ -103,6 +103,9 @@ export default defineNuxtConfig({
       commonjsOptions: {
         include: [/debug/, /node_modules/]
       }
+    },
+    server: {
+      allowedHosts: ['*', '96a7bab4c91a.ngrok-free.app']
     }
   },
   modules: [
