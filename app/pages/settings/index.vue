@@ -217,26 +217,9 @@ const tagValues = ref([
 ]);
 
 const callVariables = ref([
-  { label: 'Call ID', value: 'callId' },
-  { label: 'Customer', value: 'customer' },
-  { label: 'Assistant', value: 'assistant' },
-  { label: 'Assistant Overrides', value: 'assistantOverrides' },
-  { label: 'Bot Phone Number', value: 'botPhoneNumber' },
-  { label: 'Created At', value: 'createdAt' },
-  { label: 'Duration', value: 'duration' },
-  { label: 'Ended At', value: 'endedAt' },
-  { label: 'Ended Reason', value: 'endedReason' },
-  { label: 'Messages', value: 'messages' },
-  { label: 'Recording URL', value: 'recordingUrl' },
-  { label: 'Review', value: 'review' },
-  { label: 'Started At', value: 'startedAt' },
-  { label: 'Status', value: 'status' },
-  { label: 'Structured Data', value: 'structuredData' },
-  { label: 'Summary', value: 'summary' },
-  { label: 'Tags', value: 'tags' },
-  { label: 'Transcript', value: 'transcript' },
-  { label: 'Bot Assistant ID', value: 'botAssistantId' },
-  { label: 'Bot Phone Number ID', value: 'botPhoneNumberId' },
+  { label: 'Customer Name', value: 'name' },
+  { label: 'Customer Phone Number', value: 'number' },
+  { label: 'Customer Email', value: 'email' },
 ])
 
 definePageMeta({ middleware: "auth" })

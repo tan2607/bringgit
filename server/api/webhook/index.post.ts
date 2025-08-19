@@ -38,8 +38,7 @@ export default defineEventHandler(async (event: H3Event) => {
           await $fetch('/api/whatsapp/tag', {
             method: 'POST',
             body: {
-              to: phoneNumberId,
-              callResult: tag,
+              ...message
             }
           });
         }
