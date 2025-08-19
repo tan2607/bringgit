@@ -13,6 +13,9 @@
           <UFormField label="Email" required>
             <UInput v-model="profileForm.email" type="email" placeholder="Enter your email" />
           </UFormField>
+          <UFormField label="Phone Number">
+            <UInput v-model="profileForm.phoneNumber" placeholder="Enter your phone number" />
+          </UFormField>
           <UFormField label="Change Password">
             <UInput v-model="profileForm.currentPassword" type="password" placeholder="Current password" />
             <UInput v-model="profileForm.newPassword" type="password" placeholder="New password" class="mt-2" />
@@ -96,6 +99,70 @@
         </UForm>
       </UCard>
 
+      <UCard>
+        <template #header>
+          <h2 class="text-xl font-semibold">Post Call Settings</h2>
+        </template>
+        <UForm :state="postCallForm" class="space-y-4" @submit="savePostCallSettings">
+          <UFormField label="Criteria">
+            <USelect
+              v-model="postCallForm.tagKey"
+              :items="tagKeys"
+              placeholder="Select Tag Key"
+              class="w-50"
+              option-attribute="label"
+              value-attribute="value"
+            />
+            <USelect
+              v-model="postCallForm.tagValue"
+              :items="tagValues"
+              placeholder="Select Tag Value"
+              class="w-50"
+              option-attribute="label"
+              value-attribute="value"
+            />
+          </UFormField>
+          <UFormField label="Server Address">
+            <UInput 
+              v-model="postCallForm.serverAddress" 
+              type="url" 
+              placeholder="https://your-instance.keyrepy.com"
+              icon="i-heroicons-link" 
+            />
+          </UFormField>
+          <UFormField label="Business Phone Number">
+            <UInput 
+              v-model="postCallForm.businessPhoneNumber" 
+              type="text" 
+              placeholder="1234567890"
+            />
+          </UFormField>
+          <UFormField label="Template Message ID">
+            <UInput 
+              v-model="postCallForm.templateMessageId" 
+              type="text" 
+              placeholder="template_id_123"
+            />
+          </UFormField>
+          <UFormField label="Variables">
+            <UCard v-for="variable in postCallForm.variables" :key="postCallForm.variables.indexOf(variable)" class="flex justify-center"> 
+              <div>&#123;&#123;{{ postCallForm.variables.indexOf(variable) + 1 }}&#125;&#125;</div>
+              <USelect
+                v-model="postCallForm.variables[postCallForm.variables.indexOf(variable)]"
+                :key="postCallForm.variables.indexOf(variable)"
+              :items="callVariables"
+              placeholder="Select Variable"
+              class="w-full"
+              option-attribute="label"
+              value-attribute="value"
+            />
+            </UCard>
+            <UButton type="button" color="primary" @click="addVariable">Add Variable</UButton>
+          </UFormField>
+          <UButton type="submit" color="primary" :loading="loading.app">Save Settings</UButton>
+        </UForm>
+      </UCard>
+
       <!-- Module Settings -->
       <UCard>
         <template #header>
@@ -125,6 +192,42 @@
 <script setup lang="ts">
 import { modules, type Module } from "@@/server/utils/settings";
 import { useSettingStore } from "~~/stores/useSettingStore";
+import { useUser } from '@/composables/useUser'
+import { useUserManagement } from '@/composables/useUserManagement'
+const { updateUserNotifPhone } = useUserManagement()
+const { isAdmin, user } = useUser()
+
+const tagKeys = ref([
+  { label: 'Result', value: 'Result' },
+]);
+
+const tagValues = ref([
+  { label: 'Success', value: 'Success' },
+  { label: 'Failed', value: 'Failed' },
+]);
+
+const callVariables = ref([
+  { label: 'Call ID', value: 'callId' },
+  { label: 'Customer', value: 'customer' },
+  { label: 'Assistant', value: 'assistant' },
+  { label: 'Assistant Overrides', value: 'assistantOverrides' },
+  { label: 'Bot Phone Number', value: 'botPhoneNumber' },
+  { label: 'Created At', value: 'createdAt' },
+  { label: 'Duration', value: 'duration' },
+  { label: 'Ended At', value: 'endedAt' },
+  { label: 'Ended Reason', value: 'endedReason' },
+  { label: 'Messages', value: 'messages' },
+  { label: 'Recording URL', value: 'recordingUrl' },
+  { label: 'Review', value: 'review' },
+  { label: 'Started At', value: 'startedAt' },
+  { label: 'Status', value: 'status' },
+  { label: 'Structured Data', value: 'structuredData' },
+  { label: 'Summary', value: 'summary' },
+  { label: 'Tags', value: 'tags' },
+  { label: 'Transcript', value: 'transcript' },
+  { label: 'Bot Assistant ID', value: 'botAssistantId' },
+  { label: 'Bot Phone Number ID', value: 'botPhoneNumberId' },
+])
 
 definePageMeta({ middleware: "auth" })
 
@@ -133,12 +236,14 @@ const loading = ref({
   notifications: false,
   integrations: false,
   app: false,
-  module: false
+  module: false,
+  postCall: false
 })
 
 const profileForm = ref({
-  name: '',
-  email: '',
+  name: user.value?.name,
+  email: user.value?.email,
+  phoneNumber: user.value?.notifPhone,
   currentPassword: '',
   newPassword: ''
 })
@@ -149,6 +254,19 @@ const notificationForm = ref({
   analyticsReports: true,
   systemAlerts: true
 })
+const postCallSettings = ref<any>({});
+const postCallForm = ref(postCallSettings.value?.value ? JSON.parse(postCallSettings.value?.value) : {
+  tagKey: '',
+  tagValue: '',
+  serverAddress: '',
+  businessPhoneNumber: '',
+  templateMessageId: '',
+  variables: []
+});
+
+const addVariable = () => {
+  postCallForm.value.variables.push('')
+}
 
 const integrationForm = ref({
   apiKey: '',
@@ -170,6 +288,7 @@ const appForm = ref({
 })
 
 const moduleSettings = ref<Module[]>([]);
+
 const settingStore = useSettingStore();
 
 const toggleEnable = (module: Module) => {
@@ -191,11 +310,17 @@ watch(() => appForm.value.theme, (newTheme) => {
 
 onMounted(async () => {
   const response = await fetch('/api/settings/module');
+  const responsePostCall = await fetch('/api/settings/postCall');
   const data = await response.json();
+  const dataPostCall = await responsePostCall.json();
+  console.log(dataPostCall)
   if(data.success) {
     moduleSettings.value = data.modules;
+    postCallSettings.value = JSON.parse(dataPostCall.postCallSettings.value);
+    postCallForm.value = postCallSettings.value;
   } else {
     moduleSettings.value = modules;
+    postCallSettings.value = {};
   }
   
 })
@@ -205,11 +330,30 @@ async function saveProfile() {
   try {
     // Save profile logic
     await new Promise(resolve => setTimeout(resolve, 1000))
+    await updateUserNotifPhone(profileForm.value.phoneNumber)
     useToast().add({ title: 'Profile updated', color: 'success' })
   } catch (error) {
     useToast().add({ title: 'Error saving profile', color: 'error' })
   } finally {
     loading.value.profile = false
+  }
+}
+
+async function savePostCallSettings() {
+  loading.value.postCall = true
+  try {
+    const response = await $fetch('/api/settings/postCall', {
+      method: 'POST',
+      body: {
+        ...postCallForm.value
+      }
+    })
+    useToast().add({ title: 'Post call settings saved', color: 'success' })
+  } catch (error) {
+    useToast().add({ title: 'Error saving post call settings', color: 'error' })
+  } finally {
+    loading.value.postCall = false
+    settingStore.startReload()
   }
 }
 

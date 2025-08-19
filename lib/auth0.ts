@@ -131,12 +131,15 @@ export class Auth0ManagementClient {
             }
         )
 
+        console.log(userId, metadata);
+
         if (!response.ok) {
             const error = await response.json()
             throw new Error(`Failed to update user metadata: ${JSON.stringify(error)}`)
         }
 
         const user = await response.json()
+        console.log(user.app_metadata);
         return user.app_metadata
     }
 }

@@ -14,6 +14,7 @@ export default defineEventHandler(async (event) => {
     // Create new assistant using the VAPI client
     const newAssistant = await vapiProvider.createAssistant(body);
     
+    console.log("New assistant created:", newAssistant)
     return newAssistant;
   } catch (error: any) {
     throw createError({
