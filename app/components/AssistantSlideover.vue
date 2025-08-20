@@ -77,6 +77,81 @@
                   </div>
                 </div>
               </div>
+              <div v-if="item.value === 'postCall'" class="space-y-2">
+                <UCard>
+                  <template #header>
+                    <h2 class="text-xl font-semibold">Post Call Settings</h2>
+                  </template>
+                  <UForm :state="postCallForm" class="space-y-4">
+                    <UFormField label="Criteria">
+                      <div class="flex gap-2">
+                        <USelect
+                          v-model="postCallForm.tagKey"
+                          :items="tagKeys"
+                          placeholder="Select Tag Key"
+                          class="w-1/2"
+                          option-attribute="label"
+                          value-attribute="value"
+                        />
+                        <USelect
+                          v-model="postCallForm.tagValue"
+                          :items="tagValues"
+                          placeholder="Select Tag Value"
+                          class="w-1/2"
+                          option-attribute="label"
+                          value-attribute="value"
+                        />
+                      </div>
+                    </UFormField>
+                    <UFormField label="Server Address">
+                      <UInput 
+                        v-model="postCallForm.serverAddress" 
+                        type="url" 
+                        placeholder="https://your-instance.keyrepy.com"
+                        icon="i-heroicons-link" 
+                        class="w-full"
+                      />
+                    </UFormField>
+                    <UFormField label="Business Phone Number">
+                      <UInput 
+                        v-model="postCallForm.businessPhoneNumber" 
+                        type="text" 
+                        placeholder="1234567890"
+                        class="w-full"
+                      />
+                    </UFormField>
+                    <UFormField label="Template Message ID">
+                      <UInput 
+                        v-model="postCallForm.templateMessageId" 
+                        type="text" 
+                        placeholder="template_id_123"
+                        class="w-full"
+                      />
+                    </UFormField>
+                    <div class="border border-muted p-4 border-dashed">
+                      <UFormField label="Variables" class="space-y-4">
+                        <div class="space-y-2">
+                          <div v-for="variable,index in postCallForm.variables" :key="index" class="flex justify-center items-center gap-2"> 
+                            <div>&#123;&#123;{{ index + 1 }}&#125;&#125;</div>
+                            <USelect
+                              v-model="postCallForm.variables[index]"
+                              :key="index"
+                              :items="callVariables"
+                              placeholder="Select Variable"
+                              class="w-full"
+                              option-attribute="label"
+                              value-attribute="value"
+                            />
+                            <UButton type="button" size="sm" class="cursor-pointer" color="error" @click="removeVariable(index)" icon="i-heroicons-trash"></UButton>
+                          </div>
+                          <UButton class="my-2" type="button" color="primary" @click="addVariable">Add Variable</UButton>
+                        </div>
+                      </UFormField>
+                    </div>
+                    <!--<UButton type="submit" color="primary" :loading="loading.postCall">Save Settings</UButton>-->
+                  </UForm>
+                </UCard>
+              </div>
             </div>
           </template>
         </UTabs>
@@ -114,6 +189,34 @@ const criteriaSlideover = overlay.create(CriteriaSlideover)
 
 const assistantState = useAssistantState()
 
+const tagKeys = ref([
+  { label: 'Result', value: 'Result' },
+]);
+
+const tagValues = ref([
+  { label: 'Follow Up', value: 'Follow Up' },
+  { label: 'Interested', value: 'Interested' },
+  { label: 'No Intent', value: 'No Intent' },
+  { label: 'Not Interested', value: 'Not Interested' },
+  { label: 'Other Language', value: 'Other Language' },
+  { label: 'Voicemail', value: 'Voicemail' },
+]);
+
+const callVariables = ref([
+  { label: 'Customer Name', value: 'name' },
+  { label: 'Customer Phone Number', value: 'number' },
+  { label: 'Customer Email', value: 'email' },
+])
+
+const postCallSettings = ref<any>({});
+const postCallForm = ref(postCallSettings.value?.value ? JSON.parse(postCallSettings.value?.value) : {
+  tagKey: '',
+  tagValue: '',
+  serverAddress: '',
+  businessPhoneNumber: '',
+  templateMessageId: '',
+  variables: []
+});
 const props = defineProps<{
   assistant: Assistant
 }>()
@@ -140,6 +243,11 @@ const tabs = computed(() => [
     label: t('assistant.analysis'),
     value: 'analysis',
     icon: 'i-lucide-chart-bar'
+  },
+  {
+    label: t('assistant.postCall'),
+    value: 'postCall',
+    icon: 'i-lucide-phone'
   }
 ])
 
@@ -169,6 +277,15 @@ const save = async () => {
       ...assistant.value.model,
       model: "gpt-5",
     };
+    if (postCallForm.value) {
+      const response = await $fetch('/api/settings/postCall', {
+        method: 'POST',
+        body: {
+          ...postCallForm.value,
+          assistantId: props.assistant.id
+        }
+      });
+    }
     // Save assistant logic here
     const updatedAssistant = await useFetch("/api/assistants/update", {
       method: "POST",
@@ -205,13 +322,27 @@ const openAddCriteria = () => {
 const deleteCriterion = (id: string) => {
   assistant.value.criteria = assistant.value.criteria?.filter(c => c.id !== id)
 }
-
-// Set current assistant in shared state
-onMounted(() => {
+onMounted(async () => {
   if (props.assistant) {
     assistantState.setAssistant(props.assistant)
   }
+  const responsePostCall = await fetch(`/api/settings/postCall?assistantId=${props.assistant.id}`);
+  const dataPostCall = await responsePostCall.json();
+  if(dataPostCall.success) {
+    postCallSettings.value = JSON.parse(dataPostCall.postCallSettings.value);
+    postCallForm.value = postCallSettings.value;
+  } else {
+    postCallSettings.value = {};
+  }
 })
+
+const addVariable = () => {
+  postCallForm.value.variables.push('')
+}
+
+function removeVariable(index: number) {
+  postCallForm.value.variables.splice(index, 1)
+}
 
 // Cleanup on unmount
 onUnmounted(() => {
