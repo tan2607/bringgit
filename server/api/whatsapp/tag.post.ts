@@ -40,7 +40,7 @@ export default defineEventHandler(async (event) => {
     const postCallSettingsData = JSON.parse(postCallSettings.value);
 
     const { tagKey, tagValue, serverAddress, businessPhoneNumber, templateMessageId, variables } = postCallSettingsData;
-    if (!tagKey || !tagValue || !serverAddress || !businessPhoneNumber || !templateMessageId || !variables) {
+    if (!tagKey || !serverAddress || !businessPhoneNumber || !templateMessageId || !variables) {
       throw createError({
         statusCode: 400,
         message: 'Assistant post call settings are not configured'
