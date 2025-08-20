@@ -47,7 +47,7 @@ export default defineEventHandler(async (event) => {
       })
     } 
 
-    if (message.analysis?.structuredData?.[tagKey as string] !== tagValue) {
+    if (tagKey !== 'None' && message.analysis?.structuredData?.[tagKey as string] !== tagValue) {
       return;
     }
 
