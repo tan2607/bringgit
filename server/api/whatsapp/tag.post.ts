@@ -24,9 +24,10 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
+    const assistantId = message.call?.assistantId;
     const db = useDrizzle();
     const postCallSettings = await db.query.settings.findFirst({
-      where: eq(settings.key, "post-call")
+      where: eq(settings.key, `${assistantId}-post-call`)
     });
 
     if (!postCallSettings) {
@@ -39,8 +40,13 @@ export default defineEventHandler(async (event) => {
     const postCallSettingsData = JSON.parse(postCallSettings.value);
 
     const { tagKey, tagValue, serverAddress, businessPhoneNumber, templateMessageId, variables } = postCallSettingsData;
+    if (!tagKey || !tagValue || !serverAddress || !businessPhoneNumber || !templateMessageId || !variables) {
+      throw createError({
+        statusCode: 400,
+        message: 'Assistant post call settings are not configured'
+      })
+    } 
 
-    console.log(tagKey, tagValue, serverAddress, businessPhoneNumber, templateMessageId, variables);
     if (message.analysis?.structuredData?.[tagKey as string] !== tagValue) {
       return;
     }
@@ -86,23 +92,23 @@ export default defineEventHandler(async (event) => {
     const perPage = 50; // hoặc 100 max
     let allUsers: any[] = [];
     let total = 0;
-    
-      while (true) {
-        const res: any = await auth0Management.getUsers({
-          q: `app_metadata.assistants:"${message.call?.assistantId}" OR app_metadata.botPhoneNumbers:"${message.call?.phoneNumberId}" OR app_metadata.permissions: superadmin`,
-          page,
-          per_page: perPage,
-          include_totals: true,
-          fields: 'user_id,email,name,picture,app_metadata,created_at,last_login',
-          sort: 'name:1',
-        });
-    
-        allUsers = allUsers.concat(res.users);
-        total = res.total;
-    
-        if (allUsers.length >= total) break;
-        page++;
-      }
+
+    while (true) {
+      const res: any = await auth0Management.getUsers({
+        q: `app_metadata.assistants:"${message.call?.assistantId}" OR app_metadata.botPhoneNumbers:"${message.call?.phoneNumberId}" OR app_metadata.permissions: superadmin`,
+        page,
+        per_page: perPage,
+        include_totals: true,
+        fields: 'user_id,email,name,picture,app_metadata,created_at,last_login',
+        sort: 'name:1',
+      });
+
+      allUsers = allUsers.concat(res.users);
+      total = res.total;
+
+      if (allUsers.length >= total) break;
+      page++;
+    }
 
     const phones = [];
     for (let i = 0; i < allUsers.length; i++) {
@@ -110,8 +116,6 @@ export default defineEventHandler(async (event) => {
         phones.push(allUsers[i].app_metadata.notifPhone);
       }
     }
-
-    console.log(JSON.stringify(phones));
 
     const messages = phones.map((phone: string) => {
       const parameters: any = {};
@@ -123,30 +127,27 @@ export default defineEventHandler(async (event) => {
         parameters
       }
     })
-    
-    const sendBody = 
-      {
-        "wa_endpoint": businessPhoneNumber,
-        "template": {
-          "name": template.name,
-          "components": template.components,
-          "language": template.language
-        },
-        messages,
-        "media": {}
-      }
 
+    const sendBody =
+    {
+      "wa_endpoint": businessPhoneNumber,
+      "template": {
+        "name": template.name,
+        "components": template.components,
+        "language": template.language
+      },
+      messages,
+      "media": {}
+    }
 
-      console.log(JSON.stringify(sendBody));
-    
-      await fetch(sendEndpoint, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Basic ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(sendBody),
-      });
+    await fetch(sendEndpoint, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Basic ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(sendBody),
+    });
 
     return {
       success: true,
