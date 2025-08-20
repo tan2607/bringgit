@@ -191,6 +191,7 @@ const assistantState = useAssistantState()
 
 const tagKeys = ref([
   { label: 'Result', value: 'Result' },
+  { label: 'None', value: 'None' },
 ]);
 
 const tagValues = ref([
