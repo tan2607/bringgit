@@ -75,6 +75,8 @@ export default {
     'name': 'Assistant Name',
     'language': 'Agent Language',
     'agent': 'Agent',
+    'postCall': 'Post Call',
+    'analysis': 'Analysis',
     'firstMessage': 'First Message',
     'firstMessage-help': 'The initial message the assistant will send',
     'language-help': 'The primary language for the assistant',

@@ -99,80 +99,6 @@
         </UForm>
       </UCard>
 
-      <UCard>
-        <template #header>
-          <h2 class="text-xl font-semibold">Post Call Settings</h2>
-        </template>
-        <UForm :state="postCallForm" class="space-y-4 w-1/2" @submit="savePostCallSettings">
-          <UFormField label="Criteria">
-           <div class="flex gap-2">
-            <USelect
-              v-model="postCallForm.tagKey"
-              :items="tagKeys"
-              placeholder="Select Tag Key"
-              class="w-1/2"
-              option-attribute="label"
-              value-attribute="value"
-            />
-            <USelect
-              v-model="postCallForm.tagValue"
-              :items="tagValues"
-              placeholder="Select Tag Value"
-              class="w-1/2"
-              option-attribute="label"
-              value-attribute="value"
-            />
-           </div>
-          </UFormField>
-          <UFormField label="Server Address">
-            <UInput 
-              v-model="postCallForm.serverAddress" 
-              type="url" 
-              placeholder="https://your-instance.keyrepy.com"
-              icon="i-heroicons-link" 
-              class="w-full"
-            />
-          </UFormField>
-          <UFormField label="Business Phone Number">
-            <UInput 
-              v-model="postCallForm.businessPhoneNumber" 
-              type="text" 
-              placeholder="1234567890"
-              class="w-full"
-            />
-          </UFormField>
-          <UFormField label="Template Message ID">
-            <UInput 
-              v-model="postCallForm.templateMessageId" 
-              type="text" 
-              placeholder="template_id_123"
-              class="w-full"
-            />
-          </UFormField>
-          <div class="border border-muted p-4 border-dashed">
-            <UFormField label="Variables" class="space-y-4">
-            <div class="space-y-2">
-              <div v-for="variable,index in postCallForm.variables" :key="index" class="flex justify-center items-center gap-2"> 
-                <div>&#123;&#123;{{ index + 1 }}&#125;&#125;</div>
-                <USelect
-                  v-model="postCallForm.variables[index]"
-                  :key="index"
-                :items="callVariables"
-                placeholder="Select Variable"
-                class="w-full"
-                option-attribute="label"
-                value-attribute="value"
-              />
-              <UButton type="button" size="sm" class="cursor-pointer" color="error" @click="removeVariable(index)" icon="i-heroicons-trash"></UButton>
-              </div>
-              <UButton class="my-2" type="button" color="primary" @click="addVariable">Add Variable</UButton>
-            </div>
-            </UFormField>
-          </div>
-          <UButton type="submit" color="primary" :loading="loading.app">Save Settings</UButton>
-        </UForm>
-      </UCard>
-
       <!-- Module Settings -->
       <UCard>
         <template #header>
@@ -207,25 +133,6 @@ import { useUserManagement } from '@/composables/useUserManagement'
 const { updateUserNotifPhone } = useUserManagement()
 const { isAdmin, user } = useUser()
 
-const tagKeys = ref([
-  { label: 'Result', value: 'Result' },
-]);
-
-const tagValues = ref([
-  { label: 'Follow Up', value: 'Follow Up' },
-  { label: 'Interested', value: 'Interested' },
-  { label: 'No Intent', value: 'No Intent' },
-  { label: 'Not Interested', value: 'Not Interested' },
-  { label: 'Other Language', value: 'Other Language' },
-  { label: 'Voicemail', value: 'Voicemail' },
-]);
-
-const callVariables = ref([
-  { label: 'Customer Name', value: 'name' },
-  { label: 'Customer Phone Number', value: 'number' },
-  { label: 'Customer Email', value: 'email' },
-])
-
 definePageMeta({ middleware: "auth" })
 
 const loading = ref({
@@ -251,19 +158,6 @@ const notificationForm = ref({
   analyticsReports: true,
   systemAlerts: true
 })
-const postCallSettings = ref<any>({});
-const postCallForm = ref(postCallSettings.value?.value ? JSON.parse(postCallSettings.value?.value) : {
-  tagKey: '',
-  tagValue: '',
-  serverAddress: '',
-  businessPhoneNumber: '',
-  templateMessageId: '',
-  variables: []
-});
-
-const addVariable = () => {
-  postCallForm.value.variables.push('')
-}
 
 const integrationForm = ref({
   apiKey: '',
@@ -307,17 +201,11 @@ watch(() => appForm.value.theme, (newTheme) => {
 
 onMounted(async () => {
   const response = await fetch('/api/settings/module');
-  const responsePostCall = await fetch('/api/settings/postCall');
   const data = await response.json();
-  const dataPostCall = await responsePostCall.json();
-  console.log(dataPostCall)
   if(data.success) {
     moduleSettings.value = data.modules;
-    postCallSettings.value = JSON.parse(dataPostCall.postCallSettings.value);
-    postCallForm.value = postCallSettings.value;
   } else {
     moduleSettings.value = modules;
-    postCallSettings.value = {};
   }
   
 })
@@ -333,24 +221,6 @@ async function saveProfile() {
     useToast().add({ title: 'Error saving profile', color: 'error' })
   } finally {
     loading.value.profile = false
-  }
-}
-
-async function savePostCallSettings() {
-  loading.value.postCall = true
-  try {
-    const response = await $fetch('/api/settings/postCall', {
-      method: 'POST',
-      body: {
-        ...postCallForm.value
-      }
-    })
-    useToast().add({ title: 'Post call settings saved', color: 'success' })
-  } catch (error) {
-    useToast().add({ title: 'Error saving post call settings', color: 'error' })
-  } finally {
-    loading.value.postCall = false
-    settingStore.startReload()
   }
 }
 
@@ -406,10 +276,6 @@ async function saveModuleSettings() {
     settingStore.startReload()
   }
 
-}
-
-function removeVariable(index: number) {
-  postCallForm.value.variables.splice(index, 1)
 }
 
 </script>
