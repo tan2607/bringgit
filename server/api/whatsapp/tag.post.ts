@@ -7,6 +7,13 @@ interface WebhookPayLoad {
     analysis?: {
       structuredData?: Record<string, string>;
     };
+    analysisPlan?: {
+      structuredDataPlan?: {
+        schema?: {
+          properties?: Record<string, any>;
+        };
+      };
+    };
   };
 }
 import { settings } from "@@/server/database/schema";
@@ -128,6 +135,10 @@ export default defineEventHandler(async (event) => {
         for (let i = 0; i < variables.length; i++) {
           if(variables[i] === 'recordingUrl') {
             parameters[`p${i + 1}`] = transformRecordingUrl((message as any).recordingUrl, host);
+          } else if(variables[i].startsWith('structuredData_')) {
+            const key = variables[i].replace('structuredData_', '');
+            const structuredData = message.analysis?.structuredData || {};
+            parameters[`p${i + 1}`] = `${key}:${structuredData[key] || 'No data available'}`;
           } else {
             parameters[`p${i + 1}`] = (message as any).customer?.[variables[i] as string];
           }
