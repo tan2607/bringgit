@@ -484,6 +484,22 @@ onMounted(async () => {
     assistantState.setAssistant(props.assistant)
   }
   
+  // Get structured data from assistant's analysis plan
+  if (props.assistant?.analysisPlan?.structuredDataPlan?.schema?.properties) {
+    const schemaProperties = props.assistant.analysisPlan.structuredDataPlan.schema.properties;
+    
+    // Add schema keys to callVariables
+    const schemaVariables = Object.keys(schemaProperties).map(key => ({
+      label: key,
+      value: `structuredData_${key}`
+    }));
+    
+    callVariables.value = [
+      ...callVariables.value,
+      ...schemaVariables
+    ];
+  }
+  
   // Load existing post call configurations
   try {
     const responsePostCall = await fetch(`/api/settings/postCall?assistantId=${props.assistant.id}`);
@@ -511,12 +527,6 @@ onMounted(async () => {
           }];
         }
       }
-    }
-
-    const analysisPlan = props.assistant.analysisPlan;
-    if(analysisPlan?.structuredDataPlan && analysisPlan?.structuredDataPlan.enabled) {
-      const { properties } = analysisPlan.structuredDataPlan.schema;
-      console.log(properties)
     }
   } catch (error) {
     console.error('Error loading post call settings:', error);

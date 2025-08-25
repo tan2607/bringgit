@@ -29,3 +29,6 @@ livekit
 
 # windsurf rules
 .windsurfrules
+
+# Claude Code configuration
+CLAUDE.md
