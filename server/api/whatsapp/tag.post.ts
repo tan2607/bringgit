@@ -13,6 +13,7 @@ import { settings } from "@@/server/database/schema";
 import { auth0Management } from "~~/lib/auth0";
 
 export default defineEventHandler(async (event) => {
+  const host = getRequestHost(event)
   const body = await readBody(event)
   const message = body as WebhookPayLoad;
 
@@ -37,59 +38,12 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    const postCallSettingsData = JSON.parse(postCallSettings.value);
+    const raw = JSON.parse(postCallSettings.value);
+    const configs = Array.isArray(raw?.configurations) ? raw.configurations : [raw];
 
-    const { tagKey, tagValue, serverAddress, businessPhoneNumber, templateMessageId, variables } = postCallSettingsData;
-    if (!tagKey || !serverAddress || !businessPhoneNumber || !templateMessageId || !variables) {
-      throw createError({
-        statusCode: 400,
-        message: 'Assistant post call settings are not configured'
-      })
-    } 
-
-    if (tagKey !== 'None' && message.analysis?.structuredData?.[tagKey as string] !== tagValue) {
-      return;
-    }
-
-    const getTemplateMessagEndpoint = `${serverAddress}/server/api/whatsapp_get_message_templates_ext`;
-    const sendEndpoint = `${serverAddress}/server/api/whatsapp_send_template_message`;
-
-    const getBody = {
-      "wa_endpoint": businessPhoneNumber
-    }
-    const username = process.env.WHATSAPP_USERNAME;
-    const password = process.env.WHATSAPP_PASSWORD;
-    const token = btoa(`${username}:${password}`);
-
-    const getTemplateResponse = await fetch(getTemplateMessagEndpoint, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Basic ${token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(getBody),
-    })
-
-    const getTemplateResult = await getTemplateResponse.json();
-
-    if (!getTemplateResponse.ok) {
-      throw createError({
-        statusCode: getTemplateResponse.status,
-        message: getTemplateResult.message || 'Failed to send SMS'
-      })
-    }
-
-    const template = getTemplateResult.find((template: any) => template.name === templateMessageId && template.status === 'APPROVED');
-
-    if (!template) {
-      throw createError({
-        statusCode: 400,
-        message: 'Template not found'
-      })
-    }
-
+    // Fetch users once (shared across configurations)
     let page = 0;
-    const perPage = 50; // hoặc 100 max
+    const perPage = 50; // or 100 max
     let allUsers: any[] = [];
     let total = 0;
 
@@ -110,48 +64,107 @@ export default defineEventHandler(async (event) => {
       page++;
     }
 
-    const phones = [];
+    const phones: string[] = [];
     for (let i = 0; i < allUsers.length; i++) {
-      if (allUsers[i].app_metadata.notifPhone) {
+      if (allUsers[i].app_metadata?.notifPhone) {
         phones.push(allUsers[i].app_metadata.notifPhone);
       }
     }
 
-    const messages = phones.map((phone: string) => {
-      const parameters: any = {};
-      for (let i = 0; i < variables.length; i++) {
-        parameters[`p${i + 1}`] = message.customer?.[variables[i] as string];
-      }
-      return {
-        "phone_number": phone,
-        parameters
-      }
-    })
+    const username = process.env.WHATSAPP_USERNAME;
+    const password = process.env.WHATSAPP_PASSWORD;
+    const token = btoa(`${username}:${password}`);
 
-    const sendBody =
-    {
-      "wa_endpoint": businessPhoneNumber,
-      "template": {
-        "name": template.name,
-        "components": template.components,
-        "language": template.language
-      },
-      messages,
-      "media": {}
+    const results: Array<{ configIndex: number; sent: boolean; skipped?: string; error?: string; }> = [];
+
+    for (let idx = 0; idx < configs.length; idx++) {
+      const cfg = configs[idx] || {};
+      const { tagKey, tagValue, serverAddress, businessPhoneNumber, templateMessageId, variables } = cfg as any;
+
+      // Validate minimal config
+      if (!serverAddress || !businessPhoneNumber || !templateMessageId || !variables) {
+        results.push({ configIndex: idx, sent: false, error: 'Invalid configuration: missing required fields' });
+        continue;
+      }
+
+      // Tag filter (optional)
+      if (tagKey && tagKey !== 'None') {
+        const actual = message.analysis?.structuredData?.[tagKey as string];
+        if (actual !== tagValue) {
+          results.push({ configIndex: idx, sent: false, skipped: `Tag mismatch for key ${tagKey}` });
+          continue;
+        }
+      }
+
+      const getTemplateMessagEndpoint = `${serverAddress}/server/api/whatsapp_get_message_templates_ext`;
+      const sendEndpoint = `${serverAddress}/server/api/whatsapp_send_template_message`;
+
+      const getBody = { "wa_endpoint": businessPhoneNumber };
+
+      const getTemplateResponse = await fetch(getTemplateMessagEndpoint, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Basic ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(getBody),
+      })
+
+      const getTemplateResult = await getTemplateResponse.json();
+
+      if (!getTemplateResponse.ok) {
+        results.push({ configIndex: idx, sent: false, error: getTemplateResult?.message || 'Failed to get templates' });
+        continue;
+      }
+
+      const template = getTemplateResult.find((t: any) => t.name === templateMessageId && t.status === 'APPROVED');
+      if (!template) {
+        results.push({ configIndex: idx, sent: false, error: 'Template not found' });
+        continue;
+      }
+
+      const messages = phones.map((phone: string) => {
+        const parameters: Record<string, any> = {};
+        for (let i = 0; i < variables.length; i++) {
+          if(variables[i] === 'recordingUrl') {
+            parameters[`p${i + 1}`] = transformRecordingUrl((message as any).recordingUrl, host);
+          } else {
+            parameters[`p${i + 1}`] = (message as any).customer?.[variables[i] as string];
+          }
+        }
+        return { phone_number: phone, parameters };
+      });
+
+      const sendBody = {
+        wa_endpoint: businessPhoneNumber,
+        template: {
+          name: template.name,
+          components: template.components,
+          language: template.language,
+        },
+        messages,
+        media: {},
+      };
+
+      try {
+        await fetch(sendEndpoint, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Basic ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(sendBody),
+        });
+        results.push({ configIndex: idx, sent: true, sendBody: sendBody });
+      } catch (e: any) {
+        results.push({ configIndex: idx, sent: false, error: e?.message || 'Failed to send' });
+      }
     }
-
-    await fetch(sendEndpoint, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Basic ${token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(sendBody),
-    });
 
     return {
       success: true,
-      message: 'Message sent successfully',
+      message: 'Processed post-call configurations',
+      results,
     }
   } catch (error: any) {
     console.error('❌ SMS Send Error:', {
@@ -170,3 +183,10 @@ export default defineEventHandler(async (event) => {
     }
   }
 })
+
+
+const transformRecordingUrl = (originalUrl: string, host: string) => {
+  if (!originalUrl) return ''
+  const path = originalUrl.replace('https://storage.vapi.ai/', '')
+  return `https://${host}/api/recording/${path}`
+}

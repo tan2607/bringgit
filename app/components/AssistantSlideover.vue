@@ -77,80 +77,164 @@
                   </div>
                 </div>
               </div>
-              <div v-if="item.value === 'postCall'" class="space-y-2">
-                <UCard>
-                  <template #header>
-                    <h2 class="text-xl font-semibold">Post Call Settings</h2>
-                  </template>
-                  <UForm :state="postCallForm" class="space-y-4">
-                    <UFormField label="Criteria">
-                      <div class="flex gap-2">
-                        <USelect
-                          v-model="postCallForm.tagKey"
-                          :items="tagKeys"
-                          placeholder="Select Tag Key"
-                          class="w-1/2"
-                          option-attribute="label"
-                          value-attribute="value"
-                        />
-                        <USelect
-                          v-model="postCallForm.tagValue"
-                          :items="tagValues"
-                          placeholder="Select Tag Value"
-                          class="w-1/2"
-                          option-attribute="label"
-                          value-attribute="value"
-                        />
+
+              <!-- Post Call Tab with Multiple Panels -->
+              <div v-if="item.value === 'postCall'" class="space-y-4">
+                <div class="flex items-center justify-between">
+                  <h2 class="text-xl font-semibold">Post Call Settings</h2>
+                  <UButton color="primary" variant="soft" icon="i-lucide-plus" @click="addPostCallPanel">
+                    Add Configuration
+                  </UButton>
+                </div>
+
+                <!-- Multiple Post Call Configuration Panels -->
+                <div v-if="postCallConfigurations.length > 0" class="space-y-4">
+                  <UCard v-for="(config, index) in postCallConfigurations" :key="config.id" :ui="{ body: `${config.isExpanded ? 'block' : 'hidden'}`}" 
+                    class="relative border-l-4" 
+                    :class="getConfigCardClass(config)">
+                    <template #header>
+                      <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                          <h3 class="font-medium">
+                            Configuration {{ index + 1 }}
+                          </h3>
+                        </div>
+                        <div class="flex items-center gap-2">
+                          <UButton 
+                            color="gray" 
+                            variant="ghost" 
+                            size="xs"
+                            :icon="config.isExpanded ? 'i-lucide-chevron-up' : 'i-lucide-chevron-down'"
+                            @click="config.isExpanded = !config.isExpanded"
+                          />
+                          <UButton 
+                            color="error" 
+                            variant="ghost" 
+                            icon="i-lucide-trash-2" 
+                            size="xs"
+                            @click="removePostCallPanel(config.id)" 
+                          />
+                        </div>
                       </div>
-                    </UFormField>
-                    <UFormField label="Server Address">
-                      <UInput 
-                        v-model="postCallForm.serverAddress" 
-                        type="url" 
-                        placeholder="https://your-instance.keyrepy.com"
-                        icon="i-heroicons-link" 
-                        class="w-full"
-                      />
-                    </UFormField>
-                    <UFormField label="Business Phone Number">
-                      <UInput 
-                        v-model="postCallForm.businessPhoneNumber" 
-                        type="text" 
-                        placeholder="1234567890"
-                        class="w-full"
-                      />
-                    </UFormField>
-                    <UFormField label="Template Message ID">
-                      <UInput 
-                        v-model="postCallForm.templateMessageId" 
-                        type="text" 
-                        placeholder="template_id_123"
-                        class="w-full"
-                      />
-                    </UFormField>
-                    <div class="border border-muted p-4 border-dashed">
-                      <UFormField label="Variables" class="space-y-4">
-                        <div class="space-y-2">
-                          <div v-for="variable,index in postCallForm.variables" :key="index" class="flex justify-center items-center gap-2"> 
-                            <div>&#123;&#123;{{ index + 1 }}&#125;&#125;</div>
+                    </template>
+
+                    <div>
+                      <UForm :state="config" class="space-y-4">
+                        <UFormField label="Criteria">
+                          <div class="flex gap-2">
                             <USelect
-                              v-model="postCallForm.variables[index]"
-                              :key="index"
-                              :items="callVariables"
-                              placeholder="Select Variable"
-                              class="w-full"
+                              v-model="config.tagKey"
+                              :items="tagKeys"
+                              placeholder="Select Tag Key"
+                              class="w-1/2"
                               option-attribute="label"
                               value-attribute="value"
                             />
-                            <UButton type="button" size="sm" class="cursor-pointer" color="error" @click="removeVariable(index)" icon="i-heroicons-trash"></UButton>
+                            <USelect
+                              v-model="config.tagValue"
+                              :items="getTagValues(config.tagKey)"
+                              placeholder="Select Tag Value"
+                              class="w-1/2"
+                              option-attribute="label"
+                              value-attribute="value"
+                            />
                           </div>
-                          <UButton class="my-2" type="button" color="primary" @click="addVariable">Add Variable</UButton>
+                        </UFormField>
+                        
+                        <UFormField label="Server Address">
+                          <UInput 
+                            v-model="config.serverAddress" 
+                            type="url" 
+                            placeholder="https://your-instance.keyrepy.com"
+                            icon="i-heroicons-link" 
+                            class="w-full"
+                          />
+                        </UFormField>
+                        
+                        <UFormField label="Business Phone Number">
+                          <UInput 
+                            v-model="config.businessPhoneNumber" 
+                            type="text" 
+                            placeholder="1234567890"
+                            class="w-full"
+                          />
+                        </UFormField>
+                        
+                        <UFormField label="Template Message ID">
+                          <UInput 
+                            v-model="config.templateMessageId" 
+                            type="text" 
+                            placeholder="template_id_123"
+                            class="w-full"
+                          />
+                        </UFormField>
+                        
+                        <div class="border border-dashed border-gray-300 dark:border-gray-600 p-4 rounded-lg">
+                          <UFormField label="Variables" class="space-y-4">
+                            <div class="space-y-2">
+                              <div v-for="(variable, varIndex) in config.variables" :key="varIndex" 
+                                class="flex justify-center items-center gap-2"> 
+                                <div class="text-sm font-mono bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">
+                                  &#123;&#123;{{ varIndex + 1 }}&#125;&#125;
+                                </div>
+                                <USelect
+                                  v-model="config.variables[varIndex]"
+                                  :items="callVariables"
+                                  placeholder="Select Variable"
+                                  class="w-full"
+                                  option-attribute="label"
+                                  value-attribute="value"
+                                />
+                                <UButton 
+                                  type="button" 
+                                  size="sm" 
+                                  color="error" 
+                                  variant="ghost"
+                                  @click="removeVariable(config, varIndex)" 
+                                  icon="i-heroicons-trash"
+                                />
+                              </div>
+                              <UButton 
+                                class="mt-2" 
+                                type="button" 
+                                color="primary" 
+                                variant="soft"
+                                size="sm"
+                                @click="addVariable(config)"
+                                icon="i-lucide-plus"
+                              >
+                                Add Variable
+                              </UButton>
+                            </div>
+                          </UFormField>
                         </div>
-                      </UFormField>
+
+                        <!-- Configuration Status -->
+                        <div class="flex items-center gap-2 p-3 rounded-lg" 
+                          :class="isConfigurationValid(config) ? 'bg-green-50 dark:bg-green-900/20' : 'bg-red-50 dark:bg-red-900/20'">
+                          <UIcon 
+                            :name="isConfigurationValid(config) ? 'i-lucide-check-circle' : 'i-lucide-alert-circle'" 
+                            :class="isConfigurationValid(config) ? 'text-green-500' : 'text-red-500'"
+                            class="w-4 h-4"
+                          />
+                          <span class="text-sm" 
+                            :class="isConfigurationValid(config) ? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'">
+                            {{ isConfigurationValid(config) ? 'Configuration is valid' : 'Please fill all required fields' }}
+                          </span>
+                        </div>
+                      </UForm>
                     </div>
-                    <!--<UButton type="submit" color="primary" :loading="loading.postCall">Save Settings</UButton>-->
-                  </UForm>
-                </UCard>
+                  </UCard>
+                </div>
+
+                <div v-else class="text-center py-12 text-gray-500">
+                  <UIcon name="i-lucide-settings" class="w-12 h-12 mx-auto mb-4 opacity-50" />
+                  <p class="text-lg font-medium mb-2">No post call configurations</p>
+                  <p class="text-sm">Add a configuration to set up post call actions based on different criteria.</p>
+                  <UButton color="primary" class="mt-4" @click="addPostCallPanel" icon="i-lucide-plus">
+                    Add Your First Configuration
+                  </UButton>
+                </div>
               </div>
             </div>
           </template>
@@ -194,30 +278,28 @@ const tagKeys = ref([
   { label: 'None', value: 'None' },
 ]);
 
-const tagValues = ref([
-  { label: 'Follow Up', value: 'Follow Up' },
-  { label: 'Interested', value: 'Interested' },
-  { label: 'No Intent', value: 'No Intent' },
-  { label: 'Not Interested', value: 'Not Interested' },
-  { label: 'Other Language', value: 'Other Language' },
-  { label: 'Voicemail', value: 'Voicemail' },
-]);
+const tagValuesByKey = ref({
+  'Result': [
+    { label: 'Follow Up', value: 'Follow Up' },
+    { label: 'Interested', value: 'Interested' },
+    { label: 'No Intent', value: 'No Intent' },
+    { label: 'Not Interested', value: 'Not Interested' },
+    { label: 'Other Language', value: 'Other Language' },
+    { label: 'Voicemail', value: 'Voicemail' },
+  ],
+  'None': []
+});
 
 const callVariables = ref([
   { label: 'Customer Name', value: 'name' },
   { label: 'Customer Phone Number', value: 'number' },
   { label: 'Customer Email', value: 'email' },
+  { label: 'Recording URL', value: 'recordingUrl' },
 ])
 
-const postCallSettings = ref<any>({});
-const postCallForm = ref(postCallSettings.value?.value ? JSON.parse(postCallSettings.value?.value) : {
-  tagKey: '',
-  tagValue: '',
-  serverAddress: '',
-  businessPhoneNumber: '',
-  templateMessageId: '',
-  variables: []
-});
+// Multiple post call configurations
+const postCallConfigurations = ref<PostCallConfiguration[]>([]);
+
 const props = defineProps<{
   assistant: Assistant
 }>()
@@ -264,13 +346,84 @@ const isValid = computed(() => {
     assistant.value.model?.messages?.[0]?.content
 })
 
+// Generate unique ID for configurations
+const generateId = () => {
+  return Date.now().toString(36) + Math.random().toString(36).substr(2);
+}
+
+// Add new post call configuration panel
+const addPostCallPanel = () => {
+  const newConfig = {
+    id: generateId(),
+    tagKey: '',
+    tagValue: '',
+    serverAddress: '',
+    businessPhoneNumber: '',
+    templateMessageId: '',
+    variables: [],
+    isExpanded: true
+  };
+  postCallConfigurations.value.push(newConfig);
+}
+
+// Remove post call configuration panel
+const removePostCallPanel = (configId: string) => {
+  postCallConfigurations.value = postCallConfigurations.value.filter(config => config.id !== configId);
+}
+
+// Get tag values based on selected tag key
+const getTagValues = (tagKey: string) => {
+  return tagValuesByKey.value[tagKey] || [];
+}
+
+// Add variable to specific configuration
+const addVariable = (config: any) => {
+  config.variables.push('');
+}
+
+// Remove variable from specific configuration
+const removeVariable = (config: any, index: number) => {
+  config.variables.splice(index, 1);
+}
+
+// Check if configuration is valid
+const isConfigurationValid = (config: any) => {
+  return config.tagKey && 
+         config.tagValue && 
+         config.serverAddress && 
+         config.businessPhoneNumber && 
+         config.templateMessageId;
+}
+
+// Get card styling based on configuration status
+const getConfigCardClass = (config: any) => {
+  if (isConfigurationValid(config)) {
+    return 'border-l-green-500 bg-green-50/30 dark:bg-green-900/10';
+  } else {
+    return 'border-l-red-500 bg-red-50/30 dark:bg-red-900/10';
+  }
+}
 const close = () => {
   emit('close')
   assistantState.resetState()
 }
 
 const save = async () => {
-  if (!isValid.value) return
+  let isValid = true
+  postCallConfigurations.value.forEach(config => {
+    if (!isConfigurationValid(config)) {
+      isValid = false
+    }
+  })
+
+  if (!isValid) {
+    toast.add({
+      title: "Invalid configuration",
+      description: "Please check the post call configurations",
+      color: "error",
+    })
+    return
+  }
 
   isLoading.value = true
   try {
@@ -278,25 +431,27 @@ const save = async () => {
       ...assistant.value.model,
       model: "gpt-5",
     };
-    if (postCallForm.value) {
-      const response = await $fetch('/api/settings/postCall', {
+    
+    // Save all post call configurations
+    await $fetch('/api/settings/postCall', {
         method: 'POST',
         body: {
-          ...postCallForm.value,
+          configurations: postCallConfigurations.value,
           assistantId: props.assistant.id
         }
       });
-    }
+    
     // Save assistant logic here
     const updatedAssistant = await useFetch("/api/assistants/update", {
       method: "POST",
       body: assistant.value,
     });
+    
     emit("updated", updatedAssistant)
     emit("close");
     toast.add({
       title: "Assistant saved",
-      description: "Assistant saved successfully",
+      description: "Assistant and post call configurations saved successfully",
       color: "success",
     });
   } catch (error: any) {
@@ -323,27 +478,50 @@ const openAddCriteria = () => {
 const deleteCriterion = (id: string) => {
   assistant.value.criteria = assistant.value.criteria?.filter(c => c.id !== id)
 }
+
 onMounted(async () => {
   if (props.assistant) {
     assistantState.setAssistant(props.assistant)
   }
-  const responsePostCall = await fetch(`/api/settings/postCall?assistantId=${props.assistant.id}`);
-  const dataPostCall = await responsePostCall.json();
-  if(dataPostCall.success) {
-    postCallSettings.value = JSON.parse(dataPostCall.postCallSettings.value);
-    postCallForm.value = postCallSettings.value;
-  } else {
-    postCallSettings.value = {};
+  
+  // Load existing post call configurations
+  try {
+    const responsePostCall = await fetch(`/api/settings/postCall?assistantId=${props.assistant.id}`);
+    const dataPostCall = await responsePostCall.json();
+
+    console.log(dataPostCall)
+    
+    if (dataPostCall.success && dataPostCall.postCallSettings) {
+      // Handle both single configuration (backward compatibility) and multiple configurations
+      const configurations = JSON.parse(dataPostCall.postCallSettings.value || '{}').configurations
+      if (Array.isArray(configurations)) {
+        postCallConfigurations.value = configurations.map(config => ({
+          ...config,
+          id: config.id || generateId(),
+          isExpanded: false
+        }));
+      } else {
+        // Convert old single configuration to new format
+        const oldConfig = JSON.parse(dataPostCall.postCallSettings.value || '{}');
+        if (Object.keys(oldConfig).length > 0) {
+          postCallConfigurations.value = [{
+            ...oldConfig,
+            id: generateId(),
+            isExpanded: false
+          }];
+        }
+      }
+    }
+
+    const analysisPlan = props.assistant.analysisPlan;
+    if(analysisPlan?.structuredDataPlan && analysisPlan?.structuredDataPlan.enabled) {
+      const { properties } = analysisPlan.structuredDataPlan.schema;
+      console.log(properties)
+    }
+  } catch (error) {
+    console.error('Error loading post call settings:', error);
   }
 })
-
-const addVariable = () => {
-  postCallForm.value.variables.push('')
-}
-
-function removeVariable(index: number) {
-  postCallForm.value.variables.splice(index, 1)
-}
 
 // Cleanup on unmount
 onUnmounted(() => {
