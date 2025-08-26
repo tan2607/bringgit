@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1.4
 FROM oven/bun:1 AS deps
 WORKDIR /app
-COPY package.json bun.lockb ./
+COPY package.json bun.lock ./
 RUN bun install --frozen-lockfile
 
 FROM deps AS build-stage
@@ -12,7 +12,7 @@ RUN bun run build
 
 FROM oven/bun:1 AS production-deps
 WORKDIR /app
-COPY package.json bun.lockb ./
+COPY package.json bun.lock ./
 RUN bun install --frozen-lockfile --production
 
 FROM oven/bun:1 AS production-stage
