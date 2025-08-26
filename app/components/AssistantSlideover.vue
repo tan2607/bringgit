@@ -173,18 +173,26 @@
                           <UFormField label="Variables" class="space-y-4">
                             <div class="space-y-2">
                               <div v-for="(variable, varIndex) in config.variables" :key="varIndex" 
-                                class="flex justify-center items-center gap-2"> 
-                                <div class="text-sm font-mono bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">
+                                class="flex justify-center items-start gap-2"> 
+                                <div class="text-sm font-mono bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded mt-1">
                                   &#123;&#123;{{ varIndex + 1 }}&#125;&#125;
                                 </div>
-                                <USelect
-                                  v-model="config.variables[varIndex]"
-                                  :items="callVariables"
-                                  placeholder="Select Variable"
-                                  class="w-full"
-                                  option-attribute="label"
-                                  value-attribute="value"
-                                />
+                                <div class="flex-1 space-y-2">
+                                  <USelect
+                                    v-model="config.variables[varIndex]"
+                                    :items="callVariables"
+                                    placeholder="Select Variable"
+                                    class="w-full"
+                                    option-attribute="label"
+                                    value-attribute="value"
+                                  />
+                                  <UInput
+                                    v-if="config.variables[varIndex] === 'fixedValue'"
+                                    v-model="config.fixedValues[varIndex]"
+                                    placeholder="Enter fixed value"
+                                    class="w-full"
+                                  />
+                                </div>
                                 <UButton 
                                   type="button" 
                                   size="sm" 
@@ -192,6 +200,7 @@
                                   variant="ghost"
                                   @click="removeVariable(config, varIndex)" 
                                   icon="i-heroicons-trash"
+                                  class="mt-1"
                                 />
                               </div>
                               <UButton 
@@ -295,6 +304,7 @@ const callVariables = ref([
   { label: 'Customer Phone Number', value: 'number' },
   { label: 'Customer Email', value: 'email' },
   { label: 'Recording URL', value: 'recordingUrl' },
+  { label: 'Fixed Value', value: 'fixedValue' },
 ])
 
 // Multiple post call configurations
@@ -361,6 +371,7 @@ const addPostCallPanel = () => {
     businessPhoneNumber: '',
     templateMessageId: '',
     variables: [],
+    fixedValues: [],
     isExpanded: true
   };
   postCallConfigurations.value.push(newConfig);
@@ -379,11 +390,16 @@ const getTagValues = (tagKey: string) => {
 // Add variable to specific configuration
 const addVariable = (config: any) => {
   config.variables.push('');
+  if (!config.fixedValues) config.fixedValues = [];
+  config.fixedValues.push('');
 }
 
 // Remove variable from specific configuration
 const removeVariable = (config: any, index: number) => {
   config.variables.splice(index, 1);
+  if (config.fixedValues) {
+    config.fixedValues.splice(index, 1);
+  }
 }
 
 // Check if configuration is valid
@@ -514,6 +530,7 @@ onMounted(async () => {
         postCallConfigurations.value = configurations.map(config => ({
           ...config,
           id: config.id || generateId(),
+          fixedValues: config.fixedValues || [],
           isExpanded: false
         }));
       } else {
@@ -523,6 +540,7 @@ onMounted(async () => {
           postCallConfigurations.value = [{
             ...oldConfig,
             id: generateId(),
+            fixedValues: oldConfig.fixedValues || [],
             isExpanded: false
           }];
         }
