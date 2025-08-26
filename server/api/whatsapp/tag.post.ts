@@ -86,7 +86,7 @@ export default defineEventHandler(async (event) => {
 
     for (let idx = 0; idx < configs.length; idx++) {
       const cfg = configs[idx] || {};
-      const { tagKey, tagValue, serverAddress, businessPhoneNumber, templateMessageId, variables } = cfg as any;
+      const { tagKey, tagValue, serverAddress, businessPhoneNumber, templateMessageId, variables, fixedValues } = cfg as any;
 
       // Validate minimal config
       if (!serverAddress || !businessPhoneNumber || !templateMessageId || !variables) {
@@ -133,7 +133,9 @@ export default defineEventHandler(async (event) => {
       const messages = phones.map((phone: string) => {
         const parameters: Record<string, any> = {};
         for (let i = 0; i < variables.length; i++) {
-          if(variables[i] === 'recordingUrl') {
+          if(variables[i] === 'fixedValue') {
+            parameters[`p${i + 1}`] = fixedValues?.[i] || '';
+          } else if(variables[i] === 'recordingUrl') {
             parameters[`p${i + 1}`] = transformRecordingUrl((message as any).recordingUrl, host);
           } else if(variables[i].startsWith('structuredData_')) {
             const key = variables[i].replace('structuredData_', '');
