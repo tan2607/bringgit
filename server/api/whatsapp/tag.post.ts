@@ -20,7 +20,6 @@ import { settings } from "@@/server/database/schema";
 import { auth0Management } from "~~/lib/auth0";
 
 export default defineEventHandler(async (event) => {
-  const host = getRequestHost(event)
   const body = await readBody(event)
   const message = body as WebhookPayLoad;
 
@@ -136,7 +135,7 @@ export default defineEventHandler(async (event) => {
           if(variables[i] === 'fixedValue') {
             parameters[`p${i + 1}`] = fixedValues?.[i] || '';
           } else if(variables[i] === 'recordingUrl') {
-            parameters[`p${i + 1}`] = transformRecordingUrl((message as any).recordingUrl, host);
+            parameters[`p${i + 1}`] = transformRecordingUrl((message as any).recordingUrl);
           } else if(variables[i].startsWith('structuredData_')) {
             const key = variables[i].replace('structuredData_', '');
             const structuredData = message.analysis?.structuredData || {};
@@ -198,8 +197,8 @@ export default defineEventHandler(async (event) => {
 })
 
 
-const transformRecordingUrl = (originalUrl: string, host: string) => {
+const transformRecordingUrl = (originalUrl: string) => {
   if (!originalUrl) return ''
   const path = originalUrl.replace('https://storage.vapi.ai/', '')
-  return `https://${host}/api/recording/${path}`
+  return `https://galaxy.voice.keyreply.com/api/recording/${path}`
 }
