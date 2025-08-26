@@ -32,18 +32,18 @@ export default defineEventHandler(async (event: H3Event) => {
     const phoneNumberId = message.call?.phoneNumberId;
     switch (webhookType) {
       case "end-of-call-report":
+        markPhoneNumberFree(phoneNumberId || "");
         const tag = message.analysis?.structuredData?.Result;
         if (tag) {
           // Send developer api
-          await $fetch('/api/whatsapp/tag', {
+          const result = await $fetch('/api/whatsapp/tag', {
             method: 'POST',
             body: {
               ...message
             }
           });
+          return result;
         }
-        markPhoneNumberFree(phoneNumberId || "");
-
         return { success: true };
       case "status-update":
         const status = message.status;
