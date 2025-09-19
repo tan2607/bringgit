@@ -1,6 +1,22 @@
 <template>
   <UContainer class="p-4">
-    <UCard>
+    <!-- Page Header -->
+    <h1 class="text-2xl font-bold mb-4">Analytics</h1>
+
+    <!-- Metabase Analytics View (when configured) -->
+    <div v-if="isMetabaseConfigured" class="w-full h-screen overflow-auto relative">
+      <iframe
+        :src="metabaseEmbedUrl"
+        frameborder="0"
+        width="100%"
+        height="100%"
+        allowtransparency
+        class="rounded-lg"
+      />
+    </div>
+
+    <!-- Mock Analytics View (when not configured) -->
+    <UCard v-else>
       <!-- Time range display -->
       <template #header>
         <!-- Stats Header -->
@@ -206,11 +222,22 @@ import { useI18n } from 'vue-i18n'
 definePageMeta({ middleware: "auth" })
 
 import { useAnalytics } from '@/composables/useAnalytics'
+import { useMetabase } from '@/composables/useMetabase'
 import { formatTimeRange } from '@/utils/dateFormat'
 import LineChart from '@/components/LineChart.vue'
 import PieChart from '@/components/PieChart.vue'
 
 const { t } = useI18n()
+
+// Metabase functionality
+const {
+  checkConfiguration,
+  fetchDashboards,
+  getEmbedUrl
+} = useMetabase()
+
+const isMetabaseConfigured = ref(false)
+const metabaseEmbedUrl = ref('')
 
 // Date range picker
 const dateRange = ref('date')
@@ -249,6 +276,26 @@ stats.value = Object.assign(stats.value, {
 })
 
 onMounted(async () => {
+  // Check Metabase configuration
+  isMetabaseConfigured.value = await checkConfiguration()
+
+  // If Metabase is configured, load it automatically
+  if (isMetabaseConfigured.value) {
+    const dashboardResponse = await fetchDashboards()
+    if (dashboardResponse.status === 'success') {
+      metabaseEmbedUrl.value = getEmbedUrl()
+    } else {
+      // If Metabase fails to load, fallback to mock analytics
+      isMetabaseConfigured.value = false
+      useToast().add({
+        title: 'Metabase Loading Failed',
+        description: 'Showing default analytics instead',
+        color: 'warning'
+      })
+    }
+  }
+
+  // Always load default analytics (as fallback or main view)
   await fetchAnalytics()
 })
 </script>
