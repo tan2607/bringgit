@@ -70,6 +70,75 @@
         </UForm>
       </UCard>
 
+      <!-- Metabase Analytics Settings -->
+      <UCard>
+        <template #header>
+          <h2 class="text-xl font-semibold">Analytics Configuration</h2>
+        </template>
+        <UForm :state="metabaseForm" class="space-y-4" @submit="saveMetabaseSettings">
+          <UFormField
+            label="Metabase URL"
+            description="The base URL for your Metabase instance"
+            required
+          >
+            <UInput
+              v-model="metabaseForm.url"
+              placeholder="https://metabase.example.com"
+              icon="i-heroicons-globe-alt"
+            />
+          </UFormField>
+          <UFormField
+            label="Username"
+            description="Your Metabase login username"
+            required
+          >
+            <UInput
+              v-model="metabaseForm.username"
+              placeholder="admin@example.com"
+              icon="i-heroicons-user"
+            />
+          </UFormField>
+          <UFormField
+            label="Password"
+            :description="isMetabaseConfigured ? 'Leave empty to keep current password' : 'Your Metabase login password'"
+            :required="!isMetabaseConfigured"
+          >
+            <UInput
+              v-model="metabaseForm.password"
+              type="password"
+              :placeholder="isMetabaseConfigured ? 'Enter new password to update' : '••••••••'"
+              icon="i-heroicons-lock-closed"
+            />
+          </UFormField>
+          <UFormField
+            label="API Key"
+            :description="isMetabaseConfigured ? 'Leave empty to keep current API key' : 'Your Metabase API key for programmatic access'"
+            :required="!isMetabaseConfigured"
+          >
+            <UInput
+              v-model="metabaseForm.apiKey"
+              type="password"
+              :placeholder="isMetabaseConfigured ? 'Enter new API key to update' : 'sk-xxxxxxxxxxxxxxxxxxxxxxxx'"
+              icon="i-heroicons-key"
+            />
+          </UFormField>
+          <UFormField
+            label="Dashboard ID"
+            description="Your Metabase dashboard ID"
+            required
+          >
+            <UInput
+              v-model="metabaseForm.dashboard"
+              placeholder="dashboard-id"
+              icon="i-heroicons-chart-bar"
+            />
+          </UFormField>
+          <UButton type="submit" color="primary" :loading="loading.metabase">
+            Save Analytics Configuration
+          </UButton>
+        </UForm>
+      </UCard>
+
       <!-- Application Settings -->
       <UCard>
         <template #header>
@@ -130,8 +199,11 @@ import { modules, type Module } from "@@/server/utils/settings";
 import { useSettingStore } from "~~/stores/useSettingStore";
 import { useUser } from '@/composables/useUser'
 import { useUserManagement } from '@/composables/useUserManagement'
+import { useMetabase } from '@/composables/useMetabase'
+
 const { updateUserNotifPhone } = useUserManagement()
 const { isAdmin, user } = useUser()
+const { saveSettings: saveMetabaseConfig, fetchSettings: fetchMetabaseSettings } = useMetabase()
 
 definePageMeta({ middleware: "auth" })
 
@@ -141,7 +213,8 @@ const loading = ref({
   integrations: false,
   app: false,
   module: false,
-  postCall: false
+  postCall: false,
+  metabase: false
 })
 
 const profileForm = ref({
@@ -163,6 +236,16 @@ const integrationForm = ref({
   apiKey: '',
   webhookUrl: ''
 })
+
+const metabaseForm = ref({
+  url: '',
+  username: '',
+  password: '',
+  apiKey: '',
+  dashboard: ''
+})
+
+const isMetabaseConfigured = ref(false)
 
 const colorMode = useColorMode()
 const themeOptions = ref(['system', 'light', 'dark'])
@@ -207,7 +290,19 @@ onMounted(async () => {
   } else {
     moduleSettings.value = modules;
   }
-  
+
+  // Load existing Metabase settings
+  const metabaseSettings = await fetchMetabaseSettings();
+  if (metabaseSettings) {
+    isMetabaseConfigured.value = true;
+    metabaseForm.value = {
+      url: metabaseSettings.url || '',
+      username: metabaseSettings.username || '',
+      password: '', // Don't populate password for security
+      apiKey: '', // Don't populate API key for security
+      dashboard: metabaseSettings.dashboard || ''
+    };
+  }
 })
 
 async function saveProfile() {
@@ -275,7 +370,71 @@ async function saveModuleSettings() {
     loading.value.module = false
     settingStore.startReload()
   }
+}
 
+async function saveMetabaseSettings() {
+  loading.value.metabase = true
+  try {
+    // For new configurations, require all fields
+    // For updates, only require that at least one main field is provided
+    if (!isMetabaseConfigured.value) {
+      // New configuration - all fields required
+      if (!metabaseForm.value.url || !metabaseForm.value.username ||
+          !metabaseForm.value.password || !metabaseForm.value.apiKey ||
+          !metabaseForm.value.dashboard) {
+        useToast().add({
+          title: 'Validation Error',
+          description: 'All fields are required for initial Metabase configuration',
+          color: 'error'
+        })
+        return
+      }
+    } else {
+      // Update configuration - at least one main field required
+      if (!metabaseForm.value.url && !metabaseForm.value.username && !metabaseForm.value.dashboard) {
+        useToast().add({
+          title: 'Validation Error',
+          description: 'Please provide at least one field to update',
+          color: 'error'
+        })
+        return
+      }
+    }
+
+    const response = await saveMetabaseConfig(metabaseForm.value)
+    if (response.status === 'success') {
+      useToast().add({
+        title: 'Analytics configuration saved',
+        description: isMetabaseConfigured.value
+          ? 'Metabase settings have been updated successfully'
+          : 'Metabase has been configured successfully',
+        color: 'success'
+      })
+
+      // Update configuration status
+      if (!isMetabaseConfigured.value) {
+        isMetabaseConfigured.value = true
+      }
+
+      // Clear sensitive fields after successful save
+      metabaseForm.value.password = ''
+      metabaseForm.value.apiKey = ''
+    } else {
+      useToast().add({
+        title: 'Error saving analytics configuration',
+        description: response.message,
+        color: 'error'
+      })
+    }
+  } catch (error) {
+    useToast().add({
+      title: 'Error saving analytics configuration',
+      description: 'An unexpected error occurred',
+      color: 'error'
+    })
+  } finally {
+    loading.value.metabase = false
+  }
 }
 
 </script>
