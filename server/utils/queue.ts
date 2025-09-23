@@ -75,7 +75,7 @@ export class CallQueueHandler {
       return false
     }
     
-    const daysOfWeek = message.selectedTimeWindow.allowWeekends ? [1, 2, 3, 4, 5, 6, 7] : [1, 2, 3, 4, 5];
+    const daysOfWeek = message.selectedTimeWindow.allowWeekends ? [0, 1, 2, 3, 4, 5, 6] : [1, 2, 3, 4, 5];
     const scheduler = new Scheduler({
       businessHours: {
         daysOfWeek,
@@ -164,7 +164,7 @@ export class CallQueueHandler {
     }
 
     const allowWeekends = selectedTimeWindow?.allowWeekends;
-    const daysOfWeek = allowWeekends ? [1, 2, 3, 4, 5, 6, 7] : [1, 2, 3, 4, 5];
+    const daysOfWeek = allowWeekends ? [0, 1, 2, 3, 4, 5, 6] : [1, 2, 3, 4, 5];
 
     const scheduler = new Scheduler({
       businessHours: {
