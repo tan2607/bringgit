@@ -84,6 +84,10 @@
             <UFormField label="Select Outbound Phone Number">
               <PhoneNumberSelect v-model="state.selectedNumber" class="w-full" />
             </UFormField>
+
+            <UFormField label="Max Retries">
+              <UInput v-model="state.maxRetries" type="number" min="0" default="0" max="10" placeholder="Enter max retries" class="w-48"/>
+            </UFormField>
           </div>
           <div>
             <UCheckbox v-model="state.allowWeekends" label="Allow Processing on Weekends" />
@@ -193,7 +197,8 @@ const state = reactive({
   selectedNumber: [],
   contacts: null,
   isSubmitting: false,
-  allowWeekends: false
+  allowWeekends: false,
+  maxRetries: 0,
 })
 
 const selectedDate = defineModel('selectedDate', { type: Object })
@@ -244,6 +249,7 @@ async function handleCreateJob() {
         end: selectedTimeWindow.value.end,
         allowWeekends: state.allowWeekends
       },
+      maxRetries: state.maxRetries
     })
     toast.add({
       title: 'Success',
