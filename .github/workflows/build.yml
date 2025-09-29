@@ -3,8 +3,12 @@ name: Keyreply Next Build
 on:
   workflow_dispatch:
   push:
-    # branches:
-    #   - dev
+    branches:
+      - dev
+      - SinghealthUnifiedChatbot/dev
+      - SinghealthUnifiedChatbot/uat
+      - SinghealthUnifiedChatbot/prod
+      - feat/migrate-to-postgresql
     tags:
       - '*'
 
@@ -23,9 +27,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
+        if: ${{ hashFiles('Dockerfile') != '' }}
         uses: docker/setup-buildx-action@v3
 
       - name: Cache Docker layers
+        if: ${{ hashFiles('Dockerfile') != '' }}
         uses: actions/cache@v4
         with:
           path: /tmp/.buildx-cache
@@ -34,6 +40,7 @@ jobs:
             ${{ runner.os }}-buildx-
 
       - name: Update version and tag
+        if: ${{ hashFiles('Dockerfile') != '' }}
         id: set_tag
         run: |
           if [[ $GITHUB_REF == refs/tags/* ]]; then
@@ -49,6 +56,7 @@ jobs:
           echo "::notice::Building image $KEYREPLY_REGISTRY_URL/$IMAGE_REPOSITORY:$TAG"
 
       - name: Login to KeyReply AI Container Registry
+        if: ${{ hashFiles('Dockerfile') != '' }}
         uses: docker/login-action@v3
         with:
           registry: ${{ env.KEYREPLY_REGISTRY_URL }}
@@ -56,6 +64,7 @@ jobs:
           password: ${{ secrets.KEYREPLY_REGISTRY_PASSWORD }}
 
       - name: Build and push Docker image
+        if: ${{ hashFiles('Dockerfile') != '' }}
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -65,6 +74,43 @@ jobs:
             ${{ env.KEYREPLY_REGISTRY_URL }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.set_tag.outputs.tag }}
           build-args: |
             NUXT_UI_PRO_LICENSE=${{ secrets.NUXT_UI_PRO_LICENSE }}
+            SUPABASE_URL=${{ secrets.SUPABASE_URL }}
+            SUPABASE_KEY=${{ secrets.SUPABASE_KEY }}
+            AUTH0_AUDIENCE=${{ secrets.AUTH0_AUDIENCE }}
+            AUTH0_CLIENT_ID=${{ secrets.AUTH0_CLIENT_ID }}
+            AUTH0_CLIENT_SECRET=${{ secrets.AUTH0_CLIENT_SECRET }}
+            AUTH0_DOMAIN=${{ secrets.AUTH0_DOMAIN }}
+            AUTH0_ISSUER=${{ secrets.AUTH0_ISSUER }}
+            AUTH_MICROSOFT_ENTRA_ID_AUTHORIZATION_URL=${{ secrets.AUTH_MICROSOFT_ENTRA_ID_AUTHORIZATION_URL }}
+            AUTH_MICROSOFT_ENTRA_ID_ID=${{ secrets.AUTH_MICROSOFT_ENTRA_ID_ID }}
+            AUTH_MICROSOFT_ENTRA_ID_SECRET=${{ secrets.AUTH_MICROSOFT_ENTRA_ID_SECRET }}
+            AUTH_MICROSOFT_ENTRA_ID_TENANT_ID=${{ secrets.AUTH_MICROSOFT_ENTRA_ID_TENANT_ID }}
+            AUTH_MICROSOFT_ENTRA_ID_TOKEN=${{ secrets.AUTH_MICROSOFT_ENTRA_ID_TOKEN }}
+            AUTH_MICROSOFT_ENTRA_ID_USERINFO=${{ secrets.AUTH_MICROSOFT_ENTRA_ID_USERINFO }}
+            AZURE_OPENAI_DEPLOYMENT_ID=${{ secrets.AZURE_OPENAI_DEPLOYMENT_ID }}
+            AZURE_OPENAI_API_KEY=${{ secrets.AZURE_OPENAI_API_KEY }}
+            AZURE_OPENAI_ENDPOINT=${{ secrets.AZURE_OPENAI_ENDPOINT }}
+            AZURE_OPENAI_MODEL_NAME=${{ secrets.AZURE_OPENAI_MODEL_NAME }}
+            AZURE_SEARCH_API_KEY=${{ secrets.AZURE_SEARCH_API_KEY }}
+            AZURE_SEARCH_ENDPOINT=${{ secrets.AZURE_SEARCH_ENDPOINT }}
+            AZURE_SEARCH_INDEX_NAME=${{ secrets.AZURE_SEARCH_INDEX_NAME }}
+            BROWSERBASE_API_KEY=${{ secrets.BROWSERBASE_API_KEY }}
+            CARTESIA_API_KEY=${{ secrets.CARTESIA_API_KEY }}
+            CEREBRAS_API_KEY=${{ secrets.CEREBRAS_API_KEY }}
+            GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}
+            GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }}
+            GROQ_API_KEY=${{ secrets.GROQ_API_KEY }}
+            MSAL_CLIENT_ID=${{ secrets.MSAL_CLIENT_ID }}
+            NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}
+            NUXT_PUBLIC_BASE_URL=${{ secrets.NUXT_PUBLIC_BASE_URL }}
+            OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+            PLAYAI_API_KEY=${{ secrets.PLAYAI_API_KEY }}
+            PLAYAI_USER_ID=${{ secrets.PLAYAI_USER_ID }}
+            TANDEM_AUDIENCE=${{ secrets.TANDEM_AUDIENCE }}
+            TANDEM_ISSUER=${{ secrets.TANDEM_ISSUER }}
+            TANDEM_SUBJECT=${{ secrets.TANDEM_SUBJECT }}
+            VAPI_SECRET_TOKEN=${{ secrets.VAPI_SECRET_TOKEN }}
+            AZURE_SEARCH_ADMIN_KEY=${{ secrets.AZURE_SEARCH_ADMIN_KEY }}
             COMMIT_ID=${{ github.sha }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache,mode=max
