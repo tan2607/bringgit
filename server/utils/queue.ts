@@ -374,7 +374,8 @@ export class CallQueueHandler {
           scheduledAt: message.scheduledAt,
           vapiId: null,
           selectedTimeWindow: JSON.stringify(message.selectedTimeWindow),
-          phoneNumbers: message.phoneNumbers
+          phoneNumbers: message.phoneNumbers,
+          maxRetries: message.maxRetries || 3
         };
   
         await db.insert(jobQueue).values(queuePayload as any);
@@ -403,6 +404,7 @@ export class CallQueueHandler {
       selectedTimeWindow: JSON.stringify(message.selectedTimeWindow),
       phoneNumberId: message.phoneNumberId,
       assistantId: message.assistantId,
+      maxRetries: message.maxRetries || 3
     }).where(eq(jobQueue.id, message.id as string))
   }
 }
