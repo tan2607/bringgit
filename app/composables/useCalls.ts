@@ -21,47 +21,37 @@ export const useCalls = () => {
     abortController = new AbortController();
     const signal = abortController.signal;
 
+    let progressInterval: NodeJS.Timeout | null = null;
+
     try {
       isLoading.value = true;
-      fetchingProgress.value = 0;
+      fetchingProgress.value = 10; // Start at 10%
       calls.value = [];
       totalCalls.value = 0;
 
-      const batchDurationMs = 6 * 60 * 60 * 1000; // 6 hour
-      const start = startDate; // already a timestamp
-      const end = endDate;
-
-      const totalBatches = Math.ceil((end - start) / batchDurationMs);
-      let fetchedCalls: any[] = [];
-
-      for (let i = 0; i < totalBatches; i++) {
-        const batchStart = new Date(start + i * batchDurationMs).getTime();
-        const batchEnd = new Date(
-          Math.min(start + (i + 1) * batchDurationMs, end)
-        ).getTime();
-
-        // Exit early if aborted
-        if (signal.aborted) return;
-
-        const resp = await fetchData(batchStart, batchEnd, limit, signal);
-
-        if (resp && Array.isArray(resp)) {
-          fetchedCalls = [...fetchedCalls, ...resp];
-
-          if (limit && fetchedCalls.length >= limit) {
-            fetchedCalls = fetchedCalls.slice(0, limit);
-            fetchingProgress.value = 100;
-            break;
+      // Progress simulation - increment every 500ms
+      progressInterval = setInterval(() => {
+        if (fetchingProgress.value < 90) {
+          fetchingProgress.value += Math.floor(Math.random() * 10); // Random increment
+          if (fetchingProgress.value > 90) {
+            fetchingProgress.value = 90; // Cap at 90% until request completes
           }
         }
+      }, 500);
 
-        // Progress calculation
-        fetchingProgress.value = Math.round(((i + 1) / totalBatches) * 100);
+      if (signal.aborted) return;
+
+      const fetchedCalls = await fetchData(startDate, endDate, limit, signal);
+      fetchingProgress.value = 100;
+
+      if (fetchedCalls && Array.isArray(fetchedCalls)) {
+        calls.value = sortCalls(fetchedCalls);
+        totalCalls.value = fetchedCalls.length;
       }
-
-      calls.value = sortCalls(fetchedCalls);
-      totalCalls.value = fetchedCalls.length;
     } finally {
+      if (progressInterval) {
+        clearInterval(progressInterval);
+      }
       if (signal.aborted) return;
       isLoading.value = false;
       fetchingProgress.value = 0;
